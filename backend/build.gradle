@@ -66,11 +66,16 @@ jacocoTestReport {
                             "**/*Application*",
                             "**/*Config*",
 <<<<<<< HEAD
+<<<<<<< HEAD
                             "**/Request/**",
                             "**/Response/**"
 =======
                             "**/*Dto*"
 >>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
+=======
+                            "**/Request/**",
+                            "**/Response/**"
+>>>>>>> e29c4b8 ([#3] fix: Testing Exclude setting DTO -> Request,Reseponse)
                     ])
                 })
         )
@@ -103,11 +108,16 @@ jacocoTestCoverageVerification {
                     "**.*Application*",
                     "**.*Config*",
 <<<<<<< HEAD
+<<<<<<< HEAD
                     "**.Request.*",
                     "**.Response.*"
 =======
                     "**.*Dto*"
 >>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
+=======
+                    "**.Request.*",
+                    "**.Response.*"
+>>>>>>> e29c4b8 ([#3] fix: Testing Exclude setting DTO -> Request,Reseponse)
             ]
         }
     }
