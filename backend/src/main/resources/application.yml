@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    jta:
+      company:
+        driver-class-name: com.mysql.cj.jdbc.MysqlXADataSource
+        url: jdbc:mysql://127.0.0.1:3306/company?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+      store:
+        driver-class-name: com.mysql.cj.jdbc.MysqlXADataSource
+        url: jdbc:mysql://127.0.0.1:3306/store?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+      employee:
+        driver-class-name: com.mysql.cj.jdbc.MysqlXADataSource
+        url: jdbc:mysql://127.0.0.1:3306/employee?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+      contract:
+        driver-class-name: com.mysql.cj.jdbc.MysqlXADataSource
+        url: jdbc:mysql://127.0.0.1:3306/contract?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
+      payment:
+        driver-class-name: com.mysql.cj.jdbc.MysqlXADataSource
+        url: jdbc:mysql://127.0.0.1:3306/payment?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+        username: root
+        password: 1111
