@@ -65,8 +65,12 @@ jacocoTestReport {
                     fileTree(dir: it, excludes: [
                             "**/*Application*",
                             "**/*Config*",
+<<<<<<< HEAD
                             "**/Request/**",
                             "**/Response/**"
+=======
+                            "**/*Dto*"
+>>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
                     ])
                 })
         )
@@ -84,14 +88,22 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
+<<<<<<< HEAD
                 minimum = 0.6
+=======
+                minimun = 0.6
+>>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
             }
 
             excludes = [
                     "**.*Application*",
                     "**.*Config*",
+<<<<<<< HEAD
                     "**.Request.*",
                     "**.Response.*"
+=======
+                    "**.*Dto*"
+>>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
             ]
         }
     }
