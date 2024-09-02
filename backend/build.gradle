@@ -89,10 +89,14 @@ jacocoTestCoverageVerification {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
 <<<<<<< HEAD
+<<<<<<< HEAD
                 minimum = 0.6
 =======
                 minimun = 0.6
 >>>>>>> 6b48677 ([#3] feat: TestCoverage 측정을 위한 JaCoCo)
+=======
+                minimum = 0.6
+>>>>>>> 0bb660a ([#3] fix: fix mistyping)
             }
 
             excludes = [
