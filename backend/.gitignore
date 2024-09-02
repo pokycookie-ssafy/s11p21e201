@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### tmlog ###
+tmlog.lck
+tmlog2.log
