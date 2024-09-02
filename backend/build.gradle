@@ -83,7 +83,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimun = 0.6
+                minimum = 0.6
             }
 
             excludes = [
