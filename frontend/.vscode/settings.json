@@ -1,0 +1,6 @@
+{
+  "eslint.workingDirectories": [
+    { "directory": "packages/test", "changeProcessCWD": true },
+    { "directory": "packages/ui", "changeProcessCWD": true }
+  ]
+}
