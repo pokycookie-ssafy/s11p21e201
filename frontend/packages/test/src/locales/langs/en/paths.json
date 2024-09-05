@@ -1,0 +1,8 @@
+{
+  "components": {
+    "toast": "notification",
+    "scrollbar": "scrollbar"
+  },
+  "mirage": "mirage",
+  "locale": "locale"
+}
