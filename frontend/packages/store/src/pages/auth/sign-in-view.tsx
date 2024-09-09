@@ -7,7 +7,7 @@ import { Stack, Button, TextField, Typography } from '@mui/material'
 import { Link, FullContainer } from '@e201/ui'
 
 export default function SignInView() {
-  const { t } = useTranslate('login')
+  const { t } = useTranslate('sign-in')
 
   return (
     <FullContainer

@@ -1,3 +1,4 @@
+import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 
 import { Box, Step, Stepper, Container, StepLabel } from '@mui/material'
@@ -6,9 +7,11 @@ import SignupTermView from './sign-up-term-view'
 import SignUpFormView from './sign-up-form-view'
 
 export default function SignUpView() {
-  const [currStep, setCurrStep] = useState(0)
+  const { t } = useTranslate('sign-up')
 
-  const steps = ['약관동의', '회원정보입력', '가입완료']
+  const [currStep, setCurrStep] = useState(1)
+
+  const steps = [t('steps.term'), t('steps.form'), t('steps.complete')]
 
   const currView = useMemo(() => {
     if (currStep === 0) {
