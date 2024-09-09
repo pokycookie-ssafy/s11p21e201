@@ -38,4 +38,4 @@ out/
 
 ### tmlog ###
 tmlog.lck
-tmlog2.log
+tmlog*.log
