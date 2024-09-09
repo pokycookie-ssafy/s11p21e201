@@ -1,0 +1,12 @@
+{
+  "title": "로그인",
+  "label": {
+    "email": "이메일",
+    "password": "비밀번호"
+  },
+  "button": {
+    "forgot_account": "아이디/비밀번호 찾기",
+    "sign_in": "로그인",
+    "sign_up": "회원가입"
+  }
+}
