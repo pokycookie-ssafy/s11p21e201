@@ -1,8 +1,7 @@
 import type { Theme, SxProps } from '@mui/material'
 
-import { Link as RouterLink } from 'react-router-dom'
-
 import { Link as MuiLink } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 
 interface IProps {
   children: React.ReactNode
@@ -12,7 +11,7 @@ interface IProps {
 
 export function Link({ children, to, sx }: IProps) {
   return (
-    <MuiLink component={RouterLink} to={to} underline="none" sx={sx}>
+    <MuiLink component={RouterLink} to={to} underline="hover" sx={sx}>
       {children}
     </MuiLink>
   )
