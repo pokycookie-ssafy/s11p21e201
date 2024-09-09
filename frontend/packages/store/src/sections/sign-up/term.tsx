@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export default function Term({ title, term, checked, onCheck }: IProps) {
-  const { t } = useTranslate()
+  const { t } = useTranslate('sign-up')
 
   return (
     <Stack spacing={1}>
@@ -32,7 +32,7 @@ export default function Term({ title, term, checked, onCheck }: IProps) {
 
       <Stack direction="row" justifyContent="flex-end" sx={{ userSelect: 'none' }}>
         <FormControlLabel
-          label={t('동의합니다')}
+          label={t('button.agree')}
           control={<Checkbox onClick={onCheck} checked={checked} />}
         />
       </Stack>

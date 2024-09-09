@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export default function SignupTermView({ onNext }: IProps) {
-  const { t } = useTranslate()
+  const { t } = useTranslate('sign-up')
 
   const service = useBoolean()
   const personal = useBoolean()
@@ -24,16 +24,16 @@ export default function SignupTermView({ onNext }: IProps) {
         checked={service.value}
         onCheck={service.toggle}
         term={term.service}
-        title={t('서비스 이용약관')}
+        title={t('term.service')}
       />
       <Term
         checked={personal.value}
         onCheck={personal.toggle}
         term={term.personal}
-        title={t('개인정보 수집 및 이용 동의')}
+        title={t('term.personal')}
       />
       <Button disabled={!isAllChecked} onClick={onNext}>
-        {t('다음')}
+        {t('button.next')}
       </Button>
     </Stack>
   )
