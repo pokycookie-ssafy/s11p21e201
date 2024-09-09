@@ -26,7 +26,7 @@ export default function SignInView() {
           minWidth: 400,
           p: 4,
           backdropFilter: 'blur(10px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          bgcolor: 'rgba(255, 255, 255, 0.5)',
           borderRadius: 2,
         }}
       >
@@ -34,12 +34,12 @@ export default function SignInView() {
           {t('title')}
         </Typography>
 
-        <Stack spacing={1} width="100%" sx={{ mb: 2 }}>
+        <Stack spacing={1} width={1} sx={{ mb: 2 }}>
           <TextField fullWidth label={t('label.email')} size="small" />
           <TextField fullWidth label={t('label.password')} size="small" type="password" />
         </Stack>
 
-        <Stack spacing={1} width="100%">
+        <Stack spacing={1} width={1}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Link to={paths.signUp}>
               <Typography variant="subtitle2">{t('button.sign_up')}</Typography>
