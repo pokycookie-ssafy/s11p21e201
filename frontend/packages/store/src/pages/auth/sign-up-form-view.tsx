@@ -1,4 +1,5 @@
 import { useTranslate } from '@/locales'
+import { Upload } from '@/components/upload'
 
 import { Stack, useTheme, TextField, Typography, useMediaQuery } from '@mui/material'
 
@@ -11,7 +12,7 @@ export default function SignUpFormView() {
   return (
     <Stack spacing={4}>
       <Stack spacing={4} direction={stackDirection}>
-        <Stack spacing={1} width="100%" sx={{ mb: 2 }}>
+        <Stack spacing={1} width={1} sx={{ mb: 2 }}>
           <Typography variant="subtitle1" sx={{ pl: 1, pb: 1 }}>
             {t('회원정보')}
           </Typography>
@@ -21,7 +22,7 @@ export default function SignUpFormView() {
           <TextField fullWidth label={t('form.phone')} size="small" type="tel" />
         </Stack>
 
-        <Stack spacing={1} width="100%" sx={{ mb: 2 }}>
+        <Stack spacing={1} width={1} sx={{ mb: 2 }}>
           <Typography variant="subtitle1" sx={{ pl: 1, pb: 1 }}>
             {t('계좌정보')}
           </Typography>
@@ -30,10 +31,11 @@ export default function SignUpFormView() {
         </Stack>
       </Stack>
 
-      <Stack spacing={1} width="100%" sx={{ mb: 2 }}>
+      <Stack spacing={1} width={1} sx={{ mb: 2 }}>
         <Typography variant="subtitle1" sx={{ pl: 1, pb: 1 }}>
           {t('사업자등록증')}
         </Typography>
+        <Upload />
       </Stack>
     </Stack>
   )
