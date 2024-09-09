@@ -1,6 +1,11 @@
 {
   "eslint.workingDirectories": [
-    { "directory": "packages/test", "changeProcessCWD": true },
-    { "directory": "packages/ui", "changeProcessCWD": true }
+    { "directory": "frontend/packages/test", "changeProcessCWD": true },
+    { "directory": "frontend/packages/ui", "changeProcessCWD": true },
+    { "directory": "frontend/packages/admin", "changeProcessCWD": true },
+    { "directory": "frontend/packages/company", "changeProcessCWD": true },
+    { "directory": "frontend/packages/employee", "changeProcessCWD": true },
+    { "directory": "frontend/packages/microsite", "changeProcessCWD": true },
+    { "directory": "frontend/packages/store", "changeProcessCWD": true }
   ]
 }
