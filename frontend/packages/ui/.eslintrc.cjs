@@ -8,12 +8,12 @@ module.exports = {
     ecmaVersion: 'latest',
     ecmaFeatures: { jsx: true },
     tsconfigRootDir: __dirname,
-    project: ['./packages/company/tsconfig.json', './packages/ui/tsconfig.json'],
+    project: './tsconfig.json',
   },
   settings: {
     'import/resolver': {
       typescript: {
-        project: ['./packages/company/tsconfig.json', './packages/ui/tsconfig.json'],
+        project: './tsconfig.json',
       },
     },
   },

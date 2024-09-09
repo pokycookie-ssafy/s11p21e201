@@ -1,0 +1,8 @@
+{
+  "components": {
+    "toast": "알림",
+    "scrollbar": "스크롤"
+  },
+  "mirage": "mirage",
+  "locale": "국제화"
+}
