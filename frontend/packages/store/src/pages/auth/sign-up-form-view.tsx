@@ -1,13 +1,22 @@
 import { useTranslate } from '@/locales'
-import { Upload } from '@/components/upload'
 
-import { Stack, useTheme, TextField, Typography, useMediaQuery } from '@mui/material'
+import { Stack, Button, useTheme, TextField, Typography, useMediaQuery } from '@mui/material'
 
-export default function SignUpFormView() {
+import { Upload } from '@e201/ui'
+
+interface IProps {
+  onNext: () => void
+}
+
+export default function SignUpFormView({ onNext }: IProps) {
   const { t } = useTranslate('sign-up')
 
   const { breakpoints } = useTheme()
   const stackDirection = useMediaQuery(breakpoints.up('md')) ? 'row' : 'column'
+
+  const submitHandler = () => {
+    onNext()
+  }
 
   return (
     <Stack spacing={4}>
@@ -37,6 +46,8 @@ export default function SignUpFormView() {
         </Typography>
         <Upload />
       </Stack>
+
+      <Button onClick={submitHandler}>{t('button.next')}</Button>
     </Stack>
   )
 }

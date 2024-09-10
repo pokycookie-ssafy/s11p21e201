@@ -6,11 +6,12 @@
   "scripts": {
     "start": "vite preview",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "eslint . && tsc -b && vite build",
     "lint": "eslint ."
   },
   "dependencies": {
     "@e201/ui": "^1.0.0",
+    "@e201/utils": "^1.0.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
@@ -24,6 +25,7 @@
     "react-dropzone": "^14.2.3",
     "react-i18next": "^15.0.1",
     "react-router-dom": "^6.26.0",
+    "sonner": "^1.5.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
