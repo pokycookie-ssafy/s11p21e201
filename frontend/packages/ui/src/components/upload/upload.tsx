@@ -7,14 +7,24 @@ import { Iconify } from '../iconify'
 
 interface IProps {
   placeholder?: string
+  multiple?: boolean
 }
 
-export function Upload({ placeholder }: IProps) {
+export function Upload({ placeholder, multiple }: IProps) {
   const [files, setFiles] = useState<File[]>([])
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file) => setFiles((prev) => [...prev, file]))
-  }, [])
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (multiple) {
+        acceptedFiles.forEach((file) => setFiles((prev) => [...prev, file]))
+        return
+      }
+      if (acceptedFiles.length > 0) {
+        setFiles([acceptedFiles[0]])
+      }
+    },
+    [multiple]
+  )
 
   const deleteHandler = (idx: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== idx))
@@ -25,6 +35,7 @@ export function Upload({ placeholder }: IProps) {
       'image/*': ['.jpeg', '.jpg', '.png'],
     },
     onDrop,
+    multiple,
   })
 
   return (
