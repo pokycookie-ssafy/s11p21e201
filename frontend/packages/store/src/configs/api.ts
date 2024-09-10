@@ -1,7 +1,9 @@
 export const BASE_URL = '/api'
 
 const api = {
-  todo: '/todo',
+  signUp: {
+    ocr: '/licenses/signup',
+  },
 }
 
 export default api
