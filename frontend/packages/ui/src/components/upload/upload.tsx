@@ -1,5 +1,5 @@
 import { useDropzone } from 'react-dropzone'
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Box, alpha, Stack, Typography } from '@mui/material'
 
 import { Preview } from './preview'
@@ -8,9 +8,10 @@ import { Iconify } from '../iconify'
 interface IProps {
   placeholder?: string
   multiple?: boolean
+  onChange?: (files: File[]) => void
 }
 
-export function Upload({ placeholder, multiple }: IProps) {
+export function Upload({ placeholder, multiple, onChange }: IProps) {
   const [files, setFiles] = useState<File[]>([])
 
   const onDrop = useCallback(
@@ -37,6 +38,12 @@ export function Upload({ placeholder, multiple }: IProps) {
     onDrop,
     multiple,
   })
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(files)
+    }
+  }, [files, onChange])
 
   return (
     <Stack>
