@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import term from '@/assets/data/term'
 import { useTranslate } from '@/locales'
+import { useBoolean } from '@e201/utils'
 import Term from '@/sections/sign-up/term'
-import { useBoolean } from '@/hooks/use-boolean'
 
 import { Stack, Button } from '@mui/material'
 
