@@ -7,9 +7,10 @@ import javax.sql.DataSource;
 import com.atomikos.spring.AtomikosDataSourceBean;
 
 public class JtaDataSourceUtil {
-	public static DataSource of(String driverClassName, String url, String username, String password) {
+	public static DataSource of(String resourceName, String driverClassName, String url, String username, String password) {
 		AtomikosDataSourceBean atomikosDataSourceBean = new AtomikosDataSourceBean();
 		atomikosDataSourceBean.setXaDataSourceClassName(driverClassName);
+		atomikosDataSourceBean.setUniqueResourceName(resourceName);
 
 		Properties properties = new Properties();
 		properties.setProperty("url", url);

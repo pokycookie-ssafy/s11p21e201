@@ -13,6 +13,7 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "spring.datasource.jta.admin")
 public class AdminDbProperties {
 
+	private final String name;
 	private final String driverClassName;
 	private final String url;
 	private final String username;

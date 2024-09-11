@@ -26,8 +26,14 @@ public class PaymentDataSource {
 
 	@Bean
 	public DataSource paymentDataSource() {
+		return new LazyConnectionDataSourceProxy(paymentRoutingDataSource());
+	}
+
+	@Bean
+	public DataSource paymentRoutingDataSource() {
 		// Master DB 설정
 		DataSource master = JtaDataSourceUtil.of(
+			properties.getName(),
 			properties.getDriverClassName(),
 			properties.getUrl(),
 			properties.getUsername(),
@@ -39,6 +45,7 @@ public class PaymentDataSource {
 		dataSourceMap.put("master", master);
 		properties.getSlaves().forEach((key, value) -> {
 			DataSource slave = JtaDataSourceUtil.of(
+				value.getName(),
 				value.getDriverClassName(),
 				value.getUrl(),
 				value.getUsername(),
@@ -50,6 +57,6 @@ public class PaymentDataSource {
 		ReplicationRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
 		routingDataSource.setDefaultTargetDataSource(master);
 		routingDataSource.setTargetDataSources(dataSourceMap);
-		return new LazyConnectionDataSourceProxy(routingDataSource);
+		return routingDataSource;
 	}
 }
