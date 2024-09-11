@@ -22,7 +22,7 @@ export default function ListManager() {
     setExpanded(newExpanded ? panel : false)
   }
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Stack sx={{ gap: 3 }}>
       <Box sx={{ display: 'flex' }}>
         <ButtonGroup variant="outlined" aria-label="Basic button group">
           <Button>식당별</Button>
@@ -46,12 +46,24 @@ export default function ListManager() {
       <Stack>
         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
           <AccordionSummary aria-controls="panel1-content" id="panel1-header">
-            Accordion 1
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <Typography>CM마케팅본부</Typography>
+              <Typography>20,000원</Typography>
+            </Box>
           </AccordionSummary>
           <AccordionDetails>
             <List>
               <ListItem>
-                <ListItemText>item1</ListItemText>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  <Box>
+                    <Typography variant="body1">2024.09.11 14:30</Typography>
+                    <Typography variant="body1">고봉김밥</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <Typography variant="body1">홍길동</Typography>
+                    <Typography variant="body1">20,000원</Typography>
+                  </Box>
+                </Box>
               </ListItem>
             </List>
           </AccordionDetails>
