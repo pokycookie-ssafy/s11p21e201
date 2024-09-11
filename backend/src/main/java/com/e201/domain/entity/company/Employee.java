@@ -1,4 +1,4 @@
-package com.e201.domain.entity.employee;
+package com.e201.domain.entity.company;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
