@@ -2,6 +2,9 @@ package com.e201.global.db.datasource;
 
 import java.util.List;
 
+import lombok.ToString;
+
+@ToString
 public class CircularList<T> {
 	private final List<T> list;
 	private Integer counter = 0;

@@ -13,11 +13,12 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "spring.datasource.jta.company")
 public class CompanyDbProperties {
 
+	private final String name;
 	private final String driverClassName;
 	private final String url;
 	private final String username;
 	private final String password;
-	private final Map<String, AdminDbProperties.Slave> slaves;
+	private final Map<String, Slave> slaves;
 
 	@Getter
 	@Setter

@@ -25,8 +25,14 @@ public class CompanyDataSource {
 
 	@Bean
 	public DataSource companyDataSource() {
+		return new LazyConnectionDataSourceProxy(companyRoutingDataSource());
+	}
+
+	@Bean
+	public DataSource companyRoutingDataSource() {
 		// Master DB 설정
 		DataSource master = JtaDataSourceUtil.of(
+			properties.getName(),
 			properties.getDriverClassName(),
 			properties.getUrl(),
 			properties.getUsername(),
@@ -38,6 +44,7 @@ public class CompanyDataSource {
 		dataSourceMap.put("master", master);
 		properties.getSlaves().forEach((key, value) -> {
 			DataSource slave = JtaDataSourceUtil.of(
+				value.getName(),
 				value.getDriverClassName(),
 				value.getUrl(),
 				value.getUsername(),
@@ -49,6 +56,6 @@ public class CompanyDataSource {
 		ReplicationRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
 		routingDataSource.setDefaultTargetDataSource(master);
 		routingDataSource.setTargetDataSources(dataSourceMap);
-		return new LazyConnectionDataSourceProxy(routingDataSource);
+		return routingDataSource;
 	}
 }

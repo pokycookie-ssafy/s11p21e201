@@ -3,9 +3,15 @@ package com.e201.global.db.datasource;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.util.CollectionUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ReplicationRoutingDataSource extends AbstractRoutingDataSource {
 
 	private CircularList<String> dataSourceNameList;

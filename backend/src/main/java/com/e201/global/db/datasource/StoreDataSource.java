@@ -20,12 +20,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Configuration(value = "StoreDataSource")
 public class StoreDataSource {
+
 	private final StoreDbProperties properties;
 
 	@Bean
 	public DataSource storeDataSource() {
+		return new LazyConnectionDataSourceProxy(storeRoutingDataSource());
+	}
+
+	@Bean
+	public DataSource storeRoutingDataSource() {
 		// Master DB 설정
 		DataSource master = JtaDataSourceUtil.of(
+			properties.getName(),
 			properties.getDriverClassName(),
 			properties.getUrl(),
 			properties.getUsername(),
@@ -37,6 +44,7 @@ public class StoreDataSource {
 		dataSourceMap.put("master", master);
 		properties.getSlaves().forEach((key, value) -> {
 			DataSource slave = JtaDataSourceUtil.of(
+				value.getName(),
 				value.getDriverClassName(),
 				value.getUrl(),
 				value.getUsername(),
@@ -48,6 +56,6 @@ public class StoreDataSource {
 		ReplicationRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
 		routingDataSource.setDefaultTargetDataSource(master);
 		routingDataSource.setTargetDataSources(dataSourceMap);
-		return new LazyConnectionDataSourceProxy(routingDataSource);
+		return routingDataSource;
 	}
 }
