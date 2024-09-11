@@ -22,7 +22,7 @@ export default function ListCompany() {
     setExpanded(newExpanded ? panel : false)
   }
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Stack sx={{ gap: 3 }}>
       <Box sx={{ display: 'flex' }}>
         <ButtonGroup variant="outlined" aria-label="Basic button group">
           <Button>부서별</Button>
