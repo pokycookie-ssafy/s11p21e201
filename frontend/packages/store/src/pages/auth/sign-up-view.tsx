@@ -9,7 +9,7 @@ import SignUpFormView from './sign-up-form-view'
 export default function SignUpView() {
   const { t } = useTranslate('sign-up')
 
-  const [currStep, setCurrStep] = useState(0)
+  const [currStep, setCurrStep] = useState(1)
 
   const steps = [t('steps.term'), t('steps.form'), t('steps.complete')]
 

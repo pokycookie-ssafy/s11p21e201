@@ -7,4 +7,9 @@ interface ISignUpResponse {
   openDate: string
 }
 
-export type { ISignUpResponse }
+interface IBankResponse {
+  bankCode: string
+  bankName: string
+}
+
+export type { IBankResponse, ISignUpResponse }

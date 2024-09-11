@@ -1,5 +1,4 @@
 import { Toaster } from 'sonner'
-
 import { darken, styled, lighten } from '@mui/material'
 
 import { classes } from './classes'
