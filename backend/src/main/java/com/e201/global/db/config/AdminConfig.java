@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.e201.domain.repository.company",
-	entityManagerFactoryRef = "companyEntityManagerFactory",
+@EnableJpaRepositories(basePackages = "com.e201.domain.repository.admin",
+	entityManagerFactoryRef = "adminEntityManagerFactory",
 	transactionManagerRef = "jtaTransactionManager")
-public class CompanyConfig {
+public class AdminConfig {
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean companyEntityManagerFactory(DataSource companyDataSource) {
+	public LocalContainerEntityManagerFactoryBean adminEntityManagerFactory(DataSource adminDataSource) {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(companyDataSource);
-		em.setPackagesToScan("com.e201.domain.entity.company");
+		em.setDataSource(adminDataSource);
+		em.setPackagesToScan("com.e201.domain.entity.admin");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
