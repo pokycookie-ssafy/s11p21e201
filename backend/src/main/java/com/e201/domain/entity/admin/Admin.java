@@ -1,4 +1,4 @@
-package com.e201.domain.entity.company;
+package com.e201.domain.entity.admin;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,12 +8,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Company {
+public class Admin {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,7 @@ public class Company {
 	private String name;
 
 	@Builder
-	public Company(Long id, String name) {
+	public Admin(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}

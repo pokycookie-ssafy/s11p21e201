@@ -12,19 +12,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import com.atomikos.spring.AtomikosDataSourceBean;
-import com.e201.global.db.env.CompanyDbProperties;
+import com.e201.global.db.env.AdminDbProperties;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableConfigurationProperties({CompanyDbProperties.class})
+/**
+ * datasource bean, config bean 네이밍 중복 방지를 위해 config bean 이름은 대문자로 시작
+ */
+@EnableConfigurationProperties({AdminDbProperties.class})
 @RequiredArgsConstructor
-@Configuration(value = "CompanyDataSource")
-public class CompanyDataSource {
+@Configuration(value = "AdminDataSource")
+public class AdminDataSource {
 
-	private final CompanyDbProperties properties;
+	private final AdminDbProperties properties;
 
-	@Bean
-	public DataSource companyDataSource() {
+	@Bean // TODO <jhl221123> 중복 코드 추출 필요
+	public DataSource adminDataSource() {
 		// Master DB 설정
 		DataSource master = JtaDataSourceUtil.of(
 			properties.getDriverClassName(),
