@@ -30,7 +30,12 @@ export function LocaleButton() {
   return (
     <>
       <Button variant="soft" onClick={clickHandler}>
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
           <Iconify icon="material-symbols:language" />
           <Typography variant="subtitle2">{currentLang.label}</Typography>
         </Stack>
@@ -43,7 +48,7 @@ export function LocaleButton() {
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        sx={{ mt: 1 }}
+        sx={{ mt: 1, color: (theme) => theme.palette.text.secondary }}
       >
         <Stack spacing={0.5} p={0.5}>
           {langs.map((lang) => (
