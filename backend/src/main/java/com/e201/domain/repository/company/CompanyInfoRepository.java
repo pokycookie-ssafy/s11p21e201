@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.e201.domain.entity.company.Employee;
+import com.e201.domain.entity.company.CompanyInfo;
 
-public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
+public interface CompanyInfoRepository extends JpaRepository<CompanyInfo, UUID> {
 }
