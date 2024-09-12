@@ -1,4 +1,4 @@
-import { isNumeric } from '@/utils/numeric'
+import { isNumeric } from '@e201/utils'
 import { useParams } from 'react-router-dom'
 
 export default function useParamId() {

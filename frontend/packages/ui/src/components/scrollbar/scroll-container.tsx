@@ -1,9 +1,8 @@
 import 'simplebar-react/dist/simplebar.min.css'
 
 import { forwardRef } from 'react'
-import SimpleBar from 'simplebar-react'
-
 import { Box } from '@mui/material'
+import SimpleBar from 'simplebar-react'
 
 import type { ScrollbarProps } from './types'
 

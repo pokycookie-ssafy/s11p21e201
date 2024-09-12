@@ -32,7 +32,7 @@ export const lightPalette: PaletteOptions = {
     disabled: color.grey[500],
   },
   background: {
-    paper: '#FFFFFF',
+    paper: color.grey[200],
     default: '#FFFFFF',
   },
   action: {

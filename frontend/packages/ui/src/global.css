@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'suit-variable';
+  font-weight: 100 900;
+  font-style: normal;
+  src: url('./assets/fonts/SUIT-Variable.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 300;
+  src: url('./assets/fonts/SUITE-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./assets/fonts/SUITE-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./assets/fonts/SUITE-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./assets/fonts/SUITE-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./assets/fonts/SUITE-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./assets/fonts/SUITE-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./assets/fonts/SUITE-Heavy.ttf') format('truetype');
+}

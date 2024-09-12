@@ -1,7 +1,7 @@
 import type { InitOptions } from 'i18next'
 import type { LocaleLang } from '@/locales/types'
 
-import { localStorageGetItem } from '@/utils/local-storage'
+import { localStorageGetItem } from '@e201/utils'
 
 export const fallbackLng: LocaleLang = 'ko'
 export const supportedLngs: LocaleLang[] = ['en', 'ko']
