@@ -2,8 +2,6 @@ package com.e201.domain.entity.company;
 
 import java.util.UUID;
 
-import com.e201.domain.entity.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,28 +18,32 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Employee extends BaseEntity {
+public class CompanyAccount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "employee_id", columnDefinition = "BINARY(16)")
+	@Column(name = "account_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id")
-	private Department department;
+	@JoinColumn(name = "company_id")
+	private Company company;
 
-	@Column(name = "code")
-	private String code;
+	@Column(name = "account_number")
+	private String number;
 
-	@Column(name = "password")
-	private String password;
+	@Column(name = "bank_code")
+	private String bankCode;
+
+	@Column(name = "bank_name")
+	private String bankName;
 
 	@Builder
-	public Employee(UUID id, Department department, String code, String password) {
+	public CompanyAccount(UUID id, Company company, String number, String bankCode, String bankName) {
 		this.id = id;
-		this.department = department;
-		this.code = code;
-		this.password = password;
+		this.company = company;
+		this.number = number;
+		this.bankCode = bankCode;
+		this.bankName = bankName;
 	}
 }
