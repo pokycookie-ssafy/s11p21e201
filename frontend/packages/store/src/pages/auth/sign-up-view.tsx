@@ -1,5 +1,6 @@
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { ModeButton, LocaleButton } from '@/components/setting-button'
 
 import { Box, Step, Stepper, Container, StepLabel } from '@mui/material'
 
@@ -9,7 +10,7 @@ import SignUpFormView from './sign-up-form-view'
 export default function SignUpView() {
   const { t } = useTranslate('sign-up')
 
-  const [currStep, setCurrStep] = useState(1)
+  const [currStep, setCurrStep] = useState(0)
 
   const steps = [t('steps.term'), t('steps.form'), t('steps.complete')]
 
@@ -24,16 +25,22 @@ export default function SignUpView() {
   }, [currStep])
 
   return (
-    <Container disableGutters sx={{ p: 8 }} maxWidth="md">
-      <Stepper alternativeLabel activeStep={currStep}>
-        {steps.map((label, i) => (
-          <Step key={i}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+    <>
+      <Box sx={{ position: 'fixed', right: 0, p: 2 }}>
+        <ModeButton />
+        <LocaleButton />
+      </Box>
+      <Container disableGutters sx={{ p: 8 }} maxWidth="md">
+        <Stepper alternativeLabel activeStep={currStep}>
+          {steps.map((label, i) => (
+            <Step key={i}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
-      <Box sx={{ py: 8 }}>{currView}</Box>
-    </Container>
+        <Box sx={{ py: 8 }}>{currView}</Box>
+      </Container>
+    </>
   )
 }
