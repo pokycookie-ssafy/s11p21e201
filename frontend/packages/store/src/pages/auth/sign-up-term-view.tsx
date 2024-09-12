@@ -10,7 +10,7 @@ interface IProps {
   onNext?: () => void
 }
 
-export default function SignupTermView({ onNext }: IProps) {
+export default function SignUpTermView({ onNext }: IProps) {
   const { t } = useTranslate('sign-up')
 
   const service = useBoolean()

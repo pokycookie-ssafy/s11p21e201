@@ -4,7 +4,7 @@ import { ModeButton, LocaleButton } from '@/components/setting-button'
 
 import { Box, Step, Stepper, Container, StepLabel } from '@mui/material'
 
-import SignupTermView from './sign-up-term-view'
+import SignUpTermView from './sign-up-term-view'
 import SignUpFormView from './sign-up-form-view'
 
 export default function SignUpView() {
@@ -16,7 +16,7 @@ export default function SignUpView() {
 
   const currView = useMemo(() => {
     if (currStep === 0) {
-      return <SignupTermView onNext={() => setCurrStep(1)} />
+      return <SignUpTermView onNext={() => setCurrStep(1)} />
     }
     if (currStep === 1) {
       return <SignUpFormView onNext={() => setCurrStep(2)} />
