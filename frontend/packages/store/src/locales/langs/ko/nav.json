@@ -1,0 +1,20 @@
+{
+  "overview": {
+    "title": "대시보드",
+    "dashboard": "전체 대시보드",
+    "sales": {
+      "title": "판매 대시보드",
+      "menu": "메뉴별 판매량",
+      "company": "회사별 판매량",
+      "date": "날짜별 판매량"
+    },
+    "statement": "정산 대시보드"
+  },
+  "management": {
+    "title": "관리",
+    "menu": "메뉴 관리",
+    "payment": "장부 관리",
+    "contract": "계약 관리",
+    "statement": "정산 관리"
+  }
+}
