@@ -8,7 +8,7 @@ interface IProps extends ContainerProps {
 
 export function Container({ children, ...others }: IProps) {
   return (
-    <MuiContainer disableGutters sx={{ p: 8, pt: 15 }} maxWidth="md" {...others}>
+    <MuiContainer disableGutters sx={{ p: 8 }} maxWidth="md" {...others}>
       {children}
     </MuiContainer>
   )

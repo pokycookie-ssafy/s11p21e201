@@ -13,10 +13,11 @@ interface IProps {
 export default function Header({ logo }: IProps) {
   return (
     <Stack
+      component="header"
       direction="row"
       justifyContent="space-between"
       alignItems="center"
-      position="fixed"
+      position="sticky"
       sx={{
         bgcolor: (theme) => alpha(theme.palette.background.default, 0.7),
         backdropFilter: 'blur(4px)',
