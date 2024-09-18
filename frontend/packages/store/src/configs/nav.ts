@@ -29,36 +29,6 @@ const nav: INav[] = [
           {
             title: 'overview.sales.menu',
             path: '',
-            group: [
-              {
-                title: 'overview.sales.company',
-                path: '',
-                group: [
-                  {
-                    title: 'overview.sales.company',
-                    path: '',
-                  },
-                  {
-                    title: 'overview.sales.date',
-                    path: '',
-                  },
-                ],
-              },
-              {
-                title: 'overview.sales.date',
-                path: '',
-                group: [
-                  {
-                    title: 'overview.sales.company',
-                    path: '',
-                  },
-                  {
-                    title: 'overview.sales.date',
-                    path: '',
-                  },
-                ],
-              },
-            ],
           },
           {
             title: 'overview.sales.company',
@@ -67,16 +37,6 @@ const nav: INav[] = [
           {
             title: 'overview.sales.date',
             path: '',
-            group: [
-              {
-                title: 'overview.sales.company',
-                path: '',
-              },
-              {
-                title: 'overview.sales.date',
-                path: '',
-              },
-            ],
           },
         ],
       },
@@ -108,7 +68,32 @@ const nav: INav[] = [
       {
         title: 'management.statement',
         path: paths.dashboard,
-        icon: 'mingcute:card-pay-fill',
+        icon: 'mingcute:card-pay-line',
+      },
+    ],
+  },
+  {
+    title: 'payment.title',
+    group: [
+      {
+        title: 'payment.qr',
+        path: '',
+        icon: 'uil:qrcode-scan',
+      },
+    ],
+  },
+  {
+    title: 'setting.title',
+    group: [
+      {
+        title: 'setting.account',
+        path: '',
+        icon: 'majesticons:user-box-line',
+      },
+      {
+        title: 'setting.app',
+        path: '',
+        icon: 'solar:settings-linear',
       },
     ],
   },

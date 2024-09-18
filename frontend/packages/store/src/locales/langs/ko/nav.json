@@ -16,5 +16,14 @@
     "payment": "장부 관리",
     "contract": "계약 관리",
     "statement": "정산 관리"
+  },
+  "payment": {
+    "title": "결제",
+    "qr": "QR 결제"
+  },
+  "setting": {
+    "title": "설정",
+    "app": "앱 설정",
+    "account": "계정 설정"
   }
 }
