@@ -15,7 +15,7 @@ public class CompanyAccountService {
 
 	private final CompanyAccountRepository companyAccountRepository;
 
-	public CompanyAccount findDomain(UUID id) {
+	public CompanyAccount findEntity(UUID id) {
 		return companyAccountRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}

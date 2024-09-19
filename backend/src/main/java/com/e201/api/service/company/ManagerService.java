@@ -15,7 +15,7 @@ public class ManagerService {
 
 	private final ManagerRepository managerRepository;
 
-	public Manager findDomain(UUID id) {
+	public Manager findEntity(UUID id) {
 		return managerRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}

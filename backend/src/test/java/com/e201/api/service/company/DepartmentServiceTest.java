@@ -10,53 +10,69 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
+import com.e201.domain.entity.company.Department;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
+import com.e201.domain.repository.company.DepartmentRepository;
 
 @SpringBootTest
-class CompanyServiceTest {
-
-	@Autowired
-	CompanyInfoRepository companyInfoRepository;
+class DepartmentServiceTest {
 
 	@Autowired
 	CompanyRepository companyRepository;
 
 	@Autowired
-	CompanyService sut;
+	CompanyInfoRepository companyInfoRepository;
+
+	@Autowired
+	DepartmentRepository departmentRepository;
+
+	@Autowired
+	DepartmentService sut;
+
+	Company company;
 
 	CompanyInfo companyInfo;
 
 	@BeforeEach
 	void setUp() {
-		companyInfo = createCompanyInfo();
+		companyInfo = createCompanyInfo("사업자 등록증 번호");
 		companyInfoRepository.save(companyInfo);
+
+		company = createCompany("company@test.com", "12341234", companyInfo);
+		companyRepository.save(company);
 	}
 
-	@Transactional
-	@DisplayName("기업 계정(엔티티)을 조회한다.")
+	@DisplayName("부서(엔티티)를 조회한다.")
 	@Test
-	void find_company_entity_success() {
-		// given
-		Company company = createCompany("company@test.com", "12341234", companyInfo);
-		companyRepository.save(company);
+	void find_department_entity_success() {
+	    // given
+		Department department = createDepartment(company);
+		departmentRepository.save(department);
 
 		// when
-		Company actual = sut.findEntity(company.getId());
+		Department actual = sut.findEntity(department.getId());
 
 		//then
-		assertThatCompanyMatchExactly(actual);
+		assertThatDepartmentMatchExactly(actual);
 	}
 
-	@DisplayName("존재하지 않는 기업(엔티티)을 조회하면 예외가 발생한다.")
+	@DisplayName("존재하지 않는 부서(엔티티)를 조회하면 예외가 발생한다.")
 	@Test
-	void find_company_entity_fail() {
+	void find_department_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private Department createDepartment(Company company) {
+		return Department.builder()
+			.company(company)
+			.code("부서코드")
+			.name("부서이름")
+			.build();
 	}
 
 	private Company createCompany(String email, String password, CompanyInfo companyInfo) {
@@ -67,20 +83,20 @@ class CompanyServiceTest {
 			.build();
 	}
 
-	private CompanyInfo createCompanyInfo() {
+	private CompanyInfo createCompanyInfo(String registerNumber) {
 		return CompanyInfo.builder()
 			.name("사업장 이름")
 			.phone("사업장 연락처")
 			.businessAddress("사업장 주소")
 			.businessType("사업 유형")
 			.representativeName("사업자 대표 이름")
-			.registerNumber("사업자 등록증 번호")
+			.registerNumber(registerNumber)
 			.build();
 	}
 
-	private void assertThatCompanyMatchExactly(Company findCompany) {
-		assertThat(findCompany)
-			.extracting("email", "password")
-			.containsExactly("company@test.com", "12341234");
+	private void assertThatDepartmentMatchExactly(Department department) {
+		assertThat(department)
+			.extracting("code", "name")
+			.containsExactly("부서코드", "부서이름");
 	}
 }
