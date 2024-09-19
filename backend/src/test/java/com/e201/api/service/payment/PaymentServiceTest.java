@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.payment.Payment;
 import com.e201.domain.repository.payment.PaymentRepository;
 
@@ -21,6 +22,7 @@ public class PaymentServiceTest {
 	@Autowired
 	PaymentService sut;
 
+	@JtaTransactional
 	@DisplayName("장부(Entity)를 조회한다.")
 	@Test
 	void find_payment_entity_success(){
