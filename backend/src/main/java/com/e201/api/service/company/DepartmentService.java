@@ -15,7 +15,7 @@ public class DepartmentService {
 
 	private final DepartmentRepository departmentRepository;
 
-	public Department findDomain(UUID id) {
+	public Department findEntity(UUID id) {
 		return departmentRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}

@@ -16,7 +16,7 @@ public class EmployeeService extends BaseEntity {
 
 	private final EmployeeRepository employeeRepository;
 
-	public Employee findDomain(UUID id) {
+	public Employee findEntity(UUID id) {
 		return employeeRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}

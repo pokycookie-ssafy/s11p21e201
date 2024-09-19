@@ -15,7 +15,7 @@ public class CompanyInfoService {
 
 	private final CompanyInfoRepository companyInfoRepository;
 
-	public CompanyInfo findDomain(UUID id) {
+	public CompanyInfo findEntity(UUID id) {
 		return companyInfoRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}

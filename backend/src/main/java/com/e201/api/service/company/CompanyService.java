@@ -16,7 +16,7 @@ public class CompanyService extends BaseEntity {
 
 	private final CompanyRepository companyRepository;
 
-	public Company findDomain(UUID id) {
+	public Company findEntity(UUID id) {
 		return companyRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
