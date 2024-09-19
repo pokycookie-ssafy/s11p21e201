@@ -64,7 +64,7 @@ public class ContractServiceTest {
 		storeInfo = createStoreInfo("사업자 등록증 번호");
 		storeInfoRepository.save(storeInfo);
 
-		store =createStore("store@test.com", "12341234", storeInfo);
+		store = createStore("store@test.com", "12341234", storeInfo);
 		storeRepository.save(store);
 	}
 
@@ -134,13 +134,6 @@ public class ContractServiceTest {
 			.storeId(storeId)
 			.status(status)
 			.sattlementDate(sattlementDate)
-			.build();
-	}
-
-	private Invoice createInvoice(String img_url, Contract contract){
-		return Invoice.builder()
-			.contract(contract)
-			.imageUrl(img_url)
 			.build();
 	}
 
