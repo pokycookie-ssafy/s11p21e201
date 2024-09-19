@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.e201.domain.entity.store.Store;
+import com.e201.domain.entity.store.Menu;
 
-public interface StoreRepository extends JpaRepository<Store, UUID> {
+public interface MenuRepository extends JpaRepository<Menu, UUID> {
 }

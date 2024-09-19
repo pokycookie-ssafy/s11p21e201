@@ -1,6 +1,4 @@
-package com.e201.domain.entity.company;
-
-import java.util.UUID;
+package com.e201.domain.entity.contract;
 
 import com.e201.domain.entity.BaseEntity;
 
@@ -16,32 +14,29 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Employee extends BaseEntity {
+public class Invoice extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "employee_id", columnDefinition = "BINARY(16)")
+	@GeneratedValue(strategy= GenerationType.UUID)
+	@Column(name= "invoice_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id")
-	private Department department;
+	@JoinColumn(name="contract_id")
+	private Contract contract;
 
-	@Column(name = "code")
-	private String code;
-
-	@Column(name = "password")
-	private String password;
+	@Column(name="image_url")
+	private String imageUrl;
 
 	@Builder
-	public Employee(UUID id, Department department, String code, String password) {
+	public Invoice(UUID id, Contract contract, String imageUrl) {
 		this.id = id;
-		this.department = department;
-		this.code = code;
-		this.password = password;
+		this.contract = contract;
+		this.imageUrl = imageUrl;
 	}
 }

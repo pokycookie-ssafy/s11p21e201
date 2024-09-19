@@ -1,5 +1,10 @@
 package com.e201.domain.entity.contract;
 
+import java.util.UUID;
+
+import com.e201.domain.entity.BaseEntity;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,22 +17,32 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Contract {
+public class Contract extends BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(columnDefinition = "BINARY(16)", name="contract_id")
+	private UUID id;
 
-	private Long companyId;
+	@Column(name="company_id")
+	private UUID companyId;
 
-	private Long storeId;
+	@Column(name="store_id")
+	private UUID storeId;
+
+	@Column(name="status")
+	private String status;
+
+	@Column(name="sattlement_date")
+	private int sattlementDate;
 
 	@Builder
-	public Contract(Long id, Long companyId, Long storeId) {
+	public Contract(UUID id, UUID companyId, UUID storeId, String status, int sattlementDate) {
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
+		this.status = status;
+		this.sattlementDate = sattlementDate;
 	}
 }

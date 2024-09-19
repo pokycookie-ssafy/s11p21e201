@@ -1,4 +1,4 @@
-package com.e201.domain.entity.store;
+package com.e201.domain.entity.payment;
 
 import java.util.UUID;
 
@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,28 +18,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store extends BaseEntity {
-
+public class PaymentDailySum extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "store_id", columnDefinition = "BINARY(16)")
+	@Column(name = "payment_daily_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@OneToOne
-	@JoinColumn(name = "store_info_id", columnDefinition = "BINARY(16)")
-	private StoreInfo storeInfo;
+	@Column(name = "contract_id")
+	private UUID contractId;
 
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "password")
-	private String password;
+	@Column(name = "amount")
+	private int amount;
 
 	@Builder
-	public Store(UUID id, StoreInfo storeInfo, String email, String password) {
+	public PaymentDailySum(UUID id, UUID contractId, int amount) {
 		this.id = id;
-		this.storeInfo = storeInfo;
-		this.email = email;
-		this.password = password;
+		this.contractId = contractId;
+		this.amount = amount;
 	}
 }

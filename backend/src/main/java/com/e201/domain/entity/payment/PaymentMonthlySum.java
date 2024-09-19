@@ -17,27 +17,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment extends BaseEntity {
-
+public class PaymentMonthlySum extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "payment_id", columnDefinition = "BINARY(16)")
+	@Column(name = "payment_monthly_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@Column(name = "contract_id")
+	@Column(name="contract_id")
 	private UUID contractId;
 
-	@Column(name = "employee_id")
-	private UUID employeeId;
+	@Column(name="amount")
+	private Long amount;
 
-	@Column(name = "total_amount")
-	private Long totalAmount;
+	@Column(name="paid")
+	private Long paid;
+
+	@Column(name="receivable")
+	private Long receivable;
 
 	@Builder
-	public Payment(UUID id, UUID contractId, UUID employeeId, Long totalAmount) {
+	public PaymentMonthlySum(UUID id, UUID contractId, Long amount, Long paid, Long receivable) {
 		this.id = id;
 		this.contractId = contractId;
-		this.employeeId = employeeId;
-		this.totalAmount = totalAmount;
+		this.amount = amount;
+		this.paid = paid;
+		this.receivable = receivable;
 	}
 }

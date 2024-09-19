@@ -3,14 +3,16 @@ package com.e201.domain.entity.store;
 import java.util.UUID;
 
 import com.e201.domain.entity.BaseEntity;
+import com.e201.domain.entity.company.Company;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,28 +21,24 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store extends BaseEntity {
+public class Sales extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "store_id", columnDefinition = "BINARY(16)")
+	@Column(name="sales_id" , columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@OneToOne
-	@JoinColumn(name = "store_info_id", columnDefinition = "BINARY(16)")
-	private StoreInfo storeInfo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="menu_id")
+	private Menu menu;
 
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "password")
-	private String password;
+	@Column(name = "company_id")
+	private UUID companyId;
 
 	@Builder
-	public Store(UUID id, StoreInfo storeInfo, String email, String password) {
+	public Sales(UUID id, Menu menu , UUID companyId){
 		this.id = id;
-		this.storeInfo = storeInfo;
-		this.email = email;
-		this.password = password;
+		this.menu = menu;
+		this.companyId =companyId;
 	}
 }
