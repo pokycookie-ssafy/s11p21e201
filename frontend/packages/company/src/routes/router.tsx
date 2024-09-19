@@ -7,14 +7,16 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-  },
-  {
-    path: '/payment-list',
-    element: <PaymentListView />,
-  },
-  {
-    path: '/settlement',
-    element: <SettlementView />,
+    children: [
+      {
+        path: 'settlement',
+        element: <SettlementView />,
+      },
+      {
+        path: 'payment-list',
+        element: <PaymentListView />,
+      },
+    ],
   },
 ])
 

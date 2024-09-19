@@ -1,6 +1,10 @@
 import type { SelectChangeEvent } from '@mui/material/Select'
 
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { useTranslate } from '@/locales'
+import { useQuery } from '@tanstack/react-query'
+import { useBoolean } from '@/hooks/use-boolean'
 
 import {
   Box,
@@ -19,68 +23,63 @@ import {
   DialogActions,
 } from '@mui/material'
 
-const names = ['식당 1', '식당 2', '식당 3']
+interface IStore {
+  id: string
+  name: string
+  phone: string
+  address: string
+}
+
+const fetchStores = async () => {
+  const response = await axios.get('/api/companies/stores')
+  return response.data
+}
 
 export default function SettlementList() {
-  const [personName, setPersonName] = React.useState<string[]>([])
-  const [openSettlementDialog, setOpenSettlementDialog] = React.useState(false)
-  const [openInvoiceDialog, setOpenInvoiceDialog] = React.useState(false)
+  const settlementDialog = useBoolean(false)
+  const invoiceDialog = useBoolean(false)
+  const [selectedRestaurant, setSelectedRestaurant] = useState<string>('')
 
-  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event
-    setPersonName(typeof value === 'string' ? value.split(',') : value)
-  }
+  const { t } = useTranslate('settlement')
+  const { data: stores = [] } = useQuery({
+    queryKey: ['stores'],
+    queryFn: fetchStores,
+  })
 
-  const handleOpenSettlementDialog = () => {
-    setOpenSettlementDialog(true)
-  }
-
-  const handleCloseSettlementDialog = () => {
-    setOpenSettlementDialog(false)
-  }
-
-  const handleOpenInvoiceDialog = () => {
-    setOpenInvoiceDialog(true)
-  }
-
-  const handleCloseInvoiceDialog = () => {
-    setOpenInvoiceDialog(false)
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    setSelectedRestaurant(event.target.value)
   }
 
   return (
-    <Stack sx={{ gap: 3 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex' }}>
+    <Stack spacing={3}>
+      <Stack justifyContent="space-between" alignItems="center" direction="row">
+        <Stack direction="row">
           <Typography variant="h5">고봉김밥</Typography>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+        </Stack>
+        <Stack justifyContent="flex-end" spacing={1} direction="row">
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-label">식당명</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={personName}
+              value={selectedRestaurant}
               onChange={handleChange}
               input={<OutlinedInput label="Name" />}
             >
-              {names.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
+              {stores.map((store: IStore) => (
+                <MenuItem key={store.id} value={store.name}>
+                  {store.name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </Box>
-      </Box>
-      <Box sx={{ display: 'flex' }}>
+        </Stack>
+      </Stack>
+      <Stack direction="row">
         <Grid container spacing={2}>
           <Grid item xs={2} />
           <Grid item xs={2}>
             <Stack alignItems="center">
-              <Typography>지불해야 할 금액</Typography>
-              <Typography variant="h5">500,000원</Typography>
+              <Typography>{t('total_amount_due')}</Typography>
+              <Typography variant="h5">500,000{t('won')}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={1}>
@@ -90,8 +89,8 @@ export default function SettlementList() {
           </Grid>
           <Grid item xs={2}>
             <Stack alignItems="center">
-              <Typography>8월 청구액</Typography>
-              <Typography variant="h5">500,000원</Typography>
+              <Typography>{t('current_amount_due')}</Typography>
+              <Typography variant="h5">500,000{t('won')}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={1}>
@@ -101,20 +100,20 @@ export default function SettlementList() {
           </Grid>
           <Grid item xs={2}>
             <Stack alignItems="center">
-              <Typography>미수금</Typography>
-              <Typography variant="h5">0원</Typography>
+              <Typography>{t('overdue_amount')}</Typography>
+              <Typography variant="h5">0{t('won')}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={2} />
         </Grid>
-      </Box>
-      <Box sx={{ display: 'flex' }}>
+      </Stack>
+      <Stack direction="row">
         <Grid container spacing={2}>
           <Grid item xs={2} />
           <Grid item xs={8}>
-            <Stack sx={{ p: 2, gap: 2 }}>
+            <Stack spacing={3} sx={{ p: 2 }}>
               <Box>
-                <Typography sx={{ textAlign: 'center' }}>상세 내역</Typography>
+                <Typography sx={{ textAlign: 'center' }}>{t('transaction_details')}</Typography>
               </Box>
               <Box
                 component="li"
@@ -128,53 +127,53 @@ export default function SettlementList() {
               >
                 <Box sx={{ justifyContent: 'flex-start' }}>
                   <Typography variant="body1">2024/08/01 ~ 2024/08/31</Typography>
-                  <Typography variant="h6">480,000원</Typography>
+                  <Typography variant="h6">480,000{t('won')}</Typography>
                 </Box>
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'flex-end' }}
                 >
-                  <Typography variant="body1">정산일 : 2024/09/10</Typography>
-                  <Button variant="outlined" size="small" onClick={handleOpenSettlementDialog}>
-                    정산하기
+                  <Typography variant="body1">{t('settlement_date')} : 2024/09/10</Typography>
+                  <Button variant="outlined" size="small" onClick={settlementDialog.onTrue}>
+                    {t('settle')}
                   </Button>
                   <Dialog
-                    open={openSettlementDialog}
-                    onClose={handleCloseSettlementDialog}
+                    open={settlementDialog.value}
+                    onClose={settlementDialog.onFalse}
                     maxWidth="sm"
                     fullWidth
                   >
-                    <DialogTitle>정산하기</DialogTitle>
+                    <DialogTitle>{t('settle')}</DialogTitle>
                     <DialogContent dividers>
-                      <Stack sx={{ gap: 3, p: 2 }}>
-                        <Typography variant="h6">송금할 계좌번호</Typography>
+                      <Stack spacing={2} sx={{ p: 2 }}>
+                        <Typography variant="h6">{t('recipient_account')}</Typography>
                         <Typography>1002-954-436365 우리은행 </Typography>
-                        <Typography variant="h6">내 계좌번호</Typography>
+                        <Typography variant="h6">{t('my_account')}</Typography>
                         <Typography>1001-943-382901 국민은행 </Typography>
                       </Stack>
                     </DialogContent>
                     <DialogActions sx={{ justifyContent: 'center' }}>
-                      <Button variant="contained" onClick={handleCloseSettlementDialog}>
-                        송금하기
+                      <Button variant="contained" onClick={settlementDialog.onFalse}>
+                        {t('settle')}
                       </Button>
                     </DialogActions>
                   </Dialog>
 
-                  <Button variant="contained" size="small" onClick={handleOpenInvoiceDialog}>
-                    세금계산서 조회
+                  <Button variant="contained" size="small" onClick={invoiceDialog.onTrue}>
+                    {t('view_invoice')}
                   </Button>
                   <Dialog
-                    open={openInvoiceDialog}
-                    onClose={handleCloseInvoiceDialog}
+                    open={invoiceDialog.value}
+                    onClose={invoiceDialog.onFalse}
                     maxWidth="sm"
                     fullWidth
                   >
-                    <DialogTitle>세금계산서 조회하기</DialogTitle>
+                    <DialogTitle> {t('view_invoice')}</DialogTitle>
                     <DialogContent dividers>
                       <Typography>세금계산서 조회 정보</Typography>
                     </DialogContent>
                     <DialogActions sx={{ justifyContent: 'center' }}>
-                      <Button variant="contained" onClick={handleCloseInvoiceDialog}>
-                        다운로드
+                      <Button variant="contained" onClick={invoiceDialog.onFalse}>
+                        {t('download')}
                       </Button>
                     </DialogActions>
                   </Dialog>
@@ -184,7 +183,7 @@ export default function SettlementList() {
           </Grid>
           <Grid item xs={2} />
         </Grid>
-      </Box>
+      </Stack>
     </Stack>
   )
 }
