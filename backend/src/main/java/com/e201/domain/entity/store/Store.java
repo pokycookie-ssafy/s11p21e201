@@ -23,25 +23,24 @@ public class Store extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name= "store_id" ,columnDefinition = "BINARY(16)")
+	@Column(name = "store_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	@OneToOne
-	@JoinColumn(name="store_info_id", columnDefinition ="BINARY(16)")
+	@JoinColumn(name = "store_info_id", columnDefinition = "BINARY(16)")
 	private StoreInfo storeInfo;
 
-	@Column(name="email")
+	@Column(name = "email")
 	private String email;
 
-	@Column(name="password")
+	@Column(name = "password")
 	private String password;
 
 	@Builder
-	public Store(UUID id, StoreInfo storeInfo, String email, String password ) {
+	public Store(UUID id, StoreInfo storeInfo, String email, String password) {
 		this.id = id;
 		this.storeInfo = storeInfo;
 		this.email = email;
 		this.password = password;
-
 	}
 }
