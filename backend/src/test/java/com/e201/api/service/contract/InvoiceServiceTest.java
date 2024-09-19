@@ -11,67 +11,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.e201.domain.annotation.JtaTransactional;
-import com.e201.domain.entity.company.Company;
-import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Invoice;
-import com.e201.domain.entity.store.Store;
-import com.e201.domain.entity.store.StoreInfo;
-import com.e201.domain.repository.company.CompanyInfoRepository;
-import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
-import com.e201.domain.repository.store.StoreInfoRepository;
-import com.e201.domain.repository.store.StoreRepository;
 
 @SpringBootTest
 public class InvoiceServiceTest {
-
-	@Autowired
-	CompanyInfoRepository companyInfoRepository;
-
-	@Autowired
-	CompanyRepository companyRepository;
-
-	@Autowired
-	StoreRepository storeRepository;
-
-	@Autowired
-	StoreInfoRepository	storeInfoRepository;
-
 	@Autowired
 	ContractRepository contractRepository;
 
 	@Autowired
+	private InvoiceRepository invoiceRepository;
+
+	@Autowired
 	InvoiceService sut;
 
-	Company company;
-
-	CompanyInfo companyInfo;
-
-	Store store;
-
-	StoreInfo storeInfo;
-
 	Contract contract;
-	@Autowired
-	private InvoiceRepository invoiceRepository;
+
 
 	@BeforeEach
 	void setUp() {
-		companyInfo = createCompanyInfo("사업자 등록증 번호");
-		companyInfoRepository.save(companyInfo);
+		UUID companyId = UUID.randomUUID();
+		UUID storeId = UUID.randomUUID();
 
-		company = createCompany("company@test.com", "12341234", companyInfo);
-		companyRepository.save(company);
-
-		storeInfo = createStoreInfo("사업자 등록증 번호");
-		storeInfoRepository.save(storeInfo);
-
-		store =createStore("store@test.com", "12341234", storeInfo);
-		storeRepository.save(store);
-
-		contract = createContract(company.getId(), store.getId(), "PROGRESS", 10);
+		contract = createContract(companyId, storeId, "PROGRESS", 10);
 		contractRepository.save(contract);
 	}
 
@@ -96,44 +60,6 @@ public class InvoiceServiceTest {
 	void find_invoice_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
-	}
-
-	private Company createCompany(String email, String password, CompanyInfo companyInfo) {
-		return Company.builder()
-			.email(email)
-			.password(password)
-			.companyInfo(companyInfo)
-			.build();
-	}
-
-	private CompanyInfo createCompanyInfo(String registerNumber) {
-		return CompanyInfo.builder()
-			.name("사업장 이름")
-			.phone("사업장 연락처")
-			.businessAddress("사업장 주소")
-			.businessType("사업 유형")
-			.representativeName("사업자 대표 이름")
-			.registerNumber(registerNumber)
-			.build();
-	}
-
-	private StoreInfo createStoreInfo(String registerNumber) {
-		return StoreInfo.builder()
-			.registerNumber(registerNumber)
-			.name("식당 이름")
-			.phone("식당 연락처")
-			.businessType("식당 타입")
-			.businessAddress("식당 주소")
-			.representativeName("대표이름")
-			.build();
-	}
-
-	private Store createStore(String email, String password, StoreInfo storeInfo){
-		return Store.builder()
-			.email(email)
-			.password(password)
-			.storeInfo(storeInfo)
-			.build();
 	}
 
 	private Contract createContract(UUID companyId, UUID storeId, String status, int sattlementDate){
