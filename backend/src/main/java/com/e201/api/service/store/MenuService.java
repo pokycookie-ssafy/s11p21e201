@@ -15,7 +15,7 @@ public class MenuService {
 
 	private final MenuRepository menuRepository;
 
-	public Menu findById(UUID id){
-		return menuRepository.findById(id).orElseThrow(()-> new RuntimeException("not found exception"));
+	public Menu findEntity(UUID id) {
+		return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 }

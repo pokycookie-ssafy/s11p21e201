@@ -1,6 +1,5 @@
 package com.e201.api.service.store;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class StoreService {
 
 	private final StoreRepository storeRepository;
 
-	public Store findById(UUID id){
+	public Store findEntity(UUID id) {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 }

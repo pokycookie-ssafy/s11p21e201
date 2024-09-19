@@ -15,7 +15,7 @@ public class StoreInfoService {
 
 	private final StoreInfoRepository storeInfoRepository;
 
-	public StoreInfo findById(UUID id){
-		return storeInfoRepository.findById(id).orElseThrow(()-> new RuntimeException("not found Exception"));
+	public StoreInfo findEntity(UUID id) {
+		return storeInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("not found Exception"));
 	}
 }
