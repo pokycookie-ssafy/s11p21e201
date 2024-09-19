@@ -1,0 +1,13 @@
+{
+  "total_amount_due": "Total Amount Due",
+  "overdue_amount": "Overdue Amount",
+  "current_amount_due": "Current Amount Due",
+  "won": "KRW",
+  "settlement_date": "Settlement Date",
+  "settle": "Settle",
+  "view_invoice": "View Invoice",
+  "transaction_details": "Transaction Details",
+  "download": "Download",
+  "recipient_account": "Recipient's Account Number",
+  "my_account": "My Account Number"
+}

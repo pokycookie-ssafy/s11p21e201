@@ -1,75 +1,43 @@
-import * as React from 'react'
+import React from 'react'
+import { useTranslate } from '@/locales'
+// import ListAccordion from '@/sections/payment-list/list-accordion'
 
-import {
-  Box,
-  List,
-  Stack,
-  Button,
-  ListItem,
-  Accordion,
-  TextField,
-  Typography,
-  ButtonGroup,
-  ListItemText,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material'
+import { Stack, Button, TextField, Typography, ButtonGroup } from '@mui/material'
 
+// interface AccordionData {
+//   id: string
+//   name: string
+//   items: string[]
+// }
 export default function ListCompany() {
-  const [expanded, setExpanded] = React.useState<string | false>(false)
+  const { t } = useTranslate('payment')
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false)
-  }
   return (
-    <Stack sx={{ gap: 3 }}>
-      <Box sx={{ display: 'flex' }}>
-        <ButtonGroup variant="outlined" aria-label="Basic button group">
-          <Button>부서별</Button>
-          <Button>식당별</Button>
-          <Button>사원별</Button>
+    <Stack spacing={3}>
+      <Stack direction="row">
+        <ButtonGroup variant="outlined">
+          <Button>{t('sort_department')}</Button>
+          <Button>{t('sort_restaurant')}</Button>
+          <Button>{t('sort_employee')}</Button>
         </ButtonGroup>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex' }}>
-          <Typography variant="h5" component="h5">
-            9월
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+      </Stack>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack direction="row">
+          <Typography variant="h5">9월</Typography>
+        </Stack>
+        <Stack direction="row" justifyContent="flex-end" spacing={1}>
           <TextField id="outlined-basic" label="시작년도" variant="outlined" size="small" />
           <TextField id="outlined-basic" label="시작월" variant="outlined" size="small" />
           <Typography>~</Typography>
           <TextField id="outlined-basic" label="종료년도" variant="outlined" size="small" />
           <TextField id="outlined-basic" label="종료월" variant="outlined" size="small" />
-        </Box>
-      </Box>
-      <Stack>
-        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <AccordionSummary aria-controls="panel1-content" id="panel1-header">
-            Accordion 1
-          </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              <ListItem>
-                <ListItemText>item1</ListItemText>
-              </ListItem>
-            </List>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary aria-controls="panel2-content" id="panel2-header">
-            Accordion 2
-          </AccordionSummary>
-          <AccordionDetails>
-            <List>
-              <ListItem>
-                <ListItemText>item2</ListItemText>
-              </ListItem>
-            </List>
-          </AccordionDetails>
-        </Accordion>
+        </Stack>
       </Stack>
+      {/* <Stack spacing={2}>
+        {accordions.map((accordion) => (
+          <ListAccordion key={accordion.id} name={accordion.name} items={accordion.items} />
+        ))}
+      </Stack> */}
     </Stack>
   )
 }

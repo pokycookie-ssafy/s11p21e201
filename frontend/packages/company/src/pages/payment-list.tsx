@@ -1,5 +1,5 @@
-import ListManager from '@/sections/payment-list/list-manager'
-// import ListCompany from '@/sections/payment-list/list-company'
+// import ListManager from '@/sections/payment-list/list-manager'
+import ListCompany from '@/sections/payment-list/list-company'
 
 // export default function PaymentListView({ role }: { role: string }) {
 //   return (
@@ -11,5 +11,5 @@ import ListManager from '@/sections/payment-list/list-manager'
 // }
 
 export default function PaymentListView() {
-  return <ListManager />
+  return <ListCompany />
 }
