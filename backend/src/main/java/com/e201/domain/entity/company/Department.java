@@ -38,7 +38,7 @@ public class Department extends BaseEntity {
 	private String name;
 
 	@Builder
-	public Department(UUID id, Company company, String code, String name) {
+	private Department(UUID id, Company company, String code, String name) {
 		this.id = id;
 		this.company = company;
 		this.code = code;

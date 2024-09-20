@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.e201.api.controller.company.request.DepartmentCreateRequest;
+import com.e201.api.controller.company.request.EmployeeCreateRequest;
+import com.e201.api.controller.company.response.DepartmentCreateResponse;
+import com.e201.api.controller.company.response.EmployeeCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
@@ -56,6 +60,19 @@ class EmployeeServiceTest {
 		departmentRepository.save(department);
 	}
 
+	@DisplayName("직원 계정을 저장한다.")
+	@Test
+	void create_employee_success() {
+		// given
+		EmployeeCreateRequest request = createEmployeeCreateRequest(department.getId());
+
+		// when
+		EmployeeCreateResponse actual = sut.create(request);
+
+		//then
+		assertThat(actual.getId()).isNotNull();
+	}
+
 	@DisplayName("직원(엔티티)를 조회한다.")
 	@Test
 	void find_employee_entity_success() {
@@ -75,6 +92,14 @@ class EmployeeServiceTest {
 	void find_employee_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private EmployeeCreateRequest createEmployeeCreateRequest(UUID departmentId) {
+		return EmployeeCreateRequest.builder()
+			.departmentId(departmentId)
+			.code("직원코드")
+			.password("12341234")
+			.build();
 	}
 
 	private Employee createEmployee(Department department) {

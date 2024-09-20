@@ -42,7 +42,7 @@ public class Company extends BaseEntity {
 	private String password;
 
 	@Builder
-	public Company(UUID id, CompanyInfo companyInfo, String email, String password) {
+	private Company(UUID id, CompanyInfo companyInfo, String email, String password) {
 		this.id = id;
 		this.companyInfo = companyInfo;
 		this.email = email;

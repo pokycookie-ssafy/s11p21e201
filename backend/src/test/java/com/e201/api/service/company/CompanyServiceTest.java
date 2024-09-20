@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.e201.api.controller.company.request.CompanyCreateRequest;
+import com.e201.api.controller.company.request.CompanyInfoCreateRequest;
+import com.e201.api.controller.company.response.CompanyCreateResponse;
+import com.e201.api.controller.company.response.CompanyInfoCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyInfoRepository;
@@ -37,6 +41,19 @@ class CompanyServiceTest {
 		companyInfoRepository.save(companyInfo);
 	}
 
+	@DisplayName("기업 계정을 저장한다.")
+	@Test
+	void create_company_success() {
+		// given
+		CompanyCreateRequest request = createCompanyCreateRequest(companyInfo.getId());
+
+		// when
+		CompanyCreateResponse actual = sut.create(request);
+
+		//then
+		assertThat(actual.getId()).isNotNull();
+	}
+
 	@Transactional
 	@DisplayName("기업 계정(엔티티)을 조회한다.")
 	@Test
@@ -52,11 +69,19 @@ class CompanyServiceTest {
 		assertThatCompanyMatchExactly(actual);
 	}
 
-	@DisplayName("존재하지 않는 기업(엔티티)을 조회하면 예외가 발생한다.")
+	@DisplayName("존재하지 않는 기업 계정(엔티티)을 조회하면 예외가 발생한다.")
 	@Test
 	void find_company_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private CompanyCreateRequest createCompanyCreateRequest(UUID companyInfoId) {
+		return CompanyCreateRequest.builder()
+			.companyInfoId(companyInfoId)
+			.email("company@test.com")
+			.password("12341234")
+			.build();
 	}
 
 	private Company createCompany(String email, String password, CompanyInfo companyInfo) {

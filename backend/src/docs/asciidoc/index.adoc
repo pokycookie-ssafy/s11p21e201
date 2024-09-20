@@ -1,0 +1,10 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+= 사내대장부 API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+include::company.adoc[]
