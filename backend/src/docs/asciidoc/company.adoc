@@ -1,0 +1,18 @@
+== 사내대장부 API
+
+=== 기업 정보 등록
+operation::company-info-controller-test/create_company-info_success[snippets="http-request,http-response"]
+
+=== 기업 회원가입
+
+operation::company-controller-test/create_company_success[snippets="http-request,http-response"]
+
+=== 부서 등록
+
+operation::department-controller-test/create_company-info_success[snippets="http-request,http-response"]
+
+=== 관리자 계정 생성
+operation::manager-controller-test/create_company-info_success[snippets="http-request,http-response"]
+
+=== 직원 계정 생성
+operation::employee-controller-test/create_company-info_success[snippets="http-request,http-response"]
