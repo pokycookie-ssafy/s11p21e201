@@ -9,7 +9,7 @@ export default function SignInView() {
   const { t } = useTranslate('sign-in')
 
   return (
-    <Stack alignItems="center" sx={{ minWidth: 400 }}>
+    <Stack alignItems="center" sx={{ width: 400 }}>
       <Typography variant="h6" sx={{ mb: 4 }}>
         {t('title')}
       </Typography>

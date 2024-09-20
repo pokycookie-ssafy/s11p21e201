@@ -14,7 +14,7 @@ export default function SignInLayout() {
       }}
     >
       <Header logo />
-      <Stack sx={{ flex: 1 }} direction="row" justifyContent="center" alignItems="center">
+      <Stack direction="row" justifyContent="center" alignItems="center" flex={1} p={4}>
         <Outlet />
       </Stack>
     </FullContainer>
