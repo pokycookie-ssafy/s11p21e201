@@ -43,7 +43,7 @@ public class CompanyInfo extends BaseEntity {
 	private String businessAddress;
 
 	@Builder
-	public CompanyInfo(UUID id, String registerNumber, String name, String representativeName, String phone,
+	private CompanyInfo(UUID id, String registerNumber, String name, String representativeName, String phone,
 		String businessType, String businessAddress) {
 		this.id = id;
 		this.registerNumber = registerNumber;

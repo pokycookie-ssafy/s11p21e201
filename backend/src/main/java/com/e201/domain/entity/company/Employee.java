@@ -38,7 +38,7 @@ public class Employee extends BaseEntity {
 	private String password;
 
 	@Builder
-	public Employee(UUID id, Department department, String code, String password) {
+	private Employee(UUID id, Department department, String code, String password) {
 		this.id = id;
 		this.department = department;
 		this.code = code;

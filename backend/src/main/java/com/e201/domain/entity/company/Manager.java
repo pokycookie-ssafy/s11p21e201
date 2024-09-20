@@ -36,7 +36,7 @@ public class Manager {
 	private String password;
 
 	@Builder
-	public Manager(UUID id, Department department, String code, String password) {
+	private Manager(UUID id, Department department, String code, String password) {
 		this.id = id;
 		this.department = department;
 		this.code = code;
