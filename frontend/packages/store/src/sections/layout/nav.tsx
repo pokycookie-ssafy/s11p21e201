@@ -1,17 +1,26 @@
 import type { INavItem } from '@/configs/nav'
+import type { Theme, SxProps } from '@mui/material'
 
 import nav from '@/configs/nav'
+import { useMemo } from 'react'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
 import tossLogo from '@/assets/img/toss-logo.jpg'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Box, Stack, Button, Collapse, Typography } from '@mui/material'
+import { Box, Stack, alpha, Button, Collapse, Typography } from '@mui/material'
 
 import { Link, Iconify, ScrollContainer } from '@e201/ui'
 
 export default function Nav() {
   const { t } = useTranslate('nav')
+
+  const location = useLocation()
+
+  const logoutHandler = () => {
+    // logout
+  }
 
   return (
     <ScrollContainer
@@ -50,17 +59,20 @@ export default function Nav() {
           />
         </Link>
       </Stack>
-      <Stack component="nav" p={1} spacing={3}>
+      <Stack component="nav" py={1} px={2} spacing={3}>
         {nav.map((group, i1) => (
           <Stack key={i1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
             <Typography variant="subtitle1" pl={2} pb={1}>
               {t(group.title)}
             </Typography>
             {group.group.map((item, i2) => (
-              <NavItem key={i2} item={item} />
+              <NavItem key={i2} item={item} path={location.pathname} />
             ))}
           </Stack>
         ))}
+        <Button variant="contained" color="error" onClick={logoutHandler}>
+          {t('logout')}
+        </Button>
       </Stack>
     </ScrollContainer>
   )
@@ -69,18 +81,38 @@ export default function Nav() {
 interface IProps {
   item: INavItem
   depth?: number
+  path: string
 }
 
-function NavItem({ item, depth = 0 }: IProps) {
+function NavItem({ item, depth = 0, path }: IProps) {
   const { t } = useTranslate('nav')
+
+  const navigate = useNavigate()
 
   const open = useBoolean()
 
   const clickHandler = () => {
     if (item.group) {
       open.toggle()
+      return
     }
+    navigate(item.path)
   }
+
+  const buttonSx = useMemo<SxProps<Theme> | undefined>(() => {
+    if (path.startsWith(item.path)) {
+      return {
+        bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+        color: (theme) => theme.palette.primary.main,
+        ':hover': {
+          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.2),
+        },
+      }
+    }
+    open.onFalse()
+    return undefined
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item.path, path])
 
   return (
     <Box>
@@ -90,7 +122,12 @@ function NavItem({ item, depth = 0 }: IProps) {
         ) : null}
         <Button
           variant="soft"
-          sx={{ justifyContent: 'flex-start', height: 44, width: 1 }}
+          sx={{
+            justifyContent: 'flex-start',
+            height: 44,
+            width: 1,
+            ...buttonSx,
+          }}
           onClick={clickHandler}
         >
           <Stack width={1} direction="row" justifyContent="space-between" alignItems="center">
@@ -110,7 +147,7 @@ function NavItem({ item, depth = 0 }: IProps) {
             <Box sx={{ height: 1, borderLeft: (theme) => `2px solid ${theme.palette.divider}` }} />
             <Stack width={1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
               {item.group.map((e, i) => (
-                <NavItem key={i} item={e} depth={depth + 1} />
+                <NavItem key={i} item={e} depth={depth + 1} path={path} />
               ))}
             </Stack>
           </Stack>

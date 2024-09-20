@@ -41,10 +41,10 @@ export default function SignInView() {
 
         <Stack spacing={1} width={1}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Link to={paths.signUp}>
+            <Link to={paths.auth.signUp}>
               <Typography variant="subtitle2">{t('button.sign_up')}</Typography>
             </Link>
-            <Link to={paths.signUp}>
+            <Link to={paths.auth.signUp}>
               <Typography variant="subtitle2">{t('button.forgot_account')}</Typography>
             </Link>
           </Stack>
