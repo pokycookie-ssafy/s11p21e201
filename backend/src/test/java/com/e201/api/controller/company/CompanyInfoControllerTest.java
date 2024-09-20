@@ -10,13 +10,11 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.e201.api.controller.company.request.CompanyInfoCreateRequest;
-import com.e201.api.controller.company.response.CompanyInfoCreateResponse;
+import com.e201.api.controller.company.request.companyinfo.CompanyInfoCreateRequest;
+import com.e201.api.controller.company.response.companyinfo.CompanyInfoCreateResponse;
 import com.e201.api.service.company.CompanyInfoService;
 import com.e201.restdocs.AbstractRestDocsTest;
 

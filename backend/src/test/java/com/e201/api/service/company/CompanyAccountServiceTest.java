@@ -21,6 +21,7 @@ import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 
 @SpringBootTest
+@Transactional
 class CompanyAccountServiceTest {
 
 	@Autowired
