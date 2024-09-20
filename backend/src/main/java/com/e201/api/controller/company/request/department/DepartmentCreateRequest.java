@@ -1,4 +1,4 @@
-package com.e201.api.controller.company.request;
+package com.e201.api.controller.company.request.department;
 
 import java.util.UUID;
 

@@ -3,12 +3,10 @@ package com.e201.api.service.company;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.e201.api.controller.company.request.CompanyInfoCreateRequest;
-import com.e201.api.controller.company.response.CompanyInfoCreateResponse;
+import com.e201.api.controller.company.request.companyinfo.CompanyInfoCreateRequest;
+import com.e201.api.controller.company.response.companyinfo.CompanyInfoCreateResponse;
 import com.e201.domain.annotation.JtaTransactional;
-import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 

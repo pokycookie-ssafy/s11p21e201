@@ -4,13 +4,19 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.e201.api.controller.company.request.EmployeeCreateRequest;
-import com.e201.api.controller.company.response.EmployeeCreateResponse;
+import com.e201.api.controller.company.request.company.CompanyAuthRequest;
+import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
+import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
+import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
+import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.BaseEntity;
+import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
 import com.e201.domain.repository.company.EmployeeRepository;
+import com.e201.global.auth.RoleType;
+import com.e201.global.auth.response.AuthResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,8 +36,21 @@ public class EmployeeService extends BaseEntity {
 		return new EmployeeCreateResponse(savedEmployee.getId());
 	}
 
+	public AuthResponse checkPassword(EmployeeAuthRequest request) {
+		Employee employee = employeeRepository.findByCode(request.getCode())
+			.orElseThrow(() -> new RuntimeException("not found employee"));
+		validatePassword(request, employee);
+		return new AuthResponse(employee.getId(), RoleType.EMPLOYEE);
+	}
+
 	public Employee findEntity(UUID id) {
 		return employeeRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
+	private void validatePassword(EmployeeAuthRequest request, Employee employee) {
+		if(!request.getPassword().equals(employee.getPassword())) {
+			throw new RuntimeException("wrong password");
+		}
 	}
 }
