@@ -11,6 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.e201.api.controller.company.request.DepartmentCreateRequest;
+import com.e201.api.controller.company.request.EmployeeCreateRequest;
+import com.e201.api.controller.company.request.ManagerCreateRequest;
+import com.e201.api.controller.company.response.DepartmentCreateResponse;
+import com.e201.api.controller.company.response.ManagerCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
@@ -56,6 +61,19 @@ class ManagerServiceTest {
 		departmentRepository.save(department);
 	}
 
+	@DisplayName("관리자 계정을 저장한다.")
+	@Test
+	void create_manager_success() {
+		// given
+		ManagerCreateRequest request = createManagerCreateRequest(department.getId());
+
+		// when
+		ManagerCreateResponse actual = sut.create(request);
+
+		//then
+		assertThat(actual.getId()).isNotNull();
+	}
+
 	@DisplayName("관리자(엔티티)를 조회한다.")
 	@Test
 	void find_manager_entity_success() {
@@ -75,6 +93,14 @@ class ManagerServiceTest {
 	void find_manager_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private ManagerCreateRequest createManagerCreateRequest(UUID departmentId) {
+		return ManagerCreateRequest.builder()
+			.departmentId(departmentId)
+			.code("직원코드")
+			.password("12341234")
+			.build();
 	}
 
 	private Manager createManager(Department department) {

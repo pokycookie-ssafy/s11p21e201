@@ -4,13 +4,14 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.e201.api.controller.company.request.DepartmentCreateRequest;
+import com.e201.api.controller.company.response.DepartmentCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
@@ -46,6 +47,19 @@ class DepartmentServiceTest {
 		companyRepository.save(company);
 	}
 
+	@DisplayName("부서를 저장한다.")
+	@Test
+	void create_department_success() {
+		// given
+		DepartmentCreateRequest request = createDepartmentCreateRequest(company.getId());
+
+		// when
+		DepartmentCreateResponse actual = sut.create(request);
+
+		//then
+		assertThat(actual.getId()).isNotNull();
+	}
+
 	@DisplayName("부서(엔티티)를 조회한다.")
 	@Test
 	void find_department_entity_success() {
@@ -65,6 +79,14 @@ class DepartmentServiceTest {
 	void find_department_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private DepartmentCreateRequest createDepartmentCreateRequest(UUID companyId) {
+		return DepartmentCreateRequest.builder()
+			.companyId(companyId)
+			.code("부서코드")
+			.name("부서이름")
+			.build();
 	}
 
 	private Department createDepartment(Company company) {
