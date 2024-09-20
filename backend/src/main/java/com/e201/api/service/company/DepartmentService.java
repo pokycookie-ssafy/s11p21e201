@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.e201.api.controller.company.request.DepartmentCreateRequest;
-import com.e201.api.controller.company.response.DepartmentCreateResponse;
+import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
+import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;

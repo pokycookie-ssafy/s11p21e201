@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e201.api.controller.company.request.CompanyCreateRequest;
-import com.e201.api.controller.company.request.DepartmentCreateRequest;
-import com.e201.api.controller.company.response.CompanyCreateResponse;
-import com.e201.api.controller.company.response.DepartmentCreateResponse;
-import com.e201.api.service.company.CompanyService;
+import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
+import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.api.service.company.DepartmentService;
 
 import lombok.RequiredArgsConstructor;

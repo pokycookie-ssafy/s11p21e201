@@ -1,4 +1,4 @@
-package com.e201.api.controller.company.response;
+package com.e201.api.controller.company.response.manager;
 
 import java.util.UUID;
 
