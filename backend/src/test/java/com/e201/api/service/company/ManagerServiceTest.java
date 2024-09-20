@@ -1,21 +1,21 @@
 package com.e201.api.service.company;
 
+import static com.e201.global.auth.RoleType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.e201.api.controller.company.request.DepartmentCreateRequest;
-import com.e201.api.controller.company.request.EmployeeCreateRequest;
-import com.e201.api.controller.company.request.ManagerCreateRequest;
-import com.e201.api.controller.company.response.DepartmentCreateResponse;
-import com.e201.api.controller.company.response.ManagerCreateResponse;
+import com.e201.api.controller.company.request.company.CompanyAuthRequest;
+import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
+import com.e201.api.controller.company.request.manager.ManagerCreateRequest;
+import com.e201.api.controller.company.response.manager.ManagerCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
@@ -24,8 +24,11 @@ import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
 import com.e201.domain.repository.company.ManagerRepository;
+import com.e201.global.auth.RoleType;
+import com.e201.global.auth.response.AuthResponse;
 
 @SpringBootTest
+@Transactional
 class ManagerServiceTest {
 
 	@Autowired
@@ -72,6 +75,45 @@ class ManagerServiceTest {
 
 		//then
 		assertThat(actual.getId()).isNotNull();
+	}
+
+	@DisplayName("인증에 성공한다.")
+	@Test
+	void check_password_success() {
+		// given
+		Manager manager = createManager(department);
+		managerRepository.save(manager);
+		ManagerAuthRequest request = createManagerAuthRequest("관리자코드", "12341234");
+
+		// when
+		AuthResponse actual = sut.checkPassword(request);
+
+		//then
+		assertThat(actual).extracting("id", "roleType").containsExactly(manager.getId(), MANAGER);
+	}
+
+	@DisplayName("존재하지 않는 코드로 인증을 시도하면 예외가 발생한다.")
+	@Test
+	void check_password_fail_by_not_found_code() {
+		// given
+		Manager manager = createManager(department);
+		managerRepository.save(manager);
+		ManagerAuthRequest request = createManagerAuthRequest("존재하지 않는 코드", "12341234");
+
+		// when //then
+		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+	}
+
+	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
+	@Test
+	void check_password_fail() {
+		// given
+		Manager manager = createManager(department);
+		managerRepository.save(manager);
+		ManagerAuthRequest request = createManagerAuthRequest("관리자코드", "invalid_password");
+
+		// when //then
+		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("관리자(엔티티)를 조회한다.")
@@ -135,6 +177,13 @@ class ManagerServiceTest {
 			.businessType("사업 유형")
 			.representativeName("사업자 대표 이름")
 			.registerNumber(registerNumber)
+			.build();
+	}
+
+	private ManagerAuthRequest createManagerAuthRequest(String code, String password) {
+		return ManagerAuthRequest.builder()
+			.code(code)
+			.password(password)
 			.build();
 	}
 

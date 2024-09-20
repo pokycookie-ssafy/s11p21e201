@@ -1,6 +1,5 @@
 package com.e201.api.controller.company;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
@@ -11,14 +10,11 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.e201.api.controller.company.request.CompanyInfoCreateRequest;
-import com.e201.api.controller.company.request.DepartmentCreateRequest;
-import com.e201.api.controller.company.response.CompanyInfoCreateResponse;
-import com.e201.api.controller.company.response.DepartmentCreateResponse;
+import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
+import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.api.service.company.DepartmentService;
 import com.e201.restdocs.AbstractRestDocsTest;
 
