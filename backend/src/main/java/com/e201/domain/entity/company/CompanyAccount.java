@@ -39,7 +39,7 @@ public class CompanyAccount {
 	private String bankName;
 
 	@Builder
-	public CompanyAccount(UUID id, Company company, String number, String bankCode, String bankName) {
+	private CompanyAccount(UUID id, Company company, String number, String bankCode, String bankName) {
 		this.id = id;
 		this.company = company;
 		this.number = number;
