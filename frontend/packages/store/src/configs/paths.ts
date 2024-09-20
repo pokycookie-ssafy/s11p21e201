@@ -1,18 +1,57 @@
 const PATH = {
   root: '/',
-  overview: '/overview',
+  dashboard: '/dashboard',
+  management: '/management',
+  payment: '/payment',
+  setting: '/setting',
 }
 
 const paths = {
   root: PATH.root,
-  main: '/sign-in',
+  main: `${PATH.dashboard}/total`,
 
   // auth
-  signIn: '/sign-in',
-  signUp: '/sign-up',
+  auth: {
+    signIn: '/sign-in',
+    signUp: '/sign-up',
+  },
 
-  // overview
-  dashboard: `${PATH.overview}/dashboard`,
+  // dashboard
+  dashboard: {
+    root: PATH.dashboard,
+    total: `${PATH.dashboard}/total`,
+
+    sales: {
+      root: `${PATH.dashboard}/sales`,
+      menu: `${PATH.dashboard}/sales/menu`,
+      company: `${PATH.dashboard}/sales/company`,
+      time: `${PATH.dashboard}/sales/time`,
+    },
+
+    settlement: `${PATH.dashboard}/settlement`,
+  },
+
+  // management
+  management: {
+    root: PATH.management,
+    menu: `${PATH.management}/menu`,
+    payment: `${PATH.management}/payment`,
+    contract: `${PATH.management}/contract`,
+    settlement: `${PATH.management}/settlement`,
+  },
+
+  // payment
+  payment: {
+    root: PATH.payment,
+    qr: `${PATH.payment}/qr`,
+  },
+
+  // setting
+  setting: {
+    root: PATH.setting,
+    account: `${PATH.setting}/account`,
+    app: `${PATH.setting}/app`,
+  },
 }
 
 export default paths

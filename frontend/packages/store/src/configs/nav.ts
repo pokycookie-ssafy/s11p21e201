@@ -14,35 +14,35 @@ export interface INavItem {
 
 const nav: INav[] = [
   {
-    title: 'overview.title',
+    title: 'dashboard.title',
     group: [
       {
-        title: 'overview.dashboard',
-        path: paths.dashboard,
+        title: 'dashboard.title',
+        path: paths.dashboard.total,
         icon: 'teenyicons:donut-chart-solid',
       },
       {
-        title: 'overview.sales.title',
-        path: paths.dashboard,
+        title: 'dashboard.sales.title',
+        path: paths.dashboard.sales.root,
         icon: 'grommet-icons:line-chart',
         group: [
           {
-            title: 'overview.sales.menu',
-            path: '',
+            title: 'dashboard.sales.menu',
+            path: paths.dashboard.sales.menu,
           },
           {
-            title: 'overview.sales.company',
-            path: '',
+            title: 'dashboard.sales.company',
+            path: paths.dashboard.sales.company,
           },
           {
-            title: 'overview.sales.date',
-            path: '',
+            title: 'dashboard.sales.date',
+            path: paths.dashboard.sales.time,
           },
         ],
       },
       {
-        title: 'overview.statement',
-        path: paths.dashboard,
+        title: 'dashboard.settlement',
+        path: paths.dashboard.settlement,
         icon: 'ph:invoice-duotone',
       },
     ],
@@ -52,22 +52,22 @@ const nav: INav[] = [
     group: [
       {
         title: 'management.menu',
-        path: paths.dashboard,
+        path: paths.management.menu,
         icon: 'ic:round-restaurant-menu',
       },
       {
         title: 'management.payment',
-        path: paths.dashboard,
+        path: paths.management.payment,
         icon: 'icon-park-outline:table',
       },
       {
         title: 'management.contract',
-        path: paths.dashboard,
+        path: paths.management.contract,
         icon: 'tabler:contract',
       },
       {
-        title: 'management.statement',
-        path: paths.dashboard,
+        title: 'management.settlement',
+        path: paths.management.settlement,
         icon: 'mingcute:card-pay-line',
       },
     ],
@@ -77,7 +77,7 @@ const nav: INav[] = [
     group: [
       {
         title: 'payment.qr',
-        path: '',
+        path: paths.payment.qr,
         icon: 'uil:qrcode-scan',
       },
     ],
@@ -87,12 +87,12 @@ const nav: INav[] = [
     group: [
       {
         title: 'setting.account',
-        path: '',
+        path: paths.setting.account,
         icon: 'majesticons:user-box-line',
       },
       {
         title: 'setting.app',
-        path: '',
+        path: paths.setting.app,
         icon: 'solar:settings-linear',
       },
     ],
