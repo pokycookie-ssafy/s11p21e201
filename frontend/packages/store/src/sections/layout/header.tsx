@@ -1,16 +1,32 @@
 import paths from '@/configs/paths'
+import { useBoolean } from '@e201/utils'
 import tossLogo from '@/assets/img/toss-logo.jpg'
 import { ModeButton, LocaleButton } from '@/components/setting-button'
 
-import { Box, alpha, Stack } from '@mui/material'
+import {
+  Box,
+  alpha,
+  Stack,
+  useTheme,
+  IconButton,
+  useMediaQuery,
+  SwipeableDrawer,
+} from '@mui/material'
 
-import { Link } from '@e201/ui'
+import { Link, Iconify } from '@e201/ui'
+
+import Nav from './nav'
 
 interface IProps {
   logo?: boolean
 }
 
 export default function Header({ logo }: IProps) {
+  const { breakpoints } = useTheme()
+  const visible = useMediaQuery(breakpoints.down('md'))
+
+  const drawer = useBoolean()
+
   return (
     <Stack
       component="header"
@@ -41,7 +57,16 @@ export default function Header({ logo }: IProps) {
           />
         </Link>
       ) : (
-        <Box height={60} />
+        <Stack direction="row" alignItems="center" height={60}>
+          {visible && (
+            <IconButton onClick={drawer.onTrue}>
+              <Iconify icon="solar:hamburger-menu-linear" width={25} />
+            </IconButton>
+          )}
+          <SwipeableDrawer open={drawer.value} onOpen={drawer.onTrue} onClose={drawer.onFalse}>
+            <Nav drawer />
+          </SwipeableDrawer>
+        </Stack>
       )}
       <Stack direction="row" justifyContent="flex-end">
         <ModeButton />
