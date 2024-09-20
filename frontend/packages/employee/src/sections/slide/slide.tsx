@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslate } from '@/locales'
 import { useNavigate } from 'react-router-dom'
 
 import { Box, styled, Slider, Typography } from '@mui/material'
@@ -8,7 +9,7 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
   height: 40, // 트랙 높이
   borderRadius: '8px', // 트랙 모서리를 둥글게
   padding: '10px 34px', // 트랙 양쪽에 패딩 주기 -> thumb 이 벗어나지 않도록 설정
-
+  width: '100%',
   '& .MuiSlider-track': {
     border: 'none', // 트랙 테두리 없애기
     borderRadius: '8px', // 트랙 모서리를 둥글게
@@ -34,6 +35,8 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
 }))
 
 export function QrSlider() {
+  const { t } = useTranslate('common')
+
   const [value, setValue] = useState(0) // 슬라이더 값 상태
   const navigate = useNavigate() // 페이지 이동을 위한 훅
 
@@ -56,13 +59,15 @@ export function QrSlider() {
 
   return (
     <Box
-      sx={{
-        width: 300,
+      sx={(theme) => ({
+        width: 1,
         textAlign: 'center',
         margin: '20px',
-      }}
+        maxWidth: '600px',
+        [theme.breakpoints.down('sm')]: { width: '90%' },
+      })}
     >
-      <Typography variant="h5">QR 코드 생성하기</Typography>
+      <Typography variant="h5">{t('main.qr-title')}</Typography>
       <CustomSlider
         value={value}
         onChange={handleSliderChange}

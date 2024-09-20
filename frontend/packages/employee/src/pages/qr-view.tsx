@@ -1,14 +1,19 @@
 import { v4 as uuidv4 } from 'uuid' // UUID 생성 함수
 import QRCode from 'react-qr-code' // QR 코드 렌더링 라이브러리, QR 코드는 value 속성에 따라 생성
+import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 import { useEmployeeMeal, useValidationId } from '@/hooks/api'
 
 import { Iconify } from '@e201/ui' // React | 생명주기 관리, 상태 관리
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { useBoolean } from '@/hooks/use-boolean'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 
 export default function QrPage() {
+  const { t } = useTranslate('common')
+
   const [qrData, setQrData] = useState<string | null>(null)
   const { value: isExpired, onTrue, onFalse } = useBoolean(false) // QR 코드 만료 여부
   const [timeLeft, setTimeLeft] = useState(90) // QR 코드 타이머 (90초)
@@ -60,11 +65,16 @@ export default function QrPage() {
   }, [timeLeft, onTrue])
 
   // 남은 시간을 분:초 형식으로 변환하는 함수
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}` // 초가 한 자리일 경우 앞에 0 추가
-  }
+  // const formatTime = (time: number) => {
+  //   const minutes = Math.floor(time / 60)
+  //   const seconds = time % 60
+  //   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}` // 초가 한 자리일 경우 앞에 0 추가
+  // }
+
+  // dayjs install 함
+  dayjs.extend(duration)
+
+  const formatTime = (time: number) => dayjs.duration(time, 'seconds').format('m:ss')
 
   // 만료 시 새로고침 아이콘을 클릭하여 QR 코드를 새로 생성하는 함수
   const handleRefreshClick = () => {
@@ -73,31 +83,33 @@ export default function QrPage() {
 
   if (isLoading) return <Typography variant="h5">Loading...</Typography>
   if (error) return <Typography variant="h5">Error: {error.message}</Typography>
-
+  // {t('label.email')}
   return (
     <Box textAlign="center">
-      <h2>정산하기</h2>
+      <Typography variant="h5">{t('qr.title')}</Typography>
 
       {/* 남은 시간 표시 */}
       {/* {!isExpired && <p>{formatTime(timeLeft)}</p>} */}
-      <p>{formatTime(timeLeft)}</p>
+      <Typography>{formatTime(timeLeft)}</Typography>
 
-      <Box
+      <Button
         sx={{
           margin: '16px 0',
           position: 'relative',
-          display: 'inline-block',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          '&:hover': {
+            backgroundColor: 'transparent',
+          },
           cursor: isExpired ? 'pointer' : 'default',
         }}
-        role="button" // 이 Box가 버튼 역할을 한다는 것을 명시
-        tabIndex={0} // 키보드 포커스를 받을 수 있게 함
         onClick={isExpired ? handleRefreshClick : undefined}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            handleRefreshClick()
-          }
-        }}
+        variant="text"
         aria-label="Refresh QR code"
+        disabled={!isExpired}
       >
         {/* QR 코드 */}
         <Box style={{ filter: isExpired ? 'blur(5px)' : 'none' }}>
@@ -109,9 +121,6 @@ export default function QrPage() {
           <Box
             sx={{
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
               backgroundColor: 'white',
               width: '60px', // 정사각형 크기 지정
               height: '60px',
@@ -125,15 +134,19 @@ export default function QrPage() {
             <Iconify icon="mdi:autorenew" width="48" height="48" />
           </Box>
         )}
-      </Box>
+      </Button>
 
       <Box>
         {/* 결제 금액 정보 */}
         <Typography variant="h5">
-          {currentUsage.toLocaleString()}원 / {totalAmount.toLocaleString()}원
+          {currentUsage.toLocaleString()}
+          {t('current.won')} / {totalAmount.toLocaleString()}
+          {t('current.won')}
         </Typography>
-        <Typography color="#1976d2" fontWeight="bold">
-          남은 금액 : {remainingAmount.toLocaleString()}원
+        {/* <Typography color="#1976d2" fontWeight="bold"> */}
+        <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 'bold,' }}>
+          {t('current.rest')} : {remainingAmount.toLocaleString()}
+          {t('current.won')}
         </Typography>
       </Box>
     </Box>

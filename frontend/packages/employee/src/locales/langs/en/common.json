@@ -1,3 +1,15 @@
 {
-  "test": "TEST"
+  "test": "TEST",
+  "main": {
+    "title": "Employee Main Page",
+    "qr-title": "Generate QR Code"
+  },
+  "current": {
+    "title": "Meal Allowance Status for {{month}}/{{year}}",
+    "won": "KRW",
+    "rest": "Remaining Amount"
+  },
+  "qr": {
+    "title": "Pay with QR Code"
+  }
 }

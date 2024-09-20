@@ -2,73 +2,18 @@ import * as React from 'react'
 import { useStoresList } from '@/hooks/api'
 
 import {
-  Box,
   Table,
   Paper,
   TableRow,
   TableBody,
   TableCell,
-  IconButton,
   Typography,
   TableFooter,
   TableContainer,
   TablePagination,
 } from '@mui/material'
 
-interface TablePaginationActionsProps {
-  count: number
-  page: number
-  rowsPerPage: number
-  onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void
-}
-
-function TablePaginationActions({
-  count,
-  page,
-  rowsPerPage,
-  onPageChange,
-}: TablePaginationActionsProps) {
-  const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, 0)
-  }
-
-  const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, page - 1)
-  }
-
-  const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, page + 1)
-  }
-
-  const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
-  }
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      />
-      <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      />
-      <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      />
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      />
-    </Box>
-  )
-}
+import { TablePaginationActions } from './table-pagination-actions' // 분리된 파일에서 import
 
 export function StoresList() {
   const { data: stores, isLoading, error } = useStoresList()
@@ -76,7 +21,6 @@ export function StoresList() {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stores.length) : 0
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -97,7 +41,15 @@ export function StoresList() {
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      sx={(theme) => ({
+        maxWidth: '600px',
+        margin: '0 auto',
+        width: 1,
+        [theme.breakpoints.down('sm')]: { width: '90%' },
+      })}
+    >
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
           {(rowsPerPage > 0
@@ -140,7 +92,7 @@ export function StoresList() {
               }}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
+              ActionsComponent={TablePaginationActions} // 분리된 파일의 TablePaginationActions 사용
             />
           </TableRow>
         </TableFooter>

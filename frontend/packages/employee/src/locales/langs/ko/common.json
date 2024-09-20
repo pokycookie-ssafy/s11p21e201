@@ -1,3 +1,15 @@
 {
-  "test": "테스트"
+  "test": "테스트",
+  "main": {
+    "title": "고객 메인 페이지",
+    "qr-title": "QR 코드 생성하기"
+  },
+  "current": {
+    "title": "{{month}}월 식대 사용 현황",
+    "won": "원",
+    "rest": "남은 금액"
+  },
+  "qr": {
+    "title": "정산하기"
+  }
 }
