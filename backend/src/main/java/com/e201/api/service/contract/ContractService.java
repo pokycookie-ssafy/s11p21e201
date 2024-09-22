@@ -10,8 +10,12 @@ import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.domain.entity.contract.ContractStatus;
+=======
+import com.e201.domain.entity.contract.Status;
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
@@ -31,6 +35,9 @@ public class ContractService{
 
 	@JtaTransactional
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	public ContractCreateResponse create(String senderType, ContractCreateRequest request){
 		Contract contract;
 		switch (senderType){
@@ -46,6 +53,7 @@ public class ContractService{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
 		Contract contract = createContractBySenderType(senderType, request);
@@ -53,12 +61,15 @@ public class ContractService{
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 =======
+=======
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		try{
 			Contract savedContract = contractRepository.save(contract);
 			return new ContractCreateResponse(savedContract.getId());
 		} catch (Exception e){
 			throw new RuntimeException("failed to create contract");
 		}
+<<<<<<< HEAD
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 		Contract savedContract = contractRepository.save(contract);
@@ -90,13 +101,42 @@ public class ContractService{
 			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT : ContractStatus.COMPANY_REJECT;
 			default -> throw new IllegalArgumentException("unknown respond result");
 		};
+=======
+	}
+
+	@JtaTransactional
+	public ContractRespondResponse respond(ContractRespondCondition request){
+		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+
+		switch(request.getRespondResult()){
+			case "APPROVE":
+				contract.update(Status.COMPLETE);
+				break;
+			case "REJECT":
+				if (contract.getStatus() == Status.COMPANY_WAITING){
+					contract.update(Status.COMPANY_REJECT);
+				} else {
+					contract.update(Status.STORE_REJECT);
+				}
+				break;
+			default:
+				throw new RuntimeException("unknown respond result");
+		}
+
+		return new ContractRespondResponse(contract.getId());
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@JtaTransactional
 	public void delete(String contractId){
+<<<<<<< HEAD
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 		contract.delete();
+=======
+		contractRepository.deleteById(UUID.fromString(contractId));
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
@@ -41,6 +42,13 @@ import com.e201.domain.entity.contract.Status;
 =======
 import com.e201.domain.entity.contract.ContractResponse;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+import org.springframework.http.MediaType;
+
+import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.service.contract.ContractService;
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -52,24 +60,33 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 	@DisplayName("계약을 신청한다.")
 	@Test
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void create_contract_success() throws Exception {
 =======
 	void create_contract_success() throws Exception{
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	void create_contract_success() throws Exception{
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		UUID contractId = UUID.randomUUID();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 =======
 		ContractCreateRequest request = createContractCreateRequest(companyId,storeId);
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		ContractCreateRequest request = createContractCreateRequest(companyId,storeId);
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractCreateResponse response = new ContractCreateResponse(contractId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 		//TODO: Contract SenderType을 Cookie에서 가져올경우 수정해야함 - kkj
 <<<<<<< HEAD
@@ -80,6 +97,10 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		doReturn(response).when(contractService).create(any(), any(ContractCreateRequest.class));
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		//TODO: Contract SenderType을 Cookie에서 가져올경우 수정해야함 - kkj
+		doReturn(response).when(contractService).create(eq("STORE"),any(ContractCreateRequest.class));
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 
 		//expect
 		mockMvc.perform(post("/contracts")
@@ -90,6 +111,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,6 +168,13 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.companyId(companyId)
 			.storeId(storeId)
 			.settlementDate(10)
+=======
+	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
+		return ContractCreateRequest.builder()
+			.companyId(companyId)
+			.storeId(storeId)
+			.sattlementDate(10)
+>>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 			.build();
 	}
 }
