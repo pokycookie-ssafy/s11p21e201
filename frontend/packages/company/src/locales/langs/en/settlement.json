@@ -9,5 +9,6 @@
   "transaction_details": "Transaction Details",
   "download": "Download",
   "recipient_account": "Recipient's Account Number",
-  "my_account": "My Account Number"
+  "my_account": "My Account Number",
+  "restaurant_name": "Restaurant Name"
 }

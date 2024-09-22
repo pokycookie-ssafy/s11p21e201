@@ -23,14 +23,14 @@ export default function ListCompany() {
       </Stack>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row">
-          <Typography variant="h5">9월</Typography>
+          <Typography variant="h5">{t('month')}</Typography>
         </Stack>
         <Stack direction="row" justifyContent="flex-end" spacing={1}>
-          <TextField id="outlined-basic" label="시작년도" variant="outlined" size="small" />
-          <TextField id="outlined-basic" label="시작월" variant="outlined" size="small" />
+          <TextField id="outlined-basic" label={t('start_year')} variant="outlined" size="small" />
+          <TextField id="outlined-basic" label={t('start_month')} variant="outlined" size="small" />
           <Typography>~</Typography>
-          <TextField id="outlined-basic" label="종료년도" variant="outlined" size="small" />
-          <TextField id="outlined-basic" label="종료월" variant="outlined" size="small" />
+          <TextField id="outlined-basic" label={t('end_year')} variant="outlined" size="small" />
+          <TextField id="outlined-basic" label={t('end_month')} variant="outlined" size="small" />
         </Stack>
       </Stack>
       {/* <Stack spacing={2}>
