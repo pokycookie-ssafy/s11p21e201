@@ -6,6 +6,8 @@ import com.e201.domain.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,17 +34,22 @@ public class Contract extends BaseEntity {
 	private UUID storeId;
 
 	@Column(name="status")
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	@Column(name="sattlement_date")
 	private int sattlementDate;
 
 	@Builder
-	public Contract(UUID id, UUID companyId, UUID storeId, String status, int sattlementDate) {
+	public Contract(UUID id, UUID companyId, UUID storeId, Status status, int sattlementDate) {
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
 		this.sattlementDate = sattlementDate;
+	}
+
+	public void update(Status status){
+		this.status = status;
 	}
 }
