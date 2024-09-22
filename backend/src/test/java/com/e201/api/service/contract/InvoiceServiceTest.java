@@ -15,10 +15,13 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< Updated upstream
 import com.e201.domain.entity.contract.Invoice;
 import com.e201.domain.entity.contract.Status;
+<<<<<<< HEAD
 =======
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.contract.Invoice;
 >>>>>>> Stashed changes
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
 
@@ -67,11 +70,15 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
 =======
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
 >>>>>>> Stashed changes
+=======
+	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)

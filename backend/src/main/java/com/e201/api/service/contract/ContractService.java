@@ -41,8 +41,17 @@ public class ContractService{
 				throw new RuntimeException("unknown sender type");
 		}
 
+<<<<<<< HEAD
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
+=======
+		try{
+			Contract savedContract = contractRepository.save(contract);
+			return new ContractCreateResponse(savedContract.getId());
+		} catch (Exception e){
+			throw new RuntimeException("failed to create contract");
+		}
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@JtaTransactional
