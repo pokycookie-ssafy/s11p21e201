@@ -35,20 +35,28 @@ public class Contract extends BaseEntity {
 	@Column(name="status")
 	@Enumerated(EnumType.STRING)
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractStatus status;
 =======
 	private Status status;
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	private Status status;
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 
 	@Column(name="settlement_date")
 	private int settlementDate;
 
 	@Builder
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
 =======
 	public Contract(UUID id, UUID companyId, UUID storeId, Status status, int sattlementDate) {
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	public Contract(UUID id, UUID companyId, UUID storeId, Status status, int sattlementDate) {
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
@@ -58,6 +66,10 @@ public class Contract extends BaseEntity {
 
 	public void update(ContractStatus contractStatus){
 		this.status = contractStatus;
+	}
+
+	public void update(Status status){
+		this.status = status;
 	}
 
 	public void update(Status status){

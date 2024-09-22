@@ -11,11 +11,15 @@ import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.Status;
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.Status;
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
@@ -36,8 +40,11 @@ public class ContractService{
 	@JtaTransactional
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	public ContractCreateResponse create(String senderType, ContractCreateRequest request){
 		Contract contract;
 		switch (senderType){
@@ -55,6 +62,7 @@ public class ContractService{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
 		Contract contract = createContractBySenderType(senderType, request);
@@ -64,12 +72,15 @@ public class ContractService{
 =======
 =======
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		try{
 			Contract savedContract = contractRepository.save(contract);
 			return new ContractCreateResponse(savedContract.getId());
 		} catch (Exception e){
 			throw new RuntimeException("failed to create contract");
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
@@ -107,6 +118,8 @@ public class ContractService{
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 >>>>>>> d4d2cc4 ([#17] refactor: ContractController 예외처리 수정)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@JtaTransactional
@@ -130,11 +143,15 @@ public class ContractService{
 		}
 
 		return new ContractRespondResponse(contract.getId());
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@JtaTransactional
 	public void delete(String contractId){
+<<<<<<< HEAD
 <<<<<<< HEAD
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
@@ -143,5 +160,8 @@ public class ContractService{
 =======
 		contractRepository.deleteById(UUID.fromString(contractId));
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		contractRepository.deleteById(UUID.fromString(contractId));
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 }

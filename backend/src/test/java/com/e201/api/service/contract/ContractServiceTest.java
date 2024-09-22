@@ -16,11 +16,15 @@ import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.Status;
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.Status;
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
@@ -42,10 +46,14 @@ public class ContractServiceTest {
 
 		// given
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Contract contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 =======
 		Contract contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		Contract contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		contractRepository.save(contract);
 
 		// when
@@ -71,10 +79,14 @@ public class ContractServiceTest {
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse actual = sut.create(RoleType.COMPANY, request);
 =======
 		ContractCreateResponse actual = sut.create("COMPANY", request);
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		ContractCreateResponse actual = sut.create("COMPANY", request);
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -88,10 +100,14 @@ public class ContractServiceTest {
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 =======
 		ContractCreateResponse actual = sut.create("STORE", request);
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		ContractCreateResponse actual = sut.create("STORE", request);
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -105,6 +121,7 @@ public class ContractServiceTest {
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 		//expect
 		assertThatThrownBy(() -> sut.create(null, request)).isInstanceOf(RuntimeException.class);
@@ -113,6 +130,11 @@ public class ContractServiceTest {
 		//expect
 		assertThatThrownBy(() -> sut.create(" ", request)).isInstanceOf(RuntimeException.class);
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		ContractCreateResponse actual = sut.create("STORE", request);
+		//expect
+		assertThatThrownBy(() -> sut.create(" ", request)).isInstanceOf(RuntimeException.class);
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@DisplayName("기존의 계약 id가 존재 하지 않을 경우 예외가 발생한다.")
@@ -121,16 +143,22 @@ public class ContractServiceTest {
 		//given
 		String contractId = UUID.randomUUID().toString();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractRespondCondition contractRespond = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(RoleType.STORE, contractRespond)).isInstanceOf(RuntimeException.class);
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		ContractRespondCondition contractRespond = createContractRespondCondition(contractId,"APPROVE");
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(contractRespond)).isInstanceOf(RuntimeException.class);
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@DisplayName("계약을 수락한다.")
@@ -140,6 +168,7 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
@@ -166,6 +195,8 @@ public class ContractServiceTest {
 		assertThat(contractResult).extracting("status").isEqualTo(ContractStatus.COMPLETE);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
 
 		String contractId = contract.getId().toString();
@@ -176,12 +207,16 @@ public class ContractServiceTest {
 
 		//then
 <<<<<<< HEAD
+<<<<<<< HEAD
 		assertThat(actual.getId()).isNotNull();
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 		Contract contractResult = sut.findEntity(actual.getId());
 		assertThat(contractResult).extracting("status").isEqualTo(Status.COMPLETE);
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
+=======
+		assertThat(actual.getId()).isNotNull();
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@DisplayName("잘못된 Respond가 전송될 경우 예외가 발생한다.")
@@ -192,6 +227,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
@@ -200,6 +236,8 @@ public class ContractServiceTest {
 		//expect
 		assertThatThrownBy(() -> sut.respond(RoleType.STORE, request)).isInstanceOf(RuntimeException.class);
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
 
 		String contractId = contract.getId().toString();
@@ -207,7 +245,10 @@ public class ContractServiceTest {
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(request)).isInstanceOf(RuntimeException.class);
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@DisplayName("기업이 계약을 거절한다.")
@@ -217,6 +258,7 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
@@ -230,6 +272,8 @@ public class ContractServiceTest {
 		Contract contractResult = sut.findEntity(actual.getId());
 		assertThat(contractResult).extracting("status").isEqualTo(ContractStatus.COMPANY_REJECT);
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
 
 		String contractId = contract.getId().toString();
@@ -240,7 +284,10 @@ public class ContractServiceTest {
 
 		//then
 		assertThat(actual.getId()).isNotNull();
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
 	@DisplayName("식당이 계약을 거절한다.")
@@ -250,6 +297,7 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
 
@@ -285,6 +333,8 @@ public class ContractServiceTest {
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult){
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		ContractCreateResponse contract = sut.create("COMPANY", contractCreateRequest);
 
 		String contractId = contract.getId().toString();
@@ -298,7 +348,10 @@ public class ContractServiceTest {
 	}
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult){
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -310,18 +363,24 @@ public class ContractServiceTest {
 			.companyId(companyId)
 			.storeId(storeId)
 <<<<<<< HEAD
+<<<<<<< HEAD
 			.settlementDate(10)
 			.build();
 	}
 
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate){
 =======
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 			.sattlementDate(10)
 			.build();
 	}
 
 	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
@@ -338,6 +397,9 @@ public class ContractServiceTest {
 =======
 			.extracting("companyId", "storeId", "status", "sattlementDate")
 			.containsExactly(companyId, storeId, Status.COMPANY_WAITING,10);
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 }
