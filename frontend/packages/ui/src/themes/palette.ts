@@ -35,6 +35,7 @@ export const lightPalette: PaletteOptions = {
     paper: color.grey[200],
     default: '#FFFFFF',
   },
+  divider: color.grey[300],
   action: {
     ...baseAction,
     active: color.grey[600],
@@ -52,6 +53,7 @@ export const darkPalette: PaletteOptions = {
     paper: color.grey[800],
     default: color.grey[900],
   },
+  divider: color.grey[700],
   action: {
     ...baseAction,
     active: color.grey[500],
