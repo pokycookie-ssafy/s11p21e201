@@ -1,6 +1,6 @@
 import type { SelectChangeEvent } from '@mui/material/Select'
 
-import axios from 'axios'
+import axios from '@/configs/axios'
 import React, { useState } from 'react'
 import { useTranslate } from '@/locales'
 import { useQuery } from '@tanstack/react-query'
@@ -31,13 +31,13 @@ interface IStore {
 }
 
 const fetchStores = async () => {
-  const response = await axios.get('/api/companies/stores')
+  const response = await axios.get('/companies/stores')
   return response.data
 }
 
 export default function SettlementList() {
-  const settlementDialog = useBoolean(false)
-  const invoiceDialog = useBoolean(false)
+  const settlementDialog = useBoolean()
+  const invoiceDialog = useBoolean()
   const [selectedRestaurant, setSelectedRestaurant] = useState<string>('')
 
   const { t } = useTranslate('settlement')
@@ -58,7 +58,7 @@ export default function SettlementList() {
         </Stack>
         <Stack justifyContent="flex-end" spacing={1} direction="row">
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-label">식당명</InputLabel>
+            <InputLabel>{t('restaurant_name')}</InputLabel>
             <Select
               value={selectedRestaurant}
               onChange={handleChange}

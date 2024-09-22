@@ -9,5 +9,6 @@
   "transaction_details": "상세 내역",
   "download": "다운로드",
   "recipient_account": "수취인 계좌번호",
-  "my_account": "내 계좌번호"
+  "my_account": "내 계좌번호",
+  "restaurant_name": "식당명"
 }

@@ -16,14 +16,10 @@ interface ListAccordionProps {
 }
 
 export default function ListAccordion({ name, items }: ListAccordionProps) {
-  const { value: expanded, toggle } = useBoolean(false)
+  const { value: expanded, toggle } = useBoolean()
 
   const handleChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
-    if (isExpanded) {
-      toggle()
-    } else {
-      toggle()
-    }
+    toggle()
   }
   return (
     <Accordion expanded={expanded} onChange={handleChange}>
