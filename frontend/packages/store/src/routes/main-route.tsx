@@ -10,6 +10,7 @@ import TotalDashbaordView from '@/pages/dashboard/total-dashboard-view'
 import SalesMenuDashboardView from '@/pages/dashboard/sales-menu-dashboard-view'
 import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
 import SettlementDashboardView from '@/pages/dashboard/settlement-dashbaord-view'
+import { PaymentManagementView } from '@/pages/management/payment-management-view'
 import SalesCompanyDashboardView from '@/pages/dashboard/sales-company-dashboard-view'
 
 const mainRoute: RouteObject[] = [
@@ -34,6 +35,7 @@ const mainRoute: RouteObject[] = [
   {
     element: <AppLayout />,
     children: [
+      // Dashboard
       {
         path: paths.dashboard.total,
         element: <TotalDashbaordView />,
@@ -53,6 +55,12 @@ const mainRoute: RouteObject[] = [
       {
         path: paths.dashboard.settlement,
         element: <SettlementDashboardView />,
+      },
+
+      // Management
+      {
+        path: paths.management.payment,
+        element: <PaymentManagementView />,
       },
     ],
   },
