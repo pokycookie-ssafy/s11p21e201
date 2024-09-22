@@ -61,11 +61,13 @@ export default function Nav({ drawer }: IProps) {
               ))}
             </Stack>
           ))}
-          <Button variant="contained" color="error" onClick={logoutHandler}>
-            {t('logout')}
-          </Button>
         </Stack>
       </ScrollContainer>
+      <Box p={2}>
+        <Button fullWidth variant="contained" color="error" onClick={logoutHandler}>
+          {t('logout')}
+        </Button>
+      </Box>
     </Stack>
   )
 }
