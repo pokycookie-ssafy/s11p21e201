@@ -12,7 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
+<<<<<<< Updated upstream
 import com.e201.domain.entity.contract.Invoice;
+import com.e201.domain.entity.contract.Status;
+=======
+import com.e201.domain.entity.contract.ContractStatus;
+import com.e201.domain.entity.contract.Invoice;
+>>>>>>> Stashed changes
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
 
@@ -29,13 +35,12 @@ public class InvoiceServiceTest {
 
 	Contract contract;
 
-
 	@BeforeEach
 	void setUp() {
 		UUID companyId = UUID.randomUUID();
 		UUID storeId = UUID.randomUUID();
 
-		contract = createContract(companyId, storeId, "PROGRESS", 10);
+		contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
 		contractRepository.save(contract);
 	}
 
@@ -62,7 +67,11 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
-	private Contract createContract(UUID companyId, UUID storeId, String status, int sattlementDate){
+<<<<<<< Updated upstream
+	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
+=======
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
+>>>>>>> Stashed changes
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
@@ -71,7 +80,7 @@ public class InvoiceServiceTest {
 			.build();
 	}
 
-	private Invoice createInvoice(String img_url, Contract contract){
+	private Invoice createInvoice(String img_url, Contract contract) {
 		return Invoice.builder()
 			.contract(contract)
 			.imageUrl(img_url)
