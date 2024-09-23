@@ -43,6 +43,7 @@ export default function Header({ logo }: IProps) {
         px: 2,
         py: 1,
       }}
+      spacing={4}
     >
       {logo ? (
         <Link to={paths.main} sx={{ display: 'flex', alignItems: 'center' }}>

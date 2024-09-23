@@ -46,10 +46,11 @@ export default function Nav({ drawer }: IProps) {
         flexShrink: 0,
         borderRight: (theme) => `1px solid ${theme.palette.divider}`,
         display: invisible ? 'none' : 'flex',
+        bgcolor: (theme) => theme.palette.background.default,
       }}
     >
       <NavLogo />
-      <ScrollContainer sx={{ flex: 1, bgcolor: (theme) => theme.palette.background.default }}>
+      <ScrollContainer sx={{ flex: 1 }}>
         <Stack component="nav" py={1} px={2} spacing={3}>
           {nav.map((group, i1) => (
             <Stack key={i1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
