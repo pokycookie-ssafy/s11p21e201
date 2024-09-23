@@ -10,7 +10,7 @@ export default function AppLayout() {
   return (
     <Stack direction="row">
       <Nav />
-      <FullContainer>
+      <FullContainer sx={{ display: 'flex', flexDirection: 'column' }}>
         <Header />
         <Outlet />
       </FullContainer>

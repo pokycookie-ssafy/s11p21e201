@@ -5,6 +5,9 @@ const api = {
     ocr: '/licenses/signup',
     bank: '/bank',
   },
+  management: {
+    payment: '/stores/menus/sales',
+  },
 }
 
 export default api
