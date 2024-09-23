@@ -39,6 +39,9 @@ dependencies {
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    // bcrypt
+    implementation 'org.springframework.security:spring-security-crypto'
+
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
 
@@ -99,7 +102,7 @@ jacocoTestReport {
 
     afterEvaluate {
         classDirectories.setFrom(
-                files(classDirectories.files.collect{
+                files(classDirectories.files.collect {
                     fileTree(dir: it, excludes: [
                             "**/*Application*",
                             "**/*Config*",
