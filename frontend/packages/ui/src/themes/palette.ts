@@ -50,7 +50,7 @@ export const darkPalette: PaletteOptions = {
     disabled: color.grey[600],
   },
   background: {
-    paper: color.grey[800],
+    paper: color.grey[700],
     default: color.grey[900],
   },
   divider: color.grey[700],
