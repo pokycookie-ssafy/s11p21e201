@@ -15,8 +15,10 @@ import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.Status;
+import com.e201.domain.entity.contract.ContractResponse;
+import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
+import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
 public class ContractServiceTest {
@@ -35,7 +37,7 @@ public class ContractServiceTest {
 		UUID storeId = UUID.randomUUID();
 
 		// given
-		Contract contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
+		Contract contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 		contractRepository.save(contract);
 
 		// when
@@ -60,7 +62,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
-		ContractCreateResponse actual = sut.create("COMPANY", request);
+		ContractCreateResponse actual = sut.create(RoleType.COMPANY, request);
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -73,7 +75,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
-		ContractCreateResponse actual = sut.create("STORE", request);
+		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -86,9 +88,9 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
-		ContractCreateResponse actual = sut.create("STORE", request);
+		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 		//expect
-		assertThatThrownBy(() -> sut.create(" ", request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.create(null, request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("기존의 계약 id가 존재 하지 않을 경우 예외가 발생한다.")
@@ -96,10 +98,10 @@ public class ContractServiceTest {
 	void find_exist_contract_entity_fail(){
 		//given
 		String contractId = UUID.randomUUID().toString();
-		ContractRespondCondition contractRespond = createContractRespondCondition(contractId,"APPROVE");
+		ContractRespondCondition contractRespond = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 
 		//expect
-		assertThatThrownBy(() -> sut.respond(contractRespond)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.respond(RoleType.STORE, contractRespond)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("계약을 수락한다.")
@@ -109,17 +111,17 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
+		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,"APPROVE");
+		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.APPROVE);
 
 		//when
-		ContractRespondResponse actual = sut.respond(request);
+		ContractRespondResponse actual = sut.respond(RoleType.STORE, request);
 
 		//then
 		Contract contractResult = sut.findEntity(actual.getId());
-		assertThat(contractResult).extracting("status").isEqualTo(Status.COMPLETE);
+		assertThat(contractResult).extracting("status").isEqualTo(ContractStatus.COMPLETE);
 	}
 
 	@DisplayName("잘못된 Respond가 전송될 경우 예외가 발생한다.")
@@ -129,13 +131,13 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
+		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,"");
+		ContractRespondCondition request = createContractRespondCondition(contractId,null);
 
 		//expect
-		assertThatThrownBy(() -> sut.respond(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.respond(RoleType.STORE, request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("기업이 계약을 거절한다.")
@@ -145,16 +147,17 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create("STORE", contractCreateRequest);
+		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,"REJECT");
+		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.REJECT);
 
 		//when
-		ContractRespondResponse actual = sut.respond(request);
+		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
 
 		//then
-		assertThat(actual.getId()).isNotNull();
+		Contract contractResult = sut.findEntity(actual.getId());
+		assertThat(contractResult).extracting("status").isEqualTo(ContractStatus.COMPANY_REJECT);
 	}
 
 	@DisplayName("식당이 계약을 거절한다.")
@@ -164,19 +167,39 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create("COMPANY", contractCreateRequest);
+		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,"REJECT");
+		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.REJECT);
 
 		//when
-		ContractRespondResponse actual = sut.respond(request);
+		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
 
 		//then
-		assertThat(actual.getId()).isNotNull();
+		Contract contractResult = sut.findEntity(actual.getId());
+		assertThat(contractResult).extracting("status").isEqualTo(ContractStatus.STORE_REJECT);
 	}
 
-	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult){
+	@DisplayName("계약을 삭제한다.")
+	@Test
+	void delete_contract_success(){
+		//given
+		String companyId = UUID.randomUUID().toString();
+		String storeId = UUID.randomUUID().toString();
+		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
+		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+
+		String contractId = contract.getId().toString();
+
+		//when
+		sut.delete(contractId);
+
+		//then
+		Contract contractResult = sut.findEntity(UUID.fromString(contractId));
+		assertThat(contractResult).extracting("deleteYN").isEqualTo("Y");
+	}
+
+	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult){
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -187,22 +210,22 @@ public class ContractServiceTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.sattlementDate(10)
+			.settlementDate(10)
 			.build();
 	}
 
-	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate){
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.status(status)
-			.sattlementDate(sattlementDate)
+			.status(contractStatus)
+			.settlementDate(settlementDate)
 			.build();
 	}
 
 	private void assertThatContractMatchExactly(Contract contract, UUID companyId, UUID storeId) {
 		assertThat(contract)
-			.extracting("companyId", "storeId", "status", "sattlementDate")
-			.containsExactly(companyId, storeId, Status.COMPANY_WAITING,10);
+			.extracting("companyId", "storeId", "status", "settlementDate")
+			.containsExactly(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 	}
 }

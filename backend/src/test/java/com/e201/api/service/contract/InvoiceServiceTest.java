@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Invoice;
-import com.e201.domain.entity.contract.Status;
+import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
 
@@ -36,7 +36,7 @@ public class InvoiceServiceTest {
 		UUID companyId = UUID.randomUUID();
 		UUID storeId = UUID.randomUUID();
 
-		contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
+		contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 		contractRepository.save(contract);
 	}
 
@@ -63,12 +63,12 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
 	}
 
-	private Contract createContract(UUID companyId, UUID storeId, Status status, int sattlementDate){
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate){
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.status(status)
-			.sattlementDate(sattlementDate)
+			.status(contractStatus)
+			.settlementDate(settlementDate)
 			.build();
 	}
 

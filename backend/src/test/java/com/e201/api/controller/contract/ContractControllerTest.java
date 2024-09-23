@@ -11,15 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
-import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.Status;
+import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -41,8 +39,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		ContractCreateResponse response = new ContractCreateResponse(contractId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		//TODO: Contract SenderType을 Cookie에서 가져올경우 수정해야함 - kkj
-		doReturn(response).when(contractService).create(eq("STORE"),any(ContractCreateRequest.class));
+		doReturn(response).when(contractService).create(any(), any(ContractCreateRequest.class));
 
 		//expect
 		mockMvc.perform(post("/contracts")
@@ -59,13 +56,13 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		//given
 		String contractId = UUID.randomUUID().toString();
 
-		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
+		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
 		//expect
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
@@ -83,11 +80,10 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 		//expect
 		mockMvc.perform(delete("/contracts/"+contractId))
-			// .param("contractId", contractId))
 			.andExpect(status().isNoContent());
 	}
 
-	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult) {
+	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -98,7 +94,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.sattlementDate(10)
+			.settlementDate(10)
 			.build();
 	}
 }

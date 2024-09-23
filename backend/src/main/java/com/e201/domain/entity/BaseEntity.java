@@ -36,4 +36,8 @@ public class BaseEntity {
 
 	@Column(name = "delete_YN")
 	private String deleteYN;
+
+	public void delete(){
+		this.deleteYN = "Y";
+	}
 }
