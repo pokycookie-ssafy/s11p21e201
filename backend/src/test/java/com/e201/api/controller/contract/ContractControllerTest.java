@@ -46,9 +46,16 @@ import com.e201.domain.entity.contract.ContractResponse;
 import org.springframework.http.MediaType;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.Contract;
+import com.e201.domain.entity.contract.Status;
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -115,23 +122,34 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
 =======
 =======
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 	@DisplayName("계약 요청을 수락한다.")
 	@Test
 	void respond_contract_success() throws Exception{
 		//given
 		String contractId = UUID.randomUUID().toString();
 
+<<<<<<< HEAD
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+=======
+		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
 		String responseJson = objectMapper.writeValueAsString(response);
 
+<<<<<<< HEAD
 		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
+=======
+		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 		//expect
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
@@ -149,16 +167,25 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 		//expect
 		mockMvc.perform(delete("/contracts/"+contractId))
+<<<<<<< HEAD
 			.andExpect(status().isNoContent());
 	}
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
+=======
+			// .param("contractId", contractId))
+			.andExpect(status().isNoContent());
+	}
+
+	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult) {
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
 			.build();
 	}
 
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
@@ -169,6 +196,8 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.storeId(storeId)
 			.settlementDate(10)
 =======
+=======
+>>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
