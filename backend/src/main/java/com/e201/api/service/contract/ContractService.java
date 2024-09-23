@@ -41,12 +41,8 @@ public class ContractService{
 				throw new RuntimeException("unknown sender type");
 		}
 
-		try{
-			Contract savedContract = contractRepository.save(contract);
-			return new ContractCreateResponse(savedContract.getId());
-		} catch (Exception e){
-			throw new RuntimeException("failed to create contract");
-		}
+		Contract savedContract = contractRepository.save(contract);
+		return new ContractCreateResponse(savedContract.getId());
 	}
 
 	@JtaTransactional
