@@ -14,8 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+import com.e201.domain.entity.contract.Contract;
+import com.e201.domain.entity.contract.Status;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -47,6 +51,47 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			)
 			.andExpect(status().isCreated())
 			.andExpect(content().json(responseJson));
+	}
+
+	@DisplayName("계약 요청을 수락한다.")
+	@Test
+	void respond_contract_success() throws Exception{
+		//given
+		String contractId = UUID.randomUUID().toString();
+
+		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
+		String requestJson = objectMapper.writeValueAsString(request);
+
+		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
+		String responseJson = objectMapper.writeValueAsString(response);
+
+		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
+		//expect
+		mockMvc.perform(post("/contracts/respond")
+				.contentType(APPLICATION_JSON)
+				.content(requestJson)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
+	@DisplayName("계약을 해지한다")
+	@Test
+	void delete_contract_success() throws Exception{
+		//given
+		String contractId = UUID.randomUUID().toString();
+
+		//expect
+		mockMvc.perform(delete("/contracts/"+contractId))
+			// .param("contractId", contractId))
+			.andExpect(status().isNoContent());
+	}
+
+	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult) {
+		return ContractRespondCondition.builder()
+			.contractId(contractId)
+			.respondResult(respondResult)
+			.build();
 	}
 
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
