@@ -2,8 +2,6 @@ package com.e201.domain.entity.company;
 
 import java.util.UUID;
 
-import org.hibernate.generator.Generator;
-
 import com.e201.domain.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -18,8 +16,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 
 @Entity
 @Getter
@@ -46,6 +42,10 @@ public class Company extends BaseEntity {
 		this.id = id;
 		this.companyInfo = companyInfo;
 		this.email = email;
+		this.password = password;
+	}
+
+	public void changePassword(String password) {
 		this.password = password;
 	}
 }

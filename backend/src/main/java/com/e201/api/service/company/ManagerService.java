@@ -4,17 +4,16 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
 import com.e201.api.controller.company.request.manager.ManagerCreateRequest;
 import com.e201.api.controller.company.response.manager.ManagerCreateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Department;
-import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.ManagerRepository;
-import com.e201.global.auth.RoleType;
-import com.e201.global.auth.response.AuthResponse;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.cipher.service.OneWayCipherService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,20 +24,22 @@ public class ManagerService {
 
 	private final ManagerRepository managerRepository;
 	private final DepartmentService departmentService;
+	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
 	public ManagerCreateResponse create(ManagerCreateRequest request) {
 		Department department = departmentService.findEntity(request.getDepartmentId());
 		Manager manager = request.toEntity(department);
+		encryptPassword(manager);
 		Manager savedManager = managerRepository.save(manager);
 		return new ManagerCreateResponse(savedManager.getId());
 	}
 
-	public AuthResponse checkPassword(ManagerAuthRequest request) {
+	public AuthInfo checkPassword(ManagerAuthRequest request) {
 		Manager manager = managerRepository.findByCode(request.getCode())
 			.orElseThrow(() -> new RuntimeException("not found manager"));
 		validatePassword(request, manager);
-		return new AuthResponse(manager.getId(), RoleType.MANAGER);
+		return new AuthInfo(manager.getId(), RoleType.MANAGER);
 	}
 
 	public Manager findEntity(UUID id) {
@@ -46,8 +47,13 @@ public class ManagerService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+	private void encryptPassword(Manager manager) {
+		String encryptedPassword = oneWayCipherService.encrypt(manager.getPassword());
+		manager.changePassword(encryptedPassword);
+	}
+
 	private void validatePassword(ManagerAuthRequest request, Manager manager) {
-		if(!request.getPassword().equals(manager.getPassword())) {
+		if (!oneWayCipherService.match(request.getPassword(), manager.getPassword())) {
 			throw new RuntimeException("wrong password");
 		}
 	}

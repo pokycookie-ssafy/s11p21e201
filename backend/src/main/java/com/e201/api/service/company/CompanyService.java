@@ -12,8 +12,9 @@ import com.e201.domain.entity.BaseEntity;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyRepository;
-import com.e201.global.auth.RoleType;
-import com.e201.global.auth.response.AuthResponse;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.cipher.service.OneWayCipherService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,20 +25,22 @@ public class CompanyService extends BaseEntity {
 
 	private final CompanyRepository companyRepository;
 	private final CompanyInfoService companyInfoService;
+	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
 	public CompanyCreateResponse create(CompanyCreateRequest request) {
 		CompanyInfo companyInfo = companyInfoService.findEntity(request.getCompanyInfoId());
 		Company company = request.toEntity(companyInfo);
+		encryptPassword(company);
 		Company savedCompany = companyRepository.save(company);
 		return new CompanyCreateResponse(savedCompany.getId());
 	}
 
-	public AuthResponse checkPassword(CompanyAuthRequest request) {
+	public AuthInfo checkPassword(CompanyAuthRequest request) {
 		Company company = companyRepository.findByEmail(request.getEmail())
 			.orElseThrow(() -> new RuntimeException("not found company"));
 		validatePassword(request, company);
-		return new AuthResponse(company.getId(), RoleType.COMPANY);
+		return new AuthInfo(company.getId(), RoleType.COMPANY);
 	}
 
 	public Company findEntity(UUID id) {
@@ -45,8 +48,13 @@ public class CompanyService extends BaseEntity {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+	private void encryptPassword(Company company) {
+		String encryptedPassword = oneWayCipherService.encrypt(company.getPassword());
+		company.changePassword(encryptedPassword);
+	}
+
 	private void validatePassword(CompanyAuthRequest request, Company company) {
-		if(!request.getPassword().equals(company.getPassword())) {
+		if (!oneWayCipherService.match(request.getPassword(), company.getPassword())) {
 			throw new RuntimeException("wrong password");
 		}
 	}
