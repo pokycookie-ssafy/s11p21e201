@@ -9,9 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.e201.api.controller.company.request.DepartmentCreateRequest;
-import com.e201.api.controller.company.response.DepartmentCreateResponse;
+import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
+import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
@@ -20,6 +21,7 @@ import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
 
 @SpringBootTest
+@Transactional
 class DepartmentServiceTest {
 
 	@Autowired

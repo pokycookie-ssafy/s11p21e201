@@ -1,4 +1,4 @@
-package com.e201.api.controller.company.request;
+package com.e201.api.controller.company.request.companyinfo;
 
 import com.e201.domain.entity.company.CompanyInfo;
 

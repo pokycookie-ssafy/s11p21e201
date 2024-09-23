@@ -1,9 +1,8 @@
-package com.e201.api.controller.company.response;
+package com.e201.api.controller.company.response.company;
 
 import java.util.UUID;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class CompanyCreateResponse {
