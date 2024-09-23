@@ -24,9 +24,16 @@ import com.e201.domain.entity.contract.Status;
 import org.springframework.http.MediaType;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.Contract;
+import com.e201.domain.entity.contract.Status;
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -74,8 +81,11 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
 =======
+=======
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 	@DisplayName("계약 요청을 수락한다.")
 	@Test
 	void respond_contract_success() throws Exception{
