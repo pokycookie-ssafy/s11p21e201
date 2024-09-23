@@ -61,9 +61,16 @@ import com.e201.domain.entity.contract.Status;
 import org.springframework.http.MediaType;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.Contract;
+import com.e201.domain.entity.contract.Status;
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -145,12 +152,15 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
 =======
 =======
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 =======
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
+=======
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 	@DisplayName("계약 요청을 수락한다.")
 	@Test
 	void respond_contract_success() throws Exception{
@@ -158,20 +168,28 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		String contractId = UUID.randomUUID().toString();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
+=======
+		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
 		String responseJson = objectMapper.writeValueAsString(response);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
 =======
 		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
+=======
+		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 		//expect
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
@@ -190,23 +208,30 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		//expect
 		mockMvc.perform(delete("/contracts/"+contractId))
 <<<<<<< HEAD
+<<<<<<< HEAD
 			.andExpect(status().isNoContent());
 	}
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
 =======
+=======
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 			// .param("contractId", contractId))
 			.andExpect(status().isNoContent());
 	}
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, String respondResult) {
+<<<<<<< HEAD
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
+=======
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
 			.build();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
@@ -222,6 +247,8 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)

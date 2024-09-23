@@ -208,6 +208,7 @@ public class ContractServiceTest {
 		//then
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		assertThat(actual.getId()).isNotNull();
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
@@ -217,6 +218,10 @@ public class ContractServiceTest {
 =======
 		assertThat(actual.getId()).isNotNull();
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		Contract contractResult = sut.findEntity(actual.getId());
+		assertThat(contractResult).extracting("status").isEqualTo(Status.COMPLETE);
+>>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 	}
 
 	@DisplayName("잘못된 Respond가 전송될 경우 예외가 발생한다.")
