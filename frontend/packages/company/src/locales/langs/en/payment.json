@@ -1,0 +1,10 @@
+{
+  "sort_department": "department",
+  "sort_restaurant": "restaurant",
+  "sort_employee": "employee",
+  "month": "month",
+  "start_year": "Start Year",
+  "start_month": "Start Month",
+  "end_year": "End Year",
+  "end_month": "End Month"
+}

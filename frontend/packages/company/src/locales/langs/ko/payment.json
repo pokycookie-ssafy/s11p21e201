@@ -1,0 +1,10 @@
+{
+  "sort_department": "부서별",
+  "sort_restaurant": "식당별",
+  "sort_employee": "사원별",
+  "month": "월",
+  "start_year": "시작년도",
+  "start_month": "시작월",
+  "end_year": "종료년도",
+  "end_month": "종료월"
+}
