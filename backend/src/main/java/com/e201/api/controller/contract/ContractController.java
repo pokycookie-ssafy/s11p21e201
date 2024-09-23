@@ -40,11 +40,7 @@ public class ContractController {
 
 	@DeleteMapping("/contracts/{contractId}")
 	public ResponseEntity<Object> delete(@PathVariable String contractId) {
-		try{
-			contractService.delete(contractId);
-			return ResponseEntity.status(NO_CONTENT).build();
-		} catch (Exception e){
-			return ResponseEntity.status(BAD_REQUEST).build();
-		}
+		contractService.delete(contractId);
+		return ResponseEntity.status(NO_CONTENT).build();
 	}
 }
