@@ -6,10 +6,10 @@ import SignInView from '@/pages/auth/sign-in-view'
 import SignUpView from '@/pages/auth/sign-up-view'
 import SignInLayout from '@/layouts/sign-in-layout'
 import SignUpLayout from '@/layouts/sign-up-layout'
-import TotalDashbaordView from '@/pages/dashboard/total-dashboard-view'
+import TotalDashboardView from '@/pages/dashboard/total-dashboard-view'
 import SalesMenuDashboardView from '@/pages/dashboard/sales-menu-dashboard-view'
 import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
-import SettlementDashboardView from '@/pages/dashboard/settlement-dashbaord-view'
+import SettlementDashboardView from '@/pages/dashboard/settlement-dashboard-view'
 import { PaymentManagementView } from '@/pages/management/payment-management-view'
 import SalesCompanyDashboardView from '@/pages/dashboard/sales-company-dashboard-view'
 
@@ -38,7 +38,7 @@ const mainRoute: RouteObject[] = [
       // Dashboard
       {
         path: paths.dashboard.total,
-        element: <TotalDashbaordView />,
+        element: <TotalDashboardView />,
       },
       {
         path: paths.dashboard.sales.menu,
