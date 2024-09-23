@@ -42,6 +42,7 @@ public class ContractService{
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 =======
@@ -52,6 +53,10 @@ public class ContractService{
 			throw new RuntimeException("failed to create contract");
 		}
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		Contract savedContract = contractRepository.save(contract);
+		return new ContractCreateResponse(savedContract.getId());
+>>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 
 	@JtaTransactional
