@@ -15,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Getter
@@ -35,21 +34,21 @@ public class Contract extends BaseEntity {
 
 	@Column(name="status")
 	@Enumerated(EnumType.STRING)
-	private Status status;
+	private ContractStatus status;
 
-	@Column(name="sattlement_date")
-	private int sattlementDate;
+	@Column(name="settlement_date")
+	private int settlementDate;
 
 	@Builder
-	public Contract(UUID id, UUID companyId, UUID storeId, Status status, int sattlementDate) {
+	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
-		this.sattlementDate = sattlementDate;
+		this.settlementDate = settlementDate;
 	}
 
-	public void update(Status status){
-		this.status = status;
+	public void update(ContractStatus contractStatus){
+		this.status = contractStatus;
 	}
 }

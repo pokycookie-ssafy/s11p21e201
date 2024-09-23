@@ -3,7 +3,7 @@ package com.e201.api.controller.contract.request;
 import java.util.UUID;
 
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.Status;
+import com.e201.domain.entity.contract.ContractStatus;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,20 +14,20 @@ import lombok.NoArgsConstructor;
 public class ContractCreateRequest {
 	private String companyId;
 	private String storeId;
-	private int sattlementDate;
+	private int settlementDate;
 
 	@Builder
-	public ContractCreateRequest(String companyId, String storeId, int sattlementDate) {
+	public ContractCreateRequest(String companyId, String storeId, int settlementDate) {
 		this.companyId = companyId;
 		this.storeId = storeId;
-		this.sattlementDate = sattlementDate;
+		this.settlementDate = settlementDate;
 	}
 
-	public Contract toEntity(Status status){
+	public Contract toEntity(ContractStatus status){
 		return Contract.builder()
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))
-			.sattlementDate(sattlementDate)
+			.settlementDate(settlementDate)
 			.status(status)
 			.build();
 	}
