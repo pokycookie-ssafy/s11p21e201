@@ -1,6 +1,6 @@
 package com.e201.api.service.company;
 
-import static com.e201.global.auth.RoleType.*;
+import static com.e201.global.security.auth.constant.RoleType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.UUID;
@@ -14,18 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
-import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
-import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
 import com.e201.domain.repository.company.EmployeeRepository;
-import com.e201.global.auth.response.AuthResponse;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.cipher.service.OneWayCipherService;
 
 @SpringBootTest
 @Transactional
@@ -45,6 +44,9 @@ class EmployeeServiceTest {
 
 	@Autowired
 	EmployeeService sut;
+
+	@Autowired
+	OneWayCipherService oneWayCipherService;
 
 	Company company;
 
@@ -81,12 +83,13 @@ class EmployeeServiceTest {
 	@Test
 	void check_password_success() {
 		// given
-		Employee employee = createEmployee(department);
+		String encryptedPassword = oneWayCipherService.encrypt("12341234");
+		Employee employee = createEmployee(department, encryptedPassword);
 		employeeRepository.save(employee);
 		EmployeeAuthRequest request = createEmployeeAuthRequest("직원코드", "12341234");
 
 		// when
-		AuthResponse actual = sut.checkPassword(request);
+		AuthInfo actual = sut.checkPassword(request);
 
 		//then
 		assertThat(actual).extracting("id", "roleType").containsExactly(employee.getId(), EMPLOYEE);
@@ -96,31 +99,31 @@ class EmployeeServiceTest {
 	@Test
 	void check_password_fail_by_not_found_code() {
 		// given
-		Employee employee = createEmployee(department);
+		Employee employee = createEmployee(department, "12341234");
 		employeeRepository.save(employee);
 		EmployeeAuthRequest request = createEmployeeAuthRequest("존재하지 않는 코드", "12341234");
 
 		// when //then
-		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
 	@Test
 	void check_password_fail() {
 		// given
-		Employee employee = createEmployee(department);
+		Employee employee = createEmployee(department, "12341234");
 		employeeRepository.save(employee);
 		EmployeeAuthRequest request = createEmployeeAuthRequest("직원코드", "invalid_password");
 
 		// when //then
-		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("직원(엔티티)를 조회한다.")
 	@Test
 	void find_employee_entity_success() {
 		// given
-		Employee employee = createEmployee(department);
+		Employee employee = createEmployee(department, "12341234");
 		employeeRepository.save(employee);
 
 		// when
@@ -145,11 +148,11 @@ class EmployeeServiceTest {
 			.build();
 	}
 
-	private Employee createEmployee(Department department) {
+	private Employee createEmployee(Department department, String password) {
 		return Employee.builder()
 			.department(department)
 			.code("직원코드")
-			.password("12341234")
+			.password(password)
 			.build();
 	}
 

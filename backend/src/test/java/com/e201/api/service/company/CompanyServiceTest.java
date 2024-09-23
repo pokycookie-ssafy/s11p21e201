@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.company.request.company.CompanyAuthRequest;
@@ -19,8 +18,9 @@ import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
-import com.e201.global.auth.RoleType;
-import com.e201.global.auth.response.AuthResponse;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.cipher.service.OneWayCipherService;
 
 @SpringBootTest
 @Transactional
@@ -34,6 +34,9 @@ class CompanyServiceTest {
 
 	@Autowired
 	CompanyService sut;
+
+	@Autowired
+	OneWayCipherService oneWayCipherService;
 
 	CompanyInfo companyInfo;
 
@@ -60,12 +63,13 @@ class CompanyServiceTest {
 	@Test
 	void check_password_success() {
 		// given
-		Company company = createCompany("company@test.com", "12341234", companyInfo);
+		String encryptedPassword = oneWayCipherService.encrypt("12341234");
+		Company company = createCompany("company@test.com", encryptedPassword, companyInfo);
 		companyRepository.save(company);
 		CompanyAuthRequest request = createCompanyAuthRequest("company@test.com", "12341234");
 
 		// when
-		AuthResponse actual = sut.checkPassword(request);
+		AuthInfo actual = sut.checkPassword(request);
 
 		//then
 		assertThat(actual).extracting("id", "roleType").containsExactly(company.getId(), RoleType.COMPANY);
@@ -80,7 +84,7 @@ class CompanyServiceTest {
 		CompanyAuthRequest request = createCompanyAuthRequest("invalid@test.com", "12341234");
 
 		// when //then
-		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
@@ -92,7 +96,7 @@ class CompanyServiceTest {
 		CompanyAuthRequest request = createCompanyAuthRequest("company@test.com", "invalid_password");
 
 		// when //then
-		assertThatThrownBy(() ->sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("기업 계정(엔티티)을 조회한다.")
