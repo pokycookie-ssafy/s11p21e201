@@ -75,6 +75,7 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		contractService.delete(contractId);
 		return ResponseEntity.status(NO_CONTENT).build();
 =======
@@ -103,5 +104,9 @@ public class ContractController {
 >>>>>>> d4d2cc4 ([#17] refactor: ContractController 예외처리 수정)
 =======
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		contractService.delete(contractId);
+		return ResponseEntity.status(NO_CONTENT).build();
+>>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 }
