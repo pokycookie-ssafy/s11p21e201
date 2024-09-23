@@ -118,7 +118,8 @@ public class ContractServiceTest {
 		ContractRespondResponse actual = sut.respond(request);
 
 		//then
-		assertThat(actual.getId()).isNotNull();
+		Contract contractResult = sut.findEntity(actual.getId());
+		assertThat(contractResult).extracting("status").isEqualTo(Status.COMPLETE);
 	}
 
 	@DisplayName("잘못된 Respond가 전송될 경우 예외가 발생한다.")
