@@ -44,4 +44,8 @@ public class Employee extends BaseEntity {
 		this.code = code;
 		this.password = password;
 	}
+
+	public void changePassword(String password) {
+		this.password = password;
+	}
 }
