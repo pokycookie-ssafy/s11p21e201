@@ -16,12 +16,17 @@ import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 =======
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +37,7 @@ public class ContractController {
 	private final ContractService contractService;
 
 	@PostMapping("/contracts")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody ContractCreateRequest request) {
@@ -47,10 +53,15 @@ public class ContractController {
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody ContractCreateRequest request) {
+		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
 	@PostMapping("/contracts/respond")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
@@ -65,6 +76,10 @@ public class ContractController {
 		String senderType = "STORE";
 		ContractRespondResponse response = contractService.respond(request);
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
+		ContractRespondResponse response = contractService.respond(authInfo.getRoleType(), request);
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		return ResponseEntity.status(OK).body(response);
 	}
 

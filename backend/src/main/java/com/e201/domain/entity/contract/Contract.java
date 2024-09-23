@@ -36,6 +36,7 @@ public class Contract extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractStatus status;
 =======
 	private Status status;
@@ -43,11 +44,15 @@ public class Contract extends BaseEntity {
 =======
 	private Status status;
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	private ContractStatus status;
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
 	@Column(name="settlement_date")
 	private int settlementDate;
 
 	@Builder
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
@@ -57,11 +62,15 @@ public class Contract extends BaseEntity {
 =======
 	public Contract(UUID id, UUID companyId, UUID storeId, Status status, int sattlementDate) {
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
 		this.settlementDate = settlementDate;
+<<<<<<< HEAD
 	}
 
 	public void update(ContractStatus contractStatus){
@@ -70,9 +79,11 @@ public class Contract extends BaseEntity {
 
 	public void update(Status status){
 		this.status = status;
+=======
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 	}
 
-	public void update(Status status){
-		this.status = status;
+	public void update(ContractStatus contractStatus){
+		this.status = contractStatus;
 	}
 }

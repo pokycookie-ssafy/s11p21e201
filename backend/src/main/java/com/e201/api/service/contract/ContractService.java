@@ -12,6 +12,7 @@ import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.domain.entity.contract.ContractStatus;
 =======
@@ -20,6 +21,10 @@ import com.e201.domain.entity.contract.Status;
 =======
 import com.e201.domain.entity.contract.Status;
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+import com.e201.domain.entity.contract.ContractResponse;
+import com.e201.domain.entity.contract.ContractStatus;
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
@@ -38,6 +43,7 @@ public class ContractService{
 	}
 
 	@JtaTransactional
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -64,6 +70,10 @@ public class ContractService{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
+		Contract contract = createContractBySenderType(senderType, request);
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
 		Contract contract = createContractBySenderType(senderType, request);
@@ -127,26 +137,21 @@ public class ContractService{
 >>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 
+	private Contract createContractBySenderType(RoleType senderType, ContractCreateRequest request){
+		return switch (senderType) {
+			case STORE -> request.toEntity(ContractStatus.STORE_REQUEST);
+			case COMPANY -> request.toEntity(ContractStatus.COMPANY_REQUEST);
+			default -> throw new IllegalArgumentException("Unknown sender type: " + senderType);
+		};
+	}
+
 	@JtaTransactional
-	public ContractRespondResponse respond(ContractRespondCondition request){
+	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request){
 		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
-		switch(request.getRespondResult()){
-			case "APPROVE":
-				contract.update(Status.COMPLETE);
-				break;
-			case "REJECT":
-				if (contract.getStatus() == Status.COMPANY_WAITING){
-					contract.update(Status.COMPANY_REJECT);
-				} else {
-					contract.update(Status.STORE_REJECT);
-				}
-				break;
-			default:
-				throw new RuntimeException("unknown respond result");
-		}
-
+		ContractStatus status = updateContractStatus(contract, request.getRespondResult());
+		contract.update(status);
 		return new ContractRespondResponse(contract.getId());
 <<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
@@ -154,19 +159,33 @@ public class ContractService{
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 	}
 
+	private ContractStatus updateContractStatus(Contract contract, ContractResponse response){
+		return switch(response){
+			case APPROVE -> ContractStatus.COMPLETE;
+			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT : ContractStatus.COMPANY_REJECT;
+			default -> throw new IllegalArgumentException("unknown respond result");
+		};
+	}
+
 	@JtaTransactional
 	public void delete(String contractId){
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 		contract.delete();
+<<<<<<< HEAD
 =======
 		contractRepository.deleteById(UUID.fromString(contractId));
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 		contractRepository.deleteById(UUID.fromString(contractId));
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 	}
 }

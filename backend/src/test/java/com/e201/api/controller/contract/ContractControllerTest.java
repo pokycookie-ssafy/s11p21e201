@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
@@ -28,12 +29,15 @@ import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Status;
 =======
 import org.springframework.http.MediaType;
+=======
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
@@ -71,6 +75,9 @@ import com.e201.api.service.contract.ContractService;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Status;
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+import com.e201.domain.entity.contract.ContractResponse;
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -119,6 +126,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//TODO: Contract SenderType을 Cookie에서 가져올경우 수정해야함 - kkj
 <<<<<<< HEAD
 		doReturn(response).when(contractService).create(eq("STORE"), any(ContractCreateRequest.class));
@@ -136,6 +144,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		//TODO: Contract SenderType을 Cookie에서 가져올경우 수정해야함 - kkj
 		doReturn(response).when(contractService).create(eq("STORE"),any(ContractCreateRequest.class));
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+		doReturn(response).when(contractService).create(any(), any(ContractCreateRequest.class));
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
 		//expect
 		mockMvc.perform(post("/contracts")
@@ -169,6 +180,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
@@ -176,11 +188,15 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
 		String responseJson = objectMapper.writeValueAsString(response);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
@@ -190,6 +206,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		doReturn(response).when(contractService).respond(any(ContractRespondCondition.class));
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		//expect
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
@@ -209,6 +228,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		mockMvc.perform(delete("/contracts/"+contractId))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			.andExpect(status().isNoContent());
 	}
 
@@ -225,6 +245,12 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+			.andExpect(status().isNoContent());
+	}
+
+	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -253,11 +279,15 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
+<<<<<<< HEAD
 			.sattlementDate(10)
 <<<<<<< HEAD
 >>>>>>> 6b9cc73 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+			.settlementDate(10)
+>>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 			.build();
 	}
 }
