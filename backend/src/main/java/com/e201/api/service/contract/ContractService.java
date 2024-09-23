@@ -54,6 +54,7 @@ public class ContractService{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
 		Contract contract = createContractBySenderType(senderType, request);
@@ -102,6 +103,10 @@ public class ContractService{
 			default -> throw new IllegalArgumentException("unknown respond result");
 		};
 =======
+=======
+		Contract savedContract = contractRepository.save(contract);
+		return new ContractCreateResponse(savedContract.getId());
+>>>>>>> d4d2cc4 ([#17] refactor: ContractController 예외처리 수정)
 	}
 
 	@JtaTransactional
