@@ -35,7 +35,7 @@ export default function PaymentList({ open, onOpen, onClose, data }: IProps) {
           </Typography>
         </Stack>
 
-        <Stack alignItems="flex-end">
+        <Stack alignItems="flex-end" width={120} flexShrink={0}>
           <Typography ellipsis variant="subtitle1" color="primary.main">
             {fNumber(data.totalPrice)}원
           </Typography>
@@ -44,7 +44,7 @@ export default function PaymentList({ open, onOpen, onClose, data }: IProps) {
           </Typography>
         </Stack>
 
-        <Stack alignItems="flex-end" width={76}>
+        <Stack alignItems="flex-end" width={76} flexShrink={0}>
           <Typography ellipsis variant="subtitle2" color="text.secondary">
             {dayjs(data.createdAt).format('YYYY.MM.DD')}
           </Typography>

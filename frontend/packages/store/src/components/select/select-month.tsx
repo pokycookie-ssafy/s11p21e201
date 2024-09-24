@@ -43,6 +43,7 @@ export function SelectMonth({ month, onChange }: IProps) {
           p: 1,
           pl: 1.5,
           width: 80,
+          flexShrink: 0,
           color: (theme) => theme.palette.text.secondary,
           borderColor: (theme) => theme.palette.text.disabled,
         }}
