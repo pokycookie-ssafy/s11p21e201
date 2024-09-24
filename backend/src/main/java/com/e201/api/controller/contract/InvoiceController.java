@@ -30,7 +30,11 @@ public class InvoiceController {
 	private final InvoiceService invoiceService;
 
 	@PostMapping("/invoice/upload")
+<<<<<<< HEAD
 	public ResponseEntity<InvoiceCreateResponse> upload(MultipartFile uploadFile,
+=======
+	public ResponseEntity<InvoiceCreateResponse> upload(@RequestParam MultipartFile uploadFile,
+>>>>>>> 15bf0c5 ([#17] feat: 세금계산서 File I/O 관련 기능 구현)
 		@RequestParam String contractId) {
 		InvoiceCreateResponse response = invoiceService.create(uploadFile, contractId);
 		return ResponseEntity.status(OK).body(response);
