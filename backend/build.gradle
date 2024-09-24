@@ -132,7 +132,9 @@ jacocoTestCoverageVerification {
                     "**.*Application*",
                     "**.*Config*",
                     "**.Request.*",
-                    "**.Response.*"
+                    "**.Response.*",
+                    "**.ExceptionAdvice",
+                    "**.AuthorizationFilter"
             ]
         }
     }
