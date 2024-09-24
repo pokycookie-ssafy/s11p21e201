@@ -151,6 +151,7 @@ jacocoTestCoverageVerification {
 <<<<<<< HEAD
 <<<<<<< HEAD
                     "**.Request.*",
+<<<<<<< HEAD
                     "**.Response.*"
 =======
                     "**.*Dto*"
@@ -159,6 +160,11 @@ jacocoTestCoverageVerification {
                     "**.Request.*",
                     "**.Response.*"
 >>>>>>> e29c4b8 ([#3] fix: Testing Exclude setting DTO -> Request,Reseponse)
+=======
+                    "**.Response.*",
+                    "**.ExceptionAdvice",
+                    "**.AuthorizationFilter"
+>>>>>>> 0525331 ([#24] chore: jacoco 적용 예외 추가)
             ]
         }
     }
