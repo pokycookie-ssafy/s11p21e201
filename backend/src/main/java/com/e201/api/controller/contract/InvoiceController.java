@@ -30,7 +30,7 @@ public class InvoiceController {
 	private final InvoiceService invoiceService;
 
 	@PostMapping("/invoice/upload")
-	public ResponseEntity<InvoiceCreateResponse> upload(@RequestParam MultipartFile uploadFile,
+	public ResponseEntity<InvoiceCreateResponse> upload(MultipartFile uploadFile,
 		@RequestParam String contractId) {
 		InvoiceCreateResponse response = invoiceService.create(uploadFile, contractId);
 		return ResponseEntity.status(OK).body(response);
