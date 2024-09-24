@@ -6,7 +6,10 @@ import SignInView from '@/pages/auth/sign-in-view'
 import SignUpView from '@/pages/auth/sign-up-view'
 import SignInLayout from '@/layouts/sign-in-layout'
 import SignUpLayout from '@/layouts/sign-up-layout'
+import PaymentLayout from '@/layouts/payment-layout'
+import QrPaymentView from '@/pages/payment/qr-payment-view'
 import TotalDashboardView from '@/pages/dashboard/total-dashboard-view'
+import MenuManagementView from '@/pages/management/menu-management-view'
 import SalesMenuDashboardView from '@/pages/dashboard/sales-menu-dashboard-view'
 import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
 import SettlementDashboardView from '@/pages/dashboard/settlement-dashboard-view'
@@ -59,8 +62,22 @@ const mainRoute: RouteObject[] = [
 
       // Management
       {
+        path: paths.management.menu,
+        element: <MenuManagementView />,
+      },
+      {
         path: paths.management.payment,
         element: <PaymentManagementView />,
+      },
+    ],
+  },
+  {
+    element: <PaymentLayout />,
+    children: [
+      // Payment
+      {
+        path: paths.payment.qr,
+        element: <QrPaymentView />,
       },
     ],
   },
