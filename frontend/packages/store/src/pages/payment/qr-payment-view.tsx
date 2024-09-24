@@ -1,6 +1,9 @@
 import type { IMenu } from '@/types/menu'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
+import { useBoolean } from '@e201/utils'
+import PaymentQr from '@/sections/qr-payment/payment-qr'
 import PaymentMenu from '@/sections/qr-payment/payment-menu'
 import PaymentOrder from '@/sections/qr-payment/payment-order'
 
@@ -35,6 +38,8 @@ export interface IOrder {
 export default function QrPaymentView() {
   const [tab, setTab] = useState<string | null>(null)
   const [order, setOrder] = useState<Map<string, IOrder>>(new Map())
+
+  const qrOpen = useBoolean()
 
   const orderHandler = (menu: IMenu) => {
     const prev = new Map(order)
@@ -72,34 +77,44 @@ export default function QrPaymentView() {
     setOrder(prev)
   }
 
-  return (
-    <Stack direction="row" flex={1} overflow="hidden">
-      <Stack flex={1} overflow="hidden" bgcolor="background.paper" spacing={1}>
-        <Tabs
-          value={tab}
-          onChange={(_, v) => setTab(v)}
-          textColor="secondary"
-          indicatorColor="secondary"
-          variant="scrollable"
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab label="전체 메뉴" value={null} />
-          <Tab label="정식" value="정식" />
-          <Tab label="세트" value="세트" />
-          <Tab label="사이드" value="사이드" />
-          <Tab label="음료" value="음료" />
-        </Tabs>
+  const submitHandler = (data: string) => {
+    console.log(data)
+    toast.success('결제가 완료되었습니다')
+    setOrder(new Map())
+  }
 
-        <ScrollContainer sx={{ height: 1, pl: 1, pb: 1 }}>
-          <PaymentMenu onClick={orderHandler} menus={mock} />
-        </ScrollContainer>
+  return (
+    <>
+      <Stack direction="row" flex={1} overflow="hidden">
+        <Stack flex={1} overflow="hidden" bgcolor="background.paper" spacing={1}>
+          <Tabs
+            value={tab}
+            onChange={(_, v) => setTab(v)}
+            textColor="secondary"
+            indicatorColor="secondary"
+            variant="scrollable"
+            sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+          >
+            <Tab label="전체 메뉴" value={null} />
+            <Tab label="정식" value="정식" />
+            <Tab label="세트" value="세트" />
+            <Tab label="사이드" value="사이드" />
+            <Tab label="음료" value="음료" />
+          </Tabs>
+
+          <ScrollContainer sx={{ height: 1, pl: 1, pb: 1 }}>
+            <PaymentMenu onClick={orderHandler} menus={mock} />
+          </ScrollContainer>
+        </Stack>
+        <PaymentOrder
+          orders={Array.from(order.values())}
+          onIncrease={increaseHandler}
+          onDecrease={decreaseHandler}
+          onDelete={deleteHandler}
+          onSubmit={qrOpen.onTrue}
+        />
       </Stack>
-      <PaymentOrder
-        orders={Array.from(order.values())}
-        onIncrease={increaseHandler}
-        onDecrease={decreaseHandler}
-        onDelete={deleteHandler}
-      />
-    </Stack>
+      <PaymentQr open={qrOpen.value} onClose={qrOpen.onFalse} onSuccess={submitHandler} />
+    </>
   )
 }

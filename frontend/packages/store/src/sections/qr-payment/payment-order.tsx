@@ -14,9 +14,16 @@ interface IProps {
   onIncrease: (id: string) => void
   onDecrease: (id: string) => void
   onDelete: (id: string) => void
+  onSubmit: () => void
 }
 
-export default function PaymentOrder({ orders, onIncrease, onDecrease, onDelete }: IProps) {
+export default function PaymentOrder({
+  orders,
+  onIncrease,
+  onDecrease,
+  onDelete,
+  onSubmit,
+}: IProps) {
   const totalPrice = useMemo(
     () => orders.reduce((acc, curr) => acc + curr.menu.price * curr.count, 0),
     [orders]
@@ -45,7 +52,13 @@ export default function PaymentOrder({ orders, onIncrease, onDecrease, onDelete 
       </ScrollContainer>
 
       <Box p={1}>
-        <Button fullWidth color="secondary" size="large" disabled={totalPrice === 0}>
+        <Button
+          fullWidth
+          color="secondary"
+          size="large"
+          disabled={totalPrice === 0}
+          onClick={onSubmit}
+        >
           {totalPrice > 0 ? `${fNumber(totalPrice)}원 결제` : '상품을 선택해주세요'}
         </Button>
       </Box>
