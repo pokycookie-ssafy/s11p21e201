@@ -50,7 +50,7 @@ class StoreServiceTest {
 	@Test
 	void find_store_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> storeService.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> storeService.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	StoreInfo createStoreInfo(String registerNumber) {

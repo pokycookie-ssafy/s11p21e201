@@ -42,7 +42,7 @@ public class PaymentDailySumServiceTest {
 	@DisplayName("존재하지 않는 장부_일일집계(Entity)를 조회하면 예외가 발생한다.")
 	@Test
 	void find_payment_daily_sum_entity_fail(){
-		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	private PaymentDailySum createPaymentDailySum(UUID contractId, int amount) {

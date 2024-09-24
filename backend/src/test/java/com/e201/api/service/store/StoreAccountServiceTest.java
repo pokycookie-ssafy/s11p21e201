@@ -66,7 +66,7 @@ class StoreAccountServiceTest {
 	@DisplayName("존재하지 않는 식당 계좌를 조회하면 예외를 발생한다.")
 	@Test
 	public void find_storeAccount_entity_fail() {
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	StoreAccount createStoreAccount(Store store) {

@@ -42,7 +42,7 @@ public class PaymentServiceTest {
 	@DisplayName("존재하지 않는 장부(Entity)를 조회하면 예외가 발생한다.")
 	@Test
 	void find_payment_entity_fail(){
-		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	private Payment createPayment(UUID contractId, UUID employeeId, Long totalAmount){

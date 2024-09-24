@@ -19,7 +19,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
-import com.e201.global.security.auth.env.AuthWhitelistProperties;
+import com.e201.global.security.auth.env.PathProperties;
 import com.e201.global.security.auth.exception.AuthenticationException;
 import com.e201.global.security.auth.filter.AuthenticationFilter;
 
@@ -39,16 +39,16 @@ class AuthenticationFilterTest {
 
 	AuthenticationFilter authenticationFilter;
 
-	AuthWhitelistProperties authWhitelistProperties;
+	PathProperties pathProperties;
 
 	FilterChain filterChain;
 
 	@BeforeEach
 	void init() {
-		AuthWhitelistProperties.AuthPath authPath = createAuthPath();
-		AuthWhitelistProperties.CreatePath createPath = createCreatePath();
-		authWhitelistProperties = new AuthWhitelistProperties(authPath, createPath);
-		authenticationFilter = new AuthenticationFilter(authWhitelistProperties);
+		PathProperties.AuthPath authPath = createAuthPath();
+		PathProperties.CreationPath creationPath = createCreationPath();
+		pathProperties = new PathProperties(authPath, creationPath);
+		authenticationFilter = new AuthenticationFilter(pathProperties);
 		filterChain = Mockito.mock(FilterChain.class);
 	}
 
@@ -99,8 +99,8 @@ class AuthenticationFilterTest {
 		verify(filterChain, times(1)).doFilter(any(), any());
 	}
 
-	private AuthWhitelistProperties.AuthPath createAuthPath() {
-		AuthWhitelistProperties.AuthPath authPath = new AuthWhitelistProperties.AuthPath();
+	private PathProperties.AuthPath createAuthPath() {
+		PathProperties.AuthPath authPath = new PathProperties.AuthPath();
 		authPath.setMethod(POST);
 		authPath.setCompanyPath(COMPANY_AUTH_PATH);
 		authPath.setManagerPath(MANAGER_AUTH_PATH);
@@ -108,12 +108,12 @@ class AuthenticationFilterTest {
 		return authPath;
 	}
 
-	private AuthWhitelistProperties.CreatePath createCreatePath() {
-		AuthWhitelistProperties.CreatePath createPath = new AuthWhitelistProperties.CreatePath();
-		createPath.setMethod(POST);
-		createPath.setCompanyPath(COMPANY_CREATE_PATH);
-		createPath.setManagerPath(MANAGER_CREATE_PATH);
-		createPath.setEmployeePath(EMPLOYEE_CREATE_PATH);
-		return createPath;
+	private PathProperties.CreationPath createCreationPath() {
+		PathProperties.CreationPath creationPath = new PathProperties.CreationPath();
+		creationPath.setMethod(POST);
+		creationPath.setCompanyPath(COMPANY_CREATE_PATH);
+		creationPath.setManagerPath(MANAGER_CREATE_PATH);
+		creationPath.setEmployeePath(EMPLOYEE_CREATE_PATH);
+		return creationPath;
 	}
 }

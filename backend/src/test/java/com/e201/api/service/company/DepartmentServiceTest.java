@@ -19,6 +19,7 @@ import com.e201.domain.entity.company.Department;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
+import com.e201.global.exception.EntityNotFoundException;
 
 @SpringBootTest
 @Transactional
@@ -56,7 +57,7 @@ class DepartmentServiceTest {
 		DepartmentCreateRequest request = createDepartmentCreateRequest(company.getId());
 
 		// when
-		DepartmentCreateResponse actual = sut.create(request);
+		DepartmentCreateResponse actual = sut.create(request, company.getId());
 
 		//then
 		assertThat(actual.getId()).isNotNull();
@@ -80,12 +81,11 @@ class DepartmentServiceTest {
 	@Test
 	void find_department_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private DepartmentCreateRequest createDepartmentCreateRequest(UUID companyId) {
 		return DepartmentCreateRequest.builder()
-			.companyId(companyId)
 			.code("부서코드")
 			.name("부서이름")
 			.build();

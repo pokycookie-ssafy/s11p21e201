@@ -14,6 +14,7 @@ import com.e201.api.controller.company.request.companyinfo.CompanyInfoCreateRequ
 import com.e201.api.controller.company.response.companyinfo.CompanyInfoCreateResponse;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyInfoRepository;
+import com.e201.global.exception.EntityNotFoundException;
 
 @SpringBootTest
 @Transactional
@@ -56,7 +57,7 @@ class CompanyInfoServiceTest {
 	@Test
 	void find_companyInfo_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private CompanyInfo createCompanyInfo() {

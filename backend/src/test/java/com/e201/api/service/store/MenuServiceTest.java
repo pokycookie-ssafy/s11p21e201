@@ -63,7 +63,7 @@ class MenuServiceTest {
 	@Test
 	void find_menu_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	private Menu createMenu() {
