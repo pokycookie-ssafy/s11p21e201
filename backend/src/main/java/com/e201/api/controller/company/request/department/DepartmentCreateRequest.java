@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DepartmentCreateRequest {
 
-	private UUID companyId;
+	@NotBlank
 	private String code;
+
+	@NotBlank
 	private String name;
 
 	@Builder
-	private DepartmentCreateRequest(UUID companyId, String code, String name) {
-		this.companyId = companyId;
+	private DepartmentCreateRequest(String code, String name) {
 		this.code = code;
 		this.name = name;
 	}

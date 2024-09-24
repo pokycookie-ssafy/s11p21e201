@@ -2,6 +2,10 @@ package com.e201.api.controller.company;
 
 import static org.springframework.http.HttpStatus.*;
 
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
 import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.api.service.company.DepartmentService;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,9 +26,10 @@ public class DepartmentController {
 	private final DepartmentService departmentService;
 
 	@PostMapping("/companies/departments")
-	public ResponseEntity<DepartmentCreateResponse> create(@RequestBody DepartmentCreateRequest request) {
-		// TODO <jhl221123> 기업 메인 계정만 생성 가능
-		DepartmentCreateResponse response = departmentService.create(request);
+	public ResponseEntity<DepartmentCreateResponse> create(@Auth AuthInfo authInfo,
+		@RequestBody DepartmentCreateRequest request) {
+		UUID companyId = authInfo.getId();
+		DepartmentCreateResponse response = departmentService.create(request, companyId);
 		return ResponseEntity.status(CREATED).body(response);
 	}
 }
