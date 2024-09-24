@@ -78,10 +78,16 @@ function PaymentListHeader() {
       bgcolor="background.paper"
       height={60}
     >
-      <Typography variant="subtitle2" color="text.secondary" flex={1} minWidth={100}>
+      <Typography variant="subtitle2" color="text.secondary" flex={1} minWidth={100} flexShrink={0}>
         회사
       </Typography>
-      <Typography variant="subtitle2" color="text.secondary" textAlign="end">
+      <Typography
+        variant="subtitle2"
+        color="text.secondary"
+        textAlign="end"
+        width={120}
+        flexShrink={0}
+      >
         가격
       </Typography>
       <Typography
