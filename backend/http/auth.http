@@ -1,0 +1,77 @@
+### 기업 정보 생성
+POST localhost:8080/companies/info
+Content-Type: application/json
+
+{
+  "registerNumber": "111",
+  "name": "name",
+  "representativeName": "repname",
+  "phone": "010-1234-1234",
+  "businessType": "cook",
+  "businessAddress": "address"
+}
+
+### 기업 계정 생성
+POST localhost:8080/companies
+Content-Type: application/json
+
+{
+  "companyInfoId": "75013f9e-4b32-49d6-8620-87d2244aa3e6",
+  "email": "company@test.com",
+  "password": "12341234"
+}
+
+### 기업 로그인
+POST localhost:8080/companies/auth
+Content-Type: application/json
+
+{
+  "email": "company@test.com",
+  "password": "12341234"
+}
+
+### 부서 생성
+POST localhost:8080/companies/departments
+Content-Type: application/json
+
+{
+  "code": "A123",
+  "name": "개발"
+}
+
+### 관리자 계정 생성
+POST localhost:8080/companies/managers
+Content-Type: application/json
+
+{
+  "departmentId": "bfe29632-d07b-40a0-a018-cf7ca1567ad9",
+  "code": "manager1",
+  "password": "12341234"
+}
+
+### 관리자 로그인
+POST localhost:8080/companies/managers/auth
+Content-Type: application/json
+
+{
+  "code": "manager1",
+  "password": "12341234"
+}
+
+### 직원 계정 생성
+POST localhost:8080/companies/employees
+Content-Type: application/json
+
+{
+  "code": "employee1",
+  "password": "12341234"
+}
+
+### 직원 로그인
+POST localhost:8080/companies/employees/auth
+Content-Type: application/json
+
+{
+  "code": "employee1",
+  "password": "12341234"
+}
