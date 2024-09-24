@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.service.company.EmployeeService;
+import com.e201.api.service.company.ManagerService;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,9 +23,8 @@ public class EmployeeController {
 	private final EmployeeService employeeService;
 
 	@PostMapping("/companies/employees")
-	public ResponseEntity<EmployeeCreateResponse> create(@RequestBody EmployeeCreateRequest request) {
-		// TODO <jhl221123> 관리자 계정만 생성 가능
-		EmployeeCreateResponse response = employeeService.create(request);
+	public ResponseEntity<EmployeeCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody EmployeeCreateRequest request) {
+		EmployeeCreateResponse response = employeeService.create(request, authInfo.getId());
 		return ResponseEntity.status(CREATED).body(response);
 	}
 }
