@@ -7,6 +7,7 @@ const MuiCard: Components<Theme>['MuiCard'] = {
     root: ({ theme }) => ({
       position: 'relative',
       boxShadow: `0 0 2px 0 ${alpha(color.grey[700], 0.2)}, 0 12px 24px -4px ${alpha(color.grey[700], 0.12)}`,
+      border: `1px solid ${theme.palette.divider}`,
       borderRadius: theme.shape.borderRadius * 2,
       backgroundColor: theme.palette.background.default,
       zIndex: 0,
