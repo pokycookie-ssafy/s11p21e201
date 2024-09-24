@@ -2,18 +2,18 @@ import Nav from '@/sections/layout/nav'
 import { Outlet } from 'react-router-dom'
 import Header from '@/sections/layout/header'
 
-import { Stack } from '@mui/material'
-
-import { FullContainer } from '@e201/ui'
+import { Box, Stack } from '@mui/material'
 
 export default function AppLayout() {
   return (
     <Stack direction="row">
       <Nav />
-      <FullContainer sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Stack width={1} height="100vh" sx={{ overflowY: 'auto' }}>
         <Header />
-        <Outlet />
-      </FullContainer>
+        <Box p={4}>
+          <Outlet />
+        </Box>
+      </Stack>
     </Stack>
   )
 }

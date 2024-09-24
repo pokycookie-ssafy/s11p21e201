@@ -40,30 +40,28 @@ export function PaymentManagementView() {
   }
 
   return (
-    <Box p={4}>
-      <Card>
-        <Stack direction="row" p={2} spacing={1}>
-          <SelectYear year={year} onChange={setYear} />
-          <SelectMonth month={month} onChange={setMonth} />
-        </Stack>
+    <Card>
+      <Stack direction="row" p={2} spacing={1}>
+        <SelectYear year={year} onChange={setYear} />
+        <SelectMonth month={month} onChange={setMonth} />
+      </Stack>
 
-        <PaymentListHeader />
+      <PaymentListHeader />
 
-        {groupedData.map((group, i) => (
-          <PaymentList
-            key={group.id}
-            data={group}
-            open={openIdx === i}
-            onOpen={() => setOpenIdx(i)}
-            onClose={() => setOpenIdx(null)}
-          />
-        ))}
+      {groupedData.map((group, i) => (
+        <PaymentList
+          key={group.id}
+          data={group}
+          open={openIdx === i}
+          onOpen={() => setOpenIdx(i)}
+          onClose={() => setOpenIdx(null)}
+        />
+      ))}
 
-        <Stack direction="row" justifyContent="center" width={1} px={1} p={2}>
-          <Pagination count={10} siblingCount={1} boundaryCount={0} />
-        </Stack>
-      </Card>
-    </Box>
+      <Stack direction="row" justifyContent="center" width={1} px={1} p={2}>
+        <Pagination count={10} siblingCount={1} boundaryCount={0} />
+      </Stack>
+    </Card>
   )
 }
 
