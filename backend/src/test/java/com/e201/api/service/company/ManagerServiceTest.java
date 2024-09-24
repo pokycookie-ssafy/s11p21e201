@@ -23,6 +23,8 @@ import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
 import com.e201.domain.repository.company.ManagerRepository;
+import com.e201.global.exception.EntityNotFoundException;
+import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
@@ -104,7 +106,7 @@ class ManagerServiceTest {
 		ManagerAuthRequest request = createManagerAuthRequest("존재하지 않는 코드", "12341234");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
@@ -116,7 +118,7 @@ class ManagerServiceTest {
 		ManagerAuthRequest request = createManagerAuthRequest("관리자코드", "invalid_password");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(PasswordIncorrectException.class);
 	}
 
 	@DisplayName("관리자(엔티티)를 조회한다.")
@@ -137,7 +139,7 @@ class ManagerServiceTest {
 	@Test
 	void find_manager_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private ManagerCreateRequest createManagerCreateRequest(UUID departmentId) {

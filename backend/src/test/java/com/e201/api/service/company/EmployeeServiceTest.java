@@ -19,10 +19,14 @@ import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
+import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.domain.repository.company.DepartmentRepository;
 import com.e201.domain.repository.company.EmployeeRepository;
+import com.e201.domain.repository.company.ManagerRepository;
+import com.e201.global.exception.EntityNotFoundException;
+import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
@@ -43,6 +47,9 @@ class EmployeeServiceTest {
 	EmployeeRepository employeeRepository;
 
 	@Autowired
+	ManagerRepository managerRepository;
+
+	@Autowired
 	EmployeeService sut;
 
 	@Autowired
@@ -54,6 +61,8 @@ class EmployeeServiceTest {
 
 	Department department;
 
+	Manager manager;
+
 	@BeforeEach
 	void setUp() {
 		companyInfo = createCompanyInfo("사업자 등록증 번호");
@@ -64,6 +73,9 @@ class EmployeeServiceTest {
 
 		department = createDepartment(company);
 		departmentRepository.save(department);
+
+		manager = createManager(department, "12341234");
+		managerRepository.save(manager);
 	}
 
 	@DisplayName("직원 계정을 저장한다.")
@@ -73,7 +85,7 @@ class EmployeeServiceTest {
 		EmployeeCreateRequest request = createEmployeeCreateRequest(department.getId());
 
 		// when
-		EmployeeCreateResponse actual = sut.create(request);
+		EmployeeCreateResponse actual = sut.create(request, manager.getId());
 
 		//then
 		assertThat(actual.getId()).isNotNull();
@@ -104,7 +116,7 @@ class EmployeeServiceTest {
 		EmployeeAuthRequest request = createEmployeeAuthRequest("존재하지 않는 코드", "12341234");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
@@ -116,7 +128,7 @@ class EmployeeServiceTest {
 		EmployeeAuthRequest request = createEmployeeAuthRequest("직원코드", "invalid_password");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(PasswordIncorrectException.class);
 	}
 
 	@DisplayName("직원(엔티티)를 조회한다.")
@@ -137,14 +149,21 @@ class EmployeeServiceTest {
 	@Test
 	void find_employee_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private EmployeeCreateRequest createEmployeeCreateRequest(UUID departmentId) {
 		return EmployeeCreateRequest.builder()
-			.departmentId(departmentId)
 			.code("직원코드")
 			.password("12341234")
+			.build();
+	}
+
+	private Manager createManager(Department department, String password) {
+		return Manager.builder()
+			.department(department)
+			.code("관리자코드")
+			.password(password)
 			.build();
 	}
 

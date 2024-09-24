@@ -1,5 +1,7 @@
 package com.e201.api.controller.company;
 
+import static com.e201.global.security.auth.constant.AuthConstant.*;
+import static com.e201.global.security.auth.constant.RoleType.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
@@ -12,10 +14,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 
 import com.e201.api.controller.company.request.department.DepartmentCreateRequest;
 import com.e201.api.controller.company.response.department.DepartmentCreateResponse;
 import com.e201.api.service.company.DepartmentService;
+import com.e201.global.security.auth.constant.AuthConstant;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(DepartmentController.class)
@@ -34,12 +40,14 @@ class DepartmentControllerTest extends AbstractRestDocsTest {
 		String requestJson = objectMapper.writeValueAsString(request);
 		DepartmentCreateResponse response = new DepartmentCreateResponse(departmentId);
 		String responseJson = objectMapper.writeValueAsString(response);
+		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
 
-		doReturn(response).when(departmentService).create(any(DepartmentCreateRequest.class));
+		doReturn(response).when(departmentService).create(any(DepartmentCreateRequest.class), any());
 
 		// expected
 		mockMvc.perform(post("/companies/departments")
 				.contentType(APPLICATION_JSON)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
 				.content(requestJson)
 			)
 			.andExpect(status().isCreated())
@@ -48,7 +56,6 @@ class DepartmentControllerTest extends AbstractRestDocsTest {
 
 	private DepartmentCreateRequest createDepartmentCreateRequest(UUID companyId) {
 		return DepartmentCreateRequest.builder()
-			.companyId(companyId)
 			.code("부서코드")
 			.name("부서이름")
 			.build();
