@@ -1,5 +1,6 @@
 package com.e201.global.security.auth.filter;
 
+import static com.e201.global.exception.ErrorCode.*;
 import static com.e201.global.security.auth.constant.AuthConstant.*;
 
 import java.io.IOException;
@@ -8,7 +9,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.HttpMethod;
 import org.springframework.util.PatternMatchUtils;
 
-import com.e201.global.security.auth.env.AuthWhitelistProperties;
+import com.e201.global.exception.ErrorCode;
+import com.e201.global.security.auth.env.PathProperties;
 import com.e201.global.security.auth.exception.AuthenticationException;
 
 import jakarta.servlet.Filter;
@@ -20,11 +22,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
-@EnableConfigurationProperties({AuthWhitelistProperties.class})
 @RequiredArgsConstructor
 public class AuthenticationFilter implements Filter {
 
-	private final AuthWhitelistProperties authWhitelistProperties;
+	private final PathProperties pathProperties;
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
@@ -38,31 +39,34 @@ public class AuthenticationFilter implements Filter {
 	private void authenticate(HttpServletRequest httpRequest, HttpSession session) {
 		if (isAuthenticationRequired(httpRequest)) {
 			if (session == null || session.getAttribute(AUTH_INFO.name()) == null) {
-				throw new AuthenticationException("authentication is failed");
+				throw new AuthenticationException(AUTHENTICATION_FAILED, "do not exist authentication info");
 			}
 		}
 	}
 
 	private boolean isAuthenticationRequired(HttpServletRequest request) {
-		AuthWhitelistProperties.AuthPath authPath = authWhitelistProperties.getAuthPath();
-		AuthWhitelistProperties.CreatePath createPath = authWhitelistProperties.getCreatePath();
+		PathProperties.AuthPath authPath = pathProperties.getAuthPath();
+		PathProperties.CreationPath creationPath = pathProperties.getCreationPath();
 		boolean isAuthPath = isAuthPath(request, authPath);
-		boolean isCreatePath = isCreatePath(request, createPath);
+		boolean isCreatePath = isCreatePath(request, creationPath);
 		return !(isAuthPath || isCreatePath);
 	}
 
-	private boolean isAuthPath(HttpServletRequest request, AuthWhitelistProperties.AuthPath authPath) {
-		boolean isCompanyAuthPath = matchURIAndMethod(request, authPath.getMethod(), authPath.getCompanyPath());
-		boolean isManagerAuthPath = matchURIAndMethod(request, authPath.getMethod(), authPath.getManagerPath());
-		boolean isEmployeeAuthPath = matchURIAndMethod(request, authPath.getMethod(), authPath.getEmployeePath());
+	private boolean isAuthPath(HttpServletRequest request, PathProperties.AuthPath authPath) {
+		HttpMethod method = authPath.getMethod();
+		boolean isCompanyAuthPath = matchURIAndMethod(request, method, authPath.getCompanyPath());
+		boolean isManagerAuthPath = matchURIAndMethod(request, method, authPath.getManagerPath());
+		boolean isEmployeeAuthPath = matchURIAndMethod(request, method, authPath.getEmployeePath());
 		return isCompanyAuthPath || isManagerAuthPath || isEmployeeAuthPath;
 	}
 
-	private boolean isCreatePath(HttpServletRequest request, AuthWhitelistProperties.CreatePath createPath) {
-		boolean isCompanyCreatePath = matchURIAndMethod(request, createPath.getMethod(), createPath.getCompanyPath());
-		boolean isManagerCreatePath = matchURIAndMethod(request, createPath.getMethod(), createPath.getManagerPath());
-		boolean isEmployeeCreatePath = matchURIAndMethod(request, createPath.getMethod(), createPath.getEmployeePath());
-		return isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath;
+	private boolean isCreatePath(HttpServletRequest request, PathProperties.CreationPath creationPath) {
+		HttpMethod method = creationPath.getMethod();
+		boolean isCompanyInfoCreatePath = matchURIAndMethod(request, method, creationPath.getCompanyInfoPath());
+		boolean isCompanyCreatePath = matchURIAndMethod(request, method, creationPath.getCompanyPath());
+		boolean isManagerCreatePath = matchURIAndMethod(request, method, creationPath.getManagerPath());
+		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
+		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath;
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

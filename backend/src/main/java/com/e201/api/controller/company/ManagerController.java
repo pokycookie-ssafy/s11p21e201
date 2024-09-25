@@ -21,7 +21,6 @@ public class ManagerController {
 
 	@PostMapping("/companies/managers")
 	public ResponseEntity<ManagerCreateResponse> create(@RequestBody ManagerCreateRequest request) {
-		// TODO <jhl221123> 관리자 계정만 생성 가능
 		ManagerCreateResponse response = managerService.create(request);
 		return ResponseEntity.status(CREATED).body(response);
 	}

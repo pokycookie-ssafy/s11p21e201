@@ -1,5 +1,8 @@
 package com.e201.api.service.company;
 
+import static com.e201.domain.entity.EntityConstant.*;
+import static com.e201.global.exception.ErrorCode.*;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +15,9 @@ import com.e201.domain.entity.BaseEntity;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyRepository;
+import com.e201.global.exception.EntityNotFoundException;
+import com.e201.global.exception.ErrorCode;
+import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
@@ -38,14 +44,14 @@ public class CompanyService extends BaseEntity {
 
 	public AuthInfo checkPassword(CompanyAuthRequest request) {
 		Company company = companyRepository.findByEmail(request.getEmail())
-			.orElseThrow(() -> new RuntimeException("not found company"));
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, COMPANY.name()));
 		validatePassword(request, company);
 		return new AuthInfo(company.getId(), RoleType.COMPANY);
 	}
 
 	public Company findEntity(UUID id) {
 		return companyRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, COMPANY.name()));
 	}
 
 	private void encryptPassword(Company company) {
@@ -55,7 +61,7 @@ public class CompanyService extends BaseEntity {
 
 	private void validatePassword(CompanyAuthRequest request, Company company) {
 		if (!oneWayCipherService.match(request.getPassword(), company.getPassword())) {
-			throw new RuntimeException("wrong password");
+			throw new PasswordIncorrectException(AUTHENTICATION_FAILED, COMPANY.name());
 		}
 	}
 }

@@ -19,6 +19,7 @@ import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyAccountRepository;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
+import com.e201.global.exception.EntityNotFoundException;
 
 @SpringBootTest
 @Transactional
@@ -68,7 +69,7 @@ class CompanyAccountServiceTest {
 	@Test
 	void find_companyAccount_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private Company createCompany(String email, String password, CompanyInfo companyInfo) {

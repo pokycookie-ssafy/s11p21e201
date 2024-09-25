@@ -5,6 +5,9 @@ import java.util.UUID;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CompanyCreateRequest {
 
+	@NotBlank
+	@Size(min = 36)
 	private UUID companyInfoId;
+
+	@Email
 	private String email;
+
+	@NotBlank
+	@Size(min = 8)
 	private String password;
 
 	@Builder

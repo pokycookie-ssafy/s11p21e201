@@ -5,6 +5,8 @@ import java.util.UUID;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Manager;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ManagerCreateRequest {
 
+	@NotBlank
 	private UUID departmentId;
+
+	@NotBlank
 	private String code;
+
+	@NotBlank
+	@Size(min = 8)
 	private String password;
 
 	@Builder

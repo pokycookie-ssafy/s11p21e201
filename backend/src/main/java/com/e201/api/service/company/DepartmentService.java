@@ -1,5 +1,8 @@
 package com.e201.api.service.company;
 
+import static com.e201.domain.entity.EntityConstant.*;
+import static com.e201.global.exception.ErrorCode.*;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.repository.company.DepartmentRepository;
+import com.e201.global.exception.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,8 +26,8 @@ public class DepartmentService {
 	private final CompanyService companyService;
 
 	@JtaTransactional
-	public DepartmentCreateResponse create(DepartmentCreateRequest request) {
-		Company company = companyService.findEntity(request.getCompanyId());
+	public DepartmentCreateResponse create(DepartmentCreateRequest request, UUID companyId) {
+		Company company = companyService.findEntity(companyId);
 		Department department = request.toEntity(company);
 		Department savedDepartment = departmentRepository.save(department);
 		return new DepartmentCreateResponse(savedDepartment.getId());
@@ -31,6 +35,6 @@ public class DepartmentService {
 
 	public Department findEntity(UUID id) {
 		return departmentRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, DEPARTMENT.name()));
 	}
 }

@@ -18,6 +18,8 @@ import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyInfoRepository;
 import com.e201.domain.repository.company.CompanyRepository;
+import com.e201.global.exception.EntityNotFoundException;
+import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
@@ -84,7 +86,7 @@ class CompanyServiceTest {
 		CompanyAuthRequest request = createCompanyAuthRequest("invalid@test.com", "12341234");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	@DisplayName("요청 비밀번호와 실제 비밀번호가 다르면 인증에 실패한다.")
@@ -96,7 +98,7 @@ class CompanyServiceTest {
 		CompanyAuthRequest request = createCompanyAuthRequest("company@test.com", "invalid_password");
 
 		// when //then
-		assertThatThrownBy(() -> sut.checkPassword(request)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.checkPassword(request)).isExactlyInstanceOf(PasswordIncorrectException.class);
 	}
 
 	@DisplayName("기업 계정(엔티티)을 조회한다.")
@@ -117,7 +119,7 @@ class CompanyServiceTest {
 	@Test
 	void find_company_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
 
 	private CompanyCreateRequest createCompanyCreateRequest(UUID companyInfoId) {

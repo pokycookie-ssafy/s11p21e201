@@ -44,7 +44,7 @@ public class ContractServiceTest {
 	@Test
 	void find_invoice_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	private Contract createContract(UUID companyId, UUID storeId, String status, int sattlementDate){

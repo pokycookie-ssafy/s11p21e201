@@ -9,11 +9,11 @@ import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties(prefix = "e201.security.auth.filter.whitelist")
-public class AuthWhitelistProperties {
+@ConfigurationProperties(prefix = "e201.security.auth.filter")
+public class PathProperties {
 
 	private final AuthPath authPath;
-	private final CreatePath createPath;
+	private final CreationPath creationPath;
 
 	@Getter
 	@Setter // TODO <jhl221123> 가능하다면 @RequiredArgsConstructor로 변경
@@ -26,8 +26,9 @@ public class AuthWhitelistProperties {
 
 	@Getter
 	@Setter
-	public static class CreatePath {
+	public static class CreationPath {
 		private HttpMethod method;
+		private String companyInfoPath;
 		private String companyPath;
 		private String managerPath;
 		private String employeePath;

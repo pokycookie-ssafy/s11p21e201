@@ -78,7 +78,7 @@ class SalesServiceTest {
 	@Test
 	void find_sales_entity_fail() {
 		// expected
-		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
 	private Sales createSales(Menu menu, UUID companyId) {

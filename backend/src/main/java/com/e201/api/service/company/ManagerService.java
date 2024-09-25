@@ -1,5 +1,8 @@
 package com.e201.api.service.company;
 
+import static com.e201.domain.entity.EntityConstant.*;
+import static com.e201.global.exception.ErrorCode.*;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +14,8 @@ import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.ManagerRepository;
+import com.e201.global.exception.EntityNotFoundException;
+import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
@@ -37,14 +42,14 @@ public class ManagerService {
 
 	public AuthInfo checkPassword(ManagerAuthRequest request) {
 		Manager manager = managerRepository.findByCode(request.getCode())
-			.orElseThrow(() -> new RuntimeException("not found manager"));
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, MANAGER.name()));
 		validatePassword(request, manager);
 		return new AuthInfo(manager.getId(), RoleType.MANAGER);
 	}
 
 	public Manager findEntity(UUID id) {
 		return managerRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, MANAGER.name()));
 	}
 
 	private void encryptPassword(Manager manager) {
@@ -54,7 +59,7 @@ public class ManagerService {
 
 	private void validatePassword(ManagerAuthRequest request, Manager manager) {
 		if (!oneWayCipherService.match(request.getPassword(), manager.getPassword())) {
-			throw new RuntimeException("wrong password");
+			throw new PasswordIncorrectException(AUTHENTICATION_FAILED, MANAGER.name());
 		}
 	}
 }
