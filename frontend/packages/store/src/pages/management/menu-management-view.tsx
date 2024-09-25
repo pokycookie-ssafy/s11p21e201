@@ -31,7 +31,7 @@ export default function MenuManagementView() {
 
   const columns: GridColDef[] = [
     { field: 'name', headerName: '이름', flex: 1, minWidth: 100 },
-    { field: 'category', headerName: '분류' },
+    { field: 'category', headerName: '분류', width: 100 },
     {
       field: 'price',
       headerName: '가격',
@@ -88,6 +88,7 @@ export default function MenuManagementView() {
             </Button>
           }
         />
+
         <Card>
           <Tabs
             value={tab}

@@ -3,7 +3,7 @@ import { createServer } from 'miragejs'
 
 import { menuResponse } from './response/menu'
 import { paymentResponse } from './response/payment'
-import { bankResponse, licenseResponse } from './response'
+import { contractNow, bankResponse, licenseResponse } from './response'
 
 export default function initServer() {
   createServer({
@@ -14,6 +14,7 @@ export default function initServer() {
       this.get(api.signUp.bank, () => bankResponse)
       this.get(api.management.payment, () => paymentResponse, { timing: 0 })
       this.get(api.menu.list, () => menuResponse, { timing: 1000 })
+      this.get(api.contract.list, () => contractNow, { timing: 1000 })
     },
   })
 }
