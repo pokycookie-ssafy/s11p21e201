@@ -10,12 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.e201.api.controller.store.request.MenuCreateRequest;
+import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
+import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
 class MenuServiceTest {
@@ -64,6 +67,35 @@ class MenuServiceTest {
 	void find_menu_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
+	}
+
+	@DisplayName("메뉴를 생성한다.")
+	@Test
+	void create_menu_entity_success() {
+		//given
+		MenuCreateRequest menuCreateRequest = createMenuRequest(store.getId());
+
+		//when
+		MenuCreateResponse actual = sut.create(store.getId(), RoleType.STORE ,menuCreateRequest);
+
+		//then
+		assertThat(actual.getId()).isNotNull();
+	}
+
+	@DisplayName("메뉴 생성을 실패한다.")
+	@Test
+	void create_menu_entity_fail() {
+		//given
+		MenuCreateRequest menuCreateRequest = createMenuRequest(store.getId());
+
+		//then
+		assertThatThrownBy(() ->sut.create(UUID.randomUUID(), RoleType.COMPANY, menuCreateRequest)).isInstanceOf(RuntimeException.class);
+	}
+
+	private MenuCreateRequest createMenuRequest(UUID id) {
+		return MenuCreateRequest.builder()
+			.price(10000)
+			.build();
 	}
 
 	private Menu createMenu() {
