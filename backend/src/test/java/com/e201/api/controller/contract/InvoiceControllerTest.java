@@ -6,7 +6,6 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.io.FileInputStream;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -33,11 +32,6 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 	void upload_invoice_success() throws Exception {
 		// given
 		String contractId = UUID.randomUUID().toString();
-		String fileName = "testImage1.png";
-		String filePath =
-			"C:\\Users\\SSAFY\\Desktop\\kkj\\Project\\SP2\\Project\\S11P21E201\\backend\\src\\test\\resources\\"
-				+ fileName;
-		FileInputStream fileInputStream = new FileInputStream(filePath);
 
 		UUID invoiceId = UUID.randomUUID();
 		UUID storeId = UUID.randomUUID();
@@ -49,12 +43,11 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		doReturn(response).when(invoiceService).create(any(), any());
 
 		MockMultipartFile image = new MockMultipartFile(
-			"images",
-			fileName,
+			"image",
+			"image.png",
 			IMAGE_PNG_VALUE,
-			fileInputStream
+			"image.png".getBytes()
 		);
-
 		// expect
 		mockMvc.perform(multipart("/invoice/upload")
 				.file(image)
@@ -73,21 +66,16 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		UUID storeId = UUID.randomUUID();
 		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 
-		String fileName = "testImage1.png";
-		String filePath =
-			"C:\\Users\\SSAFY\\Desktop\\kkj\\Project\\SP2\\Project\\S11P21E201\\backend\\src\\test\\resources\\"
-				+ fileName;
-		FileInputStream fileInputStream = new FileInputStream(filePath);
-
 		MockMultipartFile image = new MockMultipartFile(
-			"images",
-			fileName,
+			"image",
+			"image.png",
 			IMAGE_PNG_VALUE,
-			fileInputStream
+			"image.png".getBytes()
 		);
 
-		InvoiceDownloadResponse response = new InvoiceDownloadResponse(image.getResource(), IMAGE_PNG_VALUE, fileName);
-		doReturn(response).when(invoiceService).find(invoiceId);
+		InvoiceDownloadResponse response = new InvoiceDownloadResponse(image.getResource(), IMAGE_PNG_VALUE,
+			"image.png");
+		doReturn(response).when(invoiceService).download(invoiceId);
 
 		//expect
 		mockMvc.perform(get("/invoice/download/" + invoiceId)
