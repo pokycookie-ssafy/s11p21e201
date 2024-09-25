@@ -43,4 +43,7 @@ public class Store extends BaseEntity {
 		this.email = email;
 		this.password = password;
 	}
+	public void changePassword(String password) {
+		this.password = password;
+	}
 }
