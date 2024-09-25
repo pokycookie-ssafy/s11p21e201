@@ -11,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.e201.api.controller.store.request.StoreAccountCreateRequest;
+import com.e201.api.controller.store.response.StoreAccountCreateResponse;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreAccount;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreAccountRepository;
 import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
+import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
 class StoreAccountServiceTest {
@@ -69,14 +72,27 @@ class StoreAccountServiceTest {
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
-	StoreAccount createStoreAccount(Store store) {
+	@DisplayName("식당 계좌를 생성한다.")
+	@Test
+	public void create_storeAccount_entity_success() {
+		//given
+		StoreAccountCreateRequest storeAccountCreateRequest = createStoreAccountRequest(store.getId());
+		StoreAccount storeAccount = storeAccountCreateRequest.toEntity(store);
+
+		//when
+		StoreAccountCreateResponse response = sut.create(store.getId(), RoleType.STORE ,storeAccountCreateRequest);
+
+		//then
+		assertThat(response.getId()).isNotNull();
+	}
+	private	StoreAccount createStoreAccount(Store store) {
 		return StoreAccount.builder()
 			.store(store)
 			.bankCode("은행코드")
 			.bankName("은행이름").build();
 	}
 
-	StoreInfo createStoreInfo(String registerNumber) {
+	private StoreInfo createStoreInfo(String registerNumber) {
 		return StoreInfo.builder()
 			.registerNumber(registerNumber)
 			.name("식당이름")
@@ -92,6 +108,15 @@ class StoreAccountServiceTest {
 			.storeInfo(storeInfo)
 			.email(email)
 			.password(password)
+			.build();
+	}
+
+
+	private StoreAccountCreateRequest createStoreAccountRequest(UUID storeId){
+		return StoreAccountCreateRequest.builder()
+			.bankName("은행이름")
+			.bankCode("은행코드")
+			.accountNumber("계좌번호")
 			.build();
 	}
 }
