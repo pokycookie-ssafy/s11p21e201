@@ -30,40 +30,10 @@ public class ContractService{
 	}
 
 	@JtaTransactional
-<<<<<<< HEAD
-	public ContractCreateResponse create(String senderType, ContractCreateRequest request){
-		Contract contract;
-		switch (senderType){
-			case "STORE":
-				contract = request.toEntity(Status.COMPANY_WAITING);
-				break;
-			case "COMPANY":
-				contract = request.toEntity(Status.STORE_WAITING);
-				break;
-			default:
-				throw new RuntimeException("unknown sender type");
-		}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
 		Contract contract = createContractBySenderType(senderType, request);
->>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
-=======
-		try{
-			Contract savedContract = contractRepository.save(contract);
-			return new ContractCreateResponse(savedContract.getId());
-		} catch (Exception e){
-			throw new RuntimeException("failed to create contract");
-		}
->>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
-=======
-		Contract savedContract = contractRepository.save(contract);
-		return new ContractCreateResponse(savedContract.getId());
->>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 
 	private Contract createContractBySenderType(RoleType senderType, ContractCreateRequest request){

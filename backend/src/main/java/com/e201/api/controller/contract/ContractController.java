@@ -39,21 +39,7 @@ public class ContractController {
 
 	@DeleteMapping("/contracts/{contractId}")
 	public ResponseEntity<Object> delete(@PathVariable String contractId) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 		contractService.delete(contractId);
 		return ResponseEntity.status(NO_CONTENT).build();
-=======
-		try{
-			contractService.delete(contractId);
-			return ResponseEntity.status(NO_CONTENT).build();
-		} catch (Exception e){
-			return ResponseEntity.status(BAD_REQUEST).build();
-		}
->>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
-=======
-		contractService.delete(contractId);
-		return ResponseEntity.status(NO_CONTENT).build();
->>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 }
