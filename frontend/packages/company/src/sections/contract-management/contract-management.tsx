@@ -3,9 +3,24 @@ import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useQuery } from '@tanstack/react-query'
 import StoreInfoDialog from '@/sections/contract-management/store-infodialog'
+import ContractViewMenu from '@/sections/contract-management/contract-viewmenu'
 import ContractCreateDialog from '@/sections/contract-management/contract-createdialog'
 
-import { Stack, Button, Divider, Typography, Pagination } from '@mui/material'
+import {
+  Box,
+  Tab,
+  Tabs,
+  Menu,
+  Stack,
+  Badge,
+  Button,
+  Divider,
+  Typography,
+  Pagination,
+  IconButton,
+} from '@mui/material'
+
+import { Iconify } from '@e201/ui'
 
 const fetchStores = async () => {
   const response = await axios.get('/companies/stores')
@@ -54,9 +69,12 @@ export default function ContractManagement() {
     <Stack spacing={5}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">{t('contract_management')}</Typography>
-        <Button variant="contained" onClick={() => handleOpenContractCreateDialog()}>
-          {t('request_contract')}
-        </Button>
+        <Stack direction="row" gap={2}>
+          <ContractViewMenu />
+          <Button variant="contained" onClick={() => handleOpenContractCreateDialog()}>
+            {t('request_contract')}
+          </Button>
+        </Stack>
       </Stack>
       <Stack>
         {stores.map((store: IStore) => (

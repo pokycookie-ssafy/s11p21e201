@@ -22,5 +22,8 @@
   "request_contract": "제휴 신청하기",
   "send_request": "신청하기",
   "write_restaurant": "식당명을 입력하세요",
-  "store_owner": "대표자"
+  "store_owner": "대표자",
+  "incoming_request": "받은 제휴 요청",
+  "outgoing_request": "보낸 제휴 요청",
+  "approve": "승인하기"
 }
