@@ -27,6 +27,7 @@ import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Status;
 =======
@@ -82,6 +83,9 @@ import com.e201.domain.entity.contract.Status;
 import com.e201.domain.entity.contract.ContractResponse;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
+=======
+import com.e201.domain.entity.contract.ContractRespondType;
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.global.security.auth.dto.AuthInfo;
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 import com.e201.restdocs.AbstractRestDocsTest;
@@ -204,6 +208,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
 
+<<<<<<< HEAD
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 =======
@@ -215,6 +220,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
@@ -264,6 +272,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.andExpect(status().isNoContent());
 	}
 
+<<<<<<< HEAD
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
 =======
 =======
@@ -283,6 +292,10 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	private ContractRespondCondition createContractRespondCondition(String contractId,
+		ContractRespondType respondResult) {
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -303,6 +316,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
+<<<<<<< HEAD
 			.settlementDate(10)
 =======
 =======
@@ -324,6 +338,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 			.settlementDate(10)
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+			.settlementDay(10)
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 			.build();
 	}
 }

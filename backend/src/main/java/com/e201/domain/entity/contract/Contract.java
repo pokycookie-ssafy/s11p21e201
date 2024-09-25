@@ -23,16 +23,16 @@ public class Contract extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(columnDefinition = "BINARY(16)", name="contract_id")
+	@Column(columnDefinition = "BINARY(16)", name = "contract_id")
 	private UUID id;
 
-	@Column(name="company_id")
+	@Column(name = "company_id")
 	private UUID companyId;
 
-	@Column(name="store_id")
+	@Column(name = "store_id")
 	private UUID storeId;
 
-	@Column(name="status")
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -48,10 +48,11 @@ public class Contract extends BaseEntity {
 	private ContractStatus status;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
-	@Column(name="settlement_date")
-	private int settlementDate;
+	@Column(name = "settlement_day")
+	private int settlementDay;
 
 	@Builder
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65,10 +66,14 @@ public class Contract extends BaseEntity {
 =======
 	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	private Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDay) {
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
+<<<<<<< HEAD
 		this.settlementDate = settlementDate;
 <<<<<<< HEAD
 	}
@@ -81,9 +86,12 @@ public class Contract extends BaseEntity {
 		this.status = status;
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		this.settlementDay = settlementDay;
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 	}
 
-	public void update(ContractStatus contractStatus){
+	public void update(ContractStatus contractStatus) {
 		this.status = contractStatus;
 	}
 }

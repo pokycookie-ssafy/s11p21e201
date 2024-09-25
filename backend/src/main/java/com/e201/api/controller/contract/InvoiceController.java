@@ -54,7 +54,7 @@ public class InvoiceController {
 	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable String invoiceId) throws
 		IOException {
 
-		InvoiceDownloadResponse response = invoiceService.find(invoiceId);
+		InvoiceDownloadResponse response = invoiceService.download(invoiceId);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentDisposition(

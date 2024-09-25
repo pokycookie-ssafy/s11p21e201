@@ -17,6 +17,7 @@ import com.e201.domain.entity.contract.Status;
 import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,24 +25,35 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ContractCreateRequest {
+
+	@NotBlank
 	private String companyId;
+
+	@NotBlank
 	private String storeId;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private int settlementDate;
+=======
+
+	@NotBlank
+	private int settlementDay;
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 
 	@Builder
-	public ContractCreateRequest(String companyId, String storeId, int settlementDate) {
+	private ContractCreateRequest(String companyId, String storeId, int settlementDay) {
 		this.companyId = companyId;
 		this.storeId = storeId;
-		this.settlementDate = settlementDate;
+		this.settlementDay = settlementDay;
 	}
 
-	public Contract toEntity(ContractStatus status){
+	public Contract toEntity(ContractStatus status) {
 		return Contract.builder()
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))
+<<<<<<< HEAD
 			.settlementDate(settlementDate)
 =======
 =======
@@ -71,6 +83,9 @@ public class ContractCreateRequest {
 =======
 			.settlementDate(settlementDate)
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+			.settlementDay(settlementDay)
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 			.status(status)
 			.build();
 	}

@@ -18,7 +18,11 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
+=======
+import com.e201.domain.entity.contract.ContractRespondType;
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.Status;
@@ -180,7 +184,12 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractRespondCondition contractRespond = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+=======
+		ContractRespondCondition contractRespond = createContractRespondCondition(contractId,
+			ContractRespondType.APPROVE);
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(RoleType.STORE, contractRespond)).isInstanceOf(RuntimeException.class);
@@ -216,7 +225,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.STORE, request);
@@ -327,7 +336,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -375,7 +384,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -404,6 +413,7 @@ public class ContractServiceTest {
 		assertThat(contractResult).extracting("deleteYN").isEqualTo("Y");
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult){
 =======
@@ -456,6 +466,10 @@ public class ContractServiceTest {
 =======
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+	private ContractRespondCondition createContractRespondCondition(String contractId,
+		ContractRespondType respondResult) {
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -466,6 +480,7 @@ public class ContractServiceTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -497,11 +512,18 @@ public class ContractServiceTest {
 =======
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+			.settlementDay(10)
+			.build();
+	}
+
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
 			.status(contractStatus)
-			.settlementDate(settlementDate)
+			.settlementDay(settlementDay)
 			.build();
 	}
 
@@ -509,7 +531,11 @@ public class ContractServiceTest {
 		assertThat(contract)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			.extracting("companyId", "storeId", "status", "settlementDate")
+=======
+			.extracting("companyId", "storeId", "status", "settlementDay")
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 			.containsExactly(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 =======
 			.extracting("companyId", "storeId", "status", "sattlementDate")

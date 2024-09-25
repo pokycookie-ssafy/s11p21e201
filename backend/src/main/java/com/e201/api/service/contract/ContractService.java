@@ -13,7 +13,11 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
+=======
+import com.e201.domain.entity.contract.ContractRespondType;
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.Status;
@@ -36,11 +40,6 @@ import lombok.RequiredArgsConstructor;
 public class ContractService {
 
 	private final ContractRepository contractRepository;
-
-	public Contract findEntity(UUID id) {
-		return contractRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
-	}
 
 	@JtaTransactional
 <<<<<<< HEAD
@@ -112,6 +111,11 @@ public class ContractService {
 		};
 	}
 
+	public Contract findEntity(UUID id) {
+		return contractRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
 	@JtaTransactional
 	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request) {
 		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
@@ -122,7 +126,7 @@ public class ContractService {
 		return new ContractRespondResponse(contract.getId());
 	}
 
-	private ContractStatus updateContractStatus(Contract contract, ContractResponse response) {
+	private ContractStatus updateContractStatus(Contract contract, ContractRespondType response) {
 		return switch (response) {
 			case APPROVE -> ContractStatus.COMPLETE;
 			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT :
@@ -185,6 +189,7 @@ public class ContractService {
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
+<<<<<<< HEAD
 		contract.delete();
 <<<<<<< HEAD
 =======
@@ -195,5 +200,8 @@ public class ContractService {
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		contract.softDelete();
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 	}
 }

@@ -3,10 +3,8 @@ package com.e201.api.controller.contract.response;
 import org.springframework.core.io.Resource;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class InvoiceDownloadResponse {
 
 	private Resource resource;

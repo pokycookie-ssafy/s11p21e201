@@ -161,7 +161,7 @@ public class InvoiceServiceTest {
 		Invoice invoice = createInvoice(filePath, contract);
 		invoiceRepository.save(invoice);
 		//when
-		InvoiceDownloadResponse actual = sut.find(invoice.getId().toString());
+		InvoiceDownloadResponse actual = sut.download(invoice.getId().toString());
 
 		//then
 		assertThat(actual).isNotNull();
@@ -175,7 +175,7 @@ public class InvoiceServiceTest {
 		UUID invoice = UUID.randomUUID();
 
 		//expect
-		assertThatThrownBy(() -> sut.find(invoice.toString())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.download(invoice.toString())).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("세금계산서를 삭제 한다.")
@@ -257,13 +257,17 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
 	}
 
+<<<<<<< HEAD
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
+>>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
 			.status(contractStatus)
-			.settlementDate(settlementDate)
+			.settlementDay(settlementDay)
 			.build();
 	}
 
