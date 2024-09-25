@@ -18,9 +18,7 @@ export default function MainLayout() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Toaster />
-        <Container sx={{ p: 4 }}>
-          <Outlet />
-        </Container>
+        <Outlet />
       </ThemeProvider>
     </QueryClientProvider>
   )

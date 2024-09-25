@@ -3,6 +3,9 @@ const PATH = {
   component: '/components',
   mirage: '/mirage',
   locale: '/locale',
+  management: '/management',
+  payment: '/payment',
+  settlement: '/settlement',
 }
 
 const paths = {
@@ -17,6 +20,19 @@ const paths = {
   },
   locale: {
     root: PATH.locale,
+  },
+  settlement: {
+    root: PATH.settlement,
+  },
+  payment: {
+    root: PATH.payment,
+  },
+  management: {
+    member: `${PATH.management}/member`,
+    contract: `${PATH.management}/contract`,
+  },
+  temp: {
+    temp: `${PATH}/temp`,
   },
 }
 
