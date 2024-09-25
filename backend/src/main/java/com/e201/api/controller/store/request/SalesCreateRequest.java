@@ -5,18 +5,20 @@ import java.util.UUID;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Sales;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@NotNull
 public class SalesCreateRequest {
 	private UUID menuId;
 	private UUID companyId;
 
 	@Builder
-	public SalesCreateRequest(final UUID menuId, final UUID companyId) {
+	private SalesCreateRequest(final UUID menuId, final UUID companyId) {
 		this.menuId	= menuId;
 		this.companyId = companyId;
 	}

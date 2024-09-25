@@ -28,7 +28,7 @@ public class StoreAuthController {
 		return ResponseEntity.status(CREATED).build();
 	}
 
-	@DeleteMapping("/stores")
+	@DeleteMapping("/stores/auth")
 	public ResponseEntity<Void> logout(HttpServletRequest httpRequest){
 		httpRequest.getSession().invalidate();
 		return ResponseEntity.status(NO_CONTENT).build();
