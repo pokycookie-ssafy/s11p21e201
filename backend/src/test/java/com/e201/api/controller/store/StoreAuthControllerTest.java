@@ -59,7 +59,7 @@ public class StoreAuthControllerTest  extends AbstractRestDocsTest {
 		//given
 		when(httpRequest.getSession()).thenReturn(session);
 
-		mockMvc.perform(delete("/stores")
+		mockMvc.perform(delete("/stores/auth")
 				.requestAttr("httpRequest", httpRequest)) // httpRequest를 요청 속성으로 전달
 			.andExpect(request().sessionAttributeDoesNotExist())
 			.andExpect(status().isNoContent());

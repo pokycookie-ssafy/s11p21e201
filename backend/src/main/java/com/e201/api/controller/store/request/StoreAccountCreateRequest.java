@@ -5,19 +5,21 @@ import java.util.UUID;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreAccount;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@NotNull
 public class StoreAccountCreateRequest {
 	private String bankCode;
 	private	String bankName;
 	private String accountNumber;
 
 	@Builder
-	public StoreAccountCreateRequest(String bankCode, String bankName, String accountNumber) {
+	private StoreAccountCreateRequest(String bankCode, String bankName, String accountNumber) {
 		this.bankCode=bankCode;
 		this.bankName = bankName;
 		this.accountNumber= accountNumber;

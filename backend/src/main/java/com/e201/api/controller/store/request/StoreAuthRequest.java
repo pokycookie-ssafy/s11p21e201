@@ -1,17 +1,19 @@
 package com.e201.api.controller.store.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@NotNull
 public class StoreAuthRequest {
-	String email;
-	String password;
+	private String email;
+	private String password;
 
 	@Builder
-	public StoreAuthRequest(String email, String password) {
+	private StoreAuthRequest(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}

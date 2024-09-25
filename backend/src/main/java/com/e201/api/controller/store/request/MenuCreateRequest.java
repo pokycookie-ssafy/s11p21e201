@@ -3,18 +3,20 @@ package com.e201.api.controller.store.request;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@NotNull
 public class MenuCreateRequest {
 	private String name;
 	private int price;
 
 	@Builder
-	public MenuCreateRequest(String name, int price) {
+	private MenuCreateRequest(String name, int price) {
 		this.name = name;
 		this.price = price;
 	}
