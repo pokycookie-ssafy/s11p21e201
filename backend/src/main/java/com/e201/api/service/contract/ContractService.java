@@ -33,16 +33,17 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @JtaTransactional(readOnly = true)
-public class ContractService{
+public class ContractService {
 
 	private final ContractRepository contractRepository;
 
-	public Contract findEntity(UUID id){
+	public Contract findEntity(UUID id) {
 		return contractRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
 	@JtaTransactional
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -72,6 +73,9 @@ public class ContractService{
 <<<<<<< HEAD
 =======
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request){
+=======
+	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		Contract contract = createContractBySenderType(senderType, request);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
@@ -100,7 +104,7 @@ public class ContractService{
 >>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
 	}
 
-	private Contract createContractBySenderType(RoleType senderType, ContractCreateRequest request){
+	private Contract createContractBySenderType(RoleType senderType, ContractCreateRequest request) {
 		return switch (senderType) {
 			case STORE -> request.toEntity(ContractStatus.STORE_REQUEST);
 			case COMPANY -> request.toEntity(ContractStatus.COMPANY_REQUEST);
@@ -109,7 +113,7 @@ public class ContractService{
 	}
 
 	@JtaTransactional
-	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request){
+	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request) {
 		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
@@ -118,11 +122,11 @@ public class ContractService{
 		return new ContractRespondResponse(contract.getId());
 	}
 
-	private ContractStatus updateContractStatus(Contract contract, ContractResponse response){
-		return switch(response){
+	private ContractStatus updateContractStatus(Contract contract, ContractResponse response) {
+		return switch (response) {
 			case APPROVE -> ContractStatus.COMPLETE;
-			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT : ContractStatus.COMPANY_REJECT;
-			default -> throw new IllegalArgumentException("unknown respond result");
+			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT :
+				ContractStatus.COMPANY_REJECT;
 		};
 =======
 =======
@@ -168,12 +172,16 @@ public class ContractService{
 	}
 
 	@JtaTransactional
+<<<<<<< HEAD
 	public void delete(String contractId){
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	public void delete(String contractId) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 

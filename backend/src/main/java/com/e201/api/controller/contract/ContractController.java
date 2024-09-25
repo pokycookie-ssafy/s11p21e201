@@ -40,7 +40,12 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody ContractCreateRequest request) {
+=======
+	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo,
+		@RequestBody ContractCreateRequest request) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
 =======
 =======
@@ -64,7 +69,12 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
+=======
+	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo,
+		@RequestBody ContractRespondCondition request) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		ContractRespondResponse response = contractService.respond(authInfo.getRoleType(), request);
 =======
 	public ResponseEntity<ContractRespondResponse> respond(@RequestBody ContractRespondCondition request) {
@@ -84,6 +94,7 @@ public class ContractController {
 	}
 
 	@DeleteMapping("/contracts/{contractId}")
+<<<<<<< HEAD
 	public ResponseEntity<Object> delete(@PathVariable String contractId) {
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -91,6 +102,9 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+	public ResponseEntity<Object> delete(@Auth AuthInfo authInfo, @PathVariable String contractId) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		contractService.delete(contractId);
 		return ResponseEntity.status(NO_CONTENT).build();
 =======

@@ -33,7 +33,7 @@ public class InvoiceService {
 	@Value("${spring.servlet.multipart.location}")
 	private String path;
 
-	public Invoice findDomain(UUID id) {
+	public Invoice findEntity(UUID id) {
 		return invoiceRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
@@ -86,7 +86,7 @@ public class InvoiceService {
 
 		// 신규 파일 생성
 		String newFileName = folder + UUID.randomUUID().toString() + ext;
-		File newfile = new File(newFileName);
+		File newfile = new File(path + newFileName);
 
 		try {
 			uploadFile.transferTo(newfile);

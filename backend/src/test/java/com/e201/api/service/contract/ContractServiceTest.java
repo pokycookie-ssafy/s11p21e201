@@ -81,7 +81,7 @@ public class ContractServiceTest {
 
 	@DisplayName("기업이 계약 정보(Entity)를 저장한다.")
 	@Test
-	void company_create_contract_entity_success(){
+	void company_create_contract_entity_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -104,9 +104,21 @@ public class ContractServiceTest {
 		assertThat(actual.getId()).isNotNull();
 	}
 
+	@DisplayName("계약 생성 시 잘못된 senderType이 전달될 경우 실패한다.")
+	@Test
+	void company_create_contract_entity_fail() {
+		//given
+		String companyId = UUID.randomUUID().toString();
+		String storeId = UUID.randomUUID().toString();
+		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+		//expect
+		assertThatThrownBy(() -> sut.create(RoleType.EMPLOYEE, request)).isInstanceOf(
+			IllegalArgumentException.class);
+	}
+
 	@DisplayName("식당이 계약 정보(Entity)를 저장한다.")
 	@Test
-	void store_create_contract_entity_success(){
+	void store_create_contract_entity_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -131,7 +143,7 @@ public class ContractServiceTest {
 
 	@DisplayName("계약 정보(Entity)를 저장을 실패 시 예외가 발생한다.")
 	@Test
-	void create_contract_entity_fail(){
+	void create_contract_entity_fail() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -162,7 +174,7 @@ public class ContractServiceTest {
 
 	@DisplayName("기존의 계약 id가 존재 하지 않을 경우 예외가 발생한다.")
 	@Test
-	void find_exist_contract_entity_fail(){
+	void find_exist_contract_entity_fail() {
 		//given
 		String contractId = UUID.randomUUID().toString();
 <<<<<<< HEAD
@@ -193,7 +205,7 @@ public class ContractServiceTest {
 
 	@DisplayName("계약을 수락한다.")
 	@Test
-	void update_contract_approve_success(){
+	void update_contract_approve_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -204,7 +216,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.APPROVE);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.STORE, request);
@@ -264,7 +276,7 @@ public class ContractServiceTest {
 
 	@DisplayName("잘못된 Respond가 전송될 경우 예외가 발생한다.")
 	@Test
-	void update_contract_approve_fail(){
+	void update_contract_approve_fail() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -275,7 +287,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,null);
+		ContractRespondCondition request = createContractRespondCondition(contractId, null);
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(RoleType.STORE, request)).isInstanceOf(RuntimeException.class);
@@ -304,7 +316,7 @@ public class ContractServiceTest {
 
 	@DisplayName("기업이 계약을 거절한다.")
 	@Test
-	void update_contract_reject_by_company_success(){
+	void update_contract_reject_by_company_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -315,7 +327,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -352,7 +364,7 @@ public class ContractServiceTest {
 
 	@DisplayName("식당이 계약을 거절한다.")
 	@Test
-	void update_contract_reject_by_store_success(){
+	void update_contract_reject_by_store_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -363,7 +375,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId,ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -375,7 +387,7 @@ public class ContractServiceTest {
 
 	@DisplayName("계약을 삭제한다.")
 	@Test
-	void delete_contract_success(){
+	void delete_contract_success() {
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -392,6 +404,7 @@ public class ContractServiceTest {
 		assertThat(contractResult).extracting("deleteYN").isEqualTo("Y");
 	}
 
+<<<<<<< HEAD
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult){
 =======
 =======
@@ -440,13 +453,16 @@ public class ContractServiceTest {
 
 	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult){
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
 			.build();
 	}
 
-	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
+	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
@@ -457,6 +473,7 @@ public class ContractServiceTest {
 			.build();
 	}
 
+<<<<<<< HEAD
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate){
 =======
 =======
@@ -477,6 +494,9 @@ public class ContractServiceTest {
 
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate){
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)

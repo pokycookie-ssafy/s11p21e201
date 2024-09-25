@@ -1,5 +1,7 @@
 package com.e201.api.controller.contract;
 
+import static com.e201.global.security.auth.constant.AuthConstant.*;
+import static com.e201.global.security.auth.constant.RoleType.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,6 +48,7 @@ import com.e201.domain.entity.contract.Status;
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 =======
 import com.e201.domain.entity.contract.ContractResponse;
+<<<<<<< HEAD
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
 import org.springframework.http.MediaType;
@@ -78,6 +81,9 @@ import com.e201.domain.entity.contract.Status;
 =======
 import com.e201.domain.entity.contract.ContractResponse;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+import com.e201.global.security.auth.dto.AuthInfo;
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -91,6 +97,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void create_contract_success() throws Exception {
 =======
 	void create_contract_success() throws Exception{
@@ -101,10 +108,14 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 	void create_contract_success() throws Exception{
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	void create_contract_success() throws Exception {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		UUID contractId = UUID.randomUUID();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -118,7 +129,13 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		ContractCreateRequest request = createContractCreateRequest(companyId,storeId);
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+
+		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		String requestJson = objectMapper.writeValueAsString(request);
+
+		AuthInfo authInfo = new AuthInfo(UUID.fromString(companyId), COMPANY);
 
 		ContractCreateResponse response = new ContractCreateResponse(contractId);
 		String responseJson = objectMapper.writeValueAsString(response);
@@ -152,6 +169,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		mockMvc.perform(post("/contracts")
 				.contentType(APPLICATION_JSON)
 				.content(requestJson)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
 			)
 			.andExpect(status().isCreated())
 			.andExpect(content().json(responseJson));
@@ -174,13 +192,19 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
 	@DisplayName("계약 요청을 수락한다.")
 	@Test
-	void respond_contract_success() throws Exception{
+	void respond_contract_success() throws Exception {
 		//given
+		UUID companyId = UUID.randomUUID();
 		String contractId = UUID.randomUUID().toString();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
+
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, "APPROVE");
@@ -213,6 +237,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
 				.content(requestJson)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
 			)
 			.andExpect(status().isOk())
 			.andExpect(content().json(responseJson));
@@ -220,15 +245,22 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 	@DisplayName("계약을 해지한다")
 	@Test
-	void delete_contract_success() throws Exception{
+	void delete_contract_success() throws Exception {
 		//given
 		String contractId = UUID.randomUUID().toString();
+		UUID companyId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
 
 		//expect
+<<<<<<< HEAD
 		mockMvc.perform(delete("/contracts/"+contractId))
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+		mockMvc.perform(delete("/contracts/" + contractId)
+				.sessionAttr(AUTH_INFO.name(), authInfo))
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 			.andExpect(status().isNoContent());
 	}
 
@@ -259,11 +291,15 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 >>>>>>> b57a788 ([#17] feat: 계약 생성, 수락, 삭제 기능 구현)
+=======
+	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)

@@ -1,5 +1,6 @@
 package com.e201.api.controller.contract;
 
+import static com.e201.global.security.auth.constant.AuthConstant.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -17,6 +18,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import com.e201.api.controller.contract.response.InvoiceCreateResponse;
 import com.e201.api.controller.contract.response.InvoiceDownloadResponse;
 import com.e201.api.service.contract.InvoiceService;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(InvoiceController.class)
@@ -37,6 +40,8 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		FileInputStream fileInputStream = new FileInputStream(filePath);
 
 		UUID invoiceId = UUID.randomUUID();
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 
 		InvoiceCreateResponse response = new InvoiceCreateResponse(invoiceId);
 		String responseJson = objectMapper.writeValueAsString(response);
@@ -54,6 +59,7 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		mockMvc.perform(multipart("/invoice/upload")
 				.file(image)
 				.contentType(MULTIPART_FORM_DATA)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
 				.param("contractId", contractId)
 			).andExpect(status().isOk())
 			.andExpect(content().json(responseJson));
@@ -64,6 +70,8 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 	void download_invoice_success() throws Exception {
 		//given
 		String invoiceId = UUID.randomUUID().toString();
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 
 		String fileName = "testImage1.png";
 		String filePath =
@@ -82,7 +90,9 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		doReturn(response).when(invoiceService).find(invoiceId);
 
 		//expect
-		mockMvc.perform(get("/invoice/download/" + invoiceId))
+		mockMvc.perform(get("/invoice/download/" + invoiceId)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
+			)
 			.andExpect(status().isOk());
 	}
 
@@ -91,9 +101,13 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 	void delete_invoice_success() throws Exception {
 		//given
 		String invoiceId = UUID.randomUUID().toString();
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 
 		//expect
-		mockMvc.perform(delete("/invoices/" + invoiceId))
+		mockMvc.perform(delete("/invoices/" + invoiceId)
+				.sessionAttr(AUTH_INFO.name(), authInfo)
+			)
 			.andExpect(status().isNoContent());
 	}
 }

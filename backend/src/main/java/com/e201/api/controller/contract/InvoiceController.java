@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.e201.api.controller.contract.response.InvoiceCreateResponse;
 import com.e201.api.controller.contract.response.InvoiceDownloadResponse;
 import com.e201.api.service.contract.InvoiceService;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +34,7 @@ public class InvoiceController {
 	@PostMapping("/invoice/upload")
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public ResponseEntity<InvoiceCreateResponse> upload(MultipartFile uploadFile,
 =======
 	public ResponseEntity<InvoiceCreateResponse> upload(@RequestParam MultipartFile uploadFile,
@@ -39,13 +42,17 @@ public class InvoiceController {
 =======
 	public ResponseEntity<InvoiceCreateResponse> upload(MultipartFile uploadFile,
 >>>>>>> 2cce882 ([#17] test: Invoice Controller 테스트 코드 작성)
+=======
+	public ResponseEntity<InvoiceCreateResponse> upload(@Auth AuthInfo authInfo, MultipartFile uploadFile,
+>>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		@RequestParam String contractId) {
 		InvoiceCreateResponse response = invoiceService.create(uploadFile, contractId);
 		return ResponseEntity.status(OK).body(response);
 	}
 
 	@GetMapping("/invoice/download/{invoiceId}")
-	public ResponseEntity<Resource> download(@PathVariable String invoiceId) throws IOException {
+	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable String invoiceId) throws
+		IOException {
 
 		InvoiceDownloadResponse response = invoiceService.find(invoiceId);
 
@@ -62,7 +69,7 @@ public class InvoiceController {
 	}
 
 	@DeleteMapping("/invoices/{invoiceId}")
-	public ResponseEntity<Object> delete(@PathVariable String invoiceId) {
+	public ResponseEntity<Object> delete(@Auth AuthInfo authInfo, @PathVariable String invoiceId) {
 		invoiceService.delete(invoiceId);
 		return ResponseEntity.status(NO_CONTENT).build();
 	}
