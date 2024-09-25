@@ -11,6 +11,9 @@ const api = {
   menu: {
     list: '/stores/menus',
   },
+  contract: {
+    list: '/stores/contracts',
+  },
 }
 
 export default api

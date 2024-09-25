@@ -15,6 +15,10 @@ import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
 import SettlementDashboardView from '@/pages/dashboard/settlement-dashboard-view'
 import { PaymentManagementView } from '@/pages/management/payment-management-view'
 import SalesCompanyDashboardView from '@/pages/dashboard/sales-company-dashboard-view'
+import ContractNowManagementView from '@/pages/management/contract-now-management-view'
+import ContractNewManagementView from '@/pages/management/contract-new-management-view'
+import ContractRequestManagementView from '@/pages/management/contract-request-management-view'
+import ContractHistoryManagementView from '@/pages/management/contract-history-management-view'
 
 const mainRoute: RouteObject[] = [
   {
@@ -68,6 +72,22 @@ const mainRoute: RouteObject[] = [
       {
         path: paths.management.payment,
         element: <PaymentManagementView />,
+      },
+      {
+        path: paths.management.contract.now,
+        element: <ContractNowManagementView />,
+      },
+      {
+        path: paths.management.contract.new,
+        element: <ContractNewManagementView />,
+      },
+      {
+        path: paths.management.contract.request,
+        element: <ContractRequestManagementView />,
+      },
+      {
+        path: paths.management.contract.history,
+        element: <ContractHistoryManagementView />,
       },
     ],
   },
