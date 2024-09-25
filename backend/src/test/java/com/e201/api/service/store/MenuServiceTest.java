@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
@@ -21,6 +22,7 @@ import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
+@Transactional
 class MenuServiceTest {
 
 	@Autowired

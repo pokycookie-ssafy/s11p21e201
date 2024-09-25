@@ -23,6 +23,7 @@ import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
 @SpringBootTest
+@Transactional
 class StoreServiceTest {
 
 	@Autowired

@@ -16,6 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.e201.api.controller.store.request.StoreAccountCreateRequest;
 import com.e201.api.controller.store.response.StoreAccountCreateResponse;
 import com.e201.api.service.store.StoreAccountService;
+import com.e201.global.security.auth.constant.AuthConstant;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(StoreAccountController.class)
@@ -29,6 +32,7 @@ public class StoreAccountControllerTest extends AbstractRestDocsTest {
 		//given
 		UUID storeAccountId = UUID.randomUUID();
 		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 		StoreAccountCreateRequest request = createStoreAccountRequest();
 		String requestJson = objectMapper.writeValueAsString(request);
 		StoreAccountCreateResponse response = new StoreAccountCreateResponse(storeAccountId);
@@ -37,9 +41,10 @@ public class StoreAccountControllerTest extends AbstractRestDocsTest {
 		doReturn(response).when(storeAccountService).create(any(),any(),any(StoreAccountCreateRequest.class));
 
 		// expected
-		mockMvc.perform(post("/stores/account")
+		mockMvc.perform(post("/stores/accounts")
 				.contentType(APPLICATION_JSON)
 				.content(requestJson)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
 			)
 			.andExpect(status().isCreated())
 			.andExpect(content().json(responseJson));
