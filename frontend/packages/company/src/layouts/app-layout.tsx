@@ -4,8 +4,6 @@ import Header from '@/sections/layout/header'
 
 import { Box, Stack } from '@mui/material'
 
-import { FullContainer } from '@e201/ui'
-
 export default function AppLayout() {
   return (
     <Stack direction="row">
