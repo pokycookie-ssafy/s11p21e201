@@ -10,7 +10,7 @@ import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.ContractResponse;
+import com.e201.domain.entity.contract.ContractRespondType;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
@@ -23,11 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class ContractService {
 
 	private final ContractRepository contractRepository;
-
-	public Contract findEntity(UUID id) {
-		return contractRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
-	}
 
 	@JtaTransactional
 	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request) {
@@ -44,6 +39,11 @@ public class ContractService {
 		};
 	}
 
+	public Contract findEntity(UUID id) {
+		return contractRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
 	@JtaTransactional
 	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request) {
 		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
@@ -54,7 +54,7 @@ public class ContractService {
 		return new ContractRespondResponse(contract.getId());
 	}
 
-	private ContractStatus updateContractStatus(Contract contract, ContractResponse response) {
+	private ContractStatus updateContractStatus(Contract contract, ContractRespondType response) {
 		return switch (response) {
 			case APPROVE -> ContractStatus.COMPLETE;
 			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT :
@@ -67,6 +67,6 @@ public class ContractService {
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
-		contract.delete();
+		contract.softDelete();
 	}
 }

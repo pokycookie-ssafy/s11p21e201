@@ -1,5 +1,5 @@
 package com.e201.domain.entity.contract;
 
-public enum ContractResponse {
+public enum ContractRespondType {
 	APPROVE, REJECT
 }

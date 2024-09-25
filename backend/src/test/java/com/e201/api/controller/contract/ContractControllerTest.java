@@ -19,7 +19,7 @@ import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
-import com.e201.domain.entity.contract.ContractResponse;
+import com.e201.domain.entity.contract.ContractRespondType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
@@ -66,7 +66,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
 
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
@@ -97,7 +97,8 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.andExpect(status().isNoContent());
 	}
 
-	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
+	private ContractRespondCondition createContractRespondCondition(String contractId,
+		ContractRespondType respondResult) {
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -108,7 +109,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.settlementDate(10)
+			.settlementDay(10)
 			.build();
 	}
 }

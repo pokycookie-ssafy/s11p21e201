@@ -23,32 +23,32 @@ public class Contract extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(columnDefinition = "BINARY(16)", name="contract_id")
+	@Column(columnDefinition = "BINARY(16)", name = "contract_id")
 	private UUID id;
 
-	@Column(name="company_id")
+	@Column(name = "company_id")
 	private UUID companyId;
 
-	@Column(name="store_id")
+	@Column(name = "store_id")
 	private UUID storeId;
 
-	@Column(name="status")
+	@Column(name = "status")
 	@Enumerated(EnumType.STRING)
 	private ContractStatus status;
 
-	@Column(name="settlement_date")
-	private int settlementDate;
+	@Column(name = "settlement_day")
+	private int settlementDay;
 
 	@Builder
-	public Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDate) {
+	private Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDay) {
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
-		this.settlementDate = settlementDate;
+		this.settlementDay = settlementDay;
 	}
 
-	public void update(ContractStatus contractStatus){
+	public void update(ContractStatus contractStatus) {
 		this.status = contractStatus;
 	}
 }

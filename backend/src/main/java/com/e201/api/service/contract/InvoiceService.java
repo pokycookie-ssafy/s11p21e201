@@ -33,28 +33,27 @@ public class InvoiceService {
 	@Value("${spring.servlet.multipart.location}")
 	private String path;
 
-	public Invoice findEntity(UUID id) {
-		return invoiceRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("not found exception"));
-	}
-
 	@JtaTransactional
 	public InvoiceCreateResponse create(MultipartFile uploadFile, String contractId) {
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
-		String res = fileUpload(uploadFile, contractId);
-		System.out.println(res);
+		String imageUrl = fileUpload(uploadFile, contractId);
 
 		Invoice invoice = Invoice.builder()
 			.contract(contract)
-			.imageUrl(res).build();
+			.imageUrl(imageUrl).build();
 
 		invoiceRepository.save(invoice);
 		return new InvoiceCreateResponse(UUID.fromString(contractId));
 	}
 
-	public InvoiceDownloadResponse find(String invoiceId) throws IOException {
+	public Invoice findEntity(UUID id) {
+		return invoiceRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
+	public InvoiceDownloadResponse download(String invoiceId) throws IOException {
 		Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
@@ -71,21 +70,21 @@ public class InvoiceService {
 		Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceId))
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
-		invoice.delete();
+		invoice.softDelete();
 	}
 
 	private String fileUpload(MultipartFile uploadFile, String contractId) {
-		String folder = "invoice" + File.separator + contractId + File.separator;
-		File dir = new File(path + folder);
+		String savePath = "invoice" + File.separator + contractId + File.separator;
+		File dir = new File(path + savePath);
 		if (!dir.exists())
 			dir.mkdirs();
 
 		// 확장자 추출
-		String original = uploadFile.getOriginalFilename();
-		String ext = original.substring(original.lastIndexOf("."));
+		String originalFilename = uploadFile.getOriginalFilename();
+		String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
 
 		// 신규 파일 생성
-		String newFileName = folder + UUID.randomUUID().toString() + ext;
+		String newFileName = savePath + UUID.randomUUID().toString() + ext;
 		File newfile = new File(path + newFileName);
 
 		try {

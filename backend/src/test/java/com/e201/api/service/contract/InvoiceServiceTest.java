@@ -120,7 +120,7 @@ public class InvoiceServiceTest {
 		Invoice invoice = createInvoice(filePath, contract);
 		invoiceRepository.save(invoice);
 		//when
-		InvoiceDownloadResponse actual = sut.find(invoice.getId().toString());
+		InvoiceDownloadResponse actual = sut.download(invoice.getId().toString());
 
 		//then
 		assertThat(actual).isNotNull();
@@ -134,7 +134,7 @@ public class InvoiceServiceTest {
 		UUID invoice = UUID.randomUUID();
 
 		//expect
-		assertThatThrownBy(() -> sut.find(invoice.toString())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.download(invoice.toString())).isInstanceOf(RuntimeException.class);
 	}
 
 	@DisplayName("세금계산서를 삭제 한다.")
@@ -186,12 +186,12 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
 	}
 
-	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
 			.status(contractStatus)
-			.settlementDate(settlementDate)
+			.settlementDay(settlementDay)
 			.build();
 	}
 

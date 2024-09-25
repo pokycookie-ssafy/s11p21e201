@@ -37,7 +37,7 @@ public class BaseEntity {
 	@Column(name = "delete_YN")
 	private String deleteYN;
 
-	public void delete(){
+	public void softDelete() {
 		this.deleteYN = "Y";
 	}
 }

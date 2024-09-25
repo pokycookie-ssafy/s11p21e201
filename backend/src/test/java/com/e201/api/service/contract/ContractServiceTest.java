@@ -15,7 +15,7 @@ import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.ContractResponse;
+import com.e201.domain.entity.contract.ContractRespondType;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
@@ -110,7 +110,8 @@ public class ContractServiceTest {
 	void find_exist_contract_entity_fail() {
 		//given
 		String contractId = UUID.randomUUID().toString();
-		ContractRespondCondition contractRespond = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+		ContractRespondCondition contractRespond = createContractRespondCondition(contractId,
+			ContractRespondType.APPROVE);
 
 		//expect
 		assertThatThrownBy(() -> sut.respond(RoleType.STORE, contractRespond)).isInstanceOf(RuntimeException.class);
@@ -126,7 +127,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.APPROVE);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.STORE, request);
@@ -162,7 +163,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -182,7 +183,7 @@ public class ContractServiceTest {
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
 
 		String contractId = contract.getId().toString();
-		ContractRespondCondition request = createContractRespondCondition(contractId, ContractResponse.REJECT);
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
 
 		//when
 		ContractRespondResponse actual = sut.respond(RoleType.COMPANY, request);
@@ -211,7 +212,8 @@ public class ContractServiceTest {
 		assertThat(contractResult).extracting("deleteYN").isEqualTo("Y");
 	}
 
-	private ContractRespondCondition createContractRespondCondition(String contractId, ContractResponse respondResult) {
+	private ContractRespondCondition createContractRespondCondition(String contractId,
+		ContractRespondType respondResult) {
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
@@ -222,22 +224,22 @@ public class ContractServiceTest {
 		return ContractCreateRequest.builder()
 			.companyId(companyId)
 			.storeId(storeId)
-			.settlementDate(10)
+			.settlementDay(10)
 			.build();
 	}
 
-	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)
 			.status(contractStatus)
-			.settlementDate(settlementDate)
+			.settlementDay(settlementDay)
 			.build();
 	}
 
 	private void assertThatContractMatchExactly(Contract contract, UUID companyId, UUID storeId) {
 		assertThat(contract)
-			.extracting("companyId", "storeId", "status", "settlementDate")
+			.extracting("companyId", "storeId", "status", "settlementDay")
 			.containsExactly(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 	}
 }
