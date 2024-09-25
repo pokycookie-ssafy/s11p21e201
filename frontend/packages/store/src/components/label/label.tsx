@@ -6,7 +6,7 @@ import { Typography } from '@e201/ui'
 
 import type { ILabelProps } from './types'
 
-export function Label({ children, status = 'success' }: ILabelProps) {
+export function Label({ children, status }: ILabelProps) {
   const theme = useTheme()
 
   const color = useMemo(() => {
@@ -19,7 +19,7 @@ export function Label({ children, status = 'success' }: ILabelProps) {
     if (status === 'error') {
       return theme.palette.error.main
     }
-    return theme.palette.success.main
+    return theme.palette.primary.main
   }, [status, theme.palette])
 
   const childrenNode = useMemo(() => {

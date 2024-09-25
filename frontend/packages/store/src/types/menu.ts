@@ -2,7 +2,7 @@ interface IMenu {
   id: string
   name: string
   price: number
-  group?: string
+  category?: string
 }
 
 export type { IMenu }
