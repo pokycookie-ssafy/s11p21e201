@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
 import com.e201.api.controller.store.response.StoreInfoCreateResponse;
@@ -15,6 +16,7 @@ import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
 
 @SpringBootTest
+@Transactional
 class StoreInfoServiceTest {
 
 	@Autowired

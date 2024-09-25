@@ -28,6 +28,7 @@ import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
 
 @SpringBootTest
+@Transactional
 class SalesServiceTest {
 
 	@Autowired

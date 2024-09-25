@@ -22,6 +22,7 @@ import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
+@Transactional
 class StoreAccountServiceTest {
 
 	@Autowired
