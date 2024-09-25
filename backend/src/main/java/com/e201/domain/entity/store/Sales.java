@@ -3,7 +3,6 @@ package com.e201.domain.entity.store;
 import java.util.UUID;
 
 import com.e201.domain.entity.BaseEntity;
-import com.e201.domain.entity.company.Company;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
