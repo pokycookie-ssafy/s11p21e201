@@ -16,7 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.api.service.store.MenuService;
+import com.e201.global.security.auth.constant.AuthConstant;
 import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(MenuController.class)
@@ -29,7 +31,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 	void create_menu_success() throws Exception {
 		//given
 		UUID menuId = UUID.randomUUID();
-
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), RoleType.STORE);
 		MenuCreateRequest request = createMenuRequest();
 		String requestJson = objectMapper.writeValueAsString(request);
 		MenuCreateResponse response = new MenuCreateResponse(menuId);
@@ -41,6 +43,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		mockMvc.perform(post("/stores/menus")
 				.contentType(APPLICATION_JSON)
 				.content(requestJson)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
 			)
 			.andExpect(status().isCreated())
 			.andExpect(content().json(responseJson));
