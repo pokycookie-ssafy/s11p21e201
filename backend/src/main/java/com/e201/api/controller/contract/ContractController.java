@@ -26,19 +26,21 @@ public class ContractController {
 	private final ContractService contractService;
 
 	@PostMapping("/contracts")
-	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody ContractCreateRequest request) {
+	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo,
+		@RequestBody ContractCreateRequest request) {
 		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
 	@PostMapping("/contracts/respond")
-	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
+	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo,
+		@RequestBody ContractRespondCondition request) {
 		ContractRespondResponse response = contractService.respond(authInfo.getRoleType(), request);
 		return ResponseEntity.status(OK).body(response);
 	}
 
 	@DeleteMapping("/contracts/{contractId}")
-	public ResponseEntity<Object> delete(@PathVariable String contractId) {
+	public ResponseEntity<Object> delete(@Auth AuthInfo authInfo, @PathVariable String contractId) {
 		contractService.delete(contractId);
 		return ResponseEntity.status(NO_CONTENT).build();
 	}
