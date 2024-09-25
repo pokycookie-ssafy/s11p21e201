@@ -6,21 +6,7 @@ import StoreInfoDialog from '@/sections/contract-management/store-infodialog'
 import ContractViewMenu from '@/sections/contract-management/contract-viewmenu'
 import ContractCreateDialog from '@/sections/contract-management/contract-createdialog'
 
-import {
-  Box,
-  Tab,
-  Tabs,
-  Menu,
-  Stack,
-  Badge,
-  Button,
-  Divider,
-  Typography,
-  Pagination,
-  IconButton,
-} from '@mui/material'
-
-import { Iconify } from '@e201/ui'
+import { Stack, Button, Divider, Typography, Pagination } from '@mui/material'
 
 const fetchStores = async () => {
   const response = await axios.get('/companies/stores')
