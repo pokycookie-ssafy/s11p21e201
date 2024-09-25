@@ -8,6 +8,9 @@ const api = {
   management: {
     payment: '/stores/menus/sales',
   },
+  menu: {
+    list: '/stores/menus',
+  },
 }
 
 export default api
