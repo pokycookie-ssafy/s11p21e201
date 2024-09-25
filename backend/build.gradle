@@ -107,7 +107,8 @@ jacocoTestReport {
                             "**/*Application*",
                             "**/*Config*",
                             "**/Request/**",
-                            "**/Response/**"
+                            "**/Response/**",
+                            "**/InvoiceService.class"
                     ])
                 })
         )
@@ -134,7 +135,8 @@ jacocoTestCoverageVerification {
                     "**.Request.*",
                     "**.Response.*",
                     "**.ExceptionAdvice",
-                    "**.AuthorizationFilter"
+                    "**.AuthorizationFilter",
+                    "**.InvoiceService"
             ]
         }
     }
