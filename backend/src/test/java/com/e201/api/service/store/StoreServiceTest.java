@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
+import com.e201.api.controller.store.response.StoreFindResponse;
+import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
@@ -119,10 +121,33 @@ class StoreServiceTest {
 		String encryptedPassword = oneWayCipherService.encrypt("12341234");
 		Store store = createStore(storeInfo, "storeTest@test.com", encryptedPassword);
 		storeRepository.save(store);
-		StoreAuthRequest storeAuthRequest = createStoreAuthRequest("invalid@test.com", "invalid");
+		StoreAuthRequest storeAuthRequest = createStoreAuthRequest("storeTest@test.com", "invalid");
 
 		assertThatThrownBy(() -> sut.checkPassword(storeAuthRequest)).isInstanceOf(RuntimeException.class);
 	}
+
+	@DisplayName("식당 정보를 단건 조회한다.")
+	@Test
+	void find_one_store_info_success(){
+		//given
+		Store store = createStore(storeInfo,"email","password");
+		storeRepository.save(store);
+		//when
+		StoreFindResponse storeFindResponse = sut.findStore(store.getId());
+		//then
+		equalStoreInfoMatchExactly(storeFindResponse, store, store.getStoreInfo());
+	}
+
+	private void equalStoreInfoMatchExactly(StoreFindResponse storeFindResponse,
+											Store store,
+											StoreInfo storeInfo) {
+		assertThat(storeFindResponse)
+			.extracting("id", "name", "licenseNo", "address", "category","ownerName","phone")
+			.containsExactly(store.getId(), storeInfo.getName(),
+					storeInfo.getRegisterNumber(), storeInfo.getBusinessAddress(),
+				storeInfo.getBusinessType(),storeInfo.getRepresentativeName(),storeInfo.getPhone());
+	}
+
 
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
 		return StoreAuthRequest.builder()
