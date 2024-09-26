@@ -12,7 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.MenuCreateRequest;
+import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
+import com.e201.api.controller.store.response.MenuDeleteResponse;
+import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
@@ -94,9 +97,46 @@ class MenuServiceTest {
 		assertThatThrownBy(() ->sut.create(UUID.randomUUID(), RoleType.COMPANY, menuCreateRequest)).isInstanceOf(RuntimeException.class);
 	}
 
+	@DisplayName("메뉴를 수정한다.")
+	@Test
+	void update_menu_entity_success() {
+		//given
+		Menu menu = createMenu();
+		menuRepository.save(menu);
+		MenuUpdateRequest request= createMenuUpdateRequest(menu);
+
+		//when
+		MenuUpdateResponse response = sut.modify(RoleType.STORE,request);
+
+		//then
+		assertThat(response.getId()).isNotEqualTo(menu.getId());
+	}
+
+	@DisplayName("메뉴를 삭제한다.")
+	@Test
+	void delete_menu_entity_success() {
+		//given
+		Menu menu = createMenu();
+		menuRepository.save(menu);
+
+		//when
+		MenuDeleteResponse delete = sut.delete(menu.getId(), RoleType.STORE);
+
+		//then
+		assertThat(delete.getId()).isNotNull();
+	}
+
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
+			.build();
+	}
+
+	private MenuUpdateRequest createMenuUpdateRequest(Menu menu) {
+		return MenuUpdateRequest.builder()
+			.id(menu.getId())
+			.menuName(menu.getName())
+			.price(33433)
 			.build();
 	}
 
