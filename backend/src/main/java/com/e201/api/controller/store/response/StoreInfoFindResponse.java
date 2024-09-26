@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @NotNull
-public class StoreFindResponse {
+public class StoreInfoFindResponse {
 	private UUID id;
 	private String name;
 	private String licenseNo;
@@ -20,7 +20,7 @@ public class StoreFindResponse {
 	private String phone;
 
 	@Builder
-	private StoreFindResponse(UUID id, String name, String licenseNo,String address
+	private StoreInfoFindResponse(UUID id, String name, String licenseNo,String address
 	, String category, String ownerName, String phone){
 		this.id= id;
 		this.name=name;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
-import com.e201.api.controller.store.response.StoreFindResponse;
+import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.api.service.store.StoreService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,9 +29,4 @@ public class StoreController {
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
-	@GetMapping("/stores/{id}")
-	public ResponseEntity<StoreFindResponse> findOne(@PathVariable UUID id){
-		StoreFindResponse response = storeService.findStore(id);
-		return ResponseEntity.status(OK).body(response);
-	}
 }

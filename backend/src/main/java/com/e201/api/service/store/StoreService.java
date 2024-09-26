@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
-import com.e201.api.controller.store.response.StoreFindResponse;
+import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
 
 import com.e201.domain.entity.store.Store;
@@ -51,13 +51,6 @@ public class StoreService {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public StoreFindResponse findStore(UUID id){
-		Store store = storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
-		StoreInfo storeInfo = store.getStoreInfo();
-		return createStoreFindResponse(store, storeInfo);
-	}
-
-
 
 	private void encryptPassword(Store store) {
 		String encryptedPassword = oneWayCipherService.encrypt(store.getPassword());
@@ -69,15 +62,5 @@ public class StoreService {
 			throw new RuntimeException("wrong password");
 		}
 	}
-	private StoreFindResponse createStoreFindResponse(Store store, StoreInfo storeInfo) {
-		return StoreFindResponse.builder()
-			.id(store.getId())
-			.name(storeInfo.getName())
-			.licenseNo(storeInfo.getRegisterNumber())
-			.address(storeInfo.getBusinessAddress())
-			.category(storeInfo.getBusinessType())
-			.ownerName(storeInfo.getRepresentativeName())
-			.phone(storeInfo.getPhone())
-			.build();
-	}
+
 }
