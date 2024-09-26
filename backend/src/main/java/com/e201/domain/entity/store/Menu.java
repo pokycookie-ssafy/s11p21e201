@@ -49,10 +49,7 @@ public class Menu extends BaseEntity {
 		this.status =status;
 	}
 
-	public void changePrice(int price){
-		this.price = price;
-	}
-	public void changeFlag(MenuStatus status){
+	public void changeStatus(MenuStatus status){
 		this.status = status;
 	}
 }
