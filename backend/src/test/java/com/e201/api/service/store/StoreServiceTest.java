@@ -121,7 +121,7 @@ class StoreServiceTest {
 		String encryptedPassword = oneWayCipherService.encrypt("12341234");
 		Store store = createStore(storeInfo, "storeTest@test.com", encryptedPassword);
 		storeRepository.save(store);
-		StoreAuthRequest storeAuthRequest = createStoreAuthRequest("invalid@test.com", "invalid");
+		StoreAuthRequest storeAuthRequest = createStoreAuthRequest("storeTest@test.com", "invalid");
 
 		assertThatThrownBy(() -> sut.checkPassword(storeAuthRequest)).isInstanceOf(RuntimeException.class);
 	}

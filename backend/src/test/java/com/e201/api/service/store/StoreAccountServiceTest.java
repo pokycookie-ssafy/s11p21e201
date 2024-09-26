@@ -86,6 +86,17 @@ class StoreAccountServiceTest {
 		//then
 		assertThat(response.getId()).isNotNull();
 	}
+
+	@DisplayName("권한이 올바르지 않는 경우 예외를 발생시킨다.")
+	@Test
+	public void create_storeAccount_entity_fail() {
+		//given
+		StoreAccountCreateRequest storeAccountCreateRequest = createStoreAccountRequest(store.getId());
+		StoreAccount storeAccount = storeAccountCreateRequest.toEntity(store);
+
+		//when, then
+		assertThatThrownBy(()->sut.create(store.getId(), RoleType.COMPANY ,storeAccountCreateRequest)).isInstanceOf(RuntimeException.class);
+	}
 	private	StoreAccount createStoreAccount(Store store) {
 		return StoreAccount.builder()
 			.store(store)
