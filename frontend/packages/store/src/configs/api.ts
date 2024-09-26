@@ -13,6 +13,9 @@ const api = {
   },
   contract: {
     list: '/stores/contracts',
+    request: '/stores/contracts/request',
+    response: '/stores/contracts/response',
+    history: '/stores/contracts/history',
   },
 }
 

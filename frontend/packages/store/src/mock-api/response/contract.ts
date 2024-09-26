@@ -85,7 +85,7 @@ export const contractNow = [
   },
 ]
 
-export const contractRequest = [
+export const contractRequestReceived = [
   {
     id: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     name: '삼성전자',
@@ -172,4 +172,146 @@ export const contractRequest = [
   },
 ]
 
-export const contractHistory = []
+export const contractRequestSend = [
+  {
+    id: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
+    name: '삼성전자',
+    email: 'electronic@samsung.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-06-21T17:55:32Z',
+  },
+  {
+    id: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
+    name: '멀티캠퍼스',
+    email: 'multi@campus.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-07-15T17:55:32Z',
+  },
+  {
+    id: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
+    name: 'LG전자',
+    email: 'contact@lg.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-01-03T06:17:03Z',
+  },
+  {
+    id: '54153db3-91f0-48b4-875f-5633895d9e4c',
+    name: '네이버',
+    email: 'contact@naver.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-03-07T06:17:03Z',
+  },
+  {
+    id: '5f59a356-e1f0-4899-a3a6-2521631b5640',
+    name: '카카오',
+    email: 'contact@kakao.com',
+    phone: '000-0000-0000',
+    createdAt: '2023-11-29T06:17:03Z',
+  },
+  {
+    id: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
+    name: '현대자동차',
+    email: 'contact@hyundai.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-08-12T06:17:03Z',
+  },
+]
+
+export const contractHistory = [
+  {
+    id: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
+    name: '삼성전자',
+    email: 'electronic@samsung.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-06-21T17:55:32Z',
+    status: 'complete',
+  },
+  {
+    id: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
+    name: '멀티캠퍼스',
+    email: 'multi@campus.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-07-15T17:55:32Z',
+    status: 'complete',
+  },
+  {
+    id: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
+    name: 'LG전자',
+    email: 'contact@lg.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-01-03T06:17:03Z',
+    status: 'in',
+  },
+  {
+    id: '54153db3-91f0-48b4-875f-5633895d9e4c',
+    name: '네이버',
+    email: 'contact@naver.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-03-07T06:17:03Z',
+    status: 'complete',
+  },
+  {
+    id: '5f59a356-e1f0-4899-a3a6-2521631b5640',
+    name: '카카오',
+    email: 'contact@kakao.com',
+    phone: '000-0000-0000',
+    createdAt: '2023-11-29T06:17:03Z',
+    status: 'in',
+  },
+  {
+    id: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
+    name: '현대자동차',
+    email: 'contact@hyundai.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-08-12T06:17:03Z',
+    status: 'complete',
+  },
+  {
+    id: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175',
+    name: 'CJ제일제당',
+    email: 'contact@cj.co.kr',
+    phone: '000-0000-0000',
+    createdAt: '2024-08-12T06:17:03Z',
+    status: 'reject',
+  },
+  {
+    id: 'd187314b-8944-4ffb-af0f-2c235af278c5',
+    name: '포스코',
+    email: 'contact@posco.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-07-27T06:17:03Z',
+    status: 'canceled',
+  },
+  {
+    id: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3',
+    name: 'SK하이닉스',
+    email: 'contact@sk.com',
+    phone: '000-0000-0000',
+    createdAt: '2023-10-18T06:17:03Z',
+    status: 'reject',
+  },
+  {
+    id: '1e95a244-7862-43db-9343-b219284239d5',
+    name: '셀트리온',
+    email: 'contact@celltrion.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-01-04T06:17:03Z',
+    status: 'canceled',
+  },
+  {
+    id: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1',
+    name: '한화',
+    email: 'contact@hanwha.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-02-22T06:17:03Z',
+    status: 'reject',
+  },
+  {
+    id: '7ab0512b-065b-4424-9e8a-890e0ced9880',
+    name: '롯데',
+    email: 'contact@lotte.com',
+    phone: '000-0000-0000',
+    createdAt: '2024-06-25T06:17:03Z',
+    status: 'reject',
+  },
+]

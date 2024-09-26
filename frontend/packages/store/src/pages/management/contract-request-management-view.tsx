@@ -6,17 +6,19 @@ import api from '@/configs/api'
 import { useState } from 'react'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
   Box,
+  Tab,
   Card,
+  Tabs,
   Stack,
   Button,
   Tooltip,
-  lighten,
   Collapse,
   TextField,
   IconButton,
@@ -24,15 +26,36 @@ import {
 
 import { Iconify, Typography } from '@e201/ui'
 
+type TabType = 'received' | 'send'
+
 export default function ContractRequestManagementView() {
+  const [tab, setTab] = useState<TabType>('received')
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
-  const queryFn = async () => {
-    const response = await axios.get<IContract[]>(api.contract.list)
+  const TABS = [
+    { label: '받은 요청', value: 'received' },
+    { label: '보낸 요청', value: 'send' },
+  ]
+
+  const requestQueryFn = async () => {
+    const response = await axios.get<IContract[]>(api.contract.request)
     return response.data
   }
 
-  const { data, isPending, isError } = useQuery({ queryKey: [api.contract.list], queryFn })
+  const responseQueryFn = async () => {
+    const response = await axios.get<IContract[]>(api.contract.response)
+    return response.data
+  }
+
+  const { data: receivedData, isPending: receivedIsPending } = useQuery({
+    queryKey: [api.contract.request, tab],
+    queryFn: requestQueryFn,
+  })
+
+  const { data: sendData, isPending: sendIsPending } = useQuery({
+    queryKey: [api.contract.response, tab],
+    queryFn: responseQueryFn,
+  })
 
   const columns: GridColDef[] = [
     {
@@ -51,25 +74,37 @@ export default function ContractRequestManagementView() {
       width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
     },
-    {
-      field: 'action',
-      type: 'actions',
-      headerName: '처리',
-      align: 'left',
-      resizable: false,
-      getActions: (params: GridRowParams) => [
-        <Tooltip title="수락" arrow disableInteractive>
-          <IconButton color="success">
-            <Iconify icon="iconamoon:check-bold" />
-          </IconButton>
-        </Tooltip>,
-        <Tooltip title="거절" arrow disableInteractive>
-          <IconButton color="error">
-            <Iconify icon="gravity-ui:xmark" />
-          </IconButton>
-        </Tooltip>,
-      ],
-    },
+    tab === 'received'
+      ? {
+          field: 'action',
+          type: 'actions',
+          headerName: '처리',
+          align: 'left',
+          resizable: false,
+          getActions: (params: GridRowParams) => [
+            <Tooltip title="수락" arrow disableInteractive>
+              <IconButton color="success">
+                <Iconify icon="iconamoon:check-bold" />
+              </IconButton>
+            </Tooltip>,
+            <Tooltip title="거절" arrow disableInteractive>
+              <IconButton color="error">
+                <Iconify icon="gravity-ui:xmark" />
+              </IconButton>
+            </Tooltip>,
+          ],
+        }
+      : {
+          field: 'status',
+          headerName: '상태',
+          headerAlign: 'center',
+          resizable: false,
+          renderCell: () => (
+            <Stack width={1} height={1} justifyContent="center" alignItems="center">
+              <Label status="success">요청 처리 중</Label>
+            </Stack>
+          ),
+        },
   ]
 
   return (
@@ -92,6 +127,17 @@ export default function ContractRequestManagementView() {
       />
 
       <Card>
+        <Tabs
+          value={tab}
+          onChange={(_, v) => setTab(v)}
+          variant="scrollable"
+          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+        >
+          {TABS.map((e, i) => (
+            <Tab label={e.label} value={e.value} key={i} />
+          ))}
+        </Tabs>
+
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -114,6 +160,7 @@ export default function ContractRequestManagementView() {
             px={2}
             py={1}
             zIndex={1}
+            bgcolor="background.paper"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
             <Typography variant="subtitle1">{selected.length} selected</Typography>
@@ -134,7 +181,7 @@ export default function ContractRequestManagementView() {
 
         <DataGrid
           columns={columns}
-          rows={data}
+          rows={tab === 'received' ? receivedData : sendData}
           rowSelectionModel={selected}
           onRowSelectionModelChange={setSelected}
           checkboxSelection
@@ -144,7 +191,7 @@ export default function ContractRequestManagementView() {
           disableColumnFilter
           disableColumnMenu
           disableRowSelectionOnClick
-          loading={isPending}
+          loading={receivedIsPending}
           slotProps={{
             noRowsOverlay: {},
             noResultsOverlay: {},
