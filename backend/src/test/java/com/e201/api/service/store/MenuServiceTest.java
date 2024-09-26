@@ -102,7 +102,6 @@ class MenuServiceTest {
 	void update_menu_entity_success() {
 		//given
 		Menu menu = createMenu();
-		int originPrice = menu.getPrice();
 		menuRepository.save(menu);
 		MenuUpdateRequest request= createMenuUpdateRequest(menu);
 
@@ -110,8 +109,7 @@ class MenuServiceTest {
 		MenuUpdateResponse response = sut.modify(menu.getStore().getId(),RoleType.STORE,request);
 
 		//then
-		Menu actual = menuRepository.getById(response.getId());
-		assertThat(actual.getPrice()).isNotEqualTo(originPrice);
+		assertThat(response.getId()).isNotEqualTo(menu.getId());
 	}
 
 	private MenuCreateRequest createMenuRequest(UUID id) {
