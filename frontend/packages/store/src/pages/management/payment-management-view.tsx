@@ -2,9 +2,11 @@ import type { IPaymentResponse } from '@/types/payment'
 
 import api from '@/configs/api'
 import axios from '@/configs/axios'
+import paths from '@/configs/paths'
 import { useMemo, useState } from 'react'
 import { grouping } from '@/utils/payment'
 import { useQuery } from '@tanstack/react-query'
+import { Breadcrumbs } from '@/components/breadcrumbs'
 import { SelectYear, SelectMonth } from '@/components/select'
 import PaymentList from '@/sections/payment-management/payment-list'
 
@@ -40,28 +42,35 @@ export function PaymentManagementView() {
   }
 
   return (
-    <Card>
-      <Stack direction="row" p={2} spacing={1}>
-        <SelectYear year={year} onChange={setYear} />
-        <SelectMonth month={month} onChange={setMonth} />
-      </Stack>
+    <Box>
+      <Breadcrumbs
+        title="장부 관리"
+        routes={[{ title: '관리', path: paths.management.menu }, { title: '장부 관리' }]}
+      />
 
-      <PaymentListHeader />
+      <Card>
+        <Stack direction="row" p={2} spacing={1}>
+          <SelectYear year={year} onChange={setYear} />
+          <SelectMonth month={month} onChange={setMonth} />
+        </Stack>
 
-      {groupedData.map((group, i) => (
-        <PaymentList
-          key={group.id}
-          data={group}
-          open={openIdx === i}
-          onOpen={() => setOpenIdx(i)}
-          onClose={() => setOpenIdx(null)}
-        />
-      ))}
+        <PaymentListHeader />
 
-      <Stack direction="row" justifyContent="center" width={1} px={1} p={2}>
-        <Pagination count={10} siblingCount={1} boundaryCount={0} />
-      </Stack>
-    </Card>
+        {groupedData.map((group, i) => (
+          <PaymentList
+            key={group.id}
+            data={group}
+            open={openIdx === i}
+            onOpen={() => setOpenIdx(i)}
+            onClose={() => setOpenIdx(null)}
+          />
+        ))}
+
+        <Stack direction="row" justifyContent="center" width={1} px={1} p={2}>
+          <Pagination count={10} siblingCount={1} boundaryCount={0} />
+        </Stack>
+      </Card>
+    </Box>
   )
 }
 

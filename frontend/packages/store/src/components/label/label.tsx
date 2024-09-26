@@ -37,6 +37,8 @@ export function Label({ children, status }: ILabelProps) {
   }, [children, color])
 
   return (
-    <Box sx={{ px: 1, py: 0.3, borderRadius: 1, bgcolor: alpha(color, 0.2) }}>{childrenNode}</Box>
+    <Box sx={{ px: 1, py: 0.3, borderRadius: 1, bgcolor: alpha(color, 0.2), userSelect: 'none' }}>
+      {childrenNode}
+    </Box>
   )
 }

@@ -21,7 +21,11 @@
       "request": "계약 요청",
       "history": "계약 기록"
     },
-    "settlement": "정산 관리"
+    "settlement": {
+      "title": "정산 관리",
+      "company": "회사별 관리",
+      "date": "날짜별 관리"
+    }
   },
   "payment": {
     "title": "결제",
