@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.*;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
+import com.e201.api.controller.store.response.MenuDeleteResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.api.service.store.MenuService;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional
 public class MenuController {
 	private final MenuService menuService;
 
@@ -37,7 +41,13 @@ public class MenuController {
 		@RequestBody MenuUpdateRequest menuUpdateRequest,
 		@PathVariable UUID menuId){
 		MenuUpdateResponse response =
-			menuService.modify(authInfo.getId(), authInfo.getRoleType(), menuUpdateRequest);
+			menuService.modify( authInfo.getRoleType(), menuUpdateRequest);
+		return ResponseEntity.status(OK).body(response);
+	}
+	@DeleteMapping("/stores/menus/{menuId}")
+	public ResponseEntity<MenuDeleteResponse> delete(@Auth AuthInfo authInfo,
+		@PathVariable UUID menuId){
+		MenuDeleteResponse response = menuService.delete(menuId, authInfo.getRoleType());
 		return ResponseEntity.status(OK).body(response);
 	}
 }
