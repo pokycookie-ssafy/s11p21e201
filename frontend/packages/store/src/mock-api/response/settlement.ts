@@ -36,7 +36,7 @@ export const settlementResponse: Response[] = [
     settledDate: '2024-07-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: true,
+    taxInvoice: false,
   },
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be4',
