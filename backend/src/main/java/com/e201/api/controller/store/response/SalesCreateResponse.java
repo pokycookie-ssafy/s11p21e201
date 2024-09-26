@@ -20,7 +20,7 @@ public class SalesCreateResponse {
 		int menuPrice;
 
 		@Builder
-		public SalesCreateResponse(UUID id, UUID companyId, String paymentId, String menuName, String companyName, LocalDate createdAt) {
+		private SalesCreateResponse(UUID id, UUID companyId, String paymentId, String menuName, String companyName, LocalDate createdAt) {
 			this.id = id;
 			this.companyId = companyId;
 			this.paymentId = paymentId;
