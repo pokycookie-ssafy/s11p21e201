@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
 import com.e201.api.controller.store.response.StoreInfoCreateResponse;
+import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.api.service.store.StoreInfoService;
 import com.e201.restdocs.AbstractRestDocsTest;
 
@@ -44,6 +45,23 @@ public class StoreInfoControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+	@DisplayName("식당 정보를 단건 조회 한다.")
+	@Test
+	void find_store_success() throws Exception {
+		UUID storeId = UUID.randomUUID();
+		StoreInfoFindResponse response = createStoreFindResponse(storeId);
+		String responseJson = objectMapper.writeValueAsString(response);
+
+		doReturn(response).when(storeInfoService).findOne(any());
+		// expected
+		mockMvc.perform(get("/stores/"+storeId)
+				.contentType(APPLICATION_JSON)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+
+	}
+
 	private StoreInfoCreateRequest createStoreInfoRequest() {
 		return StoreInfoCreateRequest.builder()
 			.registerNumber("식당 등록증 번호")
@@ -52,6 +70,17 @@ public class StoreInfoControllerTest extends AbstractRestDocsTest {
 			.businessAddress("식당 주소")
 			.businessType("식당 유형")
 			.representativeName("식당 대표 이름")
+			.build();
+	}
+	private StoreInfoFindResponse createStoreFindResponse(UUID id) {
+		return StoreInfoFindResponse.builder()
+			.id(id)
+			.name("사업명")
+			.category("분류")
+			.address("사업체주소")
+			.ownerName("대표이름")
+			.phone("연락처")
+			.licenseNo("사업자등록증번호")
 			.build();
 	}
 }
