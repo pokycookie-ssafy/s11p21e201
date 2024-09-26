@@ -6,4 +6,8 @@ interface IContract {
   createdAt: Date
 }
 
-export type { IContract }
+interface IContractHistory extends IContract {
+  status: string
+}
+
+export type { IContract, IContractHistory }
