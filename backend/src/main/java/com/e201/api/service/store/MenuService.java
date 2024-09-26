@@ -8,6 +8,7 @@ import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.store.Menu;
+import com.e201.domain.entity.store.MenuStatus;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.global.security.auth.constant.RoleType;
@@ -29,8 +30,8 @@ public class MenuService {
 		validationStore(roleType);
 		Store store = storeService.findEntity(id);
 		Menu menu = menuCreateRequest.toEntity(store);
+		menu.changeFlag(MenuStatus.CREATED);
 		Menu savedMenu = menuRepository.save(menu);
-
 		return new MenuCreateResponse(savedMenu.getId());
 	}
 
