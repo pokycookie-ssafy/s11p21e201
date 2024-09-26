@@ -6,11 +6,12 @@ import api from '@/configs/api'
 import { useState } from 'react'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
-import { fNumber } from '@e201/utils'
 import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
+import { fNumber, useBoolean } from '@e201/utils'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 import { SelectYear, SelectMonth } from '@/components/select'
+import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
@@ -20,6 +21,8 @@ import { Iconify } from '@e201/ui'
 type StatusType = 'settled' | 'partial' | 'unsettled'
 
 export default function SettlementDateView() {
+  const invoiceModal = useBoolean()
+
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [tab, setTab] = useState<StatusType | null>(null)
@@ -49,7 +52,7 @@ export default function SettlementDateView() {
   }
 
   const columns: GridColDef<ISettlementResponse>[] = [
-    { field: 'companyName', headerName: '회사명', flex: 1, minWidth: 100, resizable: true },
+    { field: 'companyName', headerName: '회사명', flex: 1, minWidth: 100 },
     {
       field: 'settledDate',
       type: 'date',
@@ -120,7 +123,10 @@ export default function SettlementDateView() {
             </Tooltip>
           ) : (
             <Tooltip title="업로드" disableInteractive>
-              <IconButton sx={{ color: (theme) => theme.palette.error.main }}>
+              <IconButton
+                sx={{ color: (theme) => theme.palette.error.main }}
+                onClick={invoiceModal.onTrue}
+              >
                 <Iconify icon="solar:upload-square-linear" />
               </IconButton>
             </Tooltip>
@@ -131,67 +137,70 @@ export default function SettlementDateView() {
   ]
 
   return (
-    <Box>
-      <Breadcrumbs
-        title="정산 관리"
-        routes={[
-          { title: '관리', path: paths.management.menu },
-          { title: '정산 관리', path: paths.management.settlement.root },
-          { title: '날짜별 관리' },
-        ]}
-      />
-
-      <Card>
-        <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
-            {TABS.map((e, i) => (
-              <Tab label={e.label} value={e.value} key={i} />
-            ))}
-          </Tabs>
-        </Box>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          p={1}
-          px={2}
-          spacing={1}
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          <SelectYear year={year} onChange={setYear} />
-          <SelectMonth month={month} onChange={setMonth} />
-        </Stack>
-
-        <DataGrid
-          columns={columns}
-          rows={data}
-          hideFooter
-          hideFooterPagination
-          disableColumnSorting
-          disableColumnFilter
-          disableColumnMenu
-          disableRowSelectionOnClick
-          loading={isPending}
-          slotProps={{
-            noRowsOverlay: {},
-            noResultsOverlay: {},
-          }}
-          sx={{
-            height: 500,
-            '& .MuiDataGrid-columnSeparator': {
-              color: 'transparent',
-              ':hover': {
-                color: (theme) => theme.palette.divider,
-              },
-            },
-            '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-            '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-            '.MuiDataGrid-columnHeaders': {
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            },
-          }}
+    <>
+      <Box>
+        <Breadcrumbs
+          title="정산 관리"
+          routes={[
+            { title: '관리', path: paths.management.menu },
+            { title: '정산 관리', path: paths.management.settlement.company },
+            { title: '날짜별 관리' },
+          ]}
         />
-      </Card>
-    </Box>
+
+        <Card>
+          <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+            <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
+              {TABS.map((e, i) => (
+                <Tab label={e.label} value={e.value} key={i} />
+              ))}
+            </Tabs>
+          </Box>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            p={1}
+            px={2}
+            spacing={1}
+            sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+          >
+            <SelectYear year={year} onChange={setYear} />
+            <SelectMonth month={month} onChange={setMonth} />
+          </Stack>
+
+          <DataGrid
+            columns={columns}
+            rows={data}
+            hideFooter
+            hideFooterPagination
+            disableColumnSorting
+            disableColumnFilter
+            disableColumnMenu
+            disableRowSelectionOnClick
+            loading={isPending}
+            slotProps={{
+              noRowsOverlay: {},
+              noResultsOverlay: {},
+            }}
+            sx={{
+              height: 500,
+              '& .MuiDataGrid-columnSeparator': {
+                color: 'transparent',
+                ':hover': {
+                  color: (theme) => theme.palette.divider,
+                },
+              },
+              '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
+              '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
+              '.MuiDataGrid-columnHeaders': {
+                borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+              },
+            }}
+          />
+        </Card>
+      </Box>
+      <TaxInvoiceUploadModal open={invoiceModal.value} onClose={invoiceModal.onFalse} />
+    </>
   )
 }
