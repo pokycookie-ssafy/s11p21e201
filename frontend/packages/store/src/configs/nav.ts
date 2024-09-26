@@ -69,10 +69,6 @@ const nav: INav[] = [
             title: 'management.contract.now',
             path: paths.management.contract.now,
           },
-          // {
-          //   title: 'management.contract.new',
-          //   path: paths.management.contract.new,
-          // },
           {
             title: 'management.contract.request',
             path: paths.management.contract.request,
@@ -84,9 +80,19 @@ const nav: INav[] = [
         ],
       },
       {
-        title: 'management.settlement',
-        path: paths.management.settlement,
+        title: 'management.settlement.title',
+        path: paths.management.settlement.root,
         icon: 'mingcute:card-pay-line',
+        group: [
+          {
+            title: 'management.settlement.date',
+            path: paths.management.settlement.date,
+          },
+          {
+            title: 'management.settlement.company',
+            path: paths.management.settlement.company,
+          },
+        ],
       },
     ],
   },

@@ -10,6 +10,8 @@ import PaymentLayout from '@/layouts/payment-layout'
 import QrPaymentView from '@/pages/payment/qr-payment-view'
 import TotalDashboardView from '@/pages/dashboard/total-dashboard-view'
 import MenuManagementView from '@/pages/management/menu-management-view'
+import SettlementDateView from '@/pages/management/settlement-date-view'
+import SettlementCompanyView from '@/pages/management/settlement-company-view'
 import SalesMenuDashboardView from '@/pages/dashboard/sales-menu-dashboard-view'
 import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
 import SettlementDashboardView from '@/pages/dashboard/settlement-dashboard-view'
@@ -73,6 +75,8 @@ const mainRoute: RouteObject[] = [
         path: paths.management.payment,
         element: <PaymentManagementView />,
       },
+
+      // Management - Contract
       {
         path: paths.management.contract.now,
         element: <ContractNowManagementView />,
@@ -88,6 +92,20 @@ const mainRoute: RouteObject[] = [
       {
         path: paths.management.contract.history,
         element: <ContractHistoryManagementView />,
+      },
+      {
+        path: paths.management.contract.history,
+        element: <ContractHistoryManagementView />,
+      },
+
+      // Management - Settlement
+      {
+        path: paths.management.settlement.company,
+        element: <SettlementCompanyView />,
+      },
+      {
+        path: paths.management.settlement.date,
+        element: <SettlementDateView />,
       },
     ],
   },

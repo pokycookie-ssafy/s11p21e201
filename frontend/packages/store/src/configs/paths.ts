@@ -43,7 +43,11 @@ const paths = {
       request: `${PATH.management}/contract/request`,
       history: `${PATH.management}/contract/history`,
     },
-    settlement: `${PATH.management}/settlement`,
+    settlement: {
+      root: `${PATH.management}/settlement`,
+      company: `${PATH.management}/settlement/company`,
+      date: `${PATH.management}/settlement/date`,
+    },
   },
 
   // payment

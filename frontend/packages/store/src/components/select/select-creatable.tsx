@@ -4,17 +4,9 @@ import { useState, useEffect } from 'react'
 
 import { TextField, Autocomplete, createFilterOptions } from '@mui/material'
 
-interface ISelectOption {
-  label: string
-  value: string
-}
+import type { ISelectOption, ISelectCreatableProps } from './type'
 
-interface IProps {
-  options: ISelectOption[]
-  onChange?: (selected: ISelectOption | null) => void
-}
-
-type TProps = TextFieldProps & IProps
+type TProps = Omit<TextFieldProps, 'onChange'> & ISelectCreatableProps
 
 const filter = createFilterOptions<ISelectOption>()
 
@@ -29,6 +21,7 @@ export function SelectCreatable({ options, onChange, ...others }: TProps) {
 
   return (
     <Autocomplete
+      fullWidth
       value={value}
       options={options}
       onChange={(_, v) => {
@@ -49,7 +42,7 @@ export function SelectCreatable({ options, onChange, ...others }: TProps) {
         return filtered
       }}
       freeSolo
-      renderInput={(params) => <TextField {...params} label="category" {...others} />}
+      renderInput={(params) => <TextField {...params} {...others} />}
     />
   )
 }

@@ -17,6 +17,9 @@ const api = {
     response: '/stores/contracts/response',
     history: '/stores/contracts/history',
   },
+  settlement: {
+    list: '/stores/settlements',
+  },
 }
 
 export default api
