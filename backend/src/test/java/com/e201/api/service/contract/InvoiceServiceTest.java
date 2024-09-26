@@ -5,14 +5,16 @@ import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +41,9 @@ public class InvoiceServiceTest {
 
 	Contract contract;
 
+	@Value("${spring.servlet.multipart.location}")
+	private String path;
+
 	@BeforeEach
 	void setUp() {
 		UUID companyId = UUID.randomUUID();
@@ -55,16 +60,11 @@ public class InvoiceServiceTest {
 		//given
 		String contractId = contract.getId().toString();
 
-		String fileName = "testImage1.png";
-		String filePath =
-			"C:\\Users\\SSAFY\\Desktop\\kkj\\Project\\SP2\\Project\\S11P21E201\\backend\\src\\test\\resources\\"
-				+ fileName;
-		FileInputStream fileInputStream = new FileInputStream(filePath);
 		MockMultipartFile image = new MockMultipartFile(
 			"image",
-			fileName,
+			"image.png",
 			IMAGE_PNG_VALUE,
-			fileInputStream
+			"image.png".getBytes()
 		);
 
 		//when
@@ -81,16 +81,11 @@ public class InvoiceServiceTest {
 		//given
 		String contractId = UUID.randomUUID().toString();
 
-		String fileName = "testImage1.png";
-		String filePath =
-			"C:\\Users\\SSAFY\\Desktop\\kkj\\Project\\SP2\\Project\\S11P21E201\\backend\\src\\test\\resources\\"
-				+ fileName;
-		FileInputStream fileInputStream = new FileInputStream(filePath);
 		MockMultipartFile image = new MockMultipartFile(
 			"image",
-			fileName,
+			"image.png",
 			IMAGE_PNG_VALUE,
-			fileInputStream
+			"image.png".getBytes()
 		);
 
 		//then
@@ -98,6 +93,7 @@ public class InvoiceServiceTest {
 			.isInstanceOf(RuntimeException.class);
 	}
 
+	@JtaTransactional
 	@DisplayName("파일저장에 실패하여 세금계산서 업로드를 실패한다.")
 	@Test
 	void uplaod_invoice_fail() throws IOException {
@@ -111,22 +107,53 @@ public class InvoiceServiceTest {
 			RuntimeException.class);
 	}
 
+	@JtaTransactional
 	@DisplayName("세금계산서를 다운로드 한다.")
 	@Test
 	void download_invoice_success() throws IOException {
 		//given
-		String filePath = "invoice" + File.separator + "e0e14738-956e-48aa-9c21-9d494ea1d4cb" + File.separator
-			+ "ffeb122e-f9d4-4a7d-82de-f74b38e8fa20.png";
-		Invoice invoice = createInvoice(filePath, contract);
+		String contractId = contract.getId().toString();
+
+		MockMultipartFile image = new MockMultipartFile(
+			"image",
+			"image.png",
+			IMAGE_PNG_VALUE,
+			"image.png".getBytes()
+		);
+
+		String savePath = "invoice" + File.separator + contractId + File.separator;
+		File dir = new File(path + savePath);
+		if (!dir.exists())
+			dir.mkdirs();
+
+		// 확장자 추출
+		String originalFilename = image.getOriginalFilename();
+		String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+		// 신규 파일 생성
+		String newFileName = savePath + UUID.randomUUID().toString() + ext;
+		File newfile = new File(path + newFileName);
+
+		try {
+			image.transferTo(newfile);
+		} catch (IOException e) {
+			throw new RuntimeException("failed to upload file");
+		}
+
+		Invoice invoice = createInvoice(newFileName, contract);
 		invoiceRepository.save(invoice);
+
 		//when
 		InvoiceDownloadResponse actual = sut.download(invoice.getId().toString());
 
 		//then
 		assertThat(actual).isNotNull();
 
+		Files.deleteIfExists(Paths.get(path + newFileName));
+		Files.deleteIfExists(Paths.get(path + savePath));
 	}
 
+	@JtaTransactional
 	@DisplayName("세금계산서 다운로드를 실패한다.")
 	@Test
 	void download_invoice_fail() {
@@ -137,22 +164,24 @@ public class InvoiceServiceTest {
 		assertThatThrownBy(() -> sut.download(invoice.toString())).isInstanceOf(RuntimeException.class);
 	}
 
+	@JtaTransactional
 	@DisplayName("세금계산서를 삭제 한다.")
 	@Test
 	void delete_invoice_success() {
 		//given
-		String filePath = "invoice" + File.separator + "e0e14738-956e-48aa-9c21-9d494ea1d4cb" + File.separator
-			+ "ffeb122e-f9d4-4a7d-82de-f74b38e8fa20.png";
-		Invoice invoice = createInvoice(filePath, contract);
+		Invoice invoice = createInvoice("/img.jpg", contract);
 		invoiceRepository.save(invoice);
+
+		String invoiceId = invoice.getId().toString();
 		//when
-		sut.delete(invoice.getId().toString());
+		sut.delete(invoiceId);
 
 		//then
-		Invoice invoiceResult = invoiceRepository.findById(invoice.getId()).get();
+		Invoice invoiceResult = invoiceRepository.findById(UUID.fromString(invoiceId)).get();
 		assertThat(invoiceResult).extracting("deleteYN").isEqualTo("Y");
 	}
 
+	@JtaTransactional
 	@DisplayName("세금계산서 삭제를 실패한다.")
 	@Test
 	void delete_invoice_fail() {
