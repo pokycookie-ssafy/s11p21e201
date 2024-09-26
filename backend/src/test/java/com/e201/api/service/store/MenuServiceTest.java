@@ -2,6 +2,7 @@ package com.e201.api.service.store;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.MenuCreateRequest;
+import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
+import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
@@ -94,9 +97,34 @@ class MenuServiceTest {
 		assertThatThrownBy(() ->sut.create(UUID.randomUUID(), RoleType.COMPANY, menuCreateRequest)).isInstanceOf(RuntimeException.class);
 	}
 
+	@DisplayName("메뉴를 수정한다.")
+	@Test
+	void update_menu_entity_success() {
+		//given
+		Menu menu = createMenu();
+		int originPrice = menu.getPrice();
+		menuRepository.save(menu);
+		MenuUpdateRequest request= createMenuUpdateRequest(menu);
+
+		//when
+		MenuUpdateResponse response = sut.modify(menu.getStore().getId(),RoleType.STORE,request);
+
+		//then
+		Menu actual = menuRepository.getById(response.getId());
+		assertThat(actual.getPrice()).isNotEqualTo(originPrice);
+	}
+
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
+			.build();
+	}
+
+	private MenuUpdateRequest createMenuUpdateRequest(Menu menu) {
+		return MenuUpdateRequest.builder()
+			.id(menu.getId())
+			.menuName(menu.getName())
+			.price(33433)
 			.build();
 	}
 
