@@ -42,7 +42,7 @@ public class StoreService {
 
 	public AuthInfo checkPassword(StoreAuthRequest request) {
 		Store store = storeRepository.findByEmail(request.getEmail())
-			.orElseThrow(() -> new RuntimeException("not found company"));
+			.orElseThrow(() -> new RuntimeException("not found store"));
 		validatePassword(request, store);
 		return new AuthInfo(store.getId(), RoleType.STORE);
 	}
