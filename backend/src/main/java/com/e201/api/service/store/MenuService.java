@@ -50,8 +50,21 @@ public class MenuService {
 		validationStore(roleType);
 		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
-		changeMenuPrice(originMenu, menuUpdateRequest.getPrice() ,MenuStatus.MODIFIED);
-		return new MenuUpdateResponse(originMenu.getId());
+
+		changeMenuPrice(originMenu ,MenuStatus.MODIFIED);
+		//새롭게 menu 추가하기 
+		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
+		Menu modifiedMenu = menuRepository.save(menu);
+		return new MenuUpdateResponse(modifiedMenu.getId());
+	}
+
+	private static Menu createModifiedStoreEntity(MenuUpdateRequest menuUpdateRequest, Menu originMenu) {
+		Menu menu = Menu.builder()
+			.store(originMenu.getStore())
+			.price(menuUpdateRequest.getPrice())
+			.name(originMenu.getName())
+			.status(MenuStatus.CREATED).build();
+		return menu;
 	}
 
 	private void validationStore(RoleType roleType) {
@@ -60,8 +73,7 @@ public class MenuService {
 		}
 	}
 
-	private void changeMenuPrice(Menu menu,int price ,MenuStatus status) {
-		menu.changePrice(price);
+	private void changeMenuPrice(Menu menu,MenuStatus status) {
 		menu.changeFlag(status);
 	}
 
