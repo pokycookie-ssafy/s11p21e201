@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
+import com.e201.api.controller.store.response.MenuDeleteResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.api.service.store.MenuService;
 import com.e201.global.security.auth.constant.AuthConstant;
@@ -60,7 +61,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		MenuUpdateResponse response = new MenuUpdateResponse(menuId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(menuService).modify(any(),any(), any(MenuUpdateRequest.class));
+		doReturn(response).when(menuService).modify(any(), any(MenuUpdateRequest.class));
 
 		//expected
 		mockMvc.perform(put("/stores/menus/"+menuId)
@@ -71,6 +72,26 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(status().isOk())
 			.andExpect(content().json(responseJson));
 
+	}
+
+	@DisplayName("메뉴를 삭제한다.")
+	@Test
+	void delete_menu_success() throws Exception {
+		UUID menuId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), RoleType.STORE);
+
+		MenuDeleteResponse response = new MenuDeleteResponse(menuId);
+		String responseJson = objectMapper.writeValueAsString(response);
+
+		doReturn(response).when(menuService).delete(any(), any());
+
+		//expected
+		mockMvc.perform(delete("/stores/menus/"+menuId)
+				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
 	}
 
 	private MenuUpdateRequest createMenuUpdateRequest(){

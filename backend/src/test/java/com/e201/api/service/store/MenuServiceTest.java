@@ -2,7 +2,6 @@ package com.e201.api.service.store;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
+import com.e201.api.controller.store.response.MenuDeleteResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
@@ -106,10 +106,24 @@ class MenuServiceTest {
 		MenuUpdateRequest request= createMenuUpdateRequest(menu);
 
 		//when
-		MenuUpdateResponse response = sut.modify(menu.getStore().getId(),RoleType.STORE,request);
+		MenuUpdateResponse response = sut.modify(RoleType.STORE,request);
 
 		//then
 		assertThat(response.getId()).isNotEqualTo(menu.getId());
+	}
+
+	@DisplayName("메뉴를 삭제한다.")
+	@Test
+	void delete_menu_entity_success() {
+		//given
+		Menu menu = createMenu();
+		menuRepository.save(menu);
+
+		//when
+		MenuDeleteResponse delete = sut.delete(menu.getId(), RoleType.STORE);
+
+		//then
+		assertThat(delete.getId()).isNotNull();
 	}
 
 	private MenuCreateRequest createMenuRequest(UUID id) {
