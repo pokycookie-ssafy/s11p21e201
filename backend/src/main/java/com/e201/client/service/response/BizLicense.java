@@ -2,6 +2,7 @@ package com.e201.client.service.response;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 >>>>>>> be93cfb ([#25] feat: Auth filer에 사업자 등록증 api 등록)
+=======
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+>>>>>>> c03792d ([#25] feat: 사업자 등록증 API 연동)
 public class BizLicense {
 	private Result result;
 }
