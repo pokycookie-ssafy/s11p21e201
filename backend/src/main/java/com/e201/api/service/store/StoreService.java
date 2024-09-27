@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
-import com.e201.api.controller.store.response.StoreFindResponse;
+import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.domain.annotation.JtaTransactional;
 
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
-import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -26,18 +25,26 @@ import lombok.RequiredArgsConstructor;
 public class StoreService {
 
 	private final StoreRepository storeRepository;
-	private final StoreInfoRepository storeInfoRepository;
-	private final OneWayCipherService oneWayCipherService;
 	private final StoreInfoService storeInfoService;
+	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
 	public StoreCreateResponse create(StoreCreateRequest storeCreateRequest){
-		StoreInfo storeInfo= storeInfoRepository.getById(storeCreateRequest.getStoreInfoId());
+		StoreInfo storeInfo = storeInfoService.findEntity(storeCreateRequest.getStoreInfoId());
 		Store store = storeCreateRequest.toEntity(storeInfo);
 		encryptPassword(store);
 		Store savedStore = storeRepository.save(store);
 
 		return new StoreCreateResponse(savedStore.getId());
+	}
+
+	@JtaTransactional
+	public StoreDeleteResponse delete(UUID id, RoleType roleType){
+		validationStore(roleType);
+		Store store = findEntity(id);
+		store.softDelete();
+
+		return new StoreDeleteResponse(store.getId());
 	}
 
 	public AuthInfo checkPassword(StoreAuthRequest request) {
@@ -51,13 +58,6 @@ public class StoreService {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public StoreFindResponse findStore(UUID id){
-		Store store = storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
-		StoreInfo storeInfo = store.getStoreInfo();
-		return createStoreFindResponse(store, storeInfo);
-	}
-
-
 
 	private void encryptPassword(Store store) {
 		String encryptedPassword = oneWayCipherService.encrypt(store.getPassword());
@@ -69,15 +69,22 @@ public class StoreService {
 			throw new RuntimeException("wrong password");
 		}
 	}
-	private StoreFindResponse createStoreFindResponse(Store store, StoreInfo storeInfo) {
-		return StoreFindResponse.builder()
-			.id(store.getId())
-			.name(storeInfo.getName())
-			.licenseNo(storeInfo.getRegisterNumber())
-			.address(storeInfo.getBusinessAddress())
-			.category(storeInfo.getBusinessType())
-			.ownerName(storeInfo.getRepresentativeName())
-			.phone(storeInfo.getPhone())
-			.build();
+
+	private void validationStore(RoleType roleType) {
+		if (roleType != RoleType.STORE) {
+			throw new RuntimeException("store validation error");
+		}
+	}
+
+	public UUID findStoreInfoId(UUID id, RoleType roleType){
+		validationStore(roleType);
+		Store store =findEntity(id);
+		return store.getStoreInfo().getId();
+
+	}
+
+	public UUID getStoreInfoId(UUID id) {
+		Store store = findEntity(id);
+		return store.getStoreInfo().getId();
 	}
 }

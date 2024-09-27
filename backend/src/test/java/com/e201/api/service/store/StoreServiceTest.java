@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
-import com.e201.api.controller.store.response.StoreFindResponse;
-import com.e201.domain.entity.contract.ContractStatus;
+import com.e201.api.controller.store.response.StoreDeleteResponse;
+import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
@@ -125,30 +125,28 @@ class StoreServiceTest {
 
 		assertThatThrownBy(() -> sut.checkPassword(storeAuthRequest)).isInstanceOf(RuntimeException.class);
 	}
-
-	@DisplayName("식당 정보를 단건 조회한다.")
+	
+	@DisplayName("식당이 탈퇴를 한다.")
 	@Test
-	void find_one_store_info_success(){
-		//given
-		Store store = createStore(storeInfo,"email","password");
+	void delete_store_success(){
+		Store store = createStore(storeInfo, "storeTest@test.com", "12341234");
 		storeRepository.save(store);
-		//when
-		StoreFindResponse storeFindResponse = sut.findStore(store.getId());
-		//then
-		equalStoreInfoMatchExactly(storeFindResponse, store, store.getStoreInfo());
+
+		StoreDeleteResponse delete = sut.delete(store.getId(), RoleType.STORE);
+
+		 Store deletedStore = sut.findEntity(delete.getId());
+		assertThat(deletedStore.getDeleteYN()).isEqualTo("Y");
 	}
 
-	private void equalStoreInfoMatchExactly(StoreFindResponse storeFindResponse,
-											Store store,
-											StoreInfo storeInfo) {
-		assertThat(storeFindResponse)
-			.extracting("id", "name", "licenseNo", "address", "category","ownerName","phone")
-			.containsExactly(store.getId(), storeInfo.getName(),
-					storeInfo.getRegisterNumber(), storeInfo.getBusinessAddress(),
-				storeInfo.getBusinessType(),storeInfo.getRepresentativeName(),storeInfo.getPhone());
+	@DisplayName("식당 탈퇴를 위한 권한이 없어서 예외가 발생한다.")
+	@Test
+	void delete_store_fail(){
+		Store store = createStore(storeInfo, "storeTest@test.com", "12341234");
+		storeRepository.save(store);
+
+		assertThatThrownBy(() -> sut.delete(store.getId(), RoleType.COMPANY)).isInstanceOf(RuntimeException.class);
 	}
-
-
+	
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
 		return StoreAuthRequest.builder()
 			.email(email)

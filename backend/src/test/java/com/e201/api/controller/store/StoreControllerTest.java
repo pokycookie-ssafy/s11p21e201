@@ -15,8 +15,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
-import com.e201.api.controller.store.response.StoreFindResponse;
+import com.e201.api.controller.store.response.StoreDeleteResponse;
+import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.api.service.store.StoreService;
+import com.e201.global.security.auth.constant.AuthConstant;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(StoreController.class)
@@ -46,40 +50,27 @@ public class StoreControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
-	@DisplayName("식당 정보를 단건 조회 한다.")
+	@DisplayName("식당을 삭제한다.")
 	@Test
-	void find_store_success() throws Exception {
+	void delete_store_success() throws Exception {
 		UUID storeId = UUID.randomUUID();
-		StoreFindResponse response = createStoreFindResponse(storeId);
+		StoreDeleteResponse response = new StoreDeleteResponse(storeId);
 		String responseJson = objectMapper.writeValueAsString(response);
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
+		doReturn(response).when(storeService).delete(any(), any());
 
-		doReturn(response).when(storeService).findStore(any());
-		// expected
-		mockMvc.perform(get("/stores/"+storeId)
+		mockMvc.perform(delete("/stores")
 				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
 			)
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andExpect(content().json(responseJson));
-
 	}
-
 	private StoreCreateRequest createStoreRequest(UUID id) {
 		return StoreCreateRequest.builder()
 			.storeInfoId(id)
 			.email("이메일")
 			.password("비밀번호")
-			.build();
-	}
-
-	private StoreFindResponse createStoreFindResponse(UUID id) {
-		return StoreFindResponse.builder()
-			.id(id)
-			.name("사업명")
-			.category("분류")
-			.address("사업체주소")
-			.ownerName("대표이름")
-			.phone("연락처")
-			.licenseNo("사업자등록증번호")
 			.build();
 	}
 }
