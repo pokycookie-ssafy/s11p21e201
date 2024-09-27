@@ -12,13 +12,12 @@ import lombok.NoArgsConstructor;
 @NotBlank
 public class MenuUpdateRequest {
 
-	private UUID id;
 	private String menuName;
 	private int price;
 
 	@Builder
-	private MenuUpdateRequest(UUID id,String menuName, int price) {
-		this.id= id;
+	private MenuUpdateRequest(String menuName, int price) {
+
 		this.menuName= menuName;
 		this.price = price;
 	}
