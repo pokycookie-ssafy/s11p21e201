@@ -62,7 +62,7 @@ public class StoreInfoControllerTest extends AbstractRestDocsTest {
 		StoreInfoFindResponse response = createStoreFindResponse(storeId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(storeInfoService).findOne(any());
+		doReturn(response).when(storeInfoService).findOne(any(), any());
 		// expected
 		mockMvc.perform(get("/stores/"+storeId)
 				.contentType(APPLICATION_JSON)
