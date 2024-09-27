@@ -6,6 +6,8 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -108,6 +110,35 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			)
 			.andExpect(status().isOk())
 			.andExpect(content().json(responseJson));
+	}
+
+	@DisplayName("한 식당의 메뉴 리스트를 조회한다.")
+	@Test
+	void findAll_menu_success() throws Exception {
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), RoleType.STORE);
+
+		List<MenuFindResponse> menuFindResponseList = lists(storeId);
+		String responseJson = objectMapper.writeValueAsString(menuFindResponseList);
+		doReturn(menuFindResponseList).when(menuService).find(any(),any());
+
+		mockMvc.perform(get("/stores/menus")
+				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
+	private List<MenuFindResponse> lists(UUID storeId){
+		MenuFindResponse mr1= createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr2= createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr3= createMenuResponse(UUID.randomUUID());
+		List<MenuFindResponse> menuFindResponseList= new ArrayList<>();
+		menuFindResponseList.add(mr1);
+		menuFindResponseList.add(mr2);
+		menuFindResponseList.add(mr3);
+		return menuFindResponseList;
 	}
 
 	private MenuFindResponse createMenuResponse(UUID menuId) {
