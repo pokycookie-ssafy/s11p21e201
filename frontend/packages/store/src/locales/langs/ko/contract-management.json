@@ -1,0 +1,36 @@
+{
+  "tab": {
+    "all": "전체",
+    "in_progress": "승인중",
+    "success": "완료",
+    "reject": "거절",
+    "received": "받은 요청",
+    "send": "보낸요청"
+  },
+  "field": {
+    "company_name": "회사명",
+    "email": "이메일",
+    "phone": "대표번호",
+    "application_date": "신청날짜",
+    "contract_date": "계약날짜",
+    "status": "상태",
+    "action": "처리",
+    "in_progress": "요청 처리 중"
+  },
+  "breadcrumbs": {
+    "management": "관리",
+    "contract_management": "계약 관리",
+    "contract_history": "계약 기록",
+    "contract_create": "계약 생성",
+    "contract_request": "계약 요청"
+  },
+  "button": {
+    "create_contract": "계약 생성"
+  },
+  "tooltip": {
+    "accept": "수락",
+    "reject": "거절",
+    "accept_all": "일괄 수락",
+    "reject_all": "일괄 거절"
+  }
+}

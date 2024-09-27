@@ -1,0 +1,37 @@
+{
+  "tab": {
+    "all": "전체",
+    "settled": "정산 완료",
+    "partial": "부분 정산",
+    "unsettled": "미정산"
+  },
+  "label": {
+    "settled": "정산 완료",
+    "partial": "부분 정산",
+    "unsettled": "미정산",
+    "company_name": "회사명"
+  },
+  "field": {
+    "company_name": "회사명",
+    "settled_date": "정산일",
+    "settlement_date": "정산 예정일",
+    "settled_amount": "정산 완료 금액",
+    "settlement_amount": "정산 예정 금액",
+    "outstanding_amount": "미납 금액",
+    "status": "상태",
+    "tax_invoice": "세금계산서"
+  },
+  "tooltip": {
+    "upload_done": "업로드 완료",
+    "upload": "업로드"
+  },
+  "breadcrumbs": {
+    "management": "관리",
+    "settlement_management": "정산 관리",
+    "company_management": "회사별 관리",
+    "date_management": "날짜별 관리"
+  },
+  "unit": {
+    "won": "원"
+  }
+}

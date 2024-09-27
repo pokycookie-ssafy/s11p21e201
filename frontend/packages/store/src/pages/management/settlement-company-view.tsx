@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { Label } from '@/components/label'
 import { Select } from '@/components/select'
@@ -22,16 +23,18 @@ import { Iconify } from '@e201/ui'
 type StatusType = 'settled' | 'partial' | 'unsettled'
 
 export default function SettlementCompanyView() {
+  const { t } = useTranslate('settlement-management')
+
   const invoiceModal = useBoolean()
 
   const [selectedCompany, setSelectedCompany] = useState<ISelectOption | null>(null)
   const [tab, setTab] = useState<StatusType | null>(null)
 
   const TABS = [
-    { label: '전체', value: null },
-    { label: '정산 완료', value: 'settled' },
-    { label: '부분 정산', value: 'partial' },
-    { label: '미정산', value: 'unsettled' },
+    { label: t('tab.all'), value: null },
+    { label: t('tab.settled'), value: 'settled' },
+    { label: t('tab.partial'), value: 'partial' },
+    { label: t('tab.unsettled'), value: 'unsettled' },
   ]
 
   const queryFn = async () => {
@@ -58,20 +61,20 @@ export default function SettlementCompanyView() {
 
   const statusProvider = (row: ISettlementResponse) => {
     if (row.settledAmount === 0) {
-      return <Label status="error">미정산</Label>
+      return <Label status="error">{t('label.unsettled')}</Label>
     }
     if (row.settledAmount < row.settlementAmount) {
-      return <Label status="warning">부분 정산</Label>
+      return <Label status="warning">{t('label.partial')}</Label>
     }
-    return <Label status="success">정산 완료</Label>
+    return <Label status="success">{t('label.settled')}</Label>
   }
 
   const columns: GridColDef<ISettlementResponse>[] = [
-    { field: 'companyName', headerName: '회사명', flex: 1, minWidth: 100 },
+    { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
     {
       field: 'settledDate',
       type: 'date',
-      headerName: '정산일',
+      headerName: t('field.settled_date'),
       width: 120,
       resizable: false,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -79,7 +82,7 @@ export default function SettlementCompanyView() {
     {
       field: 'settlementDate',
       type: 'date',
-      headerName: '정산 예정일',
+      headerName: t('field.settlement_date'),
       width: 120,
       resizable: false,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -87,32 +90,32 @@ export default function SettlementCompanyView() {
     {
       field: 'settledAmount',
       type: 'number',
-      headerName: '정산 완료 금액',
+      headerName: t('field.settled_amount'),
       width: 130,
       resizable: false,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
 
     {
       field: 'outstandingAmount',
       type: 'number',
-      headerName: '미납 금액',
+      headerName: t('field.outstanding_amount'),
       width: 120,
       resizable: false,
       valueGetter: (_, row) => row.settlementAmount - row.settledAmount,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
       field: 'settlementAmount',
       type: 'number',
-      headerName: '정산 예정 금액',
+      headerName: t('field.settlement_amount'),
       width: 120,
       resizable: false,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
       field: 'status',
-      headerName: '상태',
+      headerName: t('field.status'),
       headerAlign: 'center',
       width: 120,
       resizable: false,
@@ -125,19 +128,19 @@ export default function SettlementCompanyView() {
     {
       field: 'taxInvoice',
       type: 'boolean',
-      headerName: '세금계산서',
+      headerName: t('field.tax_invoice'),
       width: 90,
       resizable: false,
       renderCell: (params) => (
         <Stack width={1} height={1} justifyContent="center" alignItems="center">
           {params.row.taxInvoice ? (
-            <Tooltip title="업로드 완료" disableInteractive>
+            <Tooltip title={t('tooltip.upload_done')} disableInteractive>
               <IconButton sx={{ color: (theme) => theme.palette.success.main }}>
                 <Iconify icon="solar:check-circle-linear" />
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="업로드" disableInteractive>
+            <Tooltip title={t('tooltip.upload')} disableInteractive>
               <IconButton
                 sx={{ color: (theme) => theme.palette.error.main }}
                 onClick={invoiceModal.onTrue}
@@ -155,11 +158,14 @@ export default function SettlementCompanyView() {
     <>
       <Box>
         <Breadcrumbs
-          title="정산 관리"
+          title={t('breadcrumbs.settlement_management')}
           routes={[
-            { title: '관리', path: paths.management.menu },
-            { title: '정산 관리', path: paths.management.settlement.date },
-            { title: '회사별 관리' },
+            { title: t('breadcrumbs.management'), path: paths.management.menu },
+            {
+              title: t('breadcrumbs.settlement_management'),
+              path: paths.management.settlement.date,
+            },
+            { title: t('breadcrumbs.company_management') },
           ]}
         />
 
@@ -184,7 +190,7 @@ export default function SettlementCompanyView() {
               onChange={(v) => setSelectedCompany(v)}
               options={companies}
               size="small"
-              label="회사명"
+              label={t('label.company_name')}
             />
           </Stack>
 

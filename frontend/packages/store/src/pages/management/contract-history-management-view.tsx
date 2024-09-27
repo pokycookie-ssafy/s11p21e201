@@ -6,6 +6,7 @@ import api from '@/configs/api'
 import { useState } from 'react'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
 import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
@@ -16,6 +17,8 @@ import { Box, Tab, Card, Tabs, Stack, TextField } from '@mui/material'
 type StatusType = 'in' | 'success' | 'reject'
 
 export default function ContractHistoryManagementView() {
+  const { t } = useTranslate('contract-management')
+
   const [tab, setTab] = useState<StatusType | null>(null)
 
   const queryFn = async () => {
@@ -26,32 +29,32 @@ export default function ContractHistoryManagementView() {
   const { data, isPending } = useQuery({ queryKey: [api.contract.history], queryFn })
 
   const TABS = [
-    { label: '전체', value: null },
-    { label: '승인중', value: 'in' },
-    { label: '완료', value: 'success' },
-    { label: '거절', value: 'reject' },
+    { label: t('tab.all'), value: null },
+    { label: t('tab.in_progress'), value: 'in' },
+    { label: t('tab.success'), value: 'success' },
+    { label: t('tab.reject'), value: 'reject' },
   ]
 
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: '회사명',
+      headerName: t('field.company_name'),
       flex: 1,
       minWidth: 150,
     },
-    { field: 'email', headerName: '이메일', width: 200 },
-    { field: 'phone', headerName: '대표번호', width: 150, resizable: false },
+    { field: 'email', headerName: t('field.email'), width: 200 },
+    { field: 'phone', headerName: t('field.phone'), width: 150, resizable: false },
     {
       field: 'createdAt',
+      headerName: t('field.application_date'),
       type: 'date',
-      headerName: '신청날짜',
       resizable: false,
       width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
     },
     {
       field: 'status',
-      headerName: '상태',
+      headerName: t('field.status'),
       headerAlign: 'center',
       resizable: false,
       renderCell: (params) => (
@@ -65,11 +68,11 @@ export default function ContractHistoryManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title="계약 기록"
+        title={t('breadcrumbs.contract_history')}
         routes={[
-          { title: '관리', path: paths.management.menu },
-          { title: '계약 관리', path: paths.management.contract.root },
-          { title: '계약 기록' },
+          { title: t('breadcrumbs.management'), path: paths.management.menu },
+          { title: t('breadcrumbs.contract_management'), path: paths.management.contract.now },
+          { title: t('breadcrumbs.contract_history') },
         ]}
       />
 

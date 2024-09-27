@@ -1,0 +1,11 @@
+{
+  "breadcrumbs": {
+    "management": "관리",
+    "payment_management": "장부 관리"
+  },
+  "field": {
+    "company": "회사",
+    "price": "가격",
+    "time": "시간"
+  }
+}
