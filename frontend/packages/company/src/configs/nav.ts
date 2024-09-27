@@ -61,9 +61,27 @@ const nav: INav[] = [
         icon: 'uil:money-insert',
       },
       {
-        title: 'management.contract',
-        path: paths.management.contract,
+        title: 'management.contract.title',
+        path: paths.management.contract.root,
         icon: 'tabler:contract',
+        group: [
+          {
+            title: 'management.contract.now',
+            path: paths.management.contract.now,
+          },
+          // {
+          //   title: 'management.contract.new',
+          //   path: paths.management.contract.new,
+          // },
+          {
+            title: 'management.contract.request',
+            path: paths.management.contract.request,
+          },
+          {
+            title: 'management.contract.history',
+            path: paths.management.contract.history,
+          },
+        ],
       },
       {
         title: 'management.member',
