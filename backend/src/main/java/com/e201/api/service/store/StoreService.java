@@ -2,24 +2,19 @@ package com.e201.api.service.store;
 
 import java.util.UUID;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
-import com.e201.api.controller.store.request.StoreDeleteRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
-import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
 
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
-import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
-import com.e201.global.security.auth.resolver.Auth;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
 import lombok.RequiredArgsConstructor;
@@ -86,5 +81,10 @@ public class StoreService {
 		Store store =findEntity(id);
 		return store.getStoreInfo().getId();
 
+	}
+
+	public UUID getStoreInfoId(UUID id) {
+		Store store = findEntity(id);
+		return store.getStoreInfo().getId();
 	}
 }

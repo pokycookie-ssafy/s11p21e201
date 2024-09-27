@@ -19,7 +19,7 @@ public class StoreInfoUpdateRequest {
 	private String phone;
 
 	@Builder
-	public StoreInfoUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone) {
+	private StoreInfoUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone) {
 		this.name = name;
 		this.licenseNo = licenseNo;
 		this.address = address;

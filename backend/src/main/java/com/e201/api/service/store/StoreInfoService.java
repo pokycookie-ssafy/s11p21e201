@@ -34,8 +34,8 @@ public class StoreInfoService {
 		return storeInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("not found Exception"));
 	}
 
-	public StoreInfoFindResponse findOne(UUID storeId){
-		StoreInfo storeInfo = findEntity(storeId);
+	public StoreInfoFindResponse findOne(UUID storeId, UUID storeInfoId){
+		StoreInfo storeInfo = findEntity(storeInfoId);
 		return createStoreFindResponse(storeId, storeInfo);
 	}
 
