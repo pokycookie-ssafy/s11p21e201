@@ -76,7 +76,7 @@ class StoreInfoServiceTest {
 		Store store = createStore(storeInfo,"email","password");
 		storeRepository.save(store);
 		//when
-		StoreInfoFindResponse storeInfoFindResponse = sut.findOne(store.getId());
+		StoreInfoFindResponse storeInfoFindResponse = sut.findOne(store.getId(), store.getStoreInfo().getId());
 		//then
 		equalStoreInfoMatchExactly(storeInfoFindResponse, store, store.getStoreInfo());
 	}
