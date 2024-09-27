@@ -1,0 +1,12 @@
+{
+  "button": {
+    "delete": "삭제",
+    "cancel": "취소"
+  },
+  "title": {
+    "delete": "삭제"
+  },
+  "content": {
+    "delete": "정말 삭제하시겠습니까?"
+  }
+}

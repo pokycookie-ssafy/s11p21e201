@@ -1,8 +1,9 @@
+import paths from '@/configs/paths'
+import { useTranslate } from '@/locales'
 import { SelectCreatable } from '@/components/select'
+import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { Box, Stack, Dialog, Button, TextField } from '@mui/material'
-
-import { Typography } from '@e201/ui'
 
 interface IProps {
   open: boolean
@@ -12,19 +13,30 @@ interface IProps {
 }
 
 export default function NewMenuModal({ open, onClose, categories, onSubmit }: IProps) {
+  const { t } = useTranslate('menu-management')
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <Box p={2}>
-        <Typography variant="h5" fontWeight={800} mb={2} pl={0.5}>
-          메뉴 추가
-        </Typography>
-        <Stack spacing={1}>
-          <TextField label="메뉴 이름" />
+      <Box p={3}>
+        <Breadcrumbs
+          title={t('breadcrumbs.create_menu')}
+          routes={[
+            { title: t('breadcrumbs.management'), path: paths.management.menu },
+            { title: t('breadcrumbs.menu_management'), path: paths.management.menu },
+            { title: t('breadcrumbs.create_menu') },
+          ]}
+        />
+        <Stack spacing={2}>
+          <TextField label={t('label.menu_name')} size="small" />
           <SelectCreatable
+            label={t('label.category')}
+            size="small"
             options={categories.map((category) => ({ label: category, value: category }))}
           />
-          <TextField label="가격" />
-          <Button size="large">메뉴 추가</Button>
+          <TextField label={t('label.price')} size="small" />
+          <Button size="large" color="secondary">
+            {t('button.create_menu')}
+          </Button>
         </Stack>
       </Box>
     </Dialog>
