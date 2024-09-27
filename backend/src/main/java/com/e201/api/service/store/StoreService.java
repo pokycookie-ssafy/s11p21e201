@@ -2,6 +2,7 @@ package com.e201.api.service.store;
 
 import java.util.UUID;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.store.request.StoreAuthRequest;
@@ -26,13 +27,12 @@ import lombok.RequiredArgsConstructor;
 public class StoreService {
 
 	private final StoreRepository storeRepository;
-	private final StoreInfoRepository storeInfoRepository;
-	private final OneWayCipherService oneWayCipherService;
 	private final StoreInfoService storeInfoService;
+	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
 	public StoreCreateResponse create(StoreCreateRequest storeCreateRequest){
-		StoreInfo storeInfo= storeInfoRepository.getById(storeCreateRequest.getStoreInfoId());
+		StoreInfo storeInfo = storeInfoService.findEntity(storeCreateRequest.getStoreInfoId());
 		Store store = storeCreateRequest.toEntity(storeInfo);
 		encryptPassword(store);
 		Store savedStore = storeRepository.save(store);
@@ -63,4 +63,16 @@ public class StoreService {
 		}
 	}
 
+	private void validationStore(RoleType roleType) {
+		if (roleType != RoleType.STORE) {
+			throw new RuntimeException("store validation error");
+		}
+	}
+
+	public UUID findStoreInfoId(UUID id, RoleType roleType){
+		validationStore(roleType);
+		Store store =findEntity(id);
+		return store.getStoreInfo().getId();
+
+	}
 }
