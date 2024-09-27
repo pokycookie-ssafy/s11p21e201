@@ -18,7 +18,7 @@ const MuiButton: Components<Theme>['MuiButton'] = {
     contained: ({ theme, ownerState }) => {
       const styled = {
         inheritColor: {
-          ...(ownerState.color === 'inherit' &&
+          ...(ownerState.color === 'secondary' &&
             !ownerState.disabled &&
             (theme.palette.mode === 'light'
               ? {
