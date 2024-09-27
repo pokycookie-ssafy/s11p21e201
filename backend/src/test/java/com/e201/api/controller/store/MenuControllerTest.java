@@ -112,6 +112,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+<<<<<<< HEAD
 	@DisplayName("한 식당의 메뉴 리스트를 조회한다.")
 	@Test
 	void findAll_menu_success() throws Exception {
@@ -141,6 +142,8 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		return menuFindResponseList;
 	}
 
+=======
+>>>>>>> 1047472 ([#31] test: 메뉴 단건 조회 기능 테스트)
 	private MenuFindResponse createMenuResponse(UUID menuId) {
 		return MenuFindResponse.builder()
 			.id(menuId)

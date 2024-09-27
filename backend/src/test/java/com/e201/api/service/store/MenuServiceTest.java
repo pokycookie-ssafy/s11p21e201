@@ -142,6 +142,7 @@ class MenuServiceTest {
 		assertThatMenuMatchExactly(menuFindResponse,saveMenu.getId());
 	}
 
+<<<<<<< HEAD
 	@DisplayName("한 식당의 여러 메뉴를 조회한다.")
 	@Test
 	void findAll_menu_entity_success() {
@@ -173,6 +174,8 @@ class MenuServiceTest {
 		assertThatThrownBy(() ->sut.find(RoleType.COMPANY, store.getId())).isInstanceOf(RuntimeException.class);
 
 	}
+=======
+>>>>>>> 1047472 ([#31] test: 메뉴 단건 조회 기능 테스트)
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
