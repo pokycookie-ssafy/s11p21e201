@@ -15,7 +15,8 @@
     "create_menu": "메뉴 추가"
   },
   "label": {
-    "all": "전체"
+    "all": "전체",
+    "search": "메뉴명 검색"
   },
   "tooltip": {
     "edit": "수정",
