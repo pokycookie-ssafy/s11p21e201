@@ -8,6 +8,7 @@ import com.e201.api.controller.store.request.SalesCreateRequest;
 import com.e201.api.controller.store.response.SalesCreateResponse;
 import com.e201.api.service.company.CompanyInfoService;
 import com.e201.api.service.company.CompanyService;
+import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.store.Menu;
@@ -25,6 +26,7 @@ public class SalesService {
 	private final MenuService menuService;
 	private final CompanyInfoService companyInfoService;
 
+	@JtaTransactional
 	public SalesCreateResponse create(SalesCreateRequest salesRequest){
 		Company company = companyService.findEntity(salesRequest.getCompanyId());
 		CompanyInfo companyInfo = companyInfoService.findEntity(company.getCompanyInfo().getId());

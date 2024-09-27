@@ -44,6 +44,7 @@ public class MenuService {
 		return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+	@JtaTransactional
 	public MenuUpdateResponse modify(RoleType roleType, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
 		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
@@ -56,6 +57,7 @@ public class MenuService {
 		return new MenuUpdateResponse(modifiedMenu.getId());
 	}
 
+	@JtaTransactional
 	public MenuDeleteResponse delete(UUID menuId,RoleType roleType){
 		validationStore(roleType);
 		Menu originMenu = menuRepository.findById(menuId)
