@@ -39,7 +39,8 @@ public class StoreInfoController {
 
 	@GetMapping("/stores/{id}")
 	public ResponseEntity<StoreInfoFindResponse> findOne(@PathVariable UUID id){
-		StoreInfoFindResponse response = storeInfoService.findOne(id);
+		UUID storeInfoIdeId = storeService.getStoreInfoId(id);
+		StoreInfoFindResponse response = storeInfoService.findOne(id,storeInfoIdeId);
 		return ResponseEntity.status(OK).body(response);
 	}
 
