@@ -16,9 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
+<<<<<<< HEAD
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
 import com.e201.client.controller.response.LicenseCreateResponse;
+=======
+import com.e201.client.controller.response.OcrResultResponse;
+>>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 import com.e201.client.service.response.ApiResponse;
 import com.e201.client.service.response.Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,6 +36,7 @@ public class OcrService {
 	private final RestClient restClient;
 	private final ObjectMapper mapper = new ObjectMapper();
 
+<<<<<<< HEAD
 	private final CompanyService companyService;
 	private final StoreService storeService;
 
@@ -42,6 +47,16 @@ public class OcrService {
 	private String apiKey;
 
 	public LicenseCreateResponse ocrCallApi(MultipartFile file) {
+=======
+	@Value("${ocr.url}")
+	private String apiUrl;
+	
+	@Value("${ocr.key}")
+	private String apiKey;
+
+	public OcrResultResponse parseBizLicense(MultipartFile file) {
+
+>>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 		String requestBody = createRequestBody(file);
 
 		ApiResponse responseBody = restClient.post()
@@ -52,6 +67,7 @@ public class OcrService {
 			.retrieve()
 			.toEntity(ApiResponse.class).getBody();
 
+<<<<<<< HEAD
 		String inferResult = responseBody.getImages().getFirst().getInferResult();
 		if (!inferResult.equals("SUCCESS"))
 			throw new RuntimeException("OCR FAIL");
@@ -80,12 +96,35 @@ public class OcrService {
 		}
 
 		String repName = bizLicense.getRepName().getFirst().getText();
+=======
+		return parseDataFromJson(responseBody);
+	}
+
+	private OcrResultResponse parseDataFromJson(ApiResponse responseBody) {
+		Result bizLicense = responseBody.getImages().getFirst().getBizLicense().getResult();
+
+		String repName = bizLicense.getRepName().getFirst().getText();
+		String companyName = bizLicense.getCompanyName().getFirst().getText();
+		String registerNumber = bizLicense.getRegisterNumber().getFirst().getText();
+>>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 		String openDate = bizLicense.getOpenDate().getFirst().getText();
 		String bisType = bizLicense.getBisType().getFirst().getText();
 		String bisItem = bizLicense.getBisItem().getFirst().getText();
 		String bisAddress = bizLicense.getBisAddress().getFirst().getText();
 
+<<<<<<< HEAD
 		return new LicenseCreateResponse(repName, companyName, registerNumber, openDate, bisType, bisItem, bisAddress);
+=======
+		return OcrResultResponse.builder()
+			.representationName(repName)
+			.companyName(companyName)
+			.registerNumber(registerNumber)
+			.openDate(openDate)
+			.bisType(bisType)
+			.bisItem(bisItem)
+			.bisAddress(bisAddress)
+			.build();
+>>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 	}
 
 	private String createRequestBody(MultipartFile file) {
