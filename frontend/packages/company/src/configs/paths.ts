@@ -29,7 +29,14 @@ const paths = {
   },
   management: {
     member: `${PATH.management}/member`,
-    contract: `${PATH.management}/contract`,
+    member_create: `${PATH.management}/member/create`,
+    contract: {
+      root: `${PATH.management}/contract`,
+      now: `${PATH.management}/contract/now`,
+      new: `${PATH.management}/contract/new`,
+      request: `${PATH.management}/contract/request`,
+      history: `${PATH.management}/contract/history`,
+    },
   },
   temp: {
     temp: `${PATH}/temp`,

@@ -1,5 +1,5 @@
 // import ListManager from '@/sections/payment-list/list-manager'
-import ListCompany from '@/sections/payment-list/list-company'
+import ListCompany from '@/sections/payment-management/list-company'
 
 // export default function PaymentListView({ role }: { role: string }) {
 //   return (
