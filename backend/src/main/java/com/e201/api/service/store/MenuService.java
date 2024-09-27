@@ -10,6 +10,7 @@ import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.api.controller.store.response.MenuDeleteResponse;
+import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.EntityConstant;
@@ -42,10 +43,19 @@ public class MenuService {
 		return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+	public MenuFindResponse findOne(UUID id){
+		Menu menu = findEntity(id);
+		return MenuFindResponse.builder()
+			.id(id)
+			.menuName(menu.getName())
+			.price(menu.getPrice())
+			.build();
+	}
+
 	@JtaTransactional
-	public MenuUpdateResponse modify(RoleType roleType, MenuUpdateRequest menuUpdateRequest){
+	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
-		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
+		Menu originMenu = menuRepository.findById(menuId)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
