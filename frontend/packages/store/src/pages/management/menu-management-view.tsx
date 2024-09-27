@@ -94,19 +94,14 @@ export default function MenuManagementView() {
         />
 
         <Card>
-          <Tabs
-            value={tab}
-            onChange={(_, v) => setTab(v)}
-            textColor="secondary"
-            indicatorColor="secondary"
-            variant="scrollable"
-            sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-          >
-            <Tab label={t('label.all')} value={null} key={0} />
-            {categories.map((category, i) => (
-              <Tab label={category} value={category} key={i + 1} />
-            ))}
-          </Tabs>
+          <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+            <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
+              <Tab label={t('label.all')} value={null} key={0} />
+              {categories.map((category, i) => (
+                <Tab label={category} value={category} key={i + 1} />
+              ))}
+            </Tabs>
+          </Box>
 
           <Stack
             direction="row"

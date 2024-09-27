@@ -77,16 +77,13 @@ export default function ContractHistoryManagementView() {
       />
 
       <Card>
-        <Tabs
-          value={tab}
-          onChange={(_, v) => setTab(v)}
-          variant="scrollable"
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          {TABS.map((e, i) => (
-            <Tab label={e.label} value={e.value} key={i} />
-          ))}
-        </Tabs>
+        <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+          <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
+            {TABS.map((e, i) => (
+              <Tab label={e.label} value={e.value} key={i} />
+            ))}
+          </Tabs>
+        </Box>
 
         <Stack
           direction="row"
