@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
+import com.e201.api.controller.store.request.StoreDeleteRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
+import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
 
@@ -17,6 +19,7 @@ import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,15 @@ public class StoreService {
 		Store savedStore = storeRepository.save(store);
 
 		return new StoreCreateResponse(savedStore.getId());
+	}
+
+	@JtaTransactional
+	public StoreDeleteResponse delete(UUID id, RoleType roleType){
+		validationStore(roleType);
+		Store store = findEntity(id);
+		store.softDelete();
+
+		return new StoreDeleteResponse(store.getId());
 	}
 
 	public AuthInfo checkPassword(StoreAuthRequest request) {
