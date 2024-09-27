@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
+import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
@@ -124,9 +125,28 @@ class StoreServiceTest {
 
 		assertThatThrownBy(() -> sut.checkPassword(storeAuthRequest)).isInstanceOf(RuntimeException.class);
 	}
+	
+	@DisplayName("식당이 탈퇴를 한다.")
+	@Test
+	void delete_store_success(){
+		Store store = createStore(storeInfo, "storeTest@test.com", "12341234");
+		storeRepository.save(store);
 
+		StoreDeleteResponse delete = sut.delete(store.getId(), RoleType.STORE);
 
+		 Store deletedStore = sut.findEntity(delete.getId());
+		assertThat(deletedStore.getDeleteYN()).isEqualTo("Y");
+	}
 
+	@DisplayName("식당 탈퇴를 위한 권한이 없어서 예외가 발생한다.")
+	@Test
+	void delete_store_fail(){
+		Store store = createStore(storeInfo, "storeTest@test.com", "12341234");
+		storeRepository.save(store);
+
+		assertThatThrownBy(() -> sut.delete(store.getId(), RoleType.COMPANY)).isInstanceOf(RuntimeException.class);
+	}
+	
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
 		return StoreAuthRequest.builder()
 			.email(email)
