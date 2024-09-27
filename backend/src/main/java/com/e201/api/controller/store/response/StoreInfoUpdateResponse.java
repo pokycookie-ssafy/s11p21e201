@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class StoreUpdateResponse {
+public class StoreInfoUpdateResponse {
 	UUID id;
 
-	public StoreUpdateResponse(UUID id) {
+	public StoreInfoUpdateResponse(UUID id) {
 		this.id = id;
 	}
 }

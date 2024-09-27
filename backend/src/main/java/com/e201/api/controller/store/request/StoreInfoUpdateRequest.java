@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @NotNull
 @NotBlank
-public class StoreUpdateRequest {
+public class StoreInfoUpdateRequest {
 	private String name;
 	private String licenseNo;
 	private String address;
@@ -19,7 +19,7 @@ public class StoreUpdateRequest {
 	private String phone;
 
 	@Builder
-	public StoreUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone) {
+	public StoreInfoUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone) {
 		this.name = name;
 		this.licenseNo = licenseNo;
 		this.address = address;
