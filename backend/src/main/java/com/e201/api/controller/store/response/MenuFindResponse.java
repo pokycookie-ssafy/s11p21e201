@@ -14,7 +14,7 @@ public class MenuFindResponse {
 	private int price;
 
 	@Builder
-	private MenuFindResponse(final UUID id, final String menuName, final int price) {
+	public MenuFindResponse(final UUID id, final String menuName, final int price) {
 		this.id = id;
 		this.menuName = menuName;
 		this.price = price;
