@@ -1,7 +1,15 @@
 package com.e201.api.service.store;
 
+<<<<<<< HEAD
 import java.util.List;
+=======
+import static com.e201.global.exception.ErrorCode.*;
+
+import java.util.List;
+import java.util.Optional;
+>>>>>>> ad44aae ([#31] feat: 식당 메뉴 리스트 조회 기능 구현)
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +24,8 @@ import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +76,15 @@ public class MenuService {
 			.menuName(menu.getName())
 			.price(menu.getPrice())
 			.build();
+	}
+
+	public List<MenuFindResponse> find(RoleType roleType, UUID id){
+		validationStore(roleType);
+		List<MenuFindResponse> responseList = menuRepository.findByStoreId(id)
+			.stream()
+			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice()))  // Menu -> MenuFindResponse로 변환
+			.toList();  // List<MenuFindResponse>로 수집
+		return responseList;
 	}
 
 	@JtaTransactional
