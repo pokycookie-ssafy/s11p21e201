@@ -49,12 +49,6 @@ public class StoreInfoService {
 		return new StoreInfoUpdateResponse(updateEntity.getId());
 	}
 
-
-	@JtaTransactional
-	public void remove(UUID id) {
-		storeInfoRepository.deleteById(id);
-	}
-
 	private StoreInfoFindResponse createStoreFindResponse(UUID storeId, StoreInfo storeInfo) {
 		return StoreInfoFindResponse.builder()
 			.id(storeId)
