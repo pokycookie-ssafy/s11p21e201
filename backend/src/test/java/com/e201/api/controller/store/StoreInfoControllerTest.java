@@ -10,19 +10,29 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
+import com.e201.api.controller.store.request.StoreInfoUpdateRequest;
 import com.e201.api.controller.store.response.StoreInfoCreateResponse;
 import com.e201.api.controller.store.response.StoreInfoFindResponse;
+import com.e201.api.controller.store.response.StoreInfoUpdateResponse;
 import com.e201.api.service.store.StoreInfoService;
+import com.e201.api.service.store.StoreService;
+import com.e201.global.security.auth.constant.AuthConstant;
+import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(StoreInfoController.class)
 public class StoreInfoControllerTest extends AbstractRestDocsTest {
 	@MockBean
 	StoreInfoService storeInfoService;
+	@MockBean
+	StoreService storeService;
 
 	@DisplayName("식당 정보를 등록한다.")
 	@Test
@@ -62,6 +72,31 @@ public class StoreInfoControllerTest extends AbstractRestDocsTest {
 
 	}
 
+	@DisplayName("식당 정보를 수정한다.")
+	@Test
+	void update_storeInfo_success() throws Exception {
+
+		// given
+		UUID storeInfoId = UUID.randomUUID();
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
+		StoreInfoUpdateRequest request = createStoreInfoUpdateRequest();
+		String requestJson = objectMapper.writeValueAsString(request);
+		StoreInfoUpdateResponse response = new StoreInfoUpdateResponse(storeInfoId);
+		String responseJson = objectMapper.writeValueAsString(response);
+
+		doReturn(response).when(storeInfoService).update(any(), any(),any(StoreInfoUpdateRequest.class));
+
+		// expected
+		mockMvc.perform(put("/stores")
+				.contentType(APPLICATION_JSON)
+				.content(requestJson)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
 	private StoreInfoCreateRequest createStoreInfoRequest() {
 		return StoreInfoCreateRequest.builder()
 			.registerNumber("식당 등록증 번호")
@@ -81,6 +116,17 @@ public class StoreInfoControllerTest extends AbstractRestDocsTest {
 			.ownerName("대표이름")
 			.phone("연락처")
 			.licenseNo("사업자등록증번호")
+			.build();
+	}
+
+	private StoreInfoUpdateRequest createStoreInfoUpdateRequest(){
+		return StoreInfoUpdateRequest.builder()
+			.name("수정된 사업장 이름")
+			.phone("수정된 사업장 연락처")
+			.address("수정된 사업장 주소")
+			.category("수정된 사업 유형")
+			.ownerName("수정된 사업자 대표 이름")
+			.licenseNo("수정된 사업자 등록증 번호")
 			.build();
 	}
 }

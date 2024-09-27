@@ -126,6 +126,7 @@ class StoreServiceTest {
 	}
 
 
+
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
 		return StoreAuthRequest.builder()
 			.email(email)

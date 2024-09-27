@@ -11,12 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
+import com.e201.api.controller.store.request.StoreInfoUpdateRequest;
 import com.e201.api.controller.store.response.StoreInfoCreateResponse;
 import com.e201.api.controller.store.response.StoreInfoFindResponse;
+import com.e201.api.controller.store.response.StoreInfoUpdateResponse;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
+import com.e201.global.security.auth.constant.RoleType;
 
 @SpringBootTest
 @Transactional
@@ -78,6 +81,43 @@ class StoreInfoServiceTest {
 		equalStoreInfoMatchExactly(storeInfoFindResponse, store, store.getStoreInfo());
 	}
 
+	@DisplayName("식당 정보를 수정한다.")
+	@Test
+	void update_store_info_success(){
+		//given
+		StoreInfo storeInfo = createStoreInfo();
+		storeInfoRepository.save(storeInfo);
+		String originName = storeInfo.getName();
+		Store store = createStore(storeInfo,"email","password");
+		storeRepository.save(store);
+
+		StoreInfoUpdateRequest storeInfoUpdateRequest = createStoreInfoUpdateRequest();
+
+		//when
+		StoreInfoUpdateResponse response = sut.update(storeInfo.getId(), RoleType.STORE,storeInfoUpdateRequest);
+
+		//given
+		StoreInfo updateEntity = sut.findEntity(response.getId());
+		assertThat(updateEntity.getName()).isNotEqualTo(originName);
+	}
+
+	@DisplayName("식당 정보 수정에 필요한 권한이 없어 예외가 발생한다.")
+	@Test
+	void update_store_info_fail(){
+		//given
+		StoreInfo storeInfo = createStoreInfo();
+		storeInfoRepository.save(storeInfo);
+		String originName = storeInfo.getName();
+		Store store = createStore(storeInfo,"email","password");
+		storeRepository.save(store);
+
+		StoreInfoUpdateRequest storeInfoUpdateRequest = createStoreInfoUpdateRequest();
+
+		//when
+		assertThatThrownBy(() ->  sut.update(storeInfo.getId(),
+			RoleType.COMPANY,storeInfoUpdateRequest)).isExactlyInstanceOf(RuntimeException.class);
+	}
+
 	private StoreInfoCreateRequest createStoreInfoRequest(){
 		return StoreInfoCreateRequest.builder()
 			.name("사업장 이름")
@@ -97,6 +137,17 @@ class StoreInfoServiceTest {
 			.businessType("사업 유형")
 			.representativeName("사업자 대표 이름")
 			.registerNumber("사업자 등록증 번호")
+			.build();
+	}
+
+	private StoreInfoUpdateRequest createStoreInfoUpdateRequest(){
+		return StoreInfoUpdateRequest.builder()
+			.name("수정된 사업장 이름")
+			.phone("수정된 사업장 연락처")
+			.address("수정된 사업장 주소")
+			.category("수정된 사업 유형")
+			.ownerName("수정된 사업자 대표 이름")
+			.licenseNo("수정된 사업자 등록증 번호")
 			.build();
 	}
 
