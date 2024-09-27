@@ -6,6 +6,27 @@
   "field": {
     "company": "회사",
     "price": "가격",
-    "time": "시간"
+    "time": "시간",
+    "company_name": "회사명",
+    "employee_code": "사번",
+    "menu": "메뉴",
+    "total_price": "결제 금액",
+    "payment_time": "결제 시간"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "tooltip": {
+    "delete_all": "일괄 삭제"
+  },
+  "dialog": {
+    "delete_all": "삭제",
+    "delete_all_content": "{0}개의 결제내역을 정말 삭제하시겠습니까?"
+  },
+  "toast": {
+    "delete": "메뉴가 삭제되었습니다"
+  },
+  "label": {
+    "selected": "{0} 개 선택됨"
   }
 }

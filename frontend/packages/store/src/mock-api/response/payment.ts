@@ -10,6 +10,16 @@ export const paymentResponse = [
     createdAt: '2024-09-09T01:23:48Z',
   },
   {
+    id: 'e387f32b-5341-4c84-917c-12b8c86d317c',
+    paymentId: 'e297de32-ca8b-4faf-8f62-35ff00ad7075',
+    menuName: '삼겹살',
+    menuPrice: 19106,
+    companyId: '588067a1-b5c2-4fab-99ac-2af157640b8b',
+    companyName: 'LG전자',
+    employeeCode: '5030213',
+    createdAt: '2024-09-09T01:23:48Z',
+  },
+  {
     id: '6dbe8500-541f-4222-a736-3f1f767beeff',
     paymentId: 'e297de32-ca8b-4faf-8f62-35ff00ad7075',
     menuName: '된장찌개',

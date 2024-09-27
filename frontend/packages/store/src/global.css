@@ -4,3 +4,8 @@
   font-style: normal;
   src: url('./assets/fonts/SUIT-Variable.ttf') format('truetype');
 }
+
+body {
+  font-feature-settings: 'tnum';
+  /* font-variant-numeric: tabular-nums; */
+}
