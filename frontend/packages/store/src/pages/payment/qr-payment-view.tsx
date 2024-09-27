@@ -1,34 +1,19 @@
 import type { IMenu } from '@/types/menu'
 
 import { toast } from 'sonner'
-import { useState } from 'react'
+import api from '@/configs/api'
+import axios from '@/configs/axios'
 import { useBoolean } from '@e201/utils'
+import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import PaymentQr from '@/sections/qr-payment/payment-qr'
 import PaymentMenu from '@/sections/qr-payment/payment-menu'
 import PaymentOrder from '@/sections/qr-payment/payment-order'
 
-import { Tab, Tabs, Stack } from '@mui/material'
+import { Tab, Tabs, Stack, CircularProgress } from '@mui/material'
 
 import { ScrollContainer } from '@e201/ui'
-
-const mock: IMenu[] = [
-  { name: '아메리카노', price: 4000, id: '1' },
-  { name: '아이스 아메리카노', price: 4500, id: '2' },
-  { name: '카페라떼', price: 5000, id: '3' },
-  { name: '바닐라라떼', price: 5000, id: '4' },
-  { name: '쑥라떼', price: 5000, id: '5' },
-  { name: '마주스', price: 5000, id: '6' },
-  { name: '오곡라떼', price: 5000, id: '7' },
-  { name: '헤이즐넛라떼', price: 5000, id: '8' },
-  { name: '시나몬라떼', price: 6000, id: '9' },
-  { name: '루이보스티', price: 5000, id: '10' },
-  { name: '페퍼민트티', price: 5000, id: '11' },
-  { name: '검은콩스무디', price: 6000, id: '12' },
-  { name: '애플스무디', price: 6000, id: '13' },
-  { name: '자몽스무디', price: 6000, id: '14' },
-  { name: '카모마일티', price: 5000, id: '15' },
-  { name: '카야잼토스트', price: 4000, id: '16' },
-]
 
 export interface IOrder {
   menu: IMenu
@@ -36,10 +21,42 @@ export interface IOrder {
 }
 
 export default function QrPaymentView() {
+  const { t } = useTranslate('qr-payment')
+
   const [tab, setTab] = useState<string | null>(null)
   const [order, setOrder] = useState<Map<string, IOrder>>(new Map())
 
   const qrOpen = useBoolean()
+
+  const queryFn = async () => {
+    const response = await axios.get<IMenu[]>(api.menu.list)
+    return response.data
+  }
+
+  const { data: menus, isPending, isError } = useQuery({ queryKey: [api.menu.list], queryFn })
+
+  const categories = useMemo(() => {
+    if (!menus) {
+      return []
+    }
+    const categorySet = new Set<string>()
+    menus.forEach((menu) => {
+      if (menu.category) {
+        categorySet.add(menu.category)
+      }
+    })
+    return Array.from(categorySet)
+  }, [menus])
+
+  const filteredMenus = useMemo<IMenu[]>(() => {
+    if (!menus) {
+      return []
+    }
+    if (tab === null) {
+      return menus
+    }
+    return menus.filter((menu) => menu.category === tab)
+  }, [menus, tab])
 
   const orderHandler = (menu: IMenu) => {
     const prev = new Map(order)
@@ -77,9 +94,9 @@ export default function QrPaymentView() {
     setOrder(prev)
   }
 
-  const submitHandler = (data: string) => {
-    console.log(data)
-    toast.success('결제가 완료되었습니다')
+  const submitHandler = (qrData: string) => {
+    console.log(qrData)
+    toast.success(t('toast.success'))
     setOrder(new Map())
   }
 
@@ -93,16 +110,21 @@ export default function QrPaymentView() {
             variant="scrollable"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <Tab label="전체 메뉴" value={null} />
-            <Tab label="정식" value="정식" />
-            <Tab label="세트" value="세트" />
-            <Tab label="사이드" value="사이드" />
-            <Tab label="음료" value="음료" />
+            <Tab label={t('label.all')} value={null} key={0} />
+            {categories.map((category, i) => (
+              <Tab label={category} value={category} key={i + 1} />
+            ))}
           </Tabs>
 
-          <ScrollContainer sx={{ height: 1, pl: 1, pb: 1 }}>
-            <PaymentMenu onClick={orderHandler} menus={mock} />
-          </ScrollContainer>
+          {isPending ? (
+            <Stack width={1} height={1} justifyContent="center" alignItems="center">
+              <CircularProgress />
+            </Stack>
+          ) : (
+            <ScrollContainer sx={{ height: 1, pl: 1, pb: 1 }}>
+              <PaymentMenu onClick={orderHandler} menus={filteredMenus} />
+            </ScrollContainer>
+          )}
         </Stack>
         <PaymentOrder
           orders={Array.from(order.values())}
