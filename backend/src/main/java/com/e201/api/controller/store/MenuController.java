@@ -45,11 +45,14 @@ public class MenuController {
 		return ResponseEntity.status(OK).body(menuFindResponse);
 	}
 
+<<<<<<< HEAD
 	@GetMapping("/stores/menus")
 	public ResponseEntity<List<MenuFindResponse>> find(@Auth AuthInfo authInfo){
 		List<MenuFindResponse> menuFindResponses = menuService.find(authInfo.getRoleType(), authInfo.getId());
 		return ResponseEntity.status(OK).body(menuFindResponses);
 	}
+=======
+>>>>>>> f2404b4 ([#31] feat: 메뉴 단건 조회 기능 구현)
 	@PutMapping("/stores/menus/{menuId}")
 	public ResponseEntity<MenuUpdateResponse> update(@Auth AuthInfo authInfo,
 		@RequestBody MenuUpdateRequest menuUpdateRequest,

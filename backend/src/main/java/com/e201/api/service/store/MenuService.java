@@ -59,10 +59,24 @@ public class MenuService {
 		return responseList;
 	}
 
+	public MenuFindResponse findOne(UUID id){
+		Menu menu = findEntity(id);
+		return MenuFindResponse.builder()
+			.id(id)
+			.menuName(menu.getName())
+			.price(menu.getPrice())
+			.build();
+	}
+
 	@JtaTransactional
 	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
+<<<<<<< HEAD
 		Menu originMenu = findEntity(menuId);
+=======
+		Menu originMenu = menuRepository.findById(menuId)
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
+>>>>>>> f2404b4 ([#31] feat: 메뉴 단건 조회 기능 구현)
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
