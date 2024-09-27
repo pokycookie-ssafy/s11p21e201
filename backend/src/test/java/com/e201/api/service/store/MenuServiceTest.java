@@ -2,6 +2,7 @@ package com.e201.api.service.store;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -141,6 +142,37 @@ class MenuServiceTest {
 		assertThatMenuMatchExactly(menuFindResponse,saveMenu.getId());
 	}
 
+	@DisplayName("한 식당의 여러 메뉴를 조회한다.")
+	@Test
+	void findAll_menu_entity_success() {
+		Menu menu= createMenu();
+		Menu menu1 =createMenu();
+		Menu menu2 =createMenu();
+		menuRepository.save(menu);
+		menuRepository.save(menu1);
+		menuRepository.save(menu2);
+
+		//when
+		List<MenuFindResponse> menuFindResponses = sut.find(RoleType.STORE, store.getId());
+
+		//then
+		assertThat(menuFindResponses.size()).isEqualTo(3);
+	}
+
+	@DisplayName("인증 오류로 인해 식당의 여러 메뉴를 조회하는데 예외 처리가 발생한다. ")
+	@Test
+	void findAll_menu_entity_fail() {
+		Menu menu= createMenu();
+		Menu menu1 =createMenu();
+		Menu menu2 =createMenu();
+		menuRepository.save(menu);
+		menuRepository.save(menu1);
+		menuRepository.save(menu2);
+
+		//then
+		assertThatThrownBy(() ->sut.find(RoleType.COMPANY, store.getId())).isInstanceOf(RuntimeException.class);
+
+	}
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
