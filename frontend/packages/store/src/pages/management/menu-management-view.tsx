@@ -88,6 +88,7 @@ export default function MenuManagementView() {
     toast.success(t('toast.delete'))
     queryClient.invalidateQueries({ queryKey: [api.menu.list] })
     deleteConfirm.onFalse()
+    deleteAllConfirm.onFalse()
   }
 
   const columns: GridColDef<IMenu>[] = [
@@ -97,6 +98,7 @@ export default function MenuManagementView() {
       field: 'price',
       headerName: t('field.price'),
       type: 'number',
+      width: 100,
       valueFormatter: (value: number) => `${fNumber(value)}${t('unit.won')}`,
     },
     {
