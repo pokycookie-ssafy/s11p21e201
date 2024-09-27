@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.store.request.StoreAccountCreateRequest;
 import com.e201.api.controller.store.response.StoreAccountCreateResponse;
+import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreAccount;
 import com.e201.domain.repository.store.StoreAccountRepository;
@@ -20,6 +21,7 @@ public class StoreAccountService {
 	private final StoreAccountRepository storeAccountRepository;
 	private final StoreService storeService;
 
+	@JtaTransactional
 	public StoreAccountCreateResponse create(UUID id, RoleType roleType,StoreAccountCreateRequest storeAccountCreateRequest){
 		validationStore(roleType);
 		Store store = storeService.findEntity(id);
