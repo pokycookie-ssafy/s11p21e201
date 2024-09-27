@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class StoreInfoUpdateResponse {
-	UUID id;
+	private UUID id;
 
 	public StoreInfoUpdateResponse(UUID id) {
 		this.id = id;
