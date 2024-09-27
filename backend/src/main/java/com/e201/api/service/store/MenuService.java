@@ -14,7 +14,6 @@ import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.EntityConstant;
 import com.e201.domain.entity.store.Menu;
-import com.e201.domain.entity.store.MenuStatus;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.global.exception.EntityNotFoundException;
@@ -35,7 +34,6 @@ public class MenuService {
 		validationStore(roleType);
 		Store store = storeService.findEntity(id);
 		Menu menu = menuCreateRequest.toEntity(store);
-		menu.changeStatus(MenuStatus.CREATED);
 		Menu savedMenu = menuRepository.save(menu);
 		return new MenuCreateResponse(savedMenu.getId());
 	}
@@ -49,8 +47,7 @@ public class MenuService {
 		validationStore(roleType);
 		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
-
-		originMenu.changeStatus(MenuStatus.MODIFIED);
+		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
 		Menu modifiedMenu = menuRepository.save(menu);
@@ -63,17 +60,17 @@ public class MenuService {
 		Menu originMenu = menuRepository.findById(menuId)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
 
-		originMenu.changeStatus(MenuStatus.DELETED);
+		originMenu.softDelete();
 		return new MenuDeleteResponse(originMenu.getId());
 	}
 
-	private static Menu createModifiedStoreEntity(MenuUpdateRequest menuUpdateRequest, Menu originMenu) {
-		Menu menu = Menu.builder()
+	private Menu createModifiedStoreEntity(MenuUpdateRequest menuUpdateRequest, Menu originMenu) {
+			return Menu.builder()
 			.store(originMenu.getStore())
 			.price(menuUpdateRequest.getPrice())
 			.name(originMenu.getName())
-			.status(MenuStatus.CREATED).build();
-		return menu;
+			.build();
+
 	}
 
 	private void validationStore(RoleType roleType) {
