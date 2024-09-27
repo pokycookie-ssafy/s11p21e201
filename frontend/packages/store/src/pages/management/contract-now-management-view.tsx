@@ -5,30 +5,33 @@ import dayjs from 'dayjs'
 import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
-import { Box, Tab, Card, Tabs, Stack, Button, TextField } from '@mui/material'
+import { Box, Card, Stack, Button, TextField } from '@mui/material'
 
 import { Iconify, Typography } from '@e201/ui'
 
 export default function ContractNowManagementView() {
+  const { t } = useTranslate('contract-management')
+
   const queryFn = async () => {
     const response = await axios.get<IContract[]>(api.contract.list)
     return response.data
   }
 
-  const { data, isPending, isError } = useQuery({ queryKey: [api.contract.list], queryFn })
+  const { data, isPending } = useQuery({ queryKey: [api.contract.list], queryFn })
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: '회사명', flex: 1, minWidth: 100 },
-    { field: 'email', headerName: '이메일', width: 200 },
-    { field: 'phone', headerName: '대표번호', width: 150, resizable: false },
+    { field: 'name', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
+    { field: 'email', headerName: t('field.email'), width: 200 },
+    { field: 'phone', headerName: t('field.phone'), width: 150, resizable: false },
     {
       field: 'createdAt',
       type: 'date',
-      headerName: '계약날짜',
+      headerName: t('field.contract_date'),
       width: 120,
       resizable: false,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -38,36 +41,23 @@ export default function ContractNowManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title="계약 관리"
+        title={t('breadcrumbs.contract_management')}
         routes={[
-          { title: '관리', path: paths.management.menu },
-          { title: '계약 관리', path: paths.management.contract.root },
-          { title: '계약 관리' },
+          { title: t('breadcrumbs.management'), path: paths.management.menu },
+          { title: t('breadcrumbs.contract_management'), path: paths.management.contract.now },
+          { title: t('breadcrumbs.contract_management') },
         ]}
         action={
           <Button>
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
-              계약 추가
+              {t('button.create_contract')}
             </Typography>
           </Button>
         }
       />
 
       <Card>
-        {/* <Tabs
-          value={tab}
-          onChange={(_, v) => setTab(v)}
-          textColor="secondary"
-          indicatorColor="secondary"
-          variant="scrollable"
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab label="전체" value={null} key={0} />
-          {categories.map((category, i) => (
-            <Tab label={category} value={category} key={i + 1} />
-          ))}
-        </Tabs> */}
         <Stack
           direction="row"
           justifyContent="space-between"

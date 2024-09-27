@@ -1,0 +1,24 @@
+{
+  "field": {
+    "name": "이름",
+    "category": "분류",
+    "price": "가격"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "breadcrumbs": {
+    "management": "관리",
+    "menu_management": "메뉴 관리"
+  },
+  "button": {
+    "create_menu": "메뉴 추가"
+  },
+  "label": {
+    "all": "전체"
+  },
+  "tooltip": {
+    "edit": "수정",
+    "delete": "삭제"
+  }
+}

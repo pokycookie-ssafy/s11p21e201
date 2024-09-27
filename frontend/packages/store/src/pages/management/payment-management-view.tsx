@@ -3,6 +3,7 @@ import type { IPaymentResponse } from '@/types/payment'
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
+import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { grouping } from '@/utils/payment'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +16,8 @@ import { Box, Card, Stack, Pagination } from '@mui/material'
 import { Typography } from '@e201/ui'
 
 export function PaymentManagementView() {
+  const { t } = useTranslate('payment-management')
+
   const [openIdx, setOpenIdx] = useState<number | null>(null)
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
@@ -44,8 +47,11 @@ export function PaymentManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title="장부 관리"
-        routes={[{ title: '관리', path: paths.management.menu }, { title: '장부 관리' }]}
+        title={t('breadcrumbs.payment_management')}
+        routes={[
+          { title: t('breadcrumbs.management'), path: paths.management.menu },
+          { title: t('breadcrumbs.payment_management') },
+        ]}
       />
 
       <Card>
@@ -75,6 +81,8 @@ export function PaymentManagementView() {
 }
 
 function PaymentListHeader() {
+  const { t } = useTranslate('payment-management')
+
   return (
     <Stack
       direction="row"
@@ -86,7 +94,7 @@ function PaymentListHeader() {
       height={60}
     >
       <Typography variant="subtitle2" color="text.secondary" flex={1} minWidth={100} flexShrink={0}>
-        회사
+        {t('field.company')}
       </Typography>
       <Typography
         variant="subtitle2"
@@ -95,7 +103,7 @@ function PaymentListHeader() {
         width={120}
         flexShrink={0}
       >
-        가격
+        {t('field.price')}
       </Typography>
       <Typography
         variant="subtitle2"
@@ -104,7 +112,7 @@ function PaymentListHeader() {
         textAlign="end"
         width={76}
       >
-        시간
+        {t('field.time')}
       </Typography>
       <Box width={72} />
     </Stack>

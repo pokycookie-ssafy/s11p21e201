@@ -6,6 +6,7 @@ import api from '@/configs/api'
 import { useState } from 'react'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
 import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
@@ -17,7 +18,6 @@ import {
   Card,
   Tabs,
   Stack,
-  Button,
   Tooltip,
   Collapse,
   TextField,
@@ -29,12 +29,14 @@ import { Iconify, Typography } from '@e201/ui'
 type TabType = 'received' | 'send'
 
 export default function ContractRequestManagementView() {
+  const { t } = useTranslate('contract-management')
+
   const [tab, setTab] = useState<TabType>('received')
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
   const TABS = [
-    { label: '받은 요청', value: 'received' },
-    { label: '보낸 요청', value: 'send' },
+    { label: t('tab.received'), value: 'received' },
+    { label: t('tab.send'), value: 'send' },
   ]
 
   const requestQueryFn = async () => {
@@ -60,16 +62,16 @@ export default function ContractRequestManagementView() {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: '회사명',
+      headerName: t('field.company_name'),
       flex: 1,
       minWidth: 150,
     },
-    { field: 'email', headerName: '이메일', width: 200 },
-    { field: 'phone', headerName: '대표번호', width: 150, resizable: false },
+    { field: 'email', headerName: t('field.email'), width: 200 },
+    { field: 'phone', headerName: t('field.phone'), width: 150, resizable: false },
     {
       field: 'createdAt',
       type: 'date',
-      headerName: '신청날짜',
+      headerName: t('field.application_date'),
       resizable: false,
       width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -78,16 +80,16 @@ export default function ContractRequestManagementView() {
       ? {
           field: 'action',
           type: 'actions',
-          headerName: '처리',
+          headerName: t('field.action'),
           align: 'left',
           resizable: false,
           getActions: (params: GridRowParams) => [
-            <Tooltip title="수락" arrow disableInteractive>
+            <Tooltip title={t('tooltip.accept')} arrow disableInteractive>
               <IconButton color="success">
                 <Iconify icon="iconamoon:check-bold" />
               </IconButton>
             </Tooltip>,
-            <Tooltip title="거절" arrow disableInteractive>
+            <Tooltip title={t('tooltip.reject')} arrow disableInteractive>
               <IconButton color="error">
                 <Iconify icon="gravity-ui:xmark" />
               </IconButton>
@@ -96,12 +98,12 @@ export default function ContractRequestManagementView() {
         }
       : {
           field: 'status',
-          headerName: '상태',
+          headerName: t('field.status'),
           headerAlign: 'center',
           resizable: false,
           renderCell: () => (
             <Stack width={1} height={1} justifyContent="center" alignItems="center">
-              <Label status="success">요청 처리 중</Label>
+              <Label status="success">{t('field.in_progress')}</Label>
             </Stack>
           ),
         },
@@ -110,20 +112,12 @@ export default function ContractRequestManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title="계약 요청"
+        title={t('breadcrumbs.contract_request')}
         routes={[
-          { title: '관리', path: paths.management.menu },
-          { title: '계약 관리', path: paths.management.contract.root },
-          { title: '계약 요청' },
+          { title: t('breadcrumbs.management'), path: paths.management.menu },
+          { title: t('breadcrumbs.contract_management'), path: paths.management.contract.now },
+          { title: t('breadcrumbs.contract_request') },
         ]}
-        action={
-          <Button>
-            <Iconify icon="ic:round-plus" />
-            <Typography variant="subtitle2" pl={0.5}>
-              계약 추가
-            </Typography>
-          </Button>
-        }
       />
 
       <Card>
@@ -165,12 +159,12 @@ export default function ContractRequestManagementView() {
           >
             <Typography variant="subtitle1">{selected.length} selected</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Tooltip title="일괄 수락" arrow disableInteractive>
+              <Tooltip title={t('tooltip.accpet_all')} arrow disableInteractive>
                 <IconButton color="success">
                   <Iconify icon="iconamoon:check-bold" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="일괄 거절" arrow disableInteractive>
+              <Tooltip title={t('tooltip.reject_all')} arrow disableInteractive>
                 <IconButton color="error">
                   <Iconify icon="gravity-ui:xmark" />
                 </IconButton>

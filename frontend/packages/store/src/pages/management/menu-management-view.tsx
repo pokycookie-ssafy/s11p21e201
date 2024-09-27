@@ -1,10 +1,10 @@
 import type { IMenu } from '@/types/menu'
-import type { SelectChangeEvent } from '@mui/material'
 import type { GridColDef, GridRowParams } from '@mui/x-data-grid'
 
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
+import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
@@ -12,13 +12,14 @@ import { Breadcrumbs } from '@/components/breadcrumbs'
 import NewMenuModal from '@/sections/menu-management/new-menu-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
-import { Box, Tab, Card, Tabs, Stack, Button, TextField, IconButton } from '@mui/material'
+import { Box, Tab, Card, Tabs, Stack, Button, Tooltip, TextField, IconButton } from '@mui/material'
 
 import { Iconify, Typography } from '@e201/ui'
 
 export default function MenuManagementView() {
+  const { t } = useTranslate('menu-management')
+
   const [tab, setTab] = useState<string | null>(null)
-  const [categoryFilter, setCategoryFilter] = useState<Set<string>>(new Set())
 
   const newMenuModal = useBoolean()
 
@@ -30,24 +31,28 @@ export default function MenuManagementView() {
   const { data, isPending, isError } = useQuery({ queryKey: [api.menu.list], queryFn })
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: '이름', flex: 1, minWidth: 100 },
-    { field: 'category', headerName: '분류', width: 100 },
+    { field: 'name', headerName: t('field.name'), flex: 1, minWidth: 100 },
+    { field: 'category', headerName: t('field.category'), width: 100 },
     {
       field: 'price',
-      headerName: '가격',
-      valueFormatter: (value: number) => `${fNumber(value)}원`,
+      headerName: t('field.price'),
+      valueFormatter: (value: number) => `${fNumber(value)}${t('unit.won')}`,
     },
     {
       field: 'action',
       type: 'actions',
       align: 'left',
       getActions: (params: GridRowParams) => [
-        <IconButton>
-          <Iconify icon="solar:pen-linear" />
-        </IconButton>,
-        <IconButton color="error">
-          <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
-        </IconButton>,
+        <Tooltip title={t('tooltip.edit')}>
+          <IconButton>
+            <Iconify icon="solar:pen-linear" />
+          </IconButton>
+        </Tooltip>,
+        <Tooltip title={t('tooltip.delete')}>
+          <IconButton color="error">
+            <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
+          </IconButton>
+        </Tooltip>,
       ],
     },
   ]
@@ -69,21 +74,20 @@ export default function MenuManagementView() {
     return 'Error'
   }
 
-  const categoryFilterHandler = (e: SelectChangeEvent<string[]>) => {
-    setCategoryFilter(new Set(e.target.value))
-  }
-
   return (
     <>
       <Box>
         <Breadcrumbs
-          title="메뉴 관리"
-          routes={[{ title: '관리', path: paths.management.menu }, { title: '메뉴 관리' }]}
+          title={t('breadcrumbs.menu_management')}
+          routes={[
+            { title: t('breadcrumbs.management'), path: paths.management.menu },
+            { title: t('breadcrumbs.menu_management') },
+          ]}
           action={
             <Button onClick={newMenuModal.onTrue}>
               <Iconify icon="ic:round-plus" />
               <Typography variant="subtitle2" pl={0.5}>
-                메뉴 추가
+                {t('button.create_menu')}
               </Typography>
             </Button>
           }
@@ -98,11 +102,12 @@ export default function MenuManagementView() {
             variant="scrollable"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <Tab label="전체" value={null} key={0} />
+            <Tab label={t('label.all')} value={null} key={0} />
             {categories.map((category, i) => (
               <Tab label={category} value={category} key={i + 1} />
             ))}
           </Tabs>
+
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -114,6 +119,7 @@ export default function MenuManagementView() {
               <TextField size="small" label="search" fullWidth />
             </Stack>
           </Stack>
+
           <DataGrid
             columns={columns}
             rows={data}

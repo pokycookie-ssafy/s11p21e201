@@ -90,8 +90,6 @@ export default function QrPaymentView() {
           <Tabs
             value={tab}
             onChange={(_, v) => setTab(v)}
-            textColor="secondary"
-            indicatorColor="secondary"
             variant="scrollable"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
