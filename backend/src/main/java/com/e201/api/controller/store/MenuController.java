@@ -2,6 +2,7 @@ package com.e201.api.controller.store;
 
 import static org.springframework.http.HttpStatus.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,11 @@ public class MenuController {
 		return ResponseEntity.status(OK).body(menuFindResponse);
 	}
 
+	@GetMapping("/stores/menus")
+	public ResponseEntity<List<MenuFindResponse>> find(@Auth AuthInfo authInfo){
+		List<MenuFindResponse> menuFindResponses = menuService.find(authInfo.getRoleType(), authInfo.getId());
+		return ResponseEntity.status(OK).body(menuFindResponses);
+	}
 	@PutMapping("/stores/menus/{menuId}")
 	public ResponseEntity<MenuUpdateResponse> update(@Auth AuthInfo authInfo,
 		@RequestBody MenuUpdateRequest menuUpdateRequest,
