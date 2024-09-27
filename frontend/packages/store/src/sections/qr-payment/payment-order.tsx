@@ -2,6 +2,7 @@ import type { IOrder } from '@/pages/payment/qr-payment-view'
 
 import { useMemo } from 'react'
 import { fNumber } from '@e201/utils'
+import { useTranslate } from '@/locales'
 
 import { Box, Stack, Button, Divider } from '@mui/material'
 
@@ -24,6 +25,8 @@ export default function PaymentOrder({
   onDelete,
   onSubmit,
 }: IProps) {
+  const { t } = useTranslate('qr-payment')
+
   const totalPrice = useMemo(
     () => orders.reduce((acc, curr) => acc + curr.menu.price * curr.count, 0),
     [orders]
@@ -52,14 +55,10 @@ export default function PaymentOrder({
       </ScrollContainer>
 
       <Box p={1}>
-        <Button
-          fullWidth
-          color="secondary"
-          size="large"
-          disabled={totalPrice === 0}
-          onClick={onSubmit}
-        >
-          {totalPrice > 0 ? `${fNumber(totalPrice)}원 결제` : '상품을 선택해주세요'}
+        <Button fullWidth size="large" disabled={totalPrice === 0} onClick={onSubmit}>
+          {totalPrice > 0
+            ? `${fNumber(totalPrice)}${t('button.payment')}`
+            : t('button.select_menu')}
         </Button>
       </Box>
     </Stack>

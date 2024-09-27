@@ -1,6 +1,7 @@
 import type { IOrder } from '@/pages/payment/qr-payment-view'
 
 import { fNumber } from '@e201/utils'
+import { useTranslate } from '@/locales'
 
 import { Box, Stack, Divider, IconButton } from '@mui/material'
 
@@ -14,6 +15,8 @@ interface IProps {
 }
 
 export default function PaymentOrderList({ order, onIncrease, onDecrease, onDelete }: IProps) {
+  const { t } = useTranslate('qr-payment')
+
   return (
     <Stack p={2} spacing={1}>
       <Stack
@@ -29,8 +32,9 @@ export default function PaymentOrderList({ order, onIncrease, onDecrease, onDele
           <Typography variant="subtitle1">{order.count}</Typography>
         </Stack>
         <Stack>
-          <Typography variant="subtitle1" color="secondary.main">
-            {fNumber(order.menu.price * order.count)}원
+          <Typography variant="subtitle1" color="primary.main">
+            {fNumber(order.menu.price * order.count)}
+            {t('unit.won')}
           </Typography>
           <Stack direction="row" alignItems="center" justifyContent="flex-end">
             <Typography variant="caption">({fNumber(order.menu.price)}</Typography>

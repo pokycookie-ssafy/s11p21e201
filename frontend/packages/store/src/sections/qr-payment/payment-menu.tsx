@@ -2,6 +2,7 @@ import type { IMenu } from '@/types/menu'
 
 import { useMemo } from 'react'
 import { fNumber } from '@e201/utils'
+import { useTranslate } from '@/locales'
 
 import { Grid, Stack, Button, useTheme, useMediaQuery } from '@mui/material'
 
@@ -13,6 +14,8 @@ interface IProps {
 }
 
 export default function PaymentMenu({ menus, onClick }: IProps) {
+  const { t } = useTranslate('qr-payment')
+
   const { breakpoints } = useTheme()
 
   const lg = useMediaQuery(breakpoints.up('lg'))
@@ -44,8 +47,8 @@ export default function PaymentMenu({ menus, onClick }: IProps) {
               px: 1.5,
               '@media (hover: hover)': {
                 ':hover': {
-                  bgcolor: (theme) => theme.palette.secondary.main,
-                  color: (theme) => theme.palette.getContrastText(theme.palette.secondary.main),
+                  bgcolor: (theme) => theme.palette.primary.main,
+                  color: (theme) => theme.palette.getContrastText(theme.palette.primary.main),
                 },
               },
             }}
@@ -56,7 +59,8 @@ export default function PaymentMenu({ menus, onClick }: IProps) {
                 {menu.name}
               </Typography>
               <Typography variant="subtitle2" fontWeight={500}>
-                {fNumber(menu.price)}원
+                {fNumber(menu.price)}
+                {t('unit.won')}
               </Typography>
             </Stack>
           </Button>
