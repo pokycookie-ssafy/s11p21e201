@@ -17,6 +17,7 @@ import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.api.controller.store.response.MenuDeleteResponse;
+import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.api.service.store.MenuService;
 import com.e201.global.security.auth.constant.AuthConstant;
@@ -61,7 +62,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		MenuUpdateResponse response = new MenuUpdateResponse(menuId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(menuService).modify(any(), any(MenuUpdateRequest.class));
+		doReturn(response).when(menuService).modify(any(), any(), any(MenuUpdateRequest.class));
 
 		//expected
 		mockMvc.perform(put("/stores/menus/"+menuId)
@@ -94,9 +95,30 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+	@DisplayName("단건 메뉴를 조회한다.")
+	@Test
+	void findOne_menu_success() throws Exception {
+		UUID menuId = UUID.randomUUID();
+		MenuFindResponse response = createMenuResponse(menuId);
+		String responseJson = objectMapper.writeValueAsString(response);
+		doReturn(response).when(menuService).findOne(any());
+
+		mockMvc.perform(get("/stores/menus/"+menuId)
+				.contentType(APPLICATION_JSON)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
+	private MenuFindResponse createMenuResponse(UUID menuId) {
+		return MenuFindResponse.builder()
+			.id(menuId)
+			.menuName("메뉴이름")
+			.price(5000).build();
+	}
+
 	private MenuUpdateRequest createMenuUpdateRequest(){
 		return MenuUpdateRequest.builder()
-			.id(UUID.randomUUID())
 			.menuName("메뉴이름")
 			.price(2132)
 			.build();
