@@ -9,7 +9,7 @@
     "settled": "정산 완료",
     "partial": "부분 정산",
     "unsettled": "미정산",
-    "company_name": "회사명"
+    "company_name": "회사명 검색"
   },
   "field": {
     "company_name": "회사명",

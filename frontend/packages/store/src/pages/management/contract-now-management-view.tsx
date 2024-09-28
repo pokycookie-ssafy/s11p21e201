@@ -1,11 +1,14 @@
-import type { IContract } from '@/types/contract'
 import type { GridColDef } from '@mui/x-data-grid'
+import type { IContractResponse } from '@/types/contract'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
+import { m } from '@e201/utils'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
+import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
@@ -14,22 +17,44 @@ import { Box, Card, Stack, Button, TextField } from '@mui/material'
 
 import { Iconify, Typography } from '@e201/ui'
 
+dayjs.extend(isBetween)
+
 export default function ContractNowManagementView() {
   const { t } = useTranslate('contract-management')
 
+  const [companySearch, setCompanySearch] = useState<string>('')
+
   const queryFn = async () => {
-    const response = await axios.get<IContract[]>(api.contract.list)
+    const response = await axios.get<IContractResponse[]>(api.contract.list)
     return response.data
   }
 
   const { data, isPending } = useQuery({ queryKey: [api.contract.list], queryFn })
 
+  const filteredData = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    let filtered = [...data]
+    if (companySearch.trim() !== '') {
+      filtered = filtered.filter((contract) => contract.companyName.includes(companySearch.trim()))
+    }
+    return filtered
+  }, [data, companySearch])
+
   const columns: GridColDef[] = [
-    { field: 'name', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
-    { field: 'email', headerName: t('field.email'), width: 200 },
-    { field: 'phone', headerName: t('field.phone'), width: 150, resizable: false },
+    { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
+    { field: 'companyEmail', headerName: t('field.email'), width: 200 },
+    { field: 'companyPhone', headerName: t('field.phone'), width: 150, resizable: false },
     {
-      field: 'createdAt',
+      field: 'settlementDate',
+      headerName: t('field.settlement_date'),
+      width: 100,
+      valueFormatter: (value: number) => m(t('row.settlement_date'), [value]),
+    },
+    {
+      field: 'contractDate',
       type: 'date',
       headerName: t('field.contract_date'),
       width: 120,
@@ -48,7 +73,7 @@ export default function ContractNowManagementView() {
           { title: t('breadcrumbs.contract_management') },
         ]}
         action={
-          <Button>
+          <Button color="secondary">
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
               {t('button.create_contract')}
@@ -62,42 +87,30 @@ export default function ContractNowManagementView() {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-          p={1}
+          p={2}
+          spacing={1}
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
-          <Stack width={1} direction="row" alignItems="center" spacing={1}>
-            <TextField size="small" label="search" fullWidth />
-          </Stack>
+          <TextField
+            value={companySearch}
+            onChange={(e) => setCompanySearch(e.target.value)}
+            size="small"
+            label={t('label.company_search')}
+            fullWidth
+          />
         </Stack>
         <DataGrid
           columns={columns}
-          rows={data}
+          getRowId={(row) => row.contractId}
+          rows={filteredData}
           checkboxSelection
           hideFooter
-          hideFooterPagination
-          disableColumnSorting
-          disableColumnFilter
-          disableColumnMenu
-          disableRowSelectionOnClick
           loading={isPending}
           slotProps={{
             noRowsOverlay: {},
             noResultsOverlay: {},
           }}
-          sx={{
-            height: 500,
-            '& .MuiDataGrid-columnSeparator': {
-              color: 'transparent',
-              ':hover': {
-                color: (theme) => theme.palette.divider,
-              },
-            },
-            '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-            '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-            '.MuiDataGrid-columnHeaders': {
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            },
-          }}
+          sx={{ height: 500 }}
         />
       </Card>
     </Box>

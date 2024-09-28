@@ -1,12 +1,14 @@
-import type { IContract } from '@/types/contract'
+import type { SyntheticEvent } from 'react'
+import type { IContractResponse } from '@/types/contract'
 import type { GridColDef, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
-import { useState } from 'react'
+import { m } from '@e201/utils'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
 import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
@@ -33,6 +35,7 @@ export default function ContractRequestManagementView() {
 
   const [tab, setTab] = useState<TabType>('received')
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
+  const [companySearch, setCompanySearch] = useState<string>('')
 
   const TABS = [
     { label: t('tab.received'), value: 'received' },
@@ -40,36 +43,71 @@ export default function ContractRequestManagementView() {
   ]
 
   const requestQueryFn = async () => {
-    const response = await axios.get<IContract[]>(api.contract.request)
+    const response = await axios.get<IContractResponse[]>(api.contract.request)
     return response.data
   }
 
   const responseQueryFn = async () => {
-    const response = await axios.get<IContract[]>(api.contract.response)
+    const response = await axios.get<IContractResponse[]>(api.contract.response)
     return response.data
   }
 
   const { data: receivedData, isPending: receivedIsPending } = useQuery({
-    queryKey: [api.contract.request, tab],
+    queryKey: [api.contract.request],
     queryFn: requestQueryFn,
   })
 
   const { data: sendData, isPending: sendIsPending } = useQuery({
-    queryKey: [api.contract.response, tab],
+    queryKey: [api.contract.response],
     queryFn: responseQueryFn,
   })
 
+  const filteredReceivedData = useMemo(() => {
+    if (!receivedData) {
+      return []
+    }
+
+    let filtered = [...receivedData]
+    if (companySearch.trim() !== '') {
+      filtered = filtered.filter((contract) => contract.companyName.includes(companySearch.trim()))
+    }
+    return filtered
+  }, [receivedData, companySearch])
+
+  const filteredSendData = useMemo(() => {
+    if (!sendData) {
+      return []
+    }
+
+    let filtered = [...sendData]
+    if (companySearch.trim() !== '') {
+      filtered = filtered.filter((contract) => contract.companyName.includes(companySearch.trim()))
+    }
+    return filtered
+  }, [sendData, companySearch])
+
+  const tabChangeHandler = (e: SyntheticEvent, value: any) => {
+    setTab(value)
+    setSelected([])
+  }
+
   const columns: GridColDef[] = [
     {
-      field: 'name',
+      field: 'companyName',
       headerName: t('field.company_name'),
       flex: 1,
       minWidth: 150,
     },
-    { field: 'email', headerName: t('field.email'), width: 200 },
-    { field: 'phone', headerName: t('field.phone'), width: 150, resizable: false },
+    { field: 'companyEmail', headerName: t('field.email'), width: 200 },
+    { field: 'companyPhone', headerName: t('field.phone'), width: 150, resizable: false },
     {
-      field: 'createdAt',
+      field: 'settlementDate',
+      headerName: t('field.settlement_date'),
+      width: 100,
+      valueFormatter: (value: number) => m(t('row.settlement_date'), [value]),
+    },
+    {
+      field: 'contractDate',
       type: 'date',
       headerName: t('field.application_date'),
       resizable: false,
@@ -122,7 +160,7 @@ export default function ContractRequestManagementView() {
 
       <Card>
         <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
-          <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
+          <Tabs value={tab} onChange={tabChangeHandler} variant="scrollable">
             {TABS.map((e, i) => (
               <Tab label={e.label} value={e.value} key={i} />
             ))}
@@ -133,12 +171,16 @@ export default function ContractRequestManagementView() {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-          p={1}
+          p={2}
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
-          <Stack width={1} direction="row" alignItems="center" spacing={1}>
-            <TextField size="small" label="search" fullWidth />
-          </Stack>
+          <TextField
+            value={companySearch}
+            onChange={(e) => setCompanySearch(e.target.value)}
+            size="small"
+            label={t('label.company_search')}
+            fullWidth
+          />
         </Stack>
 
         <Collapse in={selected.length > 0}>
@@ -156,7 +198,7 @@ export default function ContractRequestManagementView() {
           >
             <Typography variant="subtitle1">{selected.length} selected</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Tooltip title={t('tooltip.accpet_all')} arrow disableInteractive>
+              <Tooltip title={t('tooltip.accept_all')} arrow disableInteractive>
                 <IconButton color="success">
                   <Iconify icon="iconamoon:check-bold" />
                 </IconButton>
@@ -172,35 +214,18 @@ export default function ContractRequestManagementView() {
 
         <DataGrid
           columns={columns}
-          rows={tab === 'received' ? receivedData : sendData}
+          getRowId={(row) => row.contractId}
+          rows={tab === 'received' ? filteredReceivedData : filteredSendData}
           rowSelectionModel={selected}
           onRowSelectionModelChange={setSelected}
-          checkboxSelection
+          checkboxSelection={tab === 'received'}
           hideFooter
-          hideFooterPagination
-          disableColumnSorting
-          disableColumnFilter
-          disableColumnMenu
-          disableRowSelectionOnClick
-          loading={receivedIsPending}
+          loading={tab === 'received' ? receivedIsPending : sendIsPending}
           slotProps={{
             noRowsOverlay: {},
             noResultsOverlay: {},
           }}
-          sx={{
-            height: 500,
-            '& .MuiDataGrid-columnSeparator': {
-              color: 'transparent',
-              ':hover': {
-                color: (theme) => theme.palette.divider,
-              },
-            },
-            '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-            '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-            '.MuiDataGrid-columnHeaders': {
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            },
-          }}
+          sx={{ height: 500 }}
         />
       </Card>
     </Box>

@@ -2,8 +2,9 @@
   "tab": {
     "all": "전체",
     "in_progress": "승인중",
-    "success": "완료",
+    "complete": "완료",
     "reject": "거절",
+    "canceled": "해지",
     "received": "받은 요청",
     "send": "보낸요청"
   },
@@ -13,9 +14,13 @@
     "phone": "대표번호",
     "application_date": "신청날짜",
     "contract_date": "계약날짜",
+    "settlement_date": "결제날짜",
     "status": "상태",
     "action": "처리",
     "in_progress": "요청 처리 중"
+  },
+  "row": {
+    "settlement_date": "매달 {0}일"
   },
   "breadcrumbs": {
     "management": "관리",
@@ -32,5 +37,12 @@
     "reject": "거절",
     "accept_all": "일괄 수락",
     "reject_all": "일괄 거절"
+  },
+  "label": {
+    "company_search": "회사명 검색",
+    "in_progress": "승인중",
+    "complete": "완료",
+    "reject": "거절",
+    "canceled": "해지"
   }
 }
