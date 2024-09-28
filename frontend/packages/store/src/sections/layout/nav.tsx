@@ -65,7 +65,22 @@ export default function Nav({ drawer }: IProps) {
         </Stack>
       </ScrollContainer>
       <Box p={2}>
-        <Button fullWidth variant="contained" color="error" onClick={logoutHandler}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={logoutHandler}
+          color="error"
+          sx={{
+            bgcolor: (theme) =>
+              theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            color: (theme) =>
+              theme.palette.mode === 'light' ? theme.palette.grey[600] : theme.palette.grey[400],
+            ':hover': {
+              bgcolor: (theme) => theme.palette.error.main,
+              color: (theme) => theme.palette.common.white,
+            },
+          }}
+        >
           {t('logout')}
         </Button>
       </Box>
