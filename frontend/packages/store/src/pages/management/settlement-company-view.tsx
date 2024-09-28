@@ -20,7 +20,7 @@ import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
 import { Iconify } from '@e201/ui'
 
-type StatusType = 'settled' | 'partial' | 'unsettled'
+type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
 export default function SettlementCompanyView() {
   const { t } = useTranslate('settlement-management')
@@ -35,6 +35,7 @@ export default function SettlementCompanyView() {
     { label: t('tab.settled'), value: 'settled' },
     { label: t('tab.partial'), value: 'partial' },
     { label: t('tab.unsettled'), value: 'unsettled' },
+    { label: t('tab.upload'), value: 'upload' },
   ]
 
   const queryFn = async () => {
@@ -68,6 +69,30 @@ export default function SettlementCompanyView() {
     }
     return <Label status="success">{t('label.settled')}</Label>
   }
+
+  const filteredData = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    let filtered = [...data]
+    if (selectedCompany !== null) {
+      filtered = filtered.filter((e) => e.companyId === selectedCompany.value)
+    }
+    if (tab === 'unsettled') {
+      filtered = filtered.filter((e) => e.settledAmount === 0)
+    }
+    if (tab === 'partial') {
+      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount)
+    }
+    if (tab === 'settled') {
+      filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
+    }
+    if (tab === 'upload') {
+      filtered = filtered.filter((e) => !e.taxInvoice)
+    }
+    return filtered
+  }, [data, selectedCompany, tab])
 
   const columns: GridColDef<ISettlementResponse>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
@@ -196,32 +221,14 @@ export default function SettlementCompanyView() {
 
           <DataGrid
             columns={columns}
-            rows={data}
+            rows={filteredData}
             hideFooter
-            hideFooterPagination
-            disableColumnSorting
-            disableColumnFilter
-            disableColumnMenu
-            disableRowSelectionOnClick
             loading={isPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
             }}
-            sx={{
-              height: 500,
-              '& .MuiDataGrid-columnSeparator': {
-                color: 'transparent',
-                ':hover': {
-                  color: (theme) => theme.palette.divider,
-                },
-              },
-              '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-              '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-              '.MuiDataGrid-columnHeaders': {
-                borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }}
+            sx={{ height: 500 }}
           />
         </Card>
       </Box>

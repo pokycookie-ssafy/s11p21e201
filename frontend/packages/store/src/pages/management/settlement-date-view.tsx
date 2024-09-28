@@ -3,11 +3,12 @@ import type { ISettlementResponse } from '@/types/settlement'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
-import { useState } from 'react'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
 import { Label } from '@/components/label'
+import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
 import { Breadcrumbs } from '@/components/breadcrumbs'
@@ -19,7 +20,9 @@ import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
 import { Iconify } from '@e201/ui'
 
-type StatusType = 'settled' | 'partial' | 'unsettled'
+dayjs.extend(isBetween)
+
+type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
 export default function SettlementDateView() {
   const { t } = useTranslate('settlement-management')
@@ -35,6 +38,7 @@ export default function SettlementDateView() {
     { label: t('tab.settled'), value: 'settled' },
     { label: t('tab.partial'), value: 'partial' },
     { label: t('tab.unsettled'), value: 'unsettled' },
+    { label: t('tab.upload'), value: 'upload' },
   ]
 
   const queryFn = async () => {
@@ -53,6 +57,37 @@ export default function SettlementDateView() {
     }
     return <Label status="success">{t('label.settled')}</Label>
   }
+
+  const filteredData = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    const filterDate = dayjs()
+      .year(year)
+      .month(month - 1)
+    const startDate = filterDate.startOf('month')
+    const endDate = filterDate.endOf('month')
+
+    let filtered = [...data]
+
+    filtered = filtered.filter((e) =>
+      dayjs(e.settlementDate).isBetween(startDate, endDate, 'date', '[]')
+    )
+    if (tab === 'unsettled') {
+      filtered = filtered.filter((e) => e.settledAmount === 0)
+    }
+    if (tab === 'partial') {
+      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount)
+    }
+    if (tab === 'settled') {
+      filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
+    }
+    if (tab === 'upload') {
+      filtered = filtered.filter((e) => !e.taxInvoice)
+    }
+    return filtered
+  }, [data, month, tab, year])
 
   const columns: GridColDef<ISettlementResponse>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
@@ -78,7 +113,7 @@ export default function SettlementDateView() {
       headerName: t('field.settled_amount'),
       width: 130,
       resizable: false,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
 
     {
@@ -88,7 +123,7 @@ export default function SettlementDateView() {
       width: 120,
       resizable: false,
       valueGetter: (_, row) => row.settlementAmount - row.settledAmount,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
       field: 'settlementAmount',
@@ -96,7 +131,7 @@ export default function SettlementDateView() {
       headerName: t('field.settlement_amount'),
       width: 120,
       resizable: false,
-      valueFormatter: (value: number) => `${fNumber(value)} 원`,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
       field: 'status',
@@ -166,8 +201,7 @@ export default function SettlementDateView() {
           <Stack
             direction="row"
             alignItems="center"
-            p={1}
-            px={2}
+            p={2}
             spacing={1}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
@@ -177,32 +211,14 @@ export default function SettlementDateView() {
 
           <DataGrid
             columns={columns}
-            rows={data}
+            rows={filteredData}
             hideFooter
-            hideFooterPagination
-            disableColumnSorting
-            disableColumnFilter
-            disableColumnMenu
-            disableRowSelectionOnClick
             loading={isPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
             }}
-            sx={{
-              height: 500,
-              '& .MuiDataGrid-columnSeparator': {
-                color: 'transparent',
-                ':hover': {
-                  color: (theme) => theme.palette.divider,
-                },
-              },
-              '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-              '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-              '.MuiDataGrid-columnHeaders': {
-                borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-              },
-            }}
+            sx={{ height: 500 }}
           />
         </Card>
       </Box>
