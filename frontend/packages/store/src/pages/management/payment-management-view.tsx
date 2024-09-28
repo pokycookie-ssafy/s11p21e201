@@ -1,3 +1,4 @@
+import type { ISelectOption } from '@/components/select'
 import type { IPaymentGroup, IPaymentResponse } from '@/types/payment'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
@@ -9,6 +10,7 @@ import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { grouping } from '@/utils/payment'
+import isBetween from 'dayjs/plugin/isBetween'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
 import { Breadcrumbs } from '@/components/breadcrumbs'
@@ -16,15 +18,18 @@ import { SelectYear, SelectMonth } from '@/components/select'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
-import { Box, Card, Stack, Tooltip, Collapse, IconButton } from '@mui/material'
+import { Box, Tab, Card, Tabs, Stack, Tooltip, Collapse, IconButton } from '@mui/material'
 
 import { Iconify, Typography } from '@e201/ui'
+
+dayjs.extend(isBetween)
 
 export function PaymentManagementView() {
   const { t } = useTranslate('payment-management')
 
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null)
 
   const deleteAllConfirm = useBoolean()
 
@@ -39,12 +44,47 @@ export function PaymentManagementView() {
 
   const { data, isPending, isError } = useQuery({ queryKey: [api.management.payment], queryFn })
 
+  const companies = useMemo(() => {
+    if (!data) {
+      return []
+    }
+    const companySet = new Set<string>()
+    const companyList: ISelectOption[] = []
+    data.forEach((e) => {
+      if (!companySet.has(e.companyId)) {
+        companyList.push({ label: e.companyName, value: e.companyId })
+      }
+      companySet.add(e.companyId)
+    })
+    return companyList
+  }, [data])
+
   const groupedData = useMemo(() => {
     if (!data) {
       return []
     }
     return grouping(data)
   }, [data])
+
+  const filteredData = useMemo(() => {
+    const filterDate = dayjs()
+      .year(year)
+      .month(month - 1)
+    const startDate = filterDate.startOf('month')
+    const endDate = filterDate.endOf('month')
+
+    let filtered = [...groupedData]
+
+    filtered = filtered.filter((group) =>
+      dayjs(group.createdAt).isBetween(startDate, endDate, 'date', '[]')
+    )
+
+    if (selectedCompany !== null) {
+      filtered = filtered.filter((group) => group.companyId === selectedCompany)
+    }
+
+    return filtered
+  }, [groupedData, month, year, selectedCompany])
 
   const deleteSubmitHandler = () => {
     toast.success(t('toast.delete'))
@@ -95,6 +135,19 @@ export function PaymentManagementView() {
         />
 
         <Card>
+          <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+            <Tabs
+              value={selectedCompany}
+              onChange={(_, v) => setSelectedCompany(v)}
+              variant="scrollable"
+            >
+              <Tab label={t('tab.all')} value={null} />
+              {companies.map((e, i) => (
+                <Tab label={e.label} value={e.value} key={i} />
+              ))}
+            </Tabs>
+          </Box>
+
           <Stack
             direction="row"
             p={2}
@@ -133,7 +186,7 @@ export function PaymentManagementView() {
 
           <DataGrid
             columns={columns}
-            rows={groupedData}
+            rows={filteredData}
             rowSelectionModel={selected}
             onRowSelectionModelChange={setSelected}
             checkboxSelection
