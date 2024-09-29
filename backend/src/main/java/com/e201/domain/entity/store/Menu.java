@@ -2,6 +2,8 @@ package com.e201.domain.entity.store;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.e201.domain.entity.BaseEntity;
 
 import jakarta.persistence.Column;

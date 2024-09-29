@@ -24,8 +24,6 @@ import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.global.security.auth.constant.RoleType;
-import com.e201.global.security.auth.dto.AuthInfo;
-import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +45,7 @@ public class MenuService {
 	}
 
 	public Menu findEntity(UUID id) {
+<<<<<<< HEAD
 		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id,"N","N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
@@ -67,6 +66,11 @@ public class MenuService {
 			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice()))  // Menu -> MenuFindResponse로 변환
 			.toList();  // List<MenuFindResponse>로 수집
 		return responseList;
+=======
+		return menuRepository.findByIdAndModifiedYNIsNullAndDeleteYNIsNull(id).orElseThrow(() -> new RuntimeException("not found exception"));
+	// 	return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
+
+>>>>>>> ebc4640 ([#31] 메뉴 조회 조건에 수정된 사항, 삭제 사항 반영)
 	}
 
 	public MenuFindResponse findOne(UUID id){
@@ -80,7 +84,7 @@ public class MenuService {
 
 	public List<MenuFindResponse> find(RoleType roleType, UUID id){
 		validationStore(roleType);
-		List<MenuFindResponse> responseList = menuRepository.findByStoreId(id)
+		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNIsNullAndDeleteYNIsNull(id)
 			.stream()
 			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice()))  // Menu -> MenuFindResponse로 변환
 			.toList();  // List<MenuFindResponse>로 수집
