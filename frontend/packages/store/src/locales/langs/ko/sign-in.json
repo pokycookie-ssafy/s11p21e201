@@ -8,5 +8,16 @@
     "forgot_account": "아이디/비밀번호 찾기",
     "sign_in": "로그인",
     "sign_up": "회원가입"
+  },
+  "validate": {
+    "email": {
+      "required": "이메일을 입력해주세요",
+      "pattern": "올바른 이메일 형식이 아닙니다"
+    },
+    "password": {
+      "required": "비밀번호를 입력해주세요",
+      "minLength": "비밀번호는 8글자 이상으로 입력해주세요"
+    },
+    "login": "잘못된 이메일 또는 비밀번호입니다"
   }
 }
