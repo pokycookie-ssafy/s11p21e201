@@ -4,6 +4,8 @@ import type { GridColDef } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
@@ -18,19 +20,35 @@ export default function ContractNowManagementView() {
     return response.data
   }
 
+  const { t } = useTranslate('contract')
+
   const { data, isPending, isError } = useQuery({
     queryKey: ['contract-stores'],
     queryFn: fetchContracts,
   })
 
+  const [storeSearch, setStoreSearch] = useState<string>('')
+
+  const filteredData = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    let filtered = [...data]
+    if (storeSearch.trim() !== '') {
+      filtered = filtered.filter((contract) => contract.name.includes(storeSearch.trim()))
+    }
+    return filtered
+  }, [data, storeSearch])
+
   const columns: GridColDef[] = [
-    { field: 'name', headerName: '식당명', flex: 1, minWidth: 100 },
-    { field: 'phone', headerName: '대표번호', width: 180, resizable: false },
-    { field: 'address', headerName: '주소', width: 300 },
+    { field: 'name', headerName: t('restaurant_name'), flex: 1, minWidth: 100 },
+    { field: 'phone', headerName: t('phone_number'), width: 180, resizable: false },
+    { field: 'address', headerName: t('address'), width: 300 },
     {
       field: 'createdAt',
       type: 'date',
-      headerName: '계약날짜',
+      headerName: t('contract_date'),
       width: 120,
       resizable: false,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -40,17 +58,17 @@ export default function ContractNowManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title="계약 관리"
+        title={t('contract_management')}
         routes={[
-          { title: '관리', path: 'paths.management.menu' },
-          { title: '계약 관리', path: paths.management.contract.root },
-          { title: '계약 관리' },
+          { title: t('contract_management') },
+          { title: t('request_contract'), path: paths.management.contract.request },
+          { title: t('contract_log'), path: paths.management.contract.history },
         ]}
         action={
           <Button>
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
-              계약 추가
+              {t('add_contract')}
             </Typography>
           </Button>
         }
@@ -78,12 +96,18 @@ export default function ContractNowManagementView() {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Stack width={1} direction="row" alignItems="center" spacing={1}>
-            <TextField size="small" label="search" fullWidth />
+            <TextField
+              value={storeSearch}
+              onChange={(e) => setStoreSearch(e.target.value)}
+              size="small"
+              label="search"
+              fullWidth
+            />
           </Stack>
         </Stack>
         <DataGrid
           columns={columns}
-          rows={data}
+          rows={filteredData}
           checkboxSelection
           hideFooter
           hideFooterPagination

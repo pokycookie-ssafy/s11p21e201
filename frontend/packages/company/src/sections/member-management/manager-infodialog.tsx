@@ -26,7 +26,7 @@ interface ManagerInfoDialogProps {
 }
 
 export default function ManagerInfoDialog({ open, manager, onClose }: ManagerInfoDialogProps) {
-  const { t } = useTranslate('management')
+  const { t } = useTranslate('member')
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>

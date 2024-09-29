@@ -1,0 +1,40 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "total": "Full Dashboard",
+    "sales": {
+      "title": "Sales Dashboard",
+      "menu": "Menu",
+      "company": "Company",
+      "date": "Date"
+    },
+    "settlement": "Settlement Dashboard"
+  },
+  "management": {
+    "title": "Management",
+    "member": "Member Account",
+    "payment": "Payment",
+    "contract": {
+      "title": "Contract",
+      "now": "Current Contracts",
+      "new": "Add New Contract",
+      "request": "Contract Request",
+      "history": "Contract Log"
+    },
+    "settlement": "Settlement"
+  },
+  "payment": {
+    "title": "Payment",
+    "payment": "Payment Management"
+  },
+  "settlement": {
+    "title": "Settlement",
+    "settlement": "Settlement Management"
+  },
+  "setting": {
+    "title": "Settings",
+    "app": "App Settings",
+    "account": "Account Settings"
+  },
+  "logout": "Log Out"
+}

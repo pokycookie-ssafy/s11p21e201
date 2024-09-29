@@ -3,6 +3,7 @@ import { createServer } from 'miragejs'
 
 import { storesResponse } from './response/stores'
 import { managerResponse } from './response/managers'
+import { paymentResponse } from './response/payments'
 import { employeeResponse } from './response/employees'
 import { contractsResponse } from './response/contracts'
 import { contractStoreResponse } from './response/contract-stores'
@@ -40,6 +41,8 @@ export default function initServer() {
 
         return responseContracts
       })
+
+      this.get('/companies/payment', () => paymentResponse)
     },
   })
 }

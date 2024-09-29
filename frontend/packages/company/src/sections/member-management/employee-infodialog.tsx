@@ -27,7 +27,7 @@ interface EmployeeInfoDialogProps {
 }
 
 export default function EmployeeInfoDialog({ open, employee, onClose }: EmployeeInfoDialogProps) {
-  const { t } = useTranslate('management')
+  const { t } = useTranslate('member')
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
