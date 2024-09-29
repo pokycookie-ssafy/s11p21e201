@@ -5,7 +5,6 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
-    path: paths.root,
     element: <MainLayout />,
     children: mainRoute,
     errorElement: <Navigate to={paths.main} replace />,

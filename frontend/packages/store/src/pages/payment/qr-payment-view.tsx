@@ -33,7 +33,7 @@ export default function QrPaymentView() {
     return response.data
   }
 
-  const { data: menus, isPending, isError } = useQuery({ queryKey: [api.menu.list], queryFn })
+  const { data: menus, isPending } = useQuery({ queryKey: [api.menu.list], queryFn })
 
   const categories = useMemo(() => {
     if (!menus) {
