@@ -1,0 +1,18 @@
+{
+  "restaurant_name": "Restaurant Name",
+  "phone_number": "Phone",
+  "address": "Address",
+  "contract_date": "Contract Date",
+  "contract_management": "Current Contract",
+  "add_contract": "Add Contract",
+  "request_date": "Request Date",
+  "action": "Action",
+  "accept": "Accept",
+  "reject": "Reject",
+  "request_contract": "Contract Request",
+  "management": "Management",
+  "accept_all": "Accept All",
+  "reject_all": "Reject All",
+  "selected": " selected",
+  "contract_log": "Contract Log"
+}

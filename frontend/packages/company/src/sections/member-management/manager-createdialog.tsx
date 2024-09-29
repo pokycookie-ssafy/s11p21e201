@@ -17,7 +17,7 @@ interface ManagerCreateDialogProps {
 }
 
 export default function ManagerCreateDialog({ open, onClose }: ManagerCreateDialogProps) {
-  const { t } = useTranslate('management')
+  const { t } = useTranslate('member')
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>

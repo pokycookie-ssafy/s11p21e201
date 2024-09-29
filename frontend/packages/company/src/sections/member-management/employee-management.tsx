@@ -1,14 +1,15 @@
 import type { GridColDef, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
-import { useState } from 'react'
 import axios from '@/configs/axios'
 // import paths from '@/configs/paths'
-// import { useTranslate } from '@/locales'
+import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 // import EmployeeInfoDialog from '@/sections/member-management/employee-infodialog'
 // import EmployeeCreateDialog from '@/sections/member-management/employee-createdialog'
+import { fNumber } from '@/utils/number-format'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -41,11 +42,25 @@ const fetchEmployees = async () => {
 
 export default function ContractRequestManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
+  const [memberSearch, setMemberSearch] = useState<string>('')
 
+  const { t } = useTranslate('member')
   const { data, isPending, isError } = useQuery({
     queryKey: ['employees'],
     queryFn: fetchEmployees,
   })
+
+  const filteredData = useMemo(() => {
+    if (!data) {
+      return []
+    }
+
+    let filtered = [...data]
+    if (memberSearch.trim() !== '') {
+      filtered = filtered.filter((member) => member.name.includes(memberSearch.trim()))
+    }
+    return filtered
+  }, [data, memberSearch])
 
   const navigate = useNavigate()
 
@@ -59,16 +74,26 @@ export default function ContractRequestManagementView() {
   const columns: GridColDef[] = [
     {
       field: 'name',
-      headerName: '이름',
+      headerName: t('name'),
       flex: 1,
       minWidth: 150,
     },
-    { field: 'spentAmount', headerName: '사용량', width: 150 },
-    { field: 'supportAmount', headerName: '할당 금액', width: 150 },
+    {
+      field: 'spentAmount',
+      headerName: t('spent_amount'),
+      width: 150,
+      renderCell: (params) => fNumber(params.value),
+    },
+    {
+      field: 'supportAmount',
+      headerName: t('allotted_amount'),
+      width: 150,
+      renderCell: (params) => fNumber(params.value),
+    },
     {
       field: 'createdAt',
       type: 'date',
-      headerName: '계정 생성일',
+      headerName: t('account_created_date'),
       resizable: false,
       width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
@@ -79,12 +104,12 @@ export default function ContractRequestManagementView() {
       align: 'left',
       resizable: false,
       getActions: (params: GridRowParams) => [
-        <Tooltip title="정보 수정" arrow disableInteractive>
+        <Tooltip title={t('edit_info')} arrow disableInteractive>
           <IconButton>
             <Iconify icon="solar:pen-linear" />
           </IconButton>
         </Tooltip>,
-        <Tooltip title="삭제" arrow disableInteractive>
+        <Tooltip title={t('delete')} arrow disableInteractive>
           <IconButton color="error">
             <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
           </IconButton>
@@ -113,12 +138,12 @@ export default function ContractRequestManagementView() {
       /> */}
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h3" fontWeight={800}>
-          직원 관리
+          {t('employee_management')}
         </Typography>
         <Button sx={{ alignSelf: 'center', height: 'auto' }} onClick={() => handleNavigate()}>
           <Iconify icon="ic:round-plus" />
           <Typography variant="subtitle2" pl={0.5}>
-            직원 계정 추가
+            {t('create_employee')}
           </Typography>
         </Button>
       </Stack>
@@ -132,7 +157,13 @@ export default function ContractRequestManagementView() {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Stack width={1} direction="row" alignItems="center" spacing={1}>
-            <TextField size="small" label="search" fullWidth />
+            <TextField
+              value={memberSearch}
+              onChange={(e) => setMemberSearch(e.target.value)}
+              size="small"
+              label="search"
+              fullWidth
+            />
           </Stack>
         </Stack>
 
@@ -150,12 +181,12 @@ export default function ContractRequestManagementView() {
           >
             <Typography variant="subtitle1">{selected.length} selected</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Tooltip title="일괄 수락" arrow disableInteractive>
+              <Tooltip title={t('accept_all')} arrow disableInteractive>
                 <IconButton color="success">
                   <Iconify icon="iconamoon:check-bold" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="일괄 거절" arrow disableInteractive>
+              <Tooltip title={t('reject_all')} arrow disableInteractive>
                 <IconButton color="error">
                   <Iconify icon="gravity-ui:xmark" />
                 </IconButton>
@@ -166,9 +197,7 @@ export default function ContractRequestManagementView() {
 
         <DataGrid
           columns={columns}
-          rows={data}
-          // rows={data || []} // 데이터가 없을 경우 빈 배열로 설정
-          // getRowId={(row) => row.id} // 각 행의 고유한 id로 사용
+          rows={filteredData}
           rowSelectionModel={selected}
           onRowSelectionModelChange={setSelected}
           checkboxSelection

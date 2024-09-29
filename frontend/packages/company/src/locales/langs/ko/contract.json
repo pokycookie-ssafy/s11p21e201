@@ -1,0 +1,18 @@
+{
+  "restaurant_name": "식당명",
+  "phone_number": "대표번호",
+  "address": "주소",
+  "contract_date": "계약날짜",
+  "contract_management": "계약 관리",
+  "add_contract": "계약 추가",
+  "request_date": "신청 날짜",
+  "action": "처리",
+  "accept": "수락",
+  "reject": "거절",
+  "request_contract": "계약 요청",
+  "management": "관리",
+  "accept_all": "일괄 수락",
+  "reject_all": "일괄 거절",
+  "selected": "개 선택",
+  "contract_log": "계약 기록"
+}

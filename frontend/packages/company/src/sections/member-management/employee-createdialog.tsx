@@ -17,7 +17,7 @@ interface EmployeeCreateDialogProps {
 }
 
 export default function EmployeeCreateDialog({ open, onClose }: EmployeeCreateDialogProps) {
-  const { t } = useTranslate('management')
+  const { t } = useTranslate('member')
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>

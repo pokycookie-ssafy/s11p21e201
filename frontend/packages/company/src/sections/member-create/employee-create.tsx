@@ -1,7 +1,10 @@
 import ExcelJS from 'exceljs'
-import React, { useRef, useState } from 'react'
+import { useTranslate } from '@/locales'
+import React, { useRef, useState, useEffect } from 'react'
 
 import {
+  Card,
+  Paper,
   Table,
   Stack,
   Button,
@@ -33,11 +36,10 @@ export default function EmployeeCreate() {
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [selectedRows, setSelectedRows] = useState<number[]>([])
 
-  // 마지막 메시지를 위한 ref
   const messageEndRef = useRef<HTMLTableRowElement>(null)
 
-  // empData가 업데이트될 때마다 스크롤을 맨 아래로 이동
-  React.useEffect(() => {
+  const { t } = useTranslate('member')
+  useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
@@ -105,7 +107,7 @@ export default function EmployeeCreate() {
     <Stack sx={{ maxHeight: '85vh', overflow: 'hidden' }}>
       <Stack direction="row" justifyContent="space-between" pb={3}>
         <Typography variant="h3" fontWeight={800}>
-          직원 계정 추가
+          {t('create_employee')}
         </Typography>
         <MemberCreateButton onFileUpload={handleFileUpload} />
 
@@ -120,22 +122,25 @@ export default function EmployeeCreate() {
           width={1}
           height={57}
           direction="row"
-          justifyContent="space-between"
+          justifyContent="space-evenly"
           alignItems="center"
           px={2}
           py={1}
           zIndex={1}
         >
-          <Typography variant="subtitle1">{selectedRows.length} selected</Typography>
+          <Typography variant="subtitle1">
+            {selectedRows.length}
+            {t('selected')}
+          </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title="일괄 수락" arrow disableInteractive>
+            <Tooltip title={t('create_account')} arrow disableInteractive>
               <IconButton color="success">
-                <Iconify icon="iconamoon:check-bold" />
+                <Iconify icon="ri:user-add-line" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="일괄 거절" arrow disableInteractive>
-              <IconButton color="error">
-                <Iconify icon="gravity-ui:xmark" />
+            <Tooltip title={t('delete')} arrow disableInteractive>
+              <IconButton color="error" onClick={handleDeleteSelectedRows}>
+                <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
               </IconButton>
             </Tooltip>
           </Stack>
@@ -147,104 +152,120 @@ export default function EmployeeCreate() {
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">선택</TableCell>
-              <TableCell align="center">연번</TableCell>
-              <TableCell>사번</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {empData.map((row, index) => (
-              <TableRow key={index}>
+        <Paper>
+          <Table size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
                 <TableCell align="center">
                   <Checkbox
-                    checked={selectedRows.includes(index)}
+                    checked={selectedRows.length === empData.length && empData.length > 0}
+                    indeterminate={selectedRows.length > 0 && selectedRows.length < empData.length}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedRows((prev) => [...prev, index])
+                        setSelectedRows(empData.map((_, index) => index)) // 모든 행 선택
                       } else {
-                        setSelectedRows((prev) => prev.filter((i) => i !== index))
+                        setSelectedRows([]) // 선택 해제
                       }
                     }}
                   />
                 </TableCell>
-                <TableCell align="center">{index + 1}</TableCell>
-                <TableCell>
-                  {editIndex === index ? (
-                    <TextField
-                      value={row.사번}
-                      onChange={(e) =>
-                        setEmpData((prev) =>
-                          prev.map((r, i) => (i === index ? { ...r, 사번: e.target.value } : r))
-                        )
-                      }
-                      variant="standard"
-                      size="small"
+                <TableCell align="center">{t('sequence_number')}</TableCell>
+                <TableCell>{t('employee_number')}</TableCell>
+                <TableCell>{t('name')}</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {empData.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell align="center">
+                    <Checkbox
+                      checked={selectedRows.includes(index)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedRows((prev) => [...prev, index])
+                        } else {
+                          setSelectedRows((prev) => prev.filter((i) => i !== index))
+                        }
+                      }}
                     />
-                  ) : (
-                    <Typography onClick={() => handleEditRow(index)}>{row.사번}</Typography>
-                  )}
+                  </TableCell>
+                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <TextField
+                        value={row.사번}
+                        onChange={(e) =>
+                          setEmpData((prev) =>
+                            prev.map((r, i) => (i === index ? { ...r, 사번: e.target.value } : r))
+                          )
+                        }
+                        variant="standard"
+                        size="small"
+                      />
+                    ) : (
+                      <Typography onClick={() => handleEditRow(index)}>{row.사번}</Typography>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <TextField
+                        value={row.이름}
+                        onChange={(e) =>
+                          setEmpData((prev) =>
+                            prev.map((r, i) => (i === index ? { ...r, 이름: e.target.value } : r))
+                          )
+                        }
+                        variant="standard"
+                        size="small"
+                      />
+                    ) : (
+                      <Typography onClick={() => handleEditRow(index)}>{row.이름}</Typography>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editIndex === index ? (
+                      <Button onClick={handleSaveEdit} size="small" variant="contained">
+                        {t('save')}
+                      </Button>
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {/* 새로운 직원 추가 */}
+              <TableRow ref={messageEndRef}>
+                <TableCell />
+                <TableCell align="center">{empData.length + 1}</TableCell>
+                <TableCell>
+                  <TextField
+                    placeholder={t('employee_number')}
+                    variant="standard"
+                    size="small"
+                    value={newRow.사번}
+                    onChange={(e) => setNewRow({ ...newRow, 사번: e.target.value })}
+                    sx={{ py: 1 }}
+                  />
                 </TableCell>
                 <TableCell>
-                  {editIndex === index ? (
-                    <TextField
-                      value={row.이름}
-                      onChange={(e) =>
-                        setEmpData((prev) =>
-                          prev.map((r, i) => (i === index ? { ...r, 이름: e.target.value } : r))
-                        )
-                      }
-                      variant="standard"
-                      size="small"
-                    />
-                  ) : (
-                    <Typography onClick={() => handleEditRow(index)}>{row.이름}</Typography>
-                  )}
+                  <TextField
+                    placeholder={t('name')}
+                    variant="standard"
+                    size="small"
+                    value={newRow.이름}
+                    onChange={(e) => setNewRow({ ...newRow, 이름: e.target.value })}
+                    sx={{ py: 1 }}
+                  />
                 </TableCell>
+
                 <TableCell>
-                  {editIndex === index ? (
-                    <Button onClick={handleSaveEdit} size="small" variant="contained">
-                      저장
-                    </Button>
-                  ) : null}
+                  <Button variant="outlined" size="small" onClick={handleAddRow}>
+                    {t('add')}
+                  </Button>
                 </TableCell>
               </TableRow>
-            ))}
-            {/* 새로운 직원 추가 */}
-            <TableRow ref={messageEndRef}>
-              <TableCell />
-              <TableCell align="center">{empData.length + 1}</TableCell>
-              <TableCell>
-                <TextField
-                  label="사번"
-                  variant="standard"
-                  size="small"
-                  value={newRow.사번}
-                  onChange={(e) => setNewRow({ ...newRow, 사번: e.target.value })}
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  label="이름"
-                  variant="standard"
-                  size="small"
-                  value={newRow.이름}
-                  onChange={(e) => setNewRow({ ...newRow, 이름: e.target.value })}
-                />
-              </TableCell>
-
-              <TableCell>
-                <Button variant="outlined" size="small" onClick={handleAddRow}>
-                  추가하기
-                </Button>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        </Paper>
       </TableContainer>
     </Stack>
   )

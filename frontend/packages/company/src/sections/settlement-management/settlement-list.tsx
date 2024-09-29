@@ -1,8 +1,8 @@
 import type { SelectChangeEvent } from '@mui/material/Select'
 
 import axios from '@/configs/axios'
-import React, { useState } from 'react'
 import { useTranslate } from '@/locales'
+import React, { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useBoolean } from '@/hooks/use-boolean'
 
@@ -46,6 +46,11 @@ export default function SettlementList() {
     queryFn: fetchStores,
   })
 
+  const selectedStoreData = useMemo(
+    () => stores.find((store: IStore) => store.name === selectedRestaurant),
+    [stores, selectedRestaurant]
+  )
+
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedRestaurant(event.target.value)
   }
@@ -54,7 +59,9 @@ export default function SettlementList() {
     <Stack spacing={3}>
       <Stack justifyContent="space-between" alignItems="center" direction="row">
         <Stack direction="row">
-          <Typography variant="h5">고봉김밥</Typography>
+          <Typography variant="h5">
+            {selectedStoreData ? selectedStoreData.name : '고봉김밥'}
+          </Typography>
         </Stack>
         <Stack justifyContent="flex-end" spacing={1} direction="row">
           <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -73,13 +80,17 @@ export default function SettlementList() {
           </FormControl>
         </Stack>
       </Stack>
+
       <Stack direction="row">
         <Grid container spacing={2}>
           <Grid item xs={2} />
           <Grid item xs={2}>
             <Stack alignItems="center">
               <Typography>{t('total_amount_due')}</Typography>
-              <Typography variant="h5">500,000{t('won')}</Typography>
+              <Typography variant="h5">
+                {selectedStoreData ? '500,000' : '0'}
+                {t('won')}
+              </Typography>
             </Stack>
           </Grid>
           <Grid item xs={1}>
@@ -90,7 +101,10 @@ export default function SettlementList() {
           <Grid item xs={2}>
             <Stack alignItems="center">
               <Typography>{t('current_amount_due')}</Typography>
-              <Typography variant="h5">500,000{t('won')}</Typography>
+              <Typography variant="h5">
+                {selectedStoreData ? '500,000' : '0'}
+                {t('won')}
+              </Typography>
             </Stack>
           </Grid>
           <Grid item xs={1}>
@@ -101,12 +115,16 @@ export default function SettlementList() {
           <Grid item xs={2}>
             <Stack alignItems="center">
               <Typography>{t('overdue_amount')}</Typography>
-              <Typography variant="h5">0{t('won')}</Typography>
+              <Typography variant="h5">
+                {selectedStoreData ? '0' : '0'}
+                {t('won')}
+              </Typography>
             </Stack>
           </Grid>
           <Grid item xs={2} />
         </Grid>
       </Stack>
+
       <Stack direction="row">
         <Grid container spacing={2}>
           <Grid item xs={2} />

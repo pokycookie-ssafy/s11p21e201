@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
 import { styled } from '@mui/material/styles' // MUI 컴포넌트들
+import { useTranslate } from '@/locales'
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -18,9 +19,10 @@ interface FileUploadButtonProps {
 }
 
 export default function MemberCreateButton({ onFileUpload }: FileUploadButtonProps) {
+  const { t } = useTranslate('member')
   return (
     <Button variant="contained" component="label" sx={{ alignSelf: 'center', height: 'auto' }}>
-      엑셀 파일 업로드
+      {t('upload_excel')}
       <VisuallyHiddenInput type="file" accept=".xlsx, .xls" onChange={onFileUpload} />
     </Button>
   )
