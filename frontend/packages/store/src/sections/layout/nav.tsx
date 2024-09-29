@@ -2,10 +2,11 @@ import type { INavItem } from '@/configs/nav'
 import type { Theme, SxProps } from '@mui/material'
 
 import nav from '@/configs/nav'
-import { useMemo } from 'react'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
+import { useMemo, useEffect } from 'react'
 import tossLogo from '@/assets/img/toss-logo.jpg'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -29,14 +30,18 @@ interface IProps {
 export default function Nav({ drawer }: IProps) {
   const { t } = useTranslate('nav')
 
-  const location = useLocation()
+  const { isLogin, logout } = useAuthStore()
 
-  const logoutHandler = () => {
-    // logout
-  }
+  const location = useLocation()
 
   const { breakpoints } = useTheme()
   const invisible = useMediaQuery(breakpoints.down('md')) && !drawer
+
+  useEffect(() => {
+    if (!isLogin) {
+      window.location.reload()
+    }
+  }, [isLogin])
 
   return (
     <Stack
@@ -68,7 +73,7 @@ export default function Nav({ drawer }: IProps) {
         <Button
           fullWidth
           variant="contained"
-          onClick={logoutHandler}
+          onClick={logout}
           color="error"
           sx={{
             bgcolor: (theme) =>

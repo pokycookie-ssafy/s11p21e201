@@ -19,7 +19,7 @@ export default function ContractNewManagementView() {
   const [file, setFile] = useState<File | null>(null)
 
   const queryFn = async () => {
-    const response = await axios.post<ISignUpResponse>(api.signUp.ocr, {})
+    const response = await axios.post<ISignUpResponse>(api.common.ocr, {})
     return response.data
   }
 
@@ -28,7 +28,7 @@ export default function ContractNewManagementView() {
     isPending,
     isError,
   } = useQuery({
-    queryKey: [api.signUp.ocr, file],
+    queryKey: [api.common.ocr, file],
     queryFn,
     enabled: !!file,
     staleTime: Infinity,
