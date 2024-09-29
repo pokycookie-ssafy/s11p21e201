@@ -30,7 +30,9 @@
     "contract_request": "계약 요청"
   },
   "button": {
-    "create_contract": "계약 생성"
+    "create_contract": "계약 생성",
+    "request_contract": "계약 요청",
+    "need_ocr": "사업자등록증을 선택해주세요"
   },
   "tooltip": {
     "accept": "수락",
@@ -43,6 +45,7 @@
     "in_progress": "승인중",
     "complete": "완료",
     "reject": "거절",
-    "canceled": "해지"
+    "canceled": "해지",
+    "license_upload": "사업자등록증을 업로드해주세요"
   }
 }

@@ -9,6 +9,7 @@ import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import isBetween from 'dayjs/plugin/isBetween'
+import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
@@ -21,6 +22,8 @@ dayjs.extend(isBetween)
 
 export default function ContractNowManagementView() {
   const { t } = useTranslate('contract-management')
+
+  const navigate = useNavigate()
 
   const [companySearch, setCompanySearch] = useState<string>('')
 
@@ -73,7 +76,7 @@ export default function ContractNowManagementView() {
           { title: t('breadcrumbs.contract_management') },
         ]}
         action={
-          <Button color="secondary">
+          <Button color="secondary" onClick={() => navigate(paths.management.contract.new)}>
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
               {t('button.create_contract')}

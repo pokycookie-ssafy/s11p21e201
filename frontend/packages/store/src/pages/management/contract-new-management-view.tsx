@@ -1,14 +1,60 @@
-import paths from '@/configs/paths'
-import { useTranslate } from '@/locales'
-import { Breadcrumbs } from '@/components/breadcrumbs'
+import type { ISignUpResponse } from '@/types/sign-up'
 
-import { Box } from '@mui/material'
+import api from '@/configs/api'
+import paths from '@/configs/paths'
+import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Breadcrumbs } from '@/components/breadcrumbs'
+import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
+
+import { Box, Button, TextField } from '@mui/material'
+
+import { Upload, Container } from '@e201/ui'
 
 export default function ContractNewManagementView() {
   const { t } = useTranslate('contract-management')
 
+  const [file, setFile] = useState<File | null>(null)
+
+  const queryFn = async () => {
+    const response = await axios.post<ISignUpResponse>(api.signUp.ocr, {})
+    return response.data
+  }
+
+  const {
+    data: licenseData,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: [api.signUp.ocr, file],
+    queryFn,
+    enabled: !!file,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  })
+
+  const fileChangeHandler = (files: File[]) => {
+    if (files.length === 0) {
+      setFile(null)
+      return
+    }
+    setFile(files[0])
+  }
+
+  const BusinessLicenseFormRender = useMemo(() => {
+    if (!file) {
+      return null
+    }
+    if (isError) {
+      return <Box>Error</Box>
+    }
+    return <BusinessLicenseForm isPending={isPending} license={licenseData} />
+  }, [isError, licenseData, file, isPending])
+
   return (
-    <Box>
+    <Container maxWidth="sm" sx={{ p: 0 }}>
       <Breadcrumbs
         title={t('breadcrumbs.contract_create')}
         routes={[
@@ -17,6 +63,29 @@ export default function ContractNewManagementView() {
           { title: t('breadcrumbs.contract_create') },
         ]}
       />
-    </Box>
+
+      <Upload placeholder={t('label.license_upload')} onChange={fileChangeHandler} />
+      {BusinessLicenseFormRender}
+
+      {!licenseData || file === null ? (
+        <Button sx={{ mt: 2 }} fullWidth disabled>
+          {t('button.need_ocr')}
+        </Button>
+      ) : (
+        <>
+          <TextField
+            type="number"
+            sx={{ mt: 2 }}
+            size="small"
+            defaultValue={25}
+            fullWidth
+            label={t('field.settlement_date')}
+          />
+          <Button sx={{ mt: 2 }} fullWidth>
+            {t('button.request_contract')}
+          </Button>
+        </>
+      )}
+    </Container>
   )
 }
