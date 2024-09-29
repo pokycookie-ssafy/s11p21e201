@@ -22,8 +22,6 @@ import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.global.exception.EntityNotFoundException;
 import com.e201.global.security.auth.constant.RoleType;
-import com.e201.global.security.auth.dto.AuthInfo;
-import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,7 +43,9 @@ public class MenuService {
 	}
 
 	public Menu findEntity(UUID id) {
-		return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
+		return menuRepository.findByIdAndModifiedYNIsNullAndDeleteYNIsNull(id).orElseThrow(() -> new RuntimeException("not found exception"));
+	// 	return menuRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
+
 	}
 
 	public MenuFindResponse findOne(UUID id){
@@ -59,7 +59,7 @@ public class MenuService {
 
 	public List<MenuFindResponse> find(RoleType roleType, UUID id){
 		validationStore(roleType);
-		List<MenuFindResponse> responseList = menuRepository.findByStoreId(id)
+		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNIsNullAndDeleteYNIsNull(id)
 			.stream()
 			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice()))  // Menu -> MenuFindResponse로 변환
 			.toList();  // List<MenuFindResponse>로 수집
