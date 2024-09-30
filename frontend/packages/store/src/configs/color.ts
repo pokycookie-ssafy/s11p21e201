@@ -23,19 +23,19 @@ export interface IColor {
 
 export const color: IColor = {
   primary: {
-    lighter: '#6690ff',
-    light: '#336bff',
-    main: '#0046FF',
-    dark: '#0038cc',
-    darker: '#002a99',
-    contrastText: '#FFFFFF',
-  },
-  secondary: {
     lighter: '#00C076',
     light: '#00A365',
     main: '#018b5c',
     dark: '#016140',
     darker: '#003825',
+    contrastText: '#FFFFFF',
+  },
+  secondary: {
+    lighter: '#6690ff',
+    light: '#336bff',
+    main: '#0046FF',
+    dark: '#0038cc',
+    darker: '#002a99',
     contrastText: '#FFFFFF',
   },
   success: {
