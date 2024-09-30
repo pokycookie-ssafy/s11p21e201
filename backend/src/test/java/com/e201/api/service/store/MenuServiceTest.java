@@ -2,6 +2,7 @@ package com.e201.api.service.store;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.api.controller.store.response.MenuDeleteResponse;
+import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
@@ -102,11 +104,11 @@ class MenuServiceTest {
 	void update_menu_entity_success() {
 		//given
 		Menu menu = createMenu();
-		menuRepository.save(menu);
+		Menu saveMenu = menuRepository.save(menu);
 		MenuUpdateRequest request= createMenuUpdateRequest(menu);
 
 		//when
-		MenuUpdateResponse response = sut.modify(RoleType.STORE,request);
+		MenuUpdateResponse response = sut.modify(RoleType.STORE,saveMenu.getId(),request);
 
 		//then
 		assertThat(response.getId()).isNotEqualTo(menu.getId());
@@ -126,6 +128,51 @@ class MenuServiceTest {
 		assertThat(delete.getId()).isNotNull();
 	}
 
+	@DisplayName("하나의 메뉴를 조회한다.")
+	@Test
+	void findOne_menu_entity_success() {
+		//given
+		Menu menu = createMenu();
+		Menu saveMenu = menuRepository.save(menu);
+
+		//when
+		MenuFindResponse menuFindResponse = sut.findOne(saveMenu.getId());
+
+		//then
+		assertThatMenuMatchExactly(menuFindResponse,saveMenu.getId());
+	}
+
+	@DisplayName("한 식당의 여러 메뉴를 조회한다.")
+	@Test
+	void findAll_menu_entity_success() {
+		Menu menu= createMenu();
+		Menu menu1 =createMenu();
+		Menu menu2 =createMenu();
+		menuRepository.save(menu);
+		menuRepository.save(menu1);
+		menuRepository.save(menu2);
+
+		//when
+		List<MenuFindResponse> menuFindResponses = sut.find(RoleType.STORE, store.getId());
+
+		//then
+		assertThat(menuFindResponses.size()).isEqualTo(3);
+	}
+
+	@DisplayName("인증 오류로 인해 식당의 여러 메뉴를 조회하는데 예외 처리가 발생한다. ")
+	@Test
+	void findAll_menu_entity_fail() {
+		Menu menu= createMenu();
+		Menu menu1 =createMenu();
+		Menu menu2 =createMenu();
+		menuRepository.save(menu);
+		menuRepository.save(menu1);
+		menuRepository.save(menu2);
+
+		//then
+		assertThatThrownBy(() ->sut.find(RoleType.COMPANY, store.getId())).isInstanceOf(RuntimeException.class);
+
+	}
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
@@ -134,7 +181,6 @@ class MenuServiceTest {
 
 	private MenuUpdateRequest createMenuUpdateRequest(Menu menu) {
 		return MenuUpdateRequest.builder()
-			.id(menu.getId())
 			.menuName(menu.getName())
 			.price(33433)
 			.build();
@@ -143,6 +189,7 @@ class MenuServiceTest {
 	private Menu createMenu() {
 		return Menu.builder()
 			.store(store)
+			.name("메뉴이름")
 			.price(5000)
 			.build();
 	}
@@ -164,5 +211,11 @@ class MenuServiceTest {
 			.email(email)
 			.password(password)
 			.build();
+	}
+
+	private void assertThatMenuMatchExactly(MenuFindResponse menu, UUID menuId) {
+		assertThat(menu)
+			.extracting("id", "menuName", "price")
+			.containsExactly(menuId, "메뉴이름",5000);
 	}
 }

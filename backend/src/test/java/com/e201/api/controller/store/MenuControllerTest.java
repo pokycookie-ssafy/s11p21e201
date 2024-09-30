@@ -6,6 +6,8 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +19,7 @@ import com.e201.api.controller.store.request.MenuCreateRequest;
 import com.e201.api.controller.store.request.MenuUpdateRequest;
 import com.e201.api.controller.store.response.MenuCreateResponse;
 import com.e201.api.controller.store.response.MenuDeleteResponse;
+import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.api.service.store.MenuService;
 import com.e201.global.security.auth.constant.AuthConstant;
@@ -61,7 +64,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		MenuUpdateResponse response = new MenuUpdateResponse(menuId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(menuService).modify(any(), any(MenuUpdateRequest.class));
+		doReturn(response).when(menuService).modify(any(), any(), any(MenuUpdateRequest.class));
 
 		//expected
 		mockMvc.perform(put("/stores/menus/"+menuId)
@@ -94,9 +97,59 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+	@DisplayName("단건 메뉴를 조회한다.")
+	@Test
+	void findOne_menu_success() throws Exception {
+		UUID menuId = UUID.randomUUID();
+		MenuFindResponse response = createMenuResponse(menuId);
+		String responseJson = objectMapper.writeValueAsString(response);
+		doReturn(response).when(menuService).findOne(any());
+
+		mockMvc.perform(get("/stores/menus/"+menuId)
+				.contentType(APPLICATION_JSON)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
+	@DisplayName("한 식당의 메뉴 리스트를 조회한다.")
+	@Test
+	void findAll_menu_success() throws Exception {
+		UUID storeId = UUID.randomUUID();
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), RoleType.STORE);
+
+		List<MenuFindResponse> menuFindResponseList = lists(storeId);
+		String responseJson = objectMapper.writeValueAsString(menuFindResponseList);
+		doReturn(menuFindResponseList).when(menuService).find(any(),any());
+
+		mockMvc.perform(get("/stores/menus")
+				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+			)
+			.andExpect(status().isOk())
+			.andExpect(content().json(responseJson));
+	}
+
+	private List<MenuFindResponse> lists(UUID storeId){
+		MenuFindResponse mr1= createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr2= createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr3= createMenuResponse(UUID.randomUUID());
+		List<MenuFindResponse> menuFindResponseList= new ArrayList<>();
+		menuFindResponseList.add(mr1);
+		menuFindResponseList.add(mr2);
+		menuFindResponseList.add(mr3);
+		return menuFindResponseList;
+	}
+
+	private MenuFindResponse createMenuResponse(UUID menuId) {
+		return MenuFindResponse.builder()
+			.id(menuId)
+			.menuName("메뉴이름")
+			.price(5000).build();
+	}
+
 	private MenuUpdateRequest createMenuUpdateRequest(){
 		return MenuUpdateRequest.builder()
-			.id(UUID.randomUUID())
 			.menuName("메뉴이름")
 			.price(2132)
 			.build();

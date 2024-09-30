@@ -2,6 +2,8 @@ package com.e201.domain.entity.store;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.e201.domain.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -38,7 +40,7 @@ public class Menu extends BaseEntity {
 	private String name;
 
 	@Column(name = "modifiedYN")
-	private String modifiedYN;
+	private String modifiedYN = "N";
 
 	@Builder
 	public Menu(UUID id, Store store, String name, int price){
@@ -46,6 +48,7 @@ public class Menu extends BaseEntity {
 		this.store = store;
 		this.name = name;
 		this.price = price;
+
 	}
 
 	public void softUpdate(){
