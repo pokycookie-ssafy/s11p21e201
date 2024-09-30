@@ -4,6 +4,7 @@ import type { Theme, SxProps } from '@mui/material'
 import nav from '@/configs/nav'
 import { useMemo } from 'react'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@/hooks/use-boolean'
 import tossLogo from '@/assets/img/toss-logo.jpg'
@@ -29,10 +30,14 @@ interface IProps {
 export default function Nav({ drawer }: IProps) {
   const { t } = useTranslate('nav')
 
+  const { logout } = useAuthStore()
+
   const location = useLocation()
+  const navigate = useNavigate()
 
   const logoutHandler = () => {
-    // logout
+    logout()
+    navigate(paths.auth.signIn)
   }
 
   const { breakpoints } = useTheme()
