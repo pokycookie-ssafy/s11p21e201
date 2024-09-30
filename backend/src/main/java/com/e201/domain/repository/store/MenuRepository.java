@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.e201.domain.entity.store.Menu;
 
 public interface MenuRepository extends JpaRepository<Menu, UUID> {
-	List<Menu> findByStoreIdAndModifiedYNIsNullAndDeleteYNIsNull(UUID storeId);
-	Optional<Menu> findByIdAndModifiedYNIsNullAndDeleteYNIsNull(UUID id);
+	List<Menu> findByStoreIdAndModifiedYNAndDeleteYN(UUID storeId, String modifiedYN, String deleteYN);
+	Optional<Menu> findByIdAndModifiedYNAndDeleteYN(UUID id, String modifiedYN, String deleteYN);
 
 }
