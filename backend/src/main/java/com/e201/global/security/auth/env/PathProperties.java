@@ -34,9 +34,12 @@ public class PathProperties {
 		private String managerPath;
 		private String employeePath;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		private String storePath;
 =======
 >>>>>>> be93cfb ([#25] feat: Auth filer에 사업자 등록증 api 등록)
+=======
+>>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 		private String licensePath;
 	}
 }
