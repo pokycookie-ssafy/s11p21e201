@@ -25,6 +25,7 @@ public class PaymentConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(paymentDataSource);
 		em.setPackagesToScan("com.e201.domain.entity.payment");
+		em.setPersistenceUnitName("paymentEntityManager");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");

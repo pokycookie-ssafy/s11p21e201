@@ -25,6 +25,7 @@ public class AdminConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(adminDataSource);
 		em.setPackagesToScan("com.e201.domain.entity.admin");
+		em.setPersistenceUnitName("adminEntityManager");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
