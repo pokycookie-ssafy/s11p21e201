@@ -2,11 +2,13 @@ package com.e201.client.service.response;
 
 import java.util.List;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Result {
 	private List<CommonResponse> repName; // 대표자명
 	private List<CommonResponse> companyName;// 상호명
