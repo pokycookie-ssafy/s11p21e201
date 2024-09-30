@@ -14,7 +14,6 @@ import {
   Box,
   Card,
   Stack,
-  Button,
   Tooltip,
   Collapse,
   TextField,
@@ -41,7 +40,7 @@ export default function ContractRequestManagementView() {
 
   const [storeSearch, setStoreSearch] = useState<string>('')
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['contract'],
     queryFn: () => fetchContractRequest('receiver', 'in'),
   })
@@ -57,10 +56,6 @@ export default function ContractRequestManagementView() {
     }
     return filtered
   }, [data, storeSearch])
-
-  const handleRowSelectionChange = (selection: GridRowSelectionModel) => {
-    setSelected(selection)
-  }
 
   const columns: GridColDef[] = [
     {

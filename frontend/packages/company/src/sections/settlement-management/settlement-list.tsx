@@ -1,14 +1,22 @@
+import type { GridColDef } from '@mui/x-data-grid'
 import type { SelectChangeEvent } from '@mui/material/Select'
 
+import dayjs from 'dayjs'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
-import React, { useMemo, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { Label } from '@/components/label'
+import { fNumber } from '@/utils/number-format'
 import { useBoolean } from '@/hooks/use-boolean'
+import { useQuery } from '@tanstack/react-query'
+import { useMemo, useState, useEffect } from 'react'
+import { Breadcrumbs } from '@/components/breadcrumbs'
 
+import { DataGrid } from '@mui/x-data-grid'
 import {
   Box,
-  Grid,
+  Tab,
+  Card,
+  Tabs,
   Stack,
   Select,
   Button,
@@ -23,65 +31,190 @@ import {
   DialogActions,
 } from '@mui/material'
 
+type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
+
+interface ISettlement {
+  id: string
+  storeId: string
+  storeName: string
+  settlementDate: Date
+  settledDate: Date
+  settlementAmount: number
+  settledAmount: number
+  taxInvoice: boolean
+}
+
 interface IStore {
   id: string
   name: string
   phone: string
   address: string
+  createdAt: Date
 }
 
 const fetchStores = async () => {
-  const response = await axios.get('/companies/stores')
-  return response.data
+  const stores = await axios.get('/companies/stores')
+  return stores.data
+}
+
+const fetchSettlements = async () => {
+  const settlements = await axios.get('/settlement')
+  return settlements.data
 }
 
 export default function SettlementList() {
-  const settlementDialog = useBoolean()
   const invoiceDialog = useBoolean()
   const [selectedRestaurant, setSelectedRestaurant] = useState<string>('')
-
+  const [tab, setTab] = useState<StatusType | null>(null)
   const { t } = useTranslate('settlement')
+
+  const TABS = [
+    { label: t('all'), value: null },
+    { label: t('settled'), value: 'settled' },
+    { label: t('partial'), value: 'partial' },
+    { label: t('unsettled'), value: 'unsettled' },
+    { label: t('upload'), value: 'upload' },
+  ]
+
   const { data: stores = [] } = useQuery({
     queryKey: ['stores'],
     queryFn: fetchStores,
   })
 
-  const selectedStoreData = useMemo(
-    () => stores.find((store: IStore) => store.name === selectedRestaurant),
-    [stores, selectedRestaurant]
-  )
+  const { data: settlements = [] } = useQuery({
+    queryKey: ['settlements'],
+    queryFn: fetchSettlements,
+  })
+
+  useEffect(() => {
+    if (stores.length > 0 && !selectedRestaurant) {
+      setSelectedRestaurant(stores[0].name)
+    }
+  }, [stores, selectedRestaurant])
+
+  // const selectedStoreData = useMemo(
+  //   () => stores.find((store: IStore) => store.name === selectedRestaurant),
+  //   [stores, selectedRestaurant]
+  // )
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedRestaurant(event.target.value)
   }
 
+  const statusProvider = (row: ISettlement) => {
+    if (row.settledAmount === 0) {
+      return <Label status="error">{t('unsettled')}</Label>
+    }
+    if (row.settledAmount < row.settlementAmount) {
+      return <Label status="warning">{t('partial')}</Label>
+    }
+    return <Label status="success">{t('settled')}</Label>
+  }
+
+  const filteredData = useMemo(() => {
+    if (!settlements) return []
+    let filtered = [...settlements]
+
+    if (selectedRestaurant) {
+      filtered = filtered.filter((e) => e.storeName === selectedRestaurant)
+    }
+
+    if (tab === 'unsettled') {
+      filtered = filtered.filter((e) => e.settledAmount === 0)
+    } else if (tab === 'partial') {
+      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount)
+    } else if (tab === 'settled') {
+      filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
+    } else if (tab === 'upload') {
+      filtered = filtered.filter((e) => !e.taxInvoice)
+    }
+
+    return filtered
+  }, [settlements, tab, selectedRestaurant])
+
+  const columns: GridColDef<ISettlement>[] = [
+    { field: 'storeName', headerName: t('restaurant_name'), flex: 1, minWidth: 150 },
+    {
+      field: 'settledDate',
+      type: 'date',
+      headerName: t('settled_date'),
+      width: 120,
+      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
+    },
+    {
+      field: 'settlementDate',
+      headerName: t('settlement_date'),
+      width: 120,
+      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
+    },
+    {
+      field: 'settledAmount',
+      headerName: t('settled_amount'),
+      width: 130,
+      valueFormatter: (params) => `${fNumber(params)} 원`,
+    },
+    {
+      field: 'settlementAmount',
+      headerName: t('settlement_amount'),
+      width: 130,
+      valueFormatter: (params) => `${fNumber(params)} 원`,
+    },
+    {
+      field: 'status',
+      headerName: t('status'),
+      headerAlign: 'center',
+      width: 120,
+      renderCell: (params) => (
+        <Stack justifyContent="center" alignItems="center">
+          {statusProvider(params.row)}
+        </Stack>
+      ),
+    },
+    {
+      field: 'taxInvoice',
+      type: 'boolean',
+      headerName: t('invoice'),
+      width: 90,
+      renderCell: (params) => (
+        <Stack justifyContent="center" alignItems="center">
+          {params.row.taxInvoice ? (
+            <Button color="success" size="small">
+              <Typography>{t('view')}</Typography>
+            </Button>
+          ) : (
+            <Button color="error" size="small" onClick={invoiceDialog.onTrue}>
+              <Typography>{t('view')}</Typography>
+            </Button>
+          )}
+        </Stack>
+      ),
+    },
+  ]
+
   return (
-    <Stack spacing={3}>
-      <Stack justifyContent="space-between" alignItems="center" direction="row">
-        <Stack direction="row">
-          <Typography variant="h5">
-            {selectedStoreData ? selectedStoreData.name : '고봉김밥'}
-          </Typography>
-        </Stack>
-        <Stack justifyContent="flex-end" spacing={1} direction="row">
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel>{t('restaurant_name')}</InputLabel>
-            <Select
-              value={selectedRestaurant}
-              onChange={handleChange}
-              input={<OutlinedInput label="Name" />}
-            >
-              {stores.map((store: IStore) => (
-                <MenuItem key={store.id} value={store.name}>
-                  {store.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
+    <Stack>
+      <Stack direction="row" justifyContent="space-between">
+        <Breadcrumbs title={t('settlement')} routes={[{ title: t('settlement') }]} />
+        <FormControl sx={{ minWidth: 150 }}>
+          <InputLabel>{t('restaurant_name')}</InputLabel>
+          <Select
+            value={selectedRestaurant}
+            onChange={handleChange}
+            input={<OutlinedInput label={t('restaurant_name')} />}
+          >
+            {stores.map((store: IStore) => (
+              <MenuItem key={store.id} value={store.name}>
+                {store.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Stack>
 
-      <Stack direction="row">
+      {/* <Stack spacing={1} pb={2}>
+        <Typography textAlign="center" variant="h5">
+          {selectedRestaurant}
+        </Typography>
         <Grid container spacing={2}>
           <Grid item xs={2} />
           <Grid item xs={2}>
@@ -123,85 +256,45 @@ export default function SettlementList() {
           </Grid>
           <Grid item xs={2} />
         </Grid>
-      </Stack>
+      </Stack> */}
 
-      <Stack direction="row">
-        <Grid container spacing={2}>
-          <Grid item xs={2} />
-          <Grid item xs={8}>
-            <Stack spacing={3} sx={{ p: 2 }}>
-              <Box>
-                <Typography sx={{ textAlign: 'center' }}>{t('transaction_details')}</Typography>
-              </Box>
-              <Box
-                component="li"
-                sx={{
-                  p: 1,
-                  borderBottom: 1,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Box sx={{ justifyContent: 'flex-start' }}>
-                  <Typography variant="body1">2024/08/01 ~ 2024/08/31</Typography>
-                  <Typography variant="h6">480,000{t('won')}</Typography>
-                </Box>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', gap: 2, justifyContent: 'flex-end' }}
-                >
-                  <Typography variant="body1">{t('settlement_date')} : 2024/09/10</Typography>
-                  <Button variant="outlined" size="small" onClick={settlementDialog.onTrue}>
-                    {t('settle')}
-                  </Button>
-                  <Dialog
-                    open={settlementDialog.value}
-                    onClose={settlementDialog.onFalse}
-                    maxWidth="sm"
-                    fullWidth
-                  >
-                    <DialogTitle>{t('settle')}</DialogTitle>
-                    <DialogContent dividers>
-                      <Stack spacing={2} sx={{ p: 2 }}>
-                        <Typography variant="h6">{t('recipient_account')}</Typography>
-                        <Typography>1002-954-436365 우리은행 </Typography>
-                        <Typography variant="h6">{t('my_account')}</Typography>
-                        <Typography>1001-943-382901 국민은행 </Typography>
-                      </Stack>
-                    </DialogContent>
-                    <DialogActions sx={{ justifyContent: 'center' }}>
-                      <Button variant="contained" onClick={settlementDialog.onFalse}>
-                        {t('settle')}
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
+      <Card>
+        <Box px={2} sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+          <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="scrollable">
+            {TABS.map((e, i) => (
+              <Tab label={e.label} value={e.value} key={i} />
+            ))}
+          </Tabs>
+        </Box>
 
-                  <Button variant="contained" size="small" onClick={invoiceDialog.onTrue}>
-                    {t('view_invoice')}
-                  </Button>
-                  <Dialog
-                    open={invoiceDialog.value}
-                    onClose={invoiceDialog.onFalse}
-                    maxWidth="sm"
-                    fullWidth
-                  >
-                    <DialogTitle> {t('view_invoice')}</DialogTitle>
-                    <DialogContent dividers>
-                      <Typography>세금계산서 조회 정보</Typography>
-                    </DialogContent>
-                    <DialogActions sx={{ justifyContent: 'center' }}>
-                      <Button variant="contained" onClick={invoiceDialog.onFalse}>
-                        {t('download')}
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Box>
-              </Box>
-            </Stack>
-          </Grid>
-          <Grid item xs={2} />
-        </Grid>
-      </Stack>
+        <Stack direction="row" alignItems="center" />
+
+        <DataGrid
+          columns={columns}
+          rows={filteredData}
+          getRowId={(row) => row.id}
+          hideFooter
+          loading={!settlements.length}
+          sx={{ height: 500 }}
+          initialState={{
+            sorting: {
+              sortModel: [{ field: 'settledDate', sort: 'desc' }], // 정산일 기준으로 내림차순 정렬
+            },
+          }}
+        />
+      </Card>
+
+      <Dialog open={invoiceDialog.value} onClose={invoiceDialog.onFalse} maxWidth="sm" fullWidth>
+        <DialogTitle>{t('invoice')}</DialogTitle>
+        <DialogContent dividers>
+          <Typography>{t('invoice')}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={invoiceDialog.onFalse} variant="contained">
+            {t('close')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   )
 }

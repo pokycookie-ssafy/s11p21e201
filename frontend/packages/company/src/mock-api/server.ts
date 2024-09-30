@@ -6,7 +6,9 @@ import { managerResponse } from './response/managers'
 import { paymentResponse } from './response/payments'
 import { employeeResponse } from './response/employees'
 import { contractsResponse } from './response/contracts'
+import { settlementResponse } from './response/settlements'
 import { contractStoreResponse } from './response/contract-stores'
+import { contractHistoryResponse } from './response/contracts-history'
 
 export default function initServer() {
   createServer({
@@ -43,6 +45,10 @@ export default function initServer() {
       })
 
       this.get('/companies/payment', () => paymentResponse)
+
+      this.get('/contract/temp', () => contractHistoryResponse)
+
+      this.get('/settlement', () => settlementResponse)
     },
   })
 }

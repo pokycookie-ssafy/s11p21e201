@@ -13,12 +13,10 @@ import {
   Card,
   Stack,
   Button,
-  Divider,
   Tooltip,
   Collapse,
   TextField,
   Typography,
-  Pagination,
   IconButton,
 } from '@mui/material'
 
@@ -29,22 +27,13 @@ const fetchManagers = async () => {
   return response.data
 }
 
-interface IManager {
-  id: string
-  departmentId: string
-  departmentName: String
-  supportAmount: number
-  spentAmount: number
-  createdAt: Date
-}
-
 export default function ManagerManagement() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
   const [memberSearch, setMemberSearch] = useState<string>('')
 
   const { t } = useTranslate('member')
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['managers'],
     queryFn: fetchManagers,
   })

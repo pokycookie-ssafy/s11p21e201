@@ -6,6 +6,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
@@ -20,9 +21,11 @@ export default function ContractNowManagementView() {
     return response.data
   }
 
+  const navigate = useNavigate()
+
   const { t } = useTranslate('contract')
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['contract-stores'],
     queryFn: fetchContracts,
   })
@@ -65,7 +68,7 @@ export default function ContractNowManagementView() {
           { title: t('contract_log'), path: paths.management.contract.history },
         ]}
         action={
-          <Button>
+          <Button onClick={() => navigate(paths.management.contract.new)}>
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
               {t('add_contract')}
