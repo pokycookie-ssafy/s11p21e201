@@ -1,9 +1,9 @@
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
-import { SelectCreatable } from '@/components/select'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { Box, Stack, Dialog, Button, TextField } from '@mui/material'
+
+import { Breadcrumbs, SelectCreatable } from '@e201/ui'
 
 interface IProps {
   open: boolean

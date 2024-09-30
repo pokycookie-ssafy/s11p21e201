@@ -9,7 +9,6 @@ import { useTranslate } from '@/locales'
 import { useRef, useMemo, useState } from 'react'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import NewMenuModal from '@/sections/menu-management/new-menu-modal'
 
@@ -27,7 +26,7 @@ import {
   IconButton,
 } from '@mui/material'
 
-import { Iconify, Typography } from '@e201/ui'
+import { Iconify, Typography, Breadcrumbs } from '@e201/ui'
 
 export default function MenuManagementView() {
   const { t } = useTranslate('menu-management')

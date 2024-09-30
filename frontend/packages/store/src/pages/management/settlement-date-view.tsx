@@ -7,18 +7,15 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
-import { SelectDate } from '@/components/select'
 import { fNumber, useBoolean } from '@e201/utils'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 

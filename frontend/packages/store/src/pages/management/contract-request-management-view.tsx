@@ -9,9 +9,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -26,7 +24,7 @@ import {
   IconButton,
 } from '@mui/material'
 
-import { Iconify, Typography } from '@e201/ui'
+import { Label, Iconify, Typography, Breadcrumbs } from '@e201/ui'
 
 type TabType = 'received' | 'send'
 

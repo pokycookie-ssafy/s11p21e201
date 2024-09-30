@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
-
 import { Box, alpha, darken, useTheme } from '@mui/material'
 
-import { Typography } from '@e201/ui'
+import { Typography } from '../typography'
 
 import type { ILabelProps } from './types'
 

@@ -1,5 +1,5 @@
+import type { ISelectOption } from '@e201/ui'
 import type { GridColDef } from '@mui/x-data-grid'
-import type { ISelectOption } from '@/components/select'
 import type { ISettlementResponse } from '@/types/settlement'
 
 import dayjs from 'dayjs'
@@ -8,17 +8,14 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
-import { Select } from '@/components/select'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Label, Select, Iconify, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 

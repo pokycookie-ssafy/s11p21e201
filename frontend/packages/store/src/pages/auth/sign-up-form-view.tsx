@@ -6,7 +6,6 @@ import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { FormInput } from '@/components/form/form-input'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
 import {
@@ -20,7 +19,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 
-import { Upload } from '@e201/ui'
+import { Upload, FormInput } from '@e201/ui'
 
 interface IForm {
   email: string

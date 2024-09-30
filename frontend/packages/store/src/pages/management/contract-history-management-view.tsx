@@ -7,12 +7,12 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, TextField } from '@mui/material'
+
+import { Label, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'in' | 'complete' | 'reject' | 'canceled'
 
