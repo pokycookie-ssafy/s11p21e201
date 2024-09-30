@@ -25,6 +25,7 @@ public class CompanyConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(companyDataSource);
 		em.setPackagesToScan("com.e201.domain.entity.company");
+		em.setPersistenceUnitName("companyEntityManager");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");

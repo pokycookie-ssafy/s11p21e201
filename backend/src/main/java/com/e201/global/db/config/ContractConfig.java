@@ -25,6 +25,7 @@ public class ContractConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(contractDataSource);
 		em.setPackagesToScan("com.e201.domain.entity.contract");
+		em.setPersistenceUnitName("contractEntityManager");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
