@@ -65,10 +65,16 @@ public class AuthenticationFilter implements Filter {
 		boolean isCompanyCreatePath = matchURIAndMethod(request, method, creationPath.getCompanyPath());
 		boolean isManagerCreatePath = matchURIAndMethod(request, method, creationPath.getManagerPath());
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
+<<<<<<< HEAD
 		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
 			|| isStoreCreatePath || isLicenseCreatePath;
+=======
+		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
+		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
+			|| isLicenseCreatePath;
+>>>>>>> be93cfb ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

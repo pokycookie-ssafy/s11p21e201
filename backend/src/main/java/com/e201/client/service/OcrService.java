@@ -37,6 +37,7 @@ public class OcrService {
 	private final ObjectMapper mapper = new ObjectMapper();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private final CompanyService companyService;
 	private final StoreService storeService;
 
@@ -49,9 +50,12 @@ public class OcrService {
 	public LicenseCreateResponse ocrCallApi(MultipartFile file) {
 =======
 	@Value("${ocr.url}")
+=======
+	@Value("${e201.ocr.url}")
+>>>>>>> be93cfb ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 	private String apiUrl;
-	
-	@Value("${ocr.key}")
+
+	@Value("${e201.ocr.key}")
 	private String apiKey;
 
 	public OcrResultResponse parseBizLicense(MultipartFile file) {
@@ -67,6 +71,7 @@ public class OcrService {
 			.retrieve()
 			.toEntity(ApiResponse.class).getBody();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 		String inferResult = responseBody.getImages().getFirst().getInferResult();
 		if (!inferResult.equals("SUCCESS"))
@@ -98,6 +103,11 @@ public class OcrService {
 		String repName = bizLicense.getRepName().getFirst().getText();
 =======
 		return parseDataFromJson(responseBody);
+=======
+		OcrResultResponse response = parseDataFromJson(responseBody);
+
+		return response;
+>>>>>>> be93cfb ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 	}
 
 	private OcrResultResponse parseDataFromJson(ApiResponse responseBody) {
