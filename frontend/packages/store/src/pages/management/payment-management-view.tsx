@@ -11,10 +11,10 @@ import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { grouping } from '@/utils/payment'
 import isBetween from 'dayjs/plugin/isBetween'
+import { SelectDate } from '@/components/select'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
 import { Breadcrumbs } from '@/components/breadcrumbs'
-import { SelectYear, SelectMonth } from '@/components/select'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -92,6 +92,11 @@ export function PaymentManagementView() {
     deleteAllConfirm.onFalse()
   }
 
+  const dateChangeHandler = (dateYear: number, dateMonth: number) => {
+    setYear(dateYear)
+    setMonth(dateMonth)
+  }
+
   const columns: GridColDef<IPaymentGroup>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
     { field: 'employeeCode', headerName: t('field.employee_code'), width: 100 },
@@ -150,12 +155,12 @@ export function PaymentManagementView() {
 
           <Stack
             direction="row"
-            p={2}
+            px={2}
+            py={1}
             spacing={1}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <SelectYear year={year} onChange={setYear} />
-            <SelectMonth month={month} onChange={setMonth} />
+            <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
           </Stack>
 
           <Collapse in={selected.length > 0}>
