@@ -14,7 +14,8 @@
     "payment_time": "결제 시간"
   },
   "unit": {
-    "won": "원"
+    "won": "원",
+    "date": "{0}년 {1}월"
   },
   "tooltip": {
     "delete_all": "일괄 삭제"

@@ -10,9 +10,9 @@ import { useMemo, useState } from 'react'
 import { Label } from '@/components/label'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
+import { SelectDate } from '@/components/select'
 import { fNumber, useBoolean } from '@e201/utils'
 import { Breadcrumbs } from '@/components/breadcrumbs'
-import { SelectYear, SelectMonth } from '@/components/select'
 import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -88,6 +88,11 @@ export default function SettlementDateView() {
     }
     return filtered
   }, [data, month, tab, year])
+
+  const dateChangeHandler = (dateYear: number, dateMonth: number) => {
+    setYear(dateYear)
+    setMonth(dateMonth)
+  }
 
   const columns: GridColDef<ISettlementResponse>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
@@ -201,12 +206,12 @@ export default function SettlementDateView() {
           <Stack
             direction="row"
             alignItems="center"
-            p={2}
+            px={2}
+            py={1}
             spacing={1}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <SelectYear year={year} onChange={setYear} />
-            <SelectMonth month={month} onChange={setMonth} />
+            <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
           </Stack>
 
           <DataGrid

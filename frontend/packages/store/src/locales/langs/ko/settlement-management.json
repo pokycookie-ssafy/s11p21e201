@@ -33,6 +33,7 @@
     "date_management": "날짜별 관리"
   },
   "unit": {
-    "won": "원"
+    "won": "원",
+    "date": "{0}년 {1}월"
   }
 }
