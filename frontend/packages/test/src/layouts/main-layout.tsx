@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import { useThemeStore } from '@/stores'
 import { Outlet } from 'react-router-dom'
+import { Header } from '@/sections/layout'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 
 import { Toaster, darkTheme, lightTheme } from '@e201/ui'
 
@@ -18,7 +19,10 @@ export default function MainLayout() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Toaster />
-        <Outlet />
+        <Header />
+        <Container sx={{ p: 4 }}>
+          <Outlet />
+        </Container>
       </ThemeProvider>
     </QueryClientProvider>
   )
