@@ -1,0 +1,41 @@
+{
+  "dashboard": {
+    "title": "대시보드",
+    "total": "전체 대시보드",
+    "sales": {
+      "title": "판매 대시보드",
+      "menu": "메뉴별 판매량",
+      "company": "회사별 판매량",
+      "date": "날짜별 판매량"
+    },
+    "settlement": "정산 대시보드"
+  },
+  "management": {
+    "title": "관리",
+    "member": "직원 계정 관리",
+    "payment": "장부 관리",
+    "contract": {
+      "title": "계약 관리",
+      "now": "계약 관리",
+      "new": "계약 추가",
+      "request": "계약 요청",
+      "history": "계약 기록"
+    },
+
+    "settlement": "정산 관리"
+  },
+  "payment": {
+    "title": "장부",
+    "payment": "장부 관리"
+  },
+  "settlement": {
+    "title": "정산",
+    "settlement": "정산 관리"
+  },
+  "setting": {
+    "title": "설정",
+    "app": "앱 설정",
+    "account": "계정 설정"
+  },
+  "logout": "로그아웃"
+}

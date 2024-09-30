@@ -1,10 +1,11 @@
 {
-  "sort_department": "department",
-  "sort_restaurant": "restaurant",
-  "sort_employee": "employee",
-  "month": "month",
-  "start_year": "Start Year",
-  "start_month": "Start Month",
-  "end_year": "End Year",
-  "end_month": "End Month"
+  "paid_at": "Date",
+  "department_name": "Department",
+  "employee_name": "Employee",
+  "restaurant_name": "Restaurant",
+  "price": "Price",
+  "payment": "Payment",
+  "department": "Department",
+  "restaurant": "Restaurant",
+  "all": "All"
 }
