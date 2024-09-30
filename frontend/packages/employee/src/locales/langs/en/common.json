@@ -1,3 +1,45 @@
 {
-  "test": "TEST"
+  "main": {
+    "title": "Employee Main Page",
+    "qr-title": "Generate QR Code",
+    "store-address": "Address",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error: ",
+    "no-store": "No stores available",
+    "no-address": "This is a restaurant with an unregistered address.",
+    "no-phone": "This is a restaurant with an unregistered phone number."
+  },
+  "current": {
+    "title": "Meal Allowance Status for {{month}}/{{year}}",
+    "won": "KRW",
+    "rest": "Remaining Amount"
+  },
+  "qr": {
+    "title": "Pay with QR Code"
+  },
+  "signin": {
+    "title": "Sign In",
+    "companyCode": "Company Code",
+    "employeeCode": "Employee Code",
+    "password": "Password",
+    "remember": "Remember me",
+    "error": "Try Again."
+  },
+  "pw": {
+    "originPw": "Origin Password",
+    "newPw": "New Password",
+    "confirmPw": "Password Confirm",
+    "confirmPwMent": "Please input new password again to confirm"
+  },
+  "auth": {
+    "changePw": "Please enter your ",
+    "input": "Change Password",
+    "logout": "Logout"
+  },
+  "account": {
+    "title": "Account-book Page",
+    "error": "Data could not be loaded.",
+    "no-data": "There are no records for the selected period."
+  }
 }
