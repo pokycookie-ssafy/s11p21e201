@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import paths from '@/configs/paths'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { Stack, Dialog, Button } from '@mui/material'
 
-import { Upload } from '@e201/ui'
+import { Upload, Breadcrumbs } from '@e201/ui'
 
 interface IProps {
   open: boolean

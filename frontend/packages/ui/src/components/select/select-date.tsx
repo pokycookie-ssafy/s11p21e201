@@ -3,10 +3,11 @@ import type { TFunction } from 'i18next'
 
 import { m } from '@e201/utils'
 import { useRef, useState } from 'react'
-
 import { Stack, Button, Popover, IconButton } from '@mui/material'
 
-import { Iconify, Typography, ScrollContainer } from '@e201/ui'
+import { Iconify } from '../iconify'
+import { Typography } from '../typography'
+import { ScrollContainer } from '../scrollbar'
 
 interface IProps {
   year: number

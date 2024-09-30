@@ -1,22 +1,24 @@
 import type { MouseEvent } from 'react'
 
 import { useState } from 'react'
-
 import { Stack, Button, Popover } from '@mui/material'
 
-import { Iconify, Typography, ScrollContainer } from '@e201/ui'
+import { Iconify } from '../iconify'
+import { Typography } from '../typography'
+import { ScrollContainer } from '../scrollbar'
 
 interface IProps {
-  month: number
-  onChange?: (month: number) => void
+  year: number
+  onChange?: (year: number) => void
 }
 
-const START = 1
-const END = 12
+const NOW = new Date().getFullYear()
+const START = NOW - 100
+const END = NOW
 
-const years = Array.from({ length: END - START + 1 }, (_, i) => START + i)
+const years = Array.from({ length: END - START }, (_, i) => END - i)
 
-export function SelectMonth({ month, onChange }: IProps) {
+export function SelectYear({ year, onChange }: IProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
@@ -42,7 +44,7 @@ export function SelectMonth({ month, onChange }: IProps) {
         sx={{
           p: 1,
           pl: 1.5,
-          width: 80,
+          width: 100,
           flexShrink: 0,
           color: (theme) => theme.palette.text.secondary,
           borderColor: (theme) => theme.palette.text.disabled,
@@ -57,7 +59,7 @@ export function SelectMonth({ month, onChange }: IProps) {
           justifyContent="space-between"
         >
           <Typography variant="subtitle2" color="text.primary">
-            {month}월
+            {year}년
           </Typography>
           <Iconify icon="solar:alt-arrow-down-line-duotone" />
         </Stack>
@@ -71,12 +73,12 @@ export function SelectMonth({ month, onChange }: IProps) {
           horizontal: 'left',
         }}
       >
-        <ScrollContainer sx={{ width: 80, maxHeight: 200 }}>
+        <ScrollContainer sx={{ width: 100, maxHeight: 200 }}>
           <Stack spacing={0.5} p={0.5}>
             {years.map((y) => (
               <Button key={y} variant="soft" onClick={() => changeHandler(y)}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  {y}월
+                  {y}년
                 </Typography>
               </Button>
             ))}

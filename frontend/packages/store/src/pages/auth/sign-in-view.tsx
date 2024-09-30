@@ -7,11 +7,10 @@ import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { FormInput } from '@/components/form/form-input'
 
 import { Stack, Button, Typography } from '@mui/material'
 
-import { Link } from '@e201/ui'
+import { Link, FormInput } from '@e201/ui'
 
 interface IForm {
   email: string

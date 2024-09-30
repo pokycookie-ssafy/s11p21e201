@@ -3,7 +3,9 @@ import type { Theme, SxProps } from '@mui/material'
 
 import { Stack } from '@mui/material'
 
-import { Link, Iconify, Typography } from '@e201/ui'
+import { Link } from '../link'
+import { Iconify } from '../iconify'
+import { Typography } from '../typography'
 
 interface IPath {
   title: string

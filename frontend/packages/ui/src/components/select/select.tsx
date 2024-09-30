@@ -3,7 +3,7 @@ import type { TextFieldProps } from '@mui/material'
 
 import { TextField, Autocomplete } from '@mui/material'
 
-import { Typography } from '@e201/ui'
+import { Typography } from '../typography'
 
 import type { SelectProps, ISelectOption } from './type'
 
