@@ -12,9 +12,11 @@ import com.e201.api.controller.store.response.MenuDeleteResponse;
 import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.annotation.JtaTransactional;
+import com.e201.domain.entity.EntityConstant;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
+import com.e201.global.exception.EntityNotFoundException;
 import com.e201.global.security.auth.constant.RoleType;
 
 import lombok.RequiredArgsConstructor;
@@ -62,7 +64,8 @@ public class MenuService {
 	@JtaTransactional
 	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
-		Menu originMenu = findEntity(menuId);
+		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
+			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
