@@ -1,36 +1,19 @@
-import QrPage from '@/pages/qr-view'
-import MainPage from '@/pages/main-view'
-import LoginPage from '@/pages/login-view'
+import paths from '@/configs/paths'
+import mainRoute from '@/routes/main-route'
+import SignInView from '@/pages/sign-in-view'
 import MainLayout from '@/layouts/main-layout'
-import PaymentsPage from '@/pages/payments-view'
-import PwChangePage from '@/pages/pw-change-view'
 import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: paths.root,
     element: <MainLayout />,
     children: [
       {
-        path: '',
-        element: <MainPage />,
+        path: paths.auth.signIn,
+        element: <SignInView />,
       },
-      {
-        path: '/qr',
-        element: <QrPage />,
-      },
-      {
-        path: 'payments',
-        element: <PaymentsPage />,
-      },
-      {
-        path: 'login',
-        element: <LoginPage />,
-      },
-      {
-        path: 'pw-change',
-        element: <PwChangePage />,
-      },
+      ...mainRoute,
     ],
   },
 ])

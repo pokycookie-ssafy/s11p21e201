@@ -9,9 +9,9 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { useBoolean } from '@/hooks/use-boolean'
 
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Stack, Button, Typography } from '@mui/material'
 
-export default function QrPage() {
+export default function Qr() {
   const { t } = useTranslate('common')
 
   const [qrData, setQrData] = useState<string | null>(null)
@@ -20,11 +20,6 @@ export default function QrPage() {
 
   const id = 'e7ce2fe0-bf18-408e-b3ea-cb45fa46a469'
   const { data: meal, isLoading, error } = useEmployeeMeal(id)
-
-  // 데이터를 받아온 후 식대 사용 현황 계산
-  const totalAmount = meal?.monthlyAmount ?? 0
-  const currentUsage = meal?.currentUsage ?? 0
-  const remainingAmount = totalAmount - currentUsage
 
   // useValidationId 훅을 사용하여 POST 요청 처리
   const mutation = useValidationId()
@@ -64,13 +59,6 @@ export default function QrPage() {
     return () => {}
   }, [timeLeft, onTrue])
 
-  // 남은 시간을 분:초 형식으로 변환하는 함수
-  // const formatTime = (time: number) => {
-  //   const minutes = Math.floor(time / 60)
-  //   const seconds = time % 60
-  //   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}` // 초가 한 자리일 경우 앞에 0 추가
-  // }
-
   // dayjs install 함
   dayjs.extend(duration)
 
@@ -81,15 +69,24 @@ export default function QrPage() {
     generateQrCode() // QR 코드 재발급
   }
 
-  if (isLoading) return <Typography variant="h5">Loading...</Typography>
-  if (error) return <Typography variant="h5">Error: {error.message}</Typography>
-  // {t('label.email')}
+  if (isLoading) return <Typography variant="h5">{t('main.loading')}</Typography>
+  if (error)
+    return (
+      <Typography variant="h5">
+        {t('main.error')}
+        {error.message}
+      </Typography>
+    )
   return (
-    <Box textAlign="center">
-      <Typography variant="h5">{t('qr.title')}</Typography>
-
-      {/* 남은 시간 표시 */}
-      {/* {!isExpired && <p>{formatTime(timeLeft)}</p>} */}
+    <Stack
+      maxWidth="xs"
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+      }}
+    >
       <Typography>{formatTime(timeLeft)}</Typography>
 
       <Button
@@ -105,6 +102,7 @@ export default function QrPage() {
             backgroundColor: 'transparent',
           },
           cursor: isExpired ? 'pointer' : 'default',
+          userSelect: 'none',
         }}
         onClick={isExpired ? handleRefreshClick : undefined}
         variant="text"
@@ -135,20 +133,6 @@ export default function QrPage() {
           </Box>
         )}
       </Button>
-
-      <Box>
-        {/* 결제 금액 정보 */}
-        <Typography variant="h5">
-          {currentUsage.toLocaleString()}
-          {t('current.won')} / {totalAmount.toLocaleString()}
-          {t('current.won')}
-        </Typography>
-        {/* <Typography color="#1976d2" fontWeight="bold"> */}
-        <Typography sx={{ color: (theme) => theme.palette.primary.main, fontWeight: 'bold,' }}>
-          {t('current.rest')} : {remainingAmount.toLocaleString()}
-          {t('current.won')}
-        </Typography>
-      </Box>
-    </Box>
+    </Stack>
   )
 }

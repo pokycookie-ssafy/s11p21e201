@@ -1,8 +1,8 @@
 import { useTranslate } from '@/locales'
 import { useEmployeeMeal } from '@/hooks/api'
 
-import { Stack, Typography } from '@mui/material'
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge'
+import { Stack, Container, Typography } from '@mui/material'
 
 export function MealUsageBar() {
   const { t } = useTranslate('common')
@@ -10,8 +10,14 @@ export function MealUsageBar() {
   const id = 'e7ce2fe0-bf18-408e-b3ea-cb45fa46a469'
   const { data: meal, isLoading, error } = useEmployeeMeal(id)
 
-  if (isLoading) return <Typography variant="h5">Loading...</Typography>
-  if (error) return <Typography variant="h5">Error: {error.message}</Typography>
+  if (isLoading) return <Typography variant="h5">{t('main.loading')}</Typography>
+  if (error)
+    return (
+      <Typography variant="h5">
+        {t('main.error')}
+        {error.message}
+      </Typography>
+    )
 
   const currentMonth = new Date().getMonth() + 1
   const currentYear = new Date().getFullYear()
@@ -22,51 +28,76 @@ export function MealUsageBar() {
   // 데이터를 받아온 후 식대 사용 현황 계산
   const totalAmount = meal?.monthlyAmount ?? 0
   const currentUsage = meal?.currentUsage ?? 0
+  const usagePercent = ((currentUsage / totalAmount) * 100).toFixed(1)
 
   return (
-    <>
-      <Typography variant="h5">{title}</Typography>
+    <Container maxWidth="xs">
+      <Typography
+        variant="h6"
+        sx={{ color: (theme) => theme.palette.primary.dark, marginBottom: 2, fontWeight: 'bold' }}
+      >
+        {title}
+      </Typography>
 
       <Stack
         direction="row"
-        spacing={2}
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="center"
+        gap={1}
         sx={(theme) => ({
-          width: '50%',
-          maxWidth: '600px',
+          width: 1,
+          maxWidth: 'xs',
           margin: '0 auto',
           [theme.breakpoints.down('sm')]: { width: '90%' },
+          borderRadius: 5,
+          bgcolor: theme.palette.grey[100],
+          boxShadow: 3,
         })}
       >
-        <Stack sx={{ flexBasis: '70%' }}>
+        <Stack sx={{ width: '50%' }}>
           <Gauge
             value={currentUsage}
             valueMax={totalAmount}
-            startAngle={-100}
-            endAngle={100}
-            height={200}
+            startAngle={-110}
+            height={120}
+            endAngle={110}
             sx={(theme) => ({
               [`& .${gaugeClasses.valueText}`]: {
-                fontSize: 20,
+                fontSize: 18,
                 transform: 'translate(0px, 0px)',
-                color: theme.palette.text.primary,
+                fontWeight: 'bold',
               },
             })}
-            text=""
+            text={`${usagePercent.toLocaleString()}%`}
           />
         </Stack>
-        <Stack sx={{ flexBasis: '30%', textAlign: 'right' }}>
-          <Typography>
-            {currentUsage.toLocaleString()}
-            {t('current.won')}
+        <Stack
+          sx={{
+            textAlign: 'left',
+          }}
+          justifyContent="center"
+        >
+          <Typography
+            fontSize={18}
+            sx={{
+              color: (theme) => theme.palette.primary.main,
+              fontWeight: 'bold',
+            }}
+          >
+            {t('current.rest')} :
           </Typography>
-          <Typography>
-            / {totalAmount.toLocaleString()}
+          <Typography
+            fontSize={20}
+            sx={{
+              color: (theme) => theme.palette.primary.main,
+              fontWeight: 'bold',
+            }}
+          >
+            {(totalAmount - currentUsage).toLocaleString()}
             {t('current.won')}
           </Typography>
         </Stack>
       </Stack>
-    </>
+    </Container>
   )
 }
