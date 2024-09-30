@@ -25,6 +25,7 @@ public class StoreConfig {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(storeDataSource);
 		em.setPackagesToScan("com.e201.domain.entity.store");
+		em.setPersistenceUnitName("storeEntityManager");
 
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
