@@ -5,11 +5,9 @@ import static com.e201.global.security.auth.constant.AuthConstant.*;
 
 import java.io.IOException;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.PatternMatchUtils;
 
-import com.e201.global.exception.ErrorCode;
 import com.e201.global.security.auth.env.PathProperties;
 import com.e201.global.security.auth.exception.AuthenticationException;
 
@@ -66,7 +64,9 @@ public class AuthenticationFilter implements Filter {
 		boolean isCompanyCreatePath = matchURIAndMethod(request, method, creationPath.getCompanyPath());
 		boolean isManagerCreatePath = matchURIAndMethod(request, method, creationPath.getManagerPath());
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
-		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath;
+		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
+		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
+			|| isLicenseCreatePath;
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

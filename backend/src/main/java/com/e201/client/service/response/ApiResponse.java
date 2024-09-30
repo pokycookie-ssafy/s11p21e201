@@ -2,11 +2,13 @@ package com.e201.client.service.response;
 
 import java.util.List;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiResponse {
 	private String version;
 	private String requestId;
