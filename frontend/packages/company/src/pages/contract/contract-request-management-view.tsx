@@ -7,7 +7,6 @@ import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -21,7 +20,7 @@ import {
   IconButton,
 } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Iconify, Breadcrumbs } from '@e201/ui'
 
 export default function ContractRequestManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])

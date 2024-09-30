@@ -8,12 +8,11 @@ import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Card, Stack, Button, TextField, Typography } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Iconify, Breadcrumbs } from '@e201/ui'
 
 export default function ContractNowManagementView() {
   const fetchContracts = async () => {
