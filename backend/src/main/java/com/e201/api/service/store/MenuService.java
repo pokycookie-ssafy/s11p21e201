@@ -95,11 +95,15 @@ public class MenuService {
 	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Menu originMenu = findEntity(menuId);
 =======
 		Menu originMenu = menuRepository.findById(menuId)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
 >>>>>>> f2404b4 ([#31] feat: 메뉴 단건 조회 기능 구현)
+=======
+		Menu originMenu = findEntity(menuId);
+>>>>>>> 3f09ffd ([#31] fix: 직접 repository 부르는 행위를 service 메소드를 부르도록 변경)
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
