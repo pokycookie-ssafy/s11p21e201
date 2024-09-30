@@ -3,12 +3,11 @@ import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 import BusinessLicenseForm from '@/sections/contract-management/business-license-form'
 
 import { Box, Button, TextField } from '@mui/material'
 
-import { Upload, Container } from '@e201/ui'
+import { Upload, Container, Breadcrumbs } from '@e201/ui'
 
 interface ISignUpResponse {
   companyName: string

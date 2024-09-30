@@ -42,7 +42,7 @@ const nav: INav[] = [
       },
       {
         title: 'dashboard.settlement',
-        path: paths.settlement.root,
+        path: paths.temp.temp,
         icon: 'ph:invoice-duotone',
       },
     ],
@@ -51,14 +51,14 @@ const nav: INav[] = [
     title: 'management.title',
     group: [
       {
-        title: 'management.payment',
-        path: paths.payment.root,
-        icon: 'tabler:contract',
+        title: 'management.member',
+        path: paths.management.member,
+        icon: 'fluent:people-team-16-regular',
       },
       {
-        title: 'management.settlement',
-        path: paths.settlement.root,
-        icon: 'uil:money-insert',
+        title: 'management.payment',
+        path: paths.payment.root,
+        icon: 'icon-park-outline:table',
       },
       {
         title: 'management.contract.title',
@@ -84,9 +84,9 @@ const nav: INav[] = [
         ],
       },
       {
-        title: 'management.member',
-        path: paths.management.member,
-        icon: 'fluent:people-team-16-regular',
+        title: 'management.settlement',
+        path: paths.settlement.root,
+        icon: 'mingcute:card-pay-line',
       },
     ],
   },

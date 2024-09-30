@@ -4,12 +4,10 @@ import type { SelectChangeEvent } from '@mui/material/Select'
 import dayjs from 'dayjs'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
-import { Label } from '@/components/label'
 import { fNumber } from '@/utils/number-format'
 import { useBoolean } from '@/hooks/use-boolean'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState, useEffect } from 'react'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -30,6 +28,8 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material'
+
+import { Label, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 

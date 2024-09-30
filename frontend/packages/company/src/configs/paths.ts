@@ -1,8 +1,6 @@
 const PATH = {
   root: '/',
-  component: '/components',
-  mirage: '/mirage',
-  locale: '/locale',
+  dashboard: '/dashboard',
   management: '/management',
   payment: '/payment',
   settlement: '/settlement',
@@ -10,17 +8,14 @@ const PATH = {
 
 const paths = {
   root: PATH.root,
-  components: {
-    root: PATH.component,
-    toast: `${PATH.component}/toast`,
-    scrollbar: `${PATH.component}/scrollbar`,
+  main: `${PATH.management}/member`,
+
+  // auth
+  auth: {
+    signIn: '/sign-in',
+    signUp: '/sign-up',
   },
-  mirage: {
-    root: PATH.mirage,
-  },
-  locale: {
-    root: PATH.locale,
-  },
+
   settlement: {
     root: PATH.settlement,
   },
