@@ -1,12 +1,11 @@
-import type { GridColDef } from '@mui/x-data-grid'
+import type { GridColDef, GridSortModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
-import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-// import { Label } from '@/components/label'
+import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 
@@ -26,6 +25,7 @@ interface IContractHistory {
   companyName: string
   phone: string
   address: string
+  userCond: UserCondType
   status: StatusType
 }
 
@@ -34,46 +34,46 @@ export default function ContractHistoryManagementView() {
 
   const [tab, setTab] = useState<StatusType | null>(null)
   const [storeSearch, setStoreSearch] = useState<string>('')
-  const [userCond, setUserCond] = useState<UserCondType | 'all'>('all') // userCond 필터 추가
+
+  const [sortModel, setSortModel] = useState<GridSortModel>([
+    { field: 'contractDate', sort: 'desc' }, // 초기 정렬
+  ])
 
   const queryFn = async () => {
-    const response = await axios.get<IContractHistory[]>('/contract', {
-      params: {
-        userCond,
-        status: tab || 'all',
-      },
-    })
+    const response = await axios.get<IContractHistory[]>('/contract/temp', {})
     return response.data
   }
 
   const { data, isPending } = useQuery({
-    queryKey: ['contract', userCond, tab],
+    queryKey: ['contractHistory'],
     queryFn,
   })
 
+  console.log(data)
+
   const TABS = [
-    { label: '전체', value: null },
-    { label: '진행중', value: 'in' },
-    { label: '완료', value: 'complete' },
-    { label: '거절', value: 'reject' },
-    { label: '취소 및 만료', value: 'canceled' },
+    { label: t('all'), value: null },
+    { label: t('in'), value: 'in' },
+    { label: t('complete'), value: 'complete' },
+    { label: t('reject'), value: 'reject' },
+    { label: t('canceled'), value: 'canceled' },
   ]
 
-  // const statusProvider = (row: IContractHistory) => {
-  //   if (row.status === 'complete') {
-  //     return <Label status="success">{t('label.complete')}</Label>
-  //   }
-  //   if (row.status === 'in') {
-  //     return <Label status="warning">{t('label.in_progress')}</Label>
-  //   }
-  //   if (row.status === 'reject') {
-  //     return <Label status="error">{t('label.reject')}</Label>
-  //   }
-  //   if (row.status === 'canceled') {
-  //     return <Label status="error">{t('label.canceled')}</Label>
-  //   }
-  //   return <Label status="error">ERROR</Label>
-  // }
+  const statusProvider = (row: IContractHistory) => {
+    if (row.status === 'complete') {
+      return <Label status="success">{t('complete')}</Label>
+    }
+    if (row.status === 'in') {
+      return <Label status="warning">{t('in')}</Label>
+    }
+    if (row.status === 'reject') {
+      return <Label status="error">{t('reject')}</Label>
+    }
+    if (row.status === 'canceled') {
+      return <Label status="error">{t('canceled')}</Label>
+    }
+    return <Label status="error">ERROR</Label>
+  }
 
   const filteredData = useMemo(() => {
     if (!data) {
@@ -81,23 +81,27 @@ export default function ContractHistoryManagementView() {
     }
 
     let filtered = [...data]
+
+    if (tab !== null) {
+      filtered = filtered.filter((contract) => contract.status === tab)
+    }
     if (storeSearch.trim() !== '') {
       filtered = filtered.filter((contract) => contract.storeName.includes(storeSearch.trim()))
     }
     return filtered
-  }, [storeSearch, data])
+  }, [storeSearch, data, tab])
 
   const columns: GridColDef[] = [
     {
       field: 'storeName',
-      headerName: '식당명',
+      headerName: t('restaurant_name'),
       flex: 1,
       minWidth: 150,
     },
-    { field: 'phone', headerName: '대표번호', width: 150, resizable: false },
+    { field: 'phone', headerName: t('phone_number'), width: 150, resizable: false },
     {
       field: 'contractDate',
-      headerName: '날짜',
+      headerName: t('date'),
       type: 'date',
       resizable: false,
       width: 120,
@@ -106,14 +110,14 @@ export default function ContractHistoryManagementView() {
 
     {
       field: 'status',
-      headerName: '상태',
+      headerName: t('status'),
       headerAlign: 'center',
       resizable: false,
-      // renderCell: (params) => (
-      //   <Stack width={1} height={1} justifyContent="center" alignItems="center">
-      //     {statusProvider(params.row)}
-      //   </Stack>
-      // ),
+      renderCell: (params) => (
+        <Stack width={1} height={1} justifyContent="center" alignItems="center">
+          {statusProvider(params.row)}
+        </Stack>
+      ),
     },
   ]
 
@@ -157,6 +161,8 @@ export default function ContractHistoryManagementView() {
           columns={columns}
           getRowId={(row) => row.contractId}
           rows={filteredData}
+          sortModel={sortModel}
+          onSortModelChange={(model) => setSortModel(model)}
           hideFooter
           loading={isPending}
           slotProps={{

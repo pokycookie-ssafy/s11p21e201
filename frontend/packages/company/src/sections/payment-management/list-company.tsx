@@ -11,16 +11,7 @@ import { SelectYear } from '@/sections/payment-management/select-year'
 import { SelectMonth } from '@/sections/payment-management/select-month'
 
 import { DataGrid } from '@mui/x-data-grid'
-import {
-  Box,
-  Card,
-  Stack,
-  Select,
-  MenuItem,
-  InputLabel,
-  Typography,
-  FormControl,
-} from '@mui/material'
+import { Card, Stack, Select, MenuItem, InputLabel, Typography, FormControl } from '@mui/material'
 
 dayjs.extend(isBetween)
 
@@ -81,11 +72,7 @@ export default function PaymentManagementView() {
     queryFn: fetchManagers,
   })
 
-  const {
-    data: payments,
-    isPending,
-    isError,
-  } = useQuery({
+  const { data: payments, isPending } = useQuery({
     queryKey: ['payments'],
     queryFn: fetchPayments,
   })
@@ -96,22 +83,21 @@ export default function PaymentManagementView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
-  // MUI DataGrid에 표시할 컬럼 설정
   const columns: GridColDef[] = [
     {
       field: 'paidAt',
       headerName: t('paid_at'),
       flex: 1,
-      minWidth: 300,
+      minWidth: 200,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD  A hh:mm'),
     },
-    { field: 'departmentName', headerName: t('department_name'), width: 300 },
-    { field: 'employeeName', headerName: t('employee_name'), width: 200 },
-    { field: 'restaurantName', headerName: t('restaurant_name'), width: 300 },
+    { field: 'departmentName', headerName: t('department_name'), width: 150 },
+    { field: 'employeeName', headerName: t('employee_name'), width: 100 },
+    { field: 'restaurantName', headerName: t('restaurant_name'), width: 150 },
     {
       field: 'price',
       headerName: t('price'),
-      width: 200,
+      width: 150,
       renderCell: (params) => fNumber(params.value),
     },
   ]
@@ -149,11 +135,12 @@ export default function PaymentManagementView() {
           <SelectMonth month={month} onChange={setMonth} />
         </Stack>
         <Stack direction="row" p={2} spacing={1}>
-          <FormControl sx={{ minWidth: 150 }}>
+          <FormControl fullWidth>
             <InputLabel>{t('department')}</InputLabel>
             <Select
               value={departmentFilter || ''}
               onChange={(e) => setDepartmentFilter(e.target.value || null)}
+              sx={{ minWidth: 150 }}
             >
               <MenuItem value="">{t('all')}</MenuItem>
               {managers?.map((manager: IManager) => (

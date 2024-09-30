@@ -45,7 +45,7 @@ export default function ContractRequestManagementView() {
   const [memberSearch, setMemberSearch] = useState<string>('')
 
   const { t } = useTranslate('member')
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['employees'],
     queryFn: fetchEmployees,
   })
@@ -66,9 +66,6 @@ export default function ContractRequestManagementView() {
 
   const handleNavigate = () => {
     navigate('create')
-  }
-  const handleRowSelectionChange = (selection: GridRowSelectionModel) => {
-    setSelected(selection)
   }
 
   const columns: GridColDef[] = [

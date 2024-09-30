@@ -3,7 +3,6 @@ import { useTranslate } from '@/locales'
 import React, { useRef, useState, useEffect } from 'react'
 
 import {
-  Card,
   Paper,
   Table,
   Stack,
