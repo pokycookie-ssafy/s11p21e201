@@ -11,7 +11,7 @@ import { Toaster, darkTheme, lightTheme } from '@e201/ui'
 export default function MainLayout() {
   const { mode } = useThemeStore()
 
-  const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode])
+  const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme() : darkTheme()), [mode])
   const queryClient = useMemo(() => new QueryClient(), [])
 
   return (
