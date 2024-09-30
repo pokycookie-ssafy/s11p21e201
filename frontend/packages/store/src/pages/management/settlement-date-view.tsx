@@ -78,7 +78,7 @@ export default function SettlementDateView() {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     }
     if (tab === 'partial') {
-      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount)
+      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount && e.settledAmount > 0)
     }
     if (tab === 'settled') {
       filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
