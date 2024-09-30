@@ -2,6 +2,7 @@ package com.e201.domain.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -35,7 +36,7 @@ public class BaseEntity {
 	private String modifiedBy;
 
 	@Column(name = "delete_YN")
-	private String deleteYN;
+	private String deleteYN = "N";
 
 	public void softDelete() {
 		this.deleteYN = "Y";
