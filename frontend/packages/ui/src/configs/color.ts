@@ -1,4 +1,27 @@
-export const color = {
+interface IColorPallete {
+  lighter: string
+  light: string
+  main: string
+  dark: string
+  darker: string
+  contrastText: string
+}
+
+export interface IColor {
+  primary: IColorPallete
+  secondary: IColorPallete
+  success: IColorPallete
+  info: IColorPallete
+  warning: IColorPallete
+  error: IColorPallete
+  grey: { [key: string]: string }
+  common: {
+    black: string
+    white: string
+  }
+}
+
+export const color: IColor = {
   primary: {
     lighter: '#6690ff',
     light: '#336bff',
@@ -15,22 +38,6 @@ export const color = {
     darker: '#003825',
     contrastText: '#FFFFFF',
   },
-  // primary: {
-  //   lighter: '#EBD6FD',
-  //   light: '#B985F4',
-  //   main: '#7635dc',
-  //   dark: '#431A9E',
-  //   darker: '#200A69',
-  //   contrastText: '#FFFFFF',
-  // },
-  // secondary: {
-  //   lighter: '#EFD6FF',
-  //   light: '#C684FF',
-  //   main: '#8E33FF',
-  //   dark: '#5119B7',
-  //   darker: '#27097A',
-  //   contrastText: '#FFFFFF',
-  // },
   success: {
     lighter: '#D3FCD2',
     light: '#77ED8B',

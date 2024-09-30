@@ -1,0 +1,39 @@
+{
+  "field": {
+    "name": "이름",
+    "category": "분류",
+    "price": "가격"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "breadcrumbs": {
+    "management": "관리",
+    "menu_management": "메뉴 관리",
+    "create_menu": "메뉴 추가"
+  },
+  "button": {
+    "create_menu": "메뉴 추가"
+  },
+  "label": {
+    "all": "전체",
+    "search": "메뉴명 검색",
+    "menu_name": "메뉴 이름",
+    "category": "분류",
+    "price": "가격",
+    "selected": "{0} 개 선택됨"
+  },
+  "tooltip": {
+    "edit": "수정",
+    "delete": "삭제",
+    "delete_all": "일괄 삭제"
+  },
+  "dialog": {
+    "delete_all": "일괄 삭제",
+    "delete_content": "'{0}' 메뉴를 정말 삭제하시겠습니까?",
+    "delete_all_content": "{0}개의 메뉴를 모두 삭제하시겠습니까?"
+  },
+  "toast": {
+    "delete": "메뉴가 삭제되었습니다"
+  }
+}

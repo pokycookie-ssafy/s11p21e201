@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npm run dev --workspaces",
-    "build": "npm run build --workspaces",
+    "build": "npm run build -w @e201/utils && npm run build -w @e201/ui && npm run build --workspaces",
     "lint": "npm run lint --workspaces"
   },
   "author": "",

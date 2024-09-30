@@ -2,10 +2,11 @@ import type { INavItem } from '@/configs/nav'
 import type { Theme, SxProps } from '@mui/material'
 
 import nav from '@/configs/nav'
-import { useMemo } from 'react'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
+import { useMemo, useEffect } from 'react'
 import tossLogo from '@/assets/img/toss-logo.jpg'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -29,14 +30,18 @@ interface IProps {
 export default function Nav({ drawer }: IProps) {
   const { t } = useTranslate('nav')
 
-  const location = useLocation()
+  const { isLogin, logout } = useAuthStore()
 
-  const logoutHandler = () => {
-    // logout
-  }
+  const location = useLocation()
 
   const { breakpoints } = useTheme()
   const invisible = useMediaQuery(breakpoints.down('md')) && !drawer
+
+  useEffect(() => {
+    if (!isLogin) {
+      window.location.reload()
+    }
+  }, [isLogin])
 
   return (
     <Stack
@@ -46,10 +51,11 @@ export default function Nav({ drawer }: IProps) {
         flexShrink: 0,
         borderRight: (theme) => `1px solid ${theme.palette.divider}`,
         display: invisible ? 'none' : 'flex',
+        bgcolor: (theme) => theme.palette.background.default,
       }}
     >
       <NavLogo />
-      <ScrollContainer sx={{ flex: 1, bgcolor: (theme) => theme.palette.background.default }}>
+      <ScrollContainer sx={{ flex: 1 }}>
         <Stack component="nav" py={1} px={2} spacing={3}>
           {nav.map((group, i1) => (
             <Stack key={i1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
@@ -61,11 +67,28 @@ export default function Nav({ drawer }: IProps) {
               ))}
             </Stack>
           ))}
-          <Button variant="contained" color="error" onClick={logoutHandler}>
-            {t('logout')}
-          </Button>
         </Stack>
       </ScrollContainer>
+      <Box p={2}>
+        <Button
+          fullWidth
+          variant="contained"
+          onClick={logout}
+          color="error"
+          sx={{
+            bgcolor: (theme) =>
+              theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            color: (theme) =>
+              theme.palette.mode === 'light' ? theme.palette.grey[600] : theme.palette.grey[400],
+            ':hover': {
+              bgcolor: (theme) => theme.palette.error.main,
+              color: (theme) => theme.palette.common.white,
+            },
+          }}
+        >
+          {t('logout')}
+        </Button>
+      </Box>
     </Stack>
   )
 }

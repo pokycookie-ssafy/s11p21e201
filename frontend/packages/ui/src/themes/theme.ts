@@ -1,23 +1,24 @@
 import type { ThemeOptions } from '@mui/material'
 
 import { components } from './components'
-import { typography } from './typhography'
+import { typography } from './typography'
 import { darkPalette, lightPalette } from './palette'
+import { color, type IColor } from '../configs/color'
 
-export const lightTheme: ThemeOptions = {
+export const lightTheme = (customColor: IColor = color): ThemeOptions => ({
   palette: {
     mode: 'light',
-    ...lightPalette,
+    ...lightPalette(customColor),
   },
   typography,
   components,
-}
+})
 
-export const darkTheme: ThemeOptions = {
+export const darkTheme = (customColor: IColor = color): ThemeOptions => ({
   palette: {
     mode: 'dark',
-    ...darkPalette,
+    ...darkPalette(customColor),
   },
   typography,
   components,
-}
+})

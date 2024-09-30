@@ -29,7 +29,7 @@ export function LocaleButton() {
 
   return (
     <>
-      <Button variant="soft" onClick={clickHandler}>
+      <Button variant="soft" onClick={clickHandler} sx={{ flexShrink: 0, width: 105 }}>
         <Stack
           direction="row"
           spacing={1}

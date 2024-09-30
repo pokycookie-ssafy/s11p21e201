@@ -6,11 +6,11 @@ import SignInView from '@/pages/auth/sign-in-view'
 import SignUpView from '@/pages/auth/sign-up-view'
 import SignInLayout from '@/layouts/sign-in-layout'
 import SignUpLayout from '@/layouts/sign-up-layout'
-import TotalDashbaordView from '@/pages/dashboard/total-dashboard-view'
-import SalesMenuDashboardView from '@/pages/dashboard/sales-menu-dashboard-view'
-import SalesTimeDashboardView from '@/pages/dashboard/sales-time-dashboard-view'
-import SettlementDashboardView from '@/pages/dashboard/settlement-dashbaord-view'
-import SalesCompanyDashboardView from '@/pages/dashboard/sales-company-dashboard-view'
+import PaymentLayout from '@/layouts/payment-layout'
+import PrivateLayout from '@/layouts/private-layout'
+import dashboardRoute from '@/routes/dashboard-route'
+import managementRoute from '@/routes/management-route'
+import QrPaymentView from '@/pages/payment/qr-payment-view'
 
 const mainRoute: RouteObject[] = [
   {
@@ -31,28 +31,23 @@ const mainRoute: RouteObject[] = [
       },
     ],
   },
+
+  // App
   {
-    element: <AppLayout />,
+    element: <PrivateLayout />,
     children: [
       {
-        path: paths.dashboard.total,
-        element: <TotalDashbaordView />,
+        element: <AppLayout />,
+        children: [...dashboardRoute, ...managementRoute],
       },
       {
-        path: paths.dashboard.sales.menu,
-        element: <SalesMenuDashboardView />,
-      },
-      {
-        path: paths.dashboard.sales.company,
-        element: <SalesCompanyDashboardView />,
-      },
-      {
-        path: paths.dashboard.sales.time,
-        element: <SalesTimeDashboardView />,
-      },
-      {
-        path: paths.dashboard.settlement,
-        element: <SettlementDashboardView />,
+        element: <PaymentLayout />,
+        children: [
+          {
+            path: paths.payment.qr,
+            element: <QrPaymentView />,
+          },
+        ],
       },
     ],
   },

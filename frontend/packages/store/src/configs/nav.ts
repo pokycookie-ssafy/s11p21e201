@@ -61,14 +61,38 @@ const nav: INav[] = [
         icon: 'icon-park-outline:table',
       },
       {
-        title: 'management.contract',
-        path: paths.management.contract,
+        title: 'management.contract.title',
+        path: paths.management.contract.root,
         icon: 'tabler:contract',
+        group: [
+          {
+            title: 'management.contract.now',
+            path: paths.management.contract.now,
+          },
+          {
+            title: 'management.contract.request',
+            path: paths.management.contract.request,
+          },
+          {
+            title: 'management.contract.history',
+            path: paths.management.contract.history,
+          },
+        ],
       },
       {
-        title: 'management.settlement',
-        path: paths.management.settlement,
+        title: 'management.settlement.title',
+        path: paths.management.settlement.root,
         icon: 'mingcute:card-pay-line',
+        group: [
+          {
+            title: 'management.settlement.date',
+            path: paths.management.settlement.date,
+          },
+          {
+            title: 'management.settlement.company',
+            path: paths.management.settlement.company,
+          },
+        ],
       },
     ],
   },
