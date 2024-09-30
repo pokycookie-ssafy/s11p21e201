@@ -13,6 +13,7 @@ import managementRoute from '@/routes/management-route'
 import QrPaymentView from '@/pages/payment/qr-payment-view'
 
 const mainRoute: RouteObject[] = [
+  // Auth
   {
     element: <SignInLayout />,
     children: [
