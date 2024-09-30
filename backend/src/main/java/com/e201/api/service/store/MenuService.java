@@ -64,8 +64,7 @@ public class MenuService {
 	@JtaTransactional
 	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
 		validationStore(roleType);
-		Menu originMenu = menuRepository.findById(menuUpdateRequest.getId())
-			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EntityConstant.MENU.name()));
+		Menu originMenu = findEntity(menuId);
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);
