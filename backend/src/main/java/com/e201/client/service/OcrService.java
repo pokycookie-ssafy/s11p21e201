@@ -30,10 +30,10 @@ public class OcrService {
 	private final RestClient restClient;
 	private final ObjectMapper mapper = new ObjectMapper();
 
-	@Value("${ocr.url}")
+	@Value("${e201.ocr.url}")
 	private String apiUrl;
-	
-	@Value("${ocr.key}")
+
+	@Value("${e201.ocr.key}")
 	private String apiKey;
 
 	public OcrResultResponse parseBizLicense(MultipartFile file) {
@@ -48,7 +48,9 @@ public class OcrService {
 			.retrieve()
 			.toEntity(ApiResponse.class).getBody();
 
-		return parseDataFromJson(responseBody);
+		OcrResultResponse response = parseDataFromJson(responseBody);
+
+		return response;
 	}
 
 	private OcrResultResponse parseDataFromJson(ApiResponse responseBody) {
