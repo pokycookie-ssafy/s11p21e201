@@ -1,6 +1,8 @@
 import * as React from 'react'
 
-import { Box, IconButton } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
+
+import { Iconify } from '@e201/ui'
 
 interface TablePaginationActionsProps {
   count: number
@@ -32,27 +34,83 @@ export function TablePaginationActions({
   }
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
+    <Stack
+      sx={{
+        flexShrink: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // width: 1,
+        justifyContent: 'center',
+      }}
+    >
+      <Box
+        component="button"
         onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      />
-      <IconButton
+        sx={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Iconify icon="ic:round-keyboard-double-arrow-left" width="25" height="25" />
+      </Box>
+
+      <Box
+        component="button"
         onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      />
-      <IconButton
+        sx={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Iconify icon="ic:round-keyboard-arrow-left" width="25" height="25" />
+      </Box>
+
+      <Typography sx={{ mx: 1 }}>
+        {page + 1} / {Math.ceil(count / rowsPerPage)}
+      </Typography>
+
+      <Box
+        component="button"
         onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      />
-      <IconButton
+        sx={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Iconify icon="ic:round-keyboard-arrow-right" width="25" height="25" />
+      </Box>
+
+      <Box
+        component="button"
         onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      />
-    </Box>
+        sx={{
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: 0,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'auto',
+        }}
+      >
+        <Iconify icon="ic:round-keyboard-double-arrow-right" width="25" height="25" />
+      </Box>
+    </Stack>
   )
 }

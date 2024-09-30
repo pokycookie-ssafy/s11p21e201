@@ -1,15 +1,45 @@
 {
-  "test": "테스트",
   "main": {
-    "title": "고객 메인 페이지",
-    "qr-title": "QR 코드 생성하기"
+    "title": "메인 페이지",
+    "qr-title": "QR 코드 생성하기",
+    "store-address": "주소",
+    "close": "닫기",
+    "loading": "로딩중...",
+    "error": "에러: ",
+    "no-store": "이용가능한 식당이 없습니다.",
+    "no-address": "주소 미등록 식당입니다.",
+    "no-phone": "전화번호 미등록 식당입니다."
   },
   "current": {
     "title": "{{month}}월 식대 사용 현황",
     "won": "원",
-    "rest": "남은 금액"
+    "rest": "잔액"
   },
   "qr": {
     "title": "정산하기"
+  },
+  "signin": {
+    "title": "로그인",
+    "companyCode": "회사코드",
+    "employeeCode": "사원번호",
+    "password": "비밀번호",
+    "remember": "로그인 정보 기억하기",
+    "error": "로그인 실패. 다시 시도해 주세요."
+  },
+  "pw": {
+    "originPw": "기존 비밀번호",
+    "newPw": "새 비밀번호",
+    "confirmPw": "비밀번호 확인",
+    "confirmPwMent": "비밀번호를 다시 한번 입력하세요"
+  },
+  "auth": {
+    "changePw": "비밀번호 변경",
+    "input": "를 입력하세요",
+    "logout": "로그아웃"
+  },
+  "account": {
+    "title": "장부 페이지",
+    "error": "데이터를 불러올 수 없습니다.",
+    "no-data": "선택한 기간에 대한 기록이 없습니다."
   }
 }

@@ -1,102 +1,123 @@
-import * as React from 'react'
+import { useState } from 'react'
+import { useTranslate } from '@/locales'
 import { useStoresList } from '@/hooks/api'
+import { useBoolean } from '@/hooks/use-boolean'
 
 import {
+  Box,
   Table,
   Paper,
+  Modal,
+  Button,
   TableRow,
   TableBody,
   TableCell,
   Typography,
-  TableFooter,
   TableContainer,
-  TablePagination,
 } from '@mui/material'
 
-import { TablePaginationActions } from './table-pagination-actions' // 분리된 파일에서 import
+type Store = {
+  storeName: string
+  storePhone: string
+  storeAddress: string
+}
 
 export function StoresList() {
+  const { t } = useTranslate('common')
   const { data: stores, isLoading, error } = useStoresList()
 
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const open = useBoolean()
+  const [selectedStore, setSelectedStore] = useState<Store | null>(null)
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - stores.length) : 0
-
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-    setPage(newPage)
+  const handleRowClick = (store: Store) => {
+    setSelectedStore(store)
+    open.onTrue()
   }
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
+  const handleTouchEnd = (store: Store, event: React.TouchEvent) => {
+    event.preventDefault()
+    handleRowClick(store)
   }
 
-  if (isLoading) return <Typography variant="h5">Loading...</Typography>
-  if (error) return <Typography variant="h5">Error: {error.message}</Typography>
+  const handleClose = () => {
+    open.onFalse()
+    console.log('닫을게')
+    setSelectedStore(null)
+  }
+
+  if (isLoading) return <Typography variant="h5">{t('main.loading')}</Typography>
+  if (error)
+    return (
+      <Typography variant="h5">
+        {t('main.error')}
+        {error.message}
+      </Typography>
+    )
   if (!stores || stores.length === 0) {
-    return <Typography variant="h5">No stores available</Typography>
+    return <Typography variant="h5">{t('main.no-store')}</Typography>
   }
 
   return (
-    <TableContainer
-      component={Paper}
-      sx={(theme) => ({
-        maxWidth: '600px',
-        margin: '0 auto',
-        width: 1,
-        [theme.breakpoints.down('sm')]: { width: '90%' },
-      })}
-    >
-      <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-        <TableBody>
-          {(rowsPerPage > 0
-            ? stores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : stores
-          ).map((store) => (
-            <TableRow key={store.storeName}>
-              <TableCell component="th" scope="row">
-                {store.storeName}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {store.storeAddress}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {store.storePhone}
-              </TableCell>
-            </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={stores.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{
-                select: {
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                },
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions} // 분리된 파일의 TablePaginationActions 사용
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer
+        component={Paper}
+        sx={{
+          maxWidth: 'xs',
+          margin: '0 auto',
+          width: 1,
+          boxShadow: 3,
+          maxHeight: 400, // 스크롤 가능한 높이 설정
+          overflowY: 'auto', // 스크롤 활성화
+        }}
+      >
+        <Table sx={{ width: 1 }} aria-label="scrollable table">
+          <TableBody>
+            {stores.map((store: Store) => (
+              <TableRow
+                key={store.storeName}
+                onClick={() => handleRowClick(store)}
+                onTouchEnd={(e) => handleTouchEnd(store, e)}
+                sx={{ cursor: 'pointer', pointerEvents: 'auto' }}
+              >
+                <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                  {store.storeName}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {store.storePhone}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal open={open.value} onClose={handleClose}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 300,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h6">
+            {selectedStore ? selectedStore.storeName : t('main.no-store')}
+          </Typography>
+          <Typography variant="body1">
+            {selectedStore ? selectedStore.storeAddress : t('main.no-address')}
+          </Typography>
+          <Typography variant="body1">
+            {selectedStore ? selectedStore.storePhone : t('main.no-phone')}
+          </Typography>
+          <Button onClick={handleClose} sx={{ mt: 2 }}>
+            {t('main.close')}
+          </Button>
+        </Box>
+      </Modal>
+    </>
   )
 }
