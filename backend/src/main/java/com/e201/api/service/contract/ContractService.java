@@ -1,5 +1,7 @@
 package com.e201.api.service.contract;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
@@ -14,8 +17,13 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 =======
+=======
+import com.e201.domain.entity.contract.ContractFindCond;
+import com.e201.domain.entity.contract.ContractFindStatus;
+>>>>>>> df7e7ba ([#40] feat: Contract 조회 기능 구현)
 import com.e201.domain.entity.contract.ContractRespondType;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
@@ -31,6 +39,7 @@ import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -112,8 +121,19 @@ public class ContractService {
 	}
 
 	public Contract findEntity(UUID id) {
-		return contractRepository.findById(id)
+		return contractRepository.findByIdAndDeleteYN(id, "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
+	public UUID findContractId(UUID companyId, UUID storeId) {
+		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId,"N")
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+		return contract.getId();
+	}
+
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond){
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond,null, 10);
+		return response;
 	}
 
 	@JtaTransactional
