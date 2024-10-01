@@ -1,116 +1,83 @@
-import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
+import type { ISelectOption } from '@e201/ui'
+import type { GridColDef } from '@mui/x-data-grid'
+import type { IPaymentResponse } from '@/types/payment'
 
 import dayjs from 'dayjs'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
+import { useMemo, useState } from 'react'
 import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useState, useEffect } from 'react'
 
 import { DataGrid } from '@mui/x-data-grid'
-import {
-  Box,
-  Card,
-  Stack,
-  Select,
-  MenuItem,
-  InputLabel,
-  Typography,
-  FormControl,
-} from '@mui/material'
+import { Box, Card, Stack } from '@mui/material'
 
-import { SelectDate, Breadcrumbs } from '@e201/ui'
+import { Select, SelectDate, Typography, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
-interface IContractStore {
-  id: string
-  name: string
-  phone: string
-  address: string
-  createdAt: Date
-}
-
-interface IManager {
-  id: string
-  departmentId: string
-  departmentName: string
-  supportAmount: number
-  spentAmount: number
-  createdAt: Date
-}
-
-interface IPayment {
-  id: string
-  employeeId: string
-  employeeName: string
-  price: number
-  paidAt: Date
-  departmentId: string
-  departmentName: string
-  restaurantId: string
-  restaurantName: string
-}
-
-const fetchContractStores = async () => {
-  const contract_store = await axios.get<IContractStore[]>('/companies/stores')
-  return contract_store.data
-}
-
-const fetchManagers = async () => {
-  const manager = await axios.get<IManager[]>('/companies/managers')
-  return manager.data
-}
-
 const fetchPayments = async () => {
-  const payment = await axios.get<IPayment[]>('/companies/payment')
+  const payment = await axios.get<IPaymentResponse[]>('/companies/payment')
   return payment.data
 }
 
 export default function PaymentManagementView() {
   const { t } = useTranslate('payment')
 
-  const { data: contractStores } = useQuery({
-    queryKey: ['contractstores'],
-    queryFn: fetchContractStores,
-  })
-
-  const { data: managerRes } = useQuery({
-    queryKey: ['managers'],
-    queryFn: fetchManagers,
-  })
-
-  const { data: paymentRes, isPending: paymentIsPending } = useQuery({
+  const { data: payments, isPending: paymentIsPending } = useQuery({
     queryKey: ['payments'],
     queryFn: fetchPayments,
   })
 
-  const [departmentFilter, setDepartmentFilter] = useState<string | null>(null)
-  const [restaurantFilter, setRestaurantFilter] = useState<string | null>(null)
+  const [selectedDepartment, setSelectedDepartment] = useState<ISelectOption | null>(null)
+  const [selectedStore, setSelectedStore] = useState<ISelectOption | null>(null)
+
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
-  const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)
     setMonth(dateMonth)
   }
 
-  useEffect(() => {
-    console.log(paymentRes)
-  }, [paymentRes])
-
   const departments = useMemo(() => {
-    if (!managerRes) {
+    if (!payments) {
       return []
     }
-    return managerRes.map((manager) => manager.departmentName)
-  }, [managerRes])
+
+    const departmentSet = new Set<string>()
+    const departmentList: ISelectOption[] = []
+    payments.forEach((e) => {
+      if (!departmentSet.has(e.departmentId)) {
+        departmentList.push({ label: e.departmentName, value: e.departmentId })
+      }
+      departmentSet.add(e.departmentId)
+    })
+    return departmentList
+  }, [payments])
+
+  const stores = useMemo(() => {
+    if (!payments) {
+      return []
+    }
+
+    const storeSet = new Set<string>()
+    const storeList: ISelectOption[] = []
+    payments.forEach((e) => {
+      if (!storeSet.has(e.storeId)) {
+        storeList.push({ label: e.storeName, value: e.storeId })
+      }
+      storeSet.add(e.storeId)
+    })
+    return storeList
+  }, [payments])
 
   const filteredRows = useMemo(() => {
-    if (!paymentRes) return []
+    if (!payments) {
+      return []
+    }
 
     const filterDate = dayjs()
       .year(year)
@@ -118,36 +85,56 @@ export default function PaymentManagementView() {
     const startDate = filterDate.startOf('month')
     const endDate = filterDate.endOf('month')
 
-    return paymentRes
-      ?.filter((row: IPayment) => {
-        const departmentMatch = !departmentFilter || row.departmentId === departmentFilter
-        const restaurantMatch = !restaurantFilter || row.restaurantId === restaurantFilter
+    let filtered = [...payments]
 
-        const dateMatch = dayjs(row.paidAt).isBetween(startDate, endDate, 'day', '[]')
+    filtered = filtered.filter((payment) =>
+      dayjs(payment.paidAt).isBetween(startDate, endDate, 'date', '[]')
+    )
+    if (selectedDepartment) {
+      filtered = filtered.filter((payment) => payment.departmentId === selectedDepartment.value)
+    }
+    if (selectedStore) {
+      filtered = filtered.filter((payment) => payment.storeId === selectedStore.value)
+    }
+    return filtered
+  }, [payments, year, month, selectedDepartment, selectedStore])
 
-        return departmentMatch && restaurantMatch && dateMatch
-      })
-      .sort(
-        (a: IPayment, b: IPayment) => new Date(b.paidAt).getTime() - new Date(a.paidAt).getTime()
-      )
-  }, [paymentRes, departmentFilter, restaurantFilter, year, month])
-
-  const columns: GridColDef[] = [
+  const columns: GridColDef<IPaymentResponse>[] = [
     {
-      field: 'paidAt',
-      headerName: t('paid_at'),
+      field: 'departmentName',
+      headerName: t('department_name'),
       flex: 1,
-      minWidth: 200,
-      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD A hh:mm'),
+      minWidth: 150,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('department_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.departmentName}
+          </Typography>
+        </Stack>
+      ),
     },
-    { field: 'departmentName', headerName: t('department_name'), width: 150 },
-    { field: 'employeeName', headerName: t('employee_name'), width: 100 },
-    { field: 'restaurantName', headerName: t('restaurant_name'), width: 150 },
+    { field: 'employeeName', headerName: t('employee_name'), width: 120 },
+    { field: 'employeeId', headerName: t('field.employee_no'), width: 150 },
+    { field: 'storeName', headerName: t('store_name'), width: 200 },
     {
       field: 'price',
       headerName: t('price'),
-      width: 150,
-      renderCell: (params) => fNumber(params.value),
+      type: 'number',
+      width: 100,
+      renderCell: (params) => `${fNumber(params.value)} ${t('unit.won')}`,
+    },
+
+    {
+      field: 'paidAt',
+      headerName: t('paid_at'),
+      width: 160,
+      resizable: false,
+      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD HH:mm'),
     },
   ]
 
@@ -161,41 +148,6 @@ export default function PaymentManagementView() {
         ]}
       />
 
-      {/* <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" p={2} spacing={1}>
-          <FormControl fullWidth>
-            <InputLabel>{t('department')}</InputLabel>
-            <Select
-              value={departmentFilter || ''}
-              onChange={(e) => setDepartmentFilter(e.target.value || null)}
-              sx={{ minWidth: 150 }}
-            >
-              <MenuItem value="">{t('all')}</MenuItem>
-              {managers?.map((manager: IManager) => (
-                <MenuItem key={manager.departmentId} value={manager.departmentId}>
-                  {manager.departmentName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ minWidth: 150 }}>
-            <InputLabel>{t('restaurant')}</InputLabel>
-            <Select
-              value={restaurantFilter || ''}
-              onChange={(e) => setRestaurantFilter(e.target.value || null)}
-            >
-              <MenuItem value="">{t('all')}</MenuItem>
-              {contractStores?.map((store: IContractStore) => (
-                <MenuItem key={store.id} value={store.id}>
-                  {store.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-      </Stack> */}
-
       <Card>
         <Stack
           direction="row"
@@ -205,14 +157,25 @@ export default function PaymentManagementView() {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
+          <Select
+            value={selectedDepartment}
+            onChange={setSelectedDepartment}
+            options={departments}
+            placeholder={t('label.select_department')}
+            size="small"
+          />
+          <Select
+            value={selectedStore}
+            onChange={setSelectedStore}
+            options={stores}
+            placeholder={t('label.select_store')}
+            size="small"
+          />
         </Stack>
 
         <DataGrid
           columns={columns}
           rows={filteredRows}
-          rowSelectionModel={selected}
-          onRowSelectionModelChange={setSelected}
-          checkboxSelection
           hideFooter
           loading={paymentIsPending}
           slotProps={{

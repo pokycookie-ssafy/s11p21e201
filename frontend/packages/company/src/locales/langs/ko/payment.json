@@ -1,9 +1,9 @@
 {
-  "paid_at": "결제일시",
+  "paid_at": "결제 일시",
   "department_name": "부서명",
   "employee_name": "직원명",
-  "restaurant_name": "식당명",
-  "price": "결제액",
+  "store_name": "식당명",
+  "price": "결제 금액",
   "payment": "장부 관리",
   "department": "부서",
   "restaurant": "식당",
@@ -14,6 +14,18 @@
     "management": "관리"
   },
   "unit": {
-    "date": "{0}년 {1}월"
+    "date": "{0}년 {1}월",
+    "won": "원"
+  },
+  "field": {
+    "employee_no": "사번"
+  },
+  "label": {
+    "select_department": "부서명 검색",
+    "select_store": "가게명 검색",
+    "selected": "{0}개 선택됨"
+  },
+  "tooltip": {
+    "delete_all": "일괄 삭제"
   }
 }
