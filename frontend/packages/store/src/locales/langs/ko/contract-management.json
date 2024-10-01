@@ -46,6 +46,7 @@
     "complete": "완료",
     "reject": "거절",
     "canceled": "해지",
-    "license_upload": "사업자등록증을 업로드해주세요"
+    "license_upload": "사업자등록증을 업로드해주세요",
+    "selected": "{0}개 선택됨"
   }
 }

@@ -4,6 +4,12 @@ import api from '@/configs/api'
 import { Response, createServer } from 'miragejs'
 import { bankResponse } from '@/mock-api/response/bank'
 import { licenseResponse } from '@/mock-api/response/license'
+import {
+  contractNow,
+  contractHistory,
+  contractRequestSend,
+  contractRequestReceived,
+} from '@/mock-api/response/contract'
 
 import { storesResponse } from './response/stores'
 import { managerResponse } from './response/managers'
@@ -51,6 +57,11 @@ export default function initServer() {
 
         return responseContracts
       })
+
+      this.get(api.contract.list, () => contractNow, { timing: 1000 })
+      this.get(api.contract.received, () => contractRequestReceived, { timing: 1000 })
+      this.get(api.contract.send, () => contractRequestSend, { timing: 1000 })
+      this.get(api.contract.history, () => contractHistory, { timing: 1000 })
 
       this.get('/companies/payment', () => paymentResponse)
 

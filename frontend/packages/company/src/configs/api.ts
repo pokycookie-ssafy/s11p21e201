@@ -14,6 +14,12 @@ const api = {
   common: {
     ocr: '/licenses/signup',
   },
+  contract: {
+    list: '/stores/contracts',
+    received: '/stores/contracts/received',
+    send: '/stores/contracts/send',
+    history: '/stores/contracts/history',
+  },
 }
 
 export default api
