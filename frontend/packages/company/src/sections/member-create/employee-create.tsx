@@ -1,51 +1,38 @@
+import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
+
 import ExcelJS from 'exceljs'
+import { toast } from 'sonner'
+import { useState } from 'react'
+import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
-import React, { useRef, useState, useEffect } from 'react'
+import { DialogDelete } from '@/components/dialog'
+import { m, uuidv4, useBoolean } from '@e201/utils'
+import MemberCreateField from '@/sections/member-create/member-create-field'
 
-import {
-  Paper,
-  Table,
-  Stack,
-  Button,
-  Tooltip,
-  TableRow,
-  Checkbox,
-  Collapse,
-  TableBody,
-  TableCell,
-  TableHead,
-  TextField,
-  Typography,
-  IconButton,
-  TableContainer,
-} from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import { Card, Stack, Button, Tooltip, Collapse, Typography, IconButton } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Iconify, Container, Breadcrumbs, ExcelUpload } from '@e201/ui'
 
-import MemberCreateButton from './member-create-button'
-
-interface RowData {
-  사번: string
-  이름: string
+interface IEmployeeCreate {
+  id: string
+  employeeNo?: string
+  employeeName?: string
 }
 
 export default function EmployeeCreate() {
-  const [empData, setEmpData] = useState<RowData[]>([])
-  const [newRow, setNewRow] = useState<RowData>({ 사번: '', 이름: '' })
-  const [editIndex, setEditIndex] = useState<number | null>(null)
-  const [selectedRows, setSelectedRows] = useState<number[]>([])
-
-  const messageEndRef = useRef<HTMLTableRowElement>(null)
-
   const { t } = useTranslate('member')
-  useEffect(() => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [empData])
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+  const [employees, setEmployees] = useState<IEmployeeCreate[]>([])
+  const [selected, setSelected] = useState<GridRowSelectionModel>([])
+
+  const deleteAllConfirm = useBoolean()
+
+  const multipleUploadHandler = (files: File[]) => {
+    files.forEach(handleFileUpload)
+  }
+
+  const handleFileUpload = async (file: File) => {
     const workbook = new ExcelJS.Workbook()
     const reader = new FileReader()
 
@@ -57,24 +44,25 @@ export default function EmployeeCreate() {
       const headerRow = worksheet.getRow(1).values
       const headers = Array.isArray(headerRow) ? headerRow : []
 
-      const indexOfEmpNo = headers.indexOf('사번')
-      const indexOfName = headers.indexOf('이름')
+      let indexOfEmpNo = headers.indexOf('사번')
+      let indexOfName = headers.indexOf('이름')
 
-      if (indexOfEmpNo === -1 || indexOfName === -1) {
-        return
+      if (indexOfEmpNo === -1) {
+        indexOfEmpNo = 1
+      }
+      if (indexOfName === -1) {
+        indexOfName = 2
       }
 
-      const newData: RowData[] = []
+      const newRows: IEmployeeCreate[] = []
       for (let i = 2; i <= worksheet.rowCount; i++) {
         const row = worksheet.getRow(i)
-        const rowData: RowData = {
-          사번: row.getCell(indexOfEmpNo).value as string,
-          이름: row.getCell(indexOfName).value as string,
-        }
-        newData.push(rowData)
+        const id = uuidv4()
+        const employeeNo = String(row.getCell(indexOfEmpNo).value)
+        const employeeName = String(row.getCell(indexOfName).value)
+        newRows.push({ employeeName, employeeNo, id })
       }
-
-      setEmpData((prev) => [...prev, ...newData])
+      setEmployees((prev) => [...prev, ...newRows])
     }
 
     if (file) {
@@ -82,190 +70,196 @@ export default function EmployeeCreate() {
     }
   }
 
-  const handleAddRow = () => {
-    if (newRow.사번 && newRow.이름) {
-      setEmpData((prev) => [...prev, newRow])
-      setNewRow({ 사번: '', 이름: '' })
-    }
+  const addRow = () => {
+    setEmployees((prev) => [
+      ...prev,
+      { id: uuidv4(), employeeName: undefined, employeeNo: undefined },
+    ])
   }
 
-  const handleEditRow = (index: number) => {
-    setEditIndex(index)
+  const deleteRow = (id: string) => {
+    setEmployees((prev) => prev.filter((row) => row.id !== id))
   }
 
-  const handleSaveEdit = () => {
-    setEditIndex(null)
+  const editRowNo = (id: string, no?: string) => {
+    setEmployees((prev) => {
+      const idx = prev.findIndex((row) => row.id === id)
+      prev[idx].employeeNo = no
+      return prev
+    })
   }
 
-  const handleDeleteSelectedRows = () => {
-    setEmpData(empData.filter((_, index) => !selectedRows.includes(index)))
-    setSelectedRows([])
+  const deleteSubmitHandler = () => {
+    toast.success(t('toast.delete'))
+    selected.forEach((id) => deleteRow(id as string))
+    deleteAllConfirm.onFalse()
   }
+
+  const editRowName = (id: string, name?: string) => {
+    setEmployees((prev) => {
+      const idx = prev.findIndex((row) => row.id === id)
+      prev[idx].employeeName = name
+      return prev
+    })
+  }
+
+  const columns: GridColDef<IEmployeeCreate>[] = [
+    {
+      field: 'employeeNo',
+      headerName: t('field.employee_number'),
+      width: 200,
+      renderCell: (params) => (
+        <MemberCreateField
+          value={params.row.employeeNo}
+          onChange={(value) => editRowNo(params.row.id, value)}
+          placeholder={t('label.enter_employee_name')}
+        />
+      ),
+    },
+    {
+      field: 'employeeName',
+      headerName: t('field.employee_name'),
+      flex: 1,
+      renderCell: (params) => (
+        <MemberCreateField
+          value={params.row.employeeName}
+          onChange={(value) => editRowName(params.row.id, value)}
+          placeholder={t('label.enter_employee_no')}
+        />
+      ),
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      resizable: false,
+      getActions: (params) => [
+        <Tooltip title={t('tooltip.delete')} disableInteractive>
+          <IconButton color="error" onClick={() => deleteRow(params.row.id)}>
+            <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
+          </IconButton>
+        </Tooltip>,
+      ],
+    },
+  ]
 
   return (
-    <Stack sx={{ maxHeight: '85vh', overflow: 'hidden' }}>
-      <Stack direction="row" justifyContent="space-between" pb={3}>
-        <Typography variant="h3" fontWeight={800}>
-          {t('create_employee')}
-        </Typography>
-        <MemberCreateButton onFileUpload={handleFileUpload} />
+    <>
+      <Container maxWidth="md" sx={{ p: 0 }}>
+        <Breadcrumbs
+          title={t('breadcrumbs.create_member')}
+          routes={[
+            { title: t('breadcrumbs.management'), path: paths.management.member.root },
+            {
+              title: t('breadcrumbs.member_management'),
+              path: paths.management.member.root,
+            },
+            { title: t('breadcrumbs.create_member') },
+          ]}
+          action={
+            <Button color="secondary" onClick={() => console.log(employees)}>
+              {t('button.create')}
+            </Button>
+          }
+        />
 
-        {/* {selectedRows.length > 0 && (
-          <Button variant="outlined" color="error" onClick={handleDeleteSelectedRows}>
-            선택 항목 삭제
-          </Button>
-        )} */}
-      </Stack>
-      <Collapse in={selectedRows.length > 0}>
-        <Stack
-          width={1}
-          height={57}
-          direction="row"
-          justifyContent="space-evenly"
-          alignItems="center"
-          px={2}
-          py={1}
-          zIndex={1}
-        >
-          <Typography variant="subtitle1">
-            {selectedRows.length}
-            {t('selected')}
-          </Typography>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Tooltip title={t('create_account')} arrow disableInteractive>
-              <IconButton color="success">
-                <Iconify icon="ri:user-add-line" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('delete')} arrow disableInteractive>
-              <IconButton color="error" onClick={handleDeleteSelectedRows}>
-                <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        </Stack>
-      </Collapse>
-      <TableContainer
-        sx={{
-          overflowY: 'auto',
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-        }}
-      >
-        <Paper>
-          <Table size="small" stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">
-                  <Checkbox
-                    checked={selectedRows.length === empData.length && empData.length > 0}
-                    indeterminate={selectedRows.length > 0 && selectedRows.length < empData.length}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedRows(empData.map((_, index) => index)) // 모든 행 선택
-                      } else {
-                        setSelectedRows([]) // 선택 해제
-                      }
-                    }}
-                  />
-                </TableCell>
-                <TableCell align="center">{t('sequence_number')}</TableCell>
-                <TableCell>{t('employee_number')}</TableCell>
-                <TableCell>{t('name')}</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {empData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell align="center">
-                    <Checkbox
-                      checked={selectedRows.includes(index)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedRows((prev) => [...prev, index])
-                        } else {
-                          setSelectedRows((prev) => prev.filter((i) => i !== index))
-                        }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="center">{index + 1}</TableCell>
-                  <TableCell>
-                    {editIndex === index ? (
-                      <TextField
-                        value={row.사번}
-                        onChange={(e) =>
-                          setEmpData((prev) =>
-                            prev.map((r, i) => (i === index ? { ...r, 사번: e.target.value } : r))
-                          )
-                        }
-                        variant="standard"
-                        size="small"
-                      />
-                    ) : (
-                      <Typography onClick={() => handleEditRow(index)}>{row.사번}</Typography>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editIndex === index ? (
-                      <TextField
-                        value={row.이름}
-                        onChange={(e) =>
-                          setEmpData((prev) =>
-                            prev.map((r, i) => (i === index ? { ...r, 이름: e.target.value } : r))
-                          )
-                        }
-                        variant="standard"
-                        size="small"
-                      />
-                    ) : (
-                      <Typography onClick={() => handleEditRow(index)}>{row.이름}</Typography>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editIndex === index ? (
-                      <Button onClick={handleSaveEdit} size="small" variant="contained">
-                        {t('save')}
-                      </Button>
-                    ) : null}
-                  </TableCell>
-                </TableRow>
+        <Card>
+          <Collapse in={selected.length > 0}>
+            <Stack
+              width={1}
+              height={57}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              px={2}
+              py={1}
+              zIndex={1}
+              bgcolor="background.paper"
+              sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+            >
+              <Typography variant="subtitle2">
+                {m(t('label.selected'), [selected.length])}
+              </Typography>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Tooltip title={t('tooltip.delete_all')} disableInteractive>
+                  <IconButton color="error" onClick={deleteAllConfirm.onTrue}>
+                    <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            </Stack>
+          </Collapse>
+
+          <DataGrid
+            rows={employees}
+            columns={columns}
+            rowSelectionModel={selected}
+            onRowSelectionModelChange={setSelected}
+            checkboxSelection
+            hideFooter
+            slotProps={{
+              noRowsOverlay: {},
+              noResultsOverlay: {},
+            }}
+            sx={{ height: 500 }}
+          />
+          {/* <MemberCreateHeader check={false} onCheck={() => {}} />
+          <ScrollContainer sx={{ height: 500 }}>
+            <Stack>
+              {employees.map(({ employeeName, employeeNo }, i) => (
+                <MemberCreateList
+                  key={i}
+                  employeeNo={employeeNo}
+                  employeeName={employeeName}
+                  onChange={(no, name) => editRow(i, no, name)}
+                  onDelete={() => deleteRow(i)}
+                />
               ))}
-              {/* 새로운 직원 추가 */}
-              <TableRow ref={messageEndRef}>
-                <TableCell />
-                <TableCell align="center">{empData.length + 1}</TableCell>
-                <TableCell>
-                  <TextField
-                    placeholder={t('employee_number')}
-                    variant="standard"
-                    size="small"
-                    value={newRow.사번}
-                    onChange={(e) => setNewRow({ ...newRow, 사번: e.target.value })}
-                    sx={{ py: 1 }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    placeholder={t('name')}
-                    variant="standard"
-                    size="small"
-                    value={newRow.이름}
-                    onChange={(e) => setNewRow({ ...newRow, 이름: e.target.value })}
-                    sx={{ py: 1 }}
-                  />
-                </TableCell>
+            </Stack>
+          </ScrollContainer> */}
 
-                <TableCell>
-                  <Button variant="outlined" size="small" onClick={handleAddRow}>
-                    {t('add')}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Paper>
-      </TableContainer>
-    </Stack>
+          <Stack
+            spacing={1}
+            p={1}
+            sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
+          >
+            <ExcelUpload placeholder={t('label.upload_excel')} onChange={multipleUploadHandler} />
+
+            <Button
+              onClick={addRow}
+              fullWidth
+              sx={{
+                height: 40,
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[200]
+                    : theme.palette.grey[700],
+                color: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[600]
+                    : theme.palette.grey[400],
+                ':hover': {
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[300]
+                      : theme.palette.grey[600],
+                },
+              }}
+            >
+              <Stack direction="row" alignItems="center">
+                <Iconify icon="ic:round-plus" width={17} />
+                <Typography variant="subtitle2">{t('button.add_member')}</Typography>
+              </Stack>
+            </Button>
+          </Stack>
+        </Card>
+      </Container>
+      <DialogDelete
+        open={deleteAllConfirm.value}
+        onClose={deleteAllConfirm.onFalse}
+        onSubmit={deleteSubmitHandler}
+        title={t('dialog.delete_all')}
+        content={m(t('dialog.delete_all_content'), [selected.length])}
+      />
+    </>
   )
 }

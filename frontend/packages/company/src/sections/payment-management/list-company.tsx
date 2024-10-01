@@ -2,16 +2,26 @@ import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
 import axios from '@/configs/axios'
+import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
-import { useMemo, useState } from 'react'
 import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useQuery } from '@tanstack/react-query'
-import { SelectYear } from '@/sections/payment-management/select-year'
-import { SelectMonth } from '@/sections/payment-management/select-month'
+import { useMemo, useState, useEffect } from 'react'
 
 import { DataGrid } from '@mui/x-data-grid'
-import { Card, Stack, Select, MenuItem, InputLabel, Typography, FormControl } from '@mui/material'
+import {
+  Box,
+  Card,
+  Stack,
+  Select,
+  MenuItem,
+  InputLabel,
+  Typography,
+  FormControl,
+} from '@mui/material'
+
+import { SelectDate, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
@@ -45,17 +55,17 @@ interface IPayment {
 }
 
 const fetchContractStores = async () => {
-  const contract_store = await axios.get('/companies/stores')
+  const contract_store = await axios.get<IContractStore[]>('/companies/stores')
   return contract_store.data
 }
 
 const fetchManagers = async () => {
-  const manager = await axios.get('/companies/managers')
+  const manager = await axios.get<IManager[]>('/companies/managers')
   return manager.data
 }
 
 const fetchPayments = async () => {
-  const payment = await axios.get('/companies/payment')
+  const payment = await axios.get<IPayment[]>('/companies/payment')
   return payment.data
 }
 
@@ -67,12 +77,12 @@ export default function PaymentManagementView() {
     queryFn: fetchContractStores,
   })
 
-  const { data: managers } = useQuery({
+  const { data: managerRes } = useQuery({
     queryKey: ['managers'],
     queryFn: fetchManagers,
   })
 
-  const { data: payments, isPending } = useQuery({
+  const { data: paymentRes, isPending: paymentIsPending } = useQuery({
     queryKey: ['payments'],
     queryFn: fetchPayments,
   })
@@ -83,26 +93,24 @@ export default function PaymentManagementView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
-  const columns: GridColDef[] = [
-    {
-      field: 'paidAt',
-      headerName: t('paid_at'),
-      flex: 1,
-      minWidth: 200,
-      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD  A hh:mm'),
-    },
-    { field: 'departmentName', headerName: t('department_name'), width: 150 },
-    { field: 'employeeName', headerName: t('employee_name'), width: 100 },
-    { field: 'restaurantName', headerName: t('restaurant_name'), width: 150 },
-    {
-      field: 'price',
-      headerName: t('price'),
-      width: 150,
-      renderCell: (params) => fNumber(params.value),
-    },
-  ]
+  const dateChangeHandler = (dateYear: number, dateMonth: number) => {
+    setYear(dateYear)
+    setMonth(dateMonth)
+  }
+
+  useEffect(() => {
+    console.log(paymentRes)
+  }, [paymentRes])
+
+  const departments = useMemo(() => {
+    if (!managerRes) {
+      return []
+    }
+    return managerRes.map((manager) => manager.departmentName)
+  }, [managerRes])
+
   const filteredRows = useMemo(() => {
-    if (!payments) return []
+    if (!paymentRes) return []
 
     const filterDate = dayjs()
       .year(year)
@@ -110,7 +118,7 @@ export default function PaymentManagementView() {
     const startDate = filterDate.startOf('month')
     const endDate = filterDate.endOf('month')
 
-    return payments
+    return paymentRes
       ?.filter((row: IPayment) => {
         const departmentMatch = !departmentFilter || row.departmentId === departmentFilter
         const restaurantMatch = !restaurantFilter || row.restaurantId === restaurantFilter
@@ -122,18 +130,38 @@ export default function PaymentManagementView() {
       .sort(
         (a: IPayment, b: IPayment) => new Date(b.paidAt).getTime() - new Date(a.paidAt).getTime()
       )
-  }, [payments, departmentFilter, restaurantFilter, year, month])
+  }, [paymentRes, departmentFilter, restaurantFilter, year, month])
+
+  const columns: GridColDef[] = [
+    {
+      field: 'paidAt',
+      headerName: t('paid_at'),
+      flex: 1,
+      minWidth: 200,
+      valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD A hh:mm'),
+    },
+    { field: 'departmentName', headerName: t('department_name'), width: 150 },
+    { field: 'employeeName', headerName: t('employee_name'), width: 100 },
+    { field: 'restaurantName', headerName: t('restaurant_name'), width: 150 },
+    {
+      field: 'price',
+      headerName: t('price'),
+      width: 150,
+      renderCell: (params) => fNumber(params.value),
+    },
+  ]
 
   return (
-    <Stack gap={3}>
-      <Typography variant="h3" fontWeight={800}>
-        {t('payment')}
-      </Typography>
-      <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" p={2} spacing={1}>
-          <SelectYear year={year} onChange={setYear} />
-          <SelectMonth month={month} onChange={setMonth} />
-        </Stack>
+    <Box>
+      <Breadcrumbs
+        title={t('breadcrumbs.title')}
+        routes={[
+          { title: t('breadcrumbs.management'), path: paths.management.payment },
+          { title: t('breadcrumbs.title') },
+        ]}
+      />
+
+      {/* <Stack direction="row" justifyContent="space-between">
         <Stack direction="row" p={2} spacing={1}>
           <FormControl fullWidth>
             <InputLabel>{t('department')}</InputLabel>
@@ -166,9 +194,19 @@ export default function PaymentManagementView() {
             </Select>
           </FormControl>
         </Stack>
-      </Stack>
+      </Stack> */}
 
       <Card>
+        <Stack
+          direction="row"
+          px={2}
+          py={1}
+          spacing={1}
+          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+        >
+          <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
+        </Stack>
+
         <DataGrid
           columns={columns}
           rows={filteredRows}
@@ -176,31 +214,14 @@ export default function PaymentManagementView() {
           onRowSelectionModelChange={setSelected}
           checkboxSelection
           hideFooter
-          hideFooterPagination
-          disableColumnFilter
-          disableColumnMenu
-          disableRowSelectionOnClick
-          loading={isPending}
+          loading={paymentIsPending}
           slotProps={{
             noRowsOverlay: {},
             noResultsOverlay: {},
           }}
-          sx={{
-            height: 500,
-            '& .MuiDataGrid-columnSeparator': {
-              color: 'transparent',
-              ':hover': {
-                color: (theme) => theme.palette.divider,
-              },
-            },
-            '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-            '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-            '.MuiDataGrid-columnHeaders': {
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            },
-          }}
+          sx={{ height: 500 }}
         />
       </Card>
-    </Stack>
+    </Box>
   )
 }

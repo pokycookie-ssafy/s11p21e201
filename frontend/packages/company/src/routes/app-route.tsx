@@ -12,15 +12,15 @@ import ContractHistoryManagementView from '@/pages/contract/contract-history-man
 
 const appRoute: RouteObject[] = [
   {
-    path: paths.settlement.root,
+    path: paths.management.settlement,
     element: <SettlementView />,
   },
   {
-    path: paths.payment.root,
+    path: paths.management.payment,
     element: <PaymentListView />,
   },
   {
-    path: paths.management.member,
+    path: paths.management.member.root,
     element: <MemberManagementView />,
   },
   {
@@ -41,7 +41,7 @@ const appRoute: RouteObject[] = [
   },
 
   {
-    path: paths.management.member_create,
+    path: paths.management.member.create,
     element: <MemberCreateView />,
   },
 ]

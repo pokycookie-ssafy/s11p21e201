@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslate } from '@/locales'
 // import ListAccordion from '@/sections/payment-list/list-accordion'
 
-import { Stack, Button, TextField, Typography, ButtonGroup } from '@mui/material'
+import { Box, Stack, Button, TextField, Typography, ButtonGroup } from '@mui/material'
 
 // interface AccordionData {
 //   id: string
@@ -13,7 +13,7 @@ export default function ListManager() {
   const { t } = useTranslate('payment')
 
   return (
-    <Stack spacing={3}>
+    <Box>
       <Stack direction="row">
         <ButtonGroup variant="outlined">
           <Button>{t('sort_restaurant')}</Button>
@@ -37,6 +37,6 @@ export default function ListManager() {
           <ListAccordion key={accordion.id} name={accordion.name} items={accordion.items} />
         ))}
       </Stack> */}
-    </Stack>
+    </Box>
   )
 }
