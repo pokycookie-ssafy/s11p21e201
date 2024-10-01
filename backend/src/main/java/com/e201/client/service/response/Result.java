@@ -51,16 +51,22 @@ public class Result {
 	private List<CommonResponse> registerNumber;// 사업자등록번호
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private List<CommonResponse> corpName; // 법인(기업)명
 	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
 =======
 >>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 =======
 >>>>>>> c03792d ([#25] feat: 사업자 등록증 API 연동)
+=======
+	private List<CommonResponse> corpName; // 법인(기업)명
+	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
+>>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
 	private List<CommonResponse> openDate;// 개업연원일
 	private List<CommonResponse> bisType;// 업종
 	private List<CommonResponse> bisItem;// 종목
 	private List<CommonResponse> bisAddress;// 사업장 소새지
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	private List<CommonResponse> taxType; // 법입 or 개인사업자
@@ -68,4 +74,7 @@ public class Result {
 >>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 =======
 >>>>>>> c03792d ([#25] feat: 사업자 등록증 API 연동)
+=======
+	private List<CommonResponse> taxType; // 법입 or 개인사업자
+>>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
 }

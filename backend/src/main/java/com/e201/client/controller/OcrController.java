@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.client.controller.response.LicenseCreateResponse;
 =======
 import com.e201.client.controller.response.OcrResultResponse;
@@ -16,7 +17,13 @@ import com.e201.client.controller.response.OcrResultResponse;
 =======
 import com.e201.client.controller.response.OcrResultResponse;
 >>>>>>> c03792d ([#25] feat: 사업자 등록증 API 연동)
+=======
+import com.e201.client.controller.response.LicenseCreateResponse;
+import com.e201.client.controller.response.LicenseReadResponse;
+>>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
 import com.e201.client.service.OcrService;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +33,7 @@ public class OcrController {
 
 	private final OcrService ocrService;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	@PostMapping("/ocr/license")
@@ -46,4 +54,19 @@ public class OcrController {
 >>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
 =======
 >>>>>>> c03792d ([#25] feat: 사업자 등록증 API 연동)
+=======
+	@PostMapping("/licenses/signup")
+	public ResponseEntity<LicenseCreateResponse> ocrForSignup(MultipartFile file) {
+		LicenseCreateResponse response = ocrService.ocrForSignup(file);
+		return ResponseEntity.status(OK).body(response);
+	}
+
+	@PostMapping("/licenses/contract")
+	public ResponseEntity<LicenseReadResponse> ocrForContract(@Auth AuthInfo authInfo, MultipartFile file) {
+		LicenseReadResponse response = ocrService.ocrForContract(authInfo, file);
+		return ResponseEntity.status(OK).body(response);
+	}
+
+
+>>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
 }
