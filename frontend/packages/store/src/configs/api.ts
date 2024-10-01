@@ -19,8 +19,8 @@ const api = {
   },
   contract: {
     list: '/stores/contracts',
-    request: '/stores/contracts/request',
-    response: '/stores/contracts/response',
+    received: '/stores/contracts/received',
+    send: '/stores/contracts/send',
     history: '/stores/contracts/history',
   },
   settlement: {

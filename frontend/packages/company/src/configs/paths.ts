@@ -1,35 +1,47 @@
 const PATH = {
   root: '/',
-  component: '/components',
-  mirage: '/mirage',
-  locale: '/locale',
+  dashboard: '/dashboard',
   management: '/management',
-  payment: '/payment',
-  settlement: '/settlement',
+  setting: '/setting',
 }
 
 const paths = {
   root: PATH.root,
-  components: {
-    root: PATH.component,
-    toast: `${PATH.component}/toast`,
-    scrollbar: `${PATH.component}/scrollbar`,
+  main: `${PATH.management}/member`,
+
+  // auth
+  auth: {
+    signIn: '/sign-in',
+    signUp: '/sign-up',
   },
-  mirage: {
-    root: PATH.mirage,
+
+  // dashboard
+  dashboard: {
+    root: PATH.dashboard,
+    total: `${PATH.dashboard}/total`,
+
+    sales: {
+      root: `${PATH.dashboard}/sales`,
+      menu: `${PATH.dashboard}/sales/menu`,
+      company: `${PATH.dashboard}/sales/company`,
+      time: `${PATH.dashboard}/sales/time`,
+    },
+
+    settlement: `${PATH.dashboard}/settlement`,
   },
-  locale: {
-    root: PATH.locale,
-  },
-  settlement: {
-    root: PATH.settlement,
-  },
-  payment: {
-    root: PATH.payment,
-  },
+
+  // management
   management: {
-    member: `${PATH.management}/member`,
-    member_create: `${PATH.management}/member/create`,
+    member: {
+      root: `${PATH.management}/member`,
+      create: `${PATH.management}/member/create`,
+    },
+    payment: `${PATH.management}/payment`,
+    settlement: {
+      root: `${PATH.management}/settlement`,
+      date: `${PATH.management}/settlement/date`,
+      store: `${PATH.management}/settlement/company`,
+    },
     contract: {
       root: `${PATH.management}/contract`,
       now: `${PATH.management}/contract/now`,
@@ -38,8 +50,12 @@ const paths = {
       history: `${PATH.management}/contract/history`,
     },
   },
-  temp: {
-    temp: `${PATH}/temp`,
+
+  // setting
+  setting: {
+    root: PATH.setting,
+    account: `${PATH.setting}/account`,
+    app: `${PATH.setting}/app`,
   },
 }
 

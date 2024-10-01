@@ -225,7 +225,8 @@ export default function initServer() {
           // `start`와 `end` 기간 내에 해당하는 기록만 필터링
           const filteredRecords = records.filter((record) => {
             const createdAt = new Date(record.createdAt)
-            return createdAt >= new Date(start) && createdAt <= new Date(end)
+            // return createdAt >= new Date(start) && createdAt <= new Date(end)
+            return true
           })
 
           return filteredRecords

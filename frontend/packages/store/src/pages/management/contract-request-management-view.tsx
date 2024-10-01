@@ -9,9 +9,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -26,7 +24,7 @@ import {
   IconButton,
 } from '@mui/material'
 
-import { Iconify, Typography } from '@e201/ui'
+import { Label, Iconify, Typography, Breadcrumbs } from '@e201/ui'
 
 type TabType = 'received' | 'send'
 
@@ -42,24 +40,24 @@ export default function ContractRequestManagementView() {
     { label: t('tab.send'), value: 'send' },
   ]
 
-  const requestQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.request)
+  const receivedQueryFn = async () => {
+    const response = await axios.get<IContractResponse[]>(api.contract.received)
     return response.data
   }
 
-  const responseQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.response)
+  const sendQueryFn = async () => {
+    const response = await axios.get<IContractResponse[]>(api.contract.send)
     return response.data
   }
 
   const { data: receivedData, isPending: receivedIsPending } = useQuery({
-    queryKey: [api.contract.request],
-    queryFn: requestQueryFn,
+    queryKey: [api.contract.received],
+    queryFn: receivedQueryFn,
   })
 
   const { data: sendData, isPending: sendIsPending } = useQuery({
-    queryKey: [api.contract.response],
-    queryFn: responseQueryFn,
+    queryKey: [api.contract.send],
+    queryFn: sendQueryFn,
   })
 
   const filteredReceivedData = useMemo(() => {
@@ -196,7 +194,7 @@ export default function ContractRequestManagementView() {
             bgcolor="background.paper"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <Typography variant="subtitle1">{selected.length} selected</Typography>
+            <Typography variant="subtitle2">{m(t('label.selected'), [selected.length])}</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
               <Tooltip title={t('tooltip.accept_all')} arrow disableInteractive>
                 <IconButton color="success">

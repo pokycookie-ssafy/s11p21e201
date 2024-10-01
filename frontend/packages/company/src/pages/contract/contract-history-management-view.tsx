@@ -1,33 +1,20 @@
-import type { GridColDef, GridSortModel } from '@mui/x-data-grid'
+import type { GridColDef } from '@mui/x-data-grid'
+import type { IContractHistory } from '@/types/contract'
 
 import dayjs from 'dayjs'
+import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, TextField } from '@mui/material'
 
-type StatusType = 'in' | 'complete' | 'reject' | 'canceled'
-type UserCondType = 'receiver' | 'sender'
+import { Label, Typography, Breadcrumbs } from '@e201/ui'
 
-interface IContractHistory {
-  contractDate: Date
-  settlementDate: Number
-  contractId: string
-  storeId: string
-  companyId: string
-  storeName: string
-  companyName: string
-  phone: string
-  address: string
-  userCond: UserCondType
-  status: StatusType
-}
+type StatusType = 'in' | 'complete' | 'reject' | 'canceled'
 
 export default function ContractHistoryManagementView() {
   const { t } = useTranslate('contract')
@@ -35,12 +22,8 @@ export default function ContractHistoryManagementView() {
   const [tab, setTab] = useState<StatusType | null>(null)
   const [storeSearch, setStoreSearch] = useState<string>('')
 
-  const [sortModel, setSortModel] = useState<GridSortModel>([
-    { field: 'contractDate', sort: 'desc' }, // 초기 정렬
-  ])
-
   const queryFn = async () => {
-    const response = await axios.get<IContractHistory[]>('/contract/temp', {})
+    const response = await axios.get<IContractHistory[]>(api.contract.history, {})
     return response.data
   }
 
@@ -49,28 +32,26 @@ export default function ContractHistoryManagementView() {
     queryFn,
   })
 
-  console.log(data)
-
   const TABS = [
-    { label: t('all'), value: null },
-    { label: t('in'), value: 'in' },
-    { label: t('complete'), value: 'complete' },
-    { label: t('reject'), value: 'reject' },
-    { label: t('canceled'), value: 'canceled' },
+    { label: t('tab.all'), value: null },
+    { label: t('tab.in_progress'), value: 'in' },
+    { label: t('tab.complete'), value: 'complete' },
+    { label: t('tab.reject'), value: 'reject' },
+    { label: t('tab.canceled'), value: 'canceled' },
   ]
 
   const statusProvider = (row: IContractHistory) => {
     if (row.status === 'complete') {
-      return <Label status="success">{t('complete')}</Label>
+      return <Label status="success">{t('label.complete')}</Label>
     }
     if (row.status === 'in') {
-      return <Label status="warning">{t('in')}</Label>
+      return <Label status="warning">{t('label.in_progress')}</Label>
     }
     if (row.status === 'reject') {
-      return <Label status="error">{t('reject')}</Label>
+      return <Label status="error">{t('label.reject')}</Label>
     }
     if (row.status === 'canceled') {
-      return <Label status="error">{t('canceled')}</Label>
+      return <Label status="error">{t('label.canceled')}</Label>
     }
     return <Label status="error">ERROR</Label>
   }
@@ -81,7 +62,6 @@ export default function ContractHistoryManagementView() {
     }
 
     let filtered = [...data]
-
     if (tab !== null) {
       filtered = filtered.filter((contract) => contract.status === tab)
     }
@@ -94,11 +74,22 @@ export default function ContractHistoryManagementView() {
   const columns: GridColDef[] = [
     {
       field: 'storeName',
-      headerName: t('restaurant_name'),
       flex: 1,
       minWidth: 150,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('restaurant_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.storeName}
+          </Typography>
+        </Stack>
+      ),
     },
-    { field: 'phone', headerName: t('phone_number'), width: 150, resizable: false },
+    { field: 'storePhone', headerName: t('phone_number'), width: 150, resizable: false },
     {
       field: 'contractDate',
       headerName: t('date'),
@@ -152,7 +143,7 @@ export default function ContractHistoryManagementView() {
             value={storeSearch}
             onChange={(e) => setStoreSearch(e.target.value)}
             size="small"
-            label="search"
+            label={t('label.store_search')}
             fullWidth
           />
         </Stack>
@@ -161,8 +152,6 @@ export default function ContractHistoryManagementView() {
           columns={columns}
           getRowId={(row) => row.contractId}
           rows={filteredData}
-          sortModel={sortModel}
-          onSortModelChange={(model) => setSortModel(model)}
           hideFooter
           loading={isPending}
           slotProps={{

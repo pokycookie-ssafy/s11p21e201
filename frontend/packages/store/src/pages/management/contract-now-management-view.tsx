@@ -11,12 +11,11 @@ import { useMemo, useState } from 'react'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Breadcrumbs } from '@/components/breadcrumbs'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Card, Stack, Button, TextField } from '@mui/material'
 
-import { Iconify, Typography } from '@e201/ui'
+import { Iconify, Typography, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 

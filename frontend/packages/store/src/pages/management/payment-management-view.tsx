@@ -1,4 +1,4 @@
-import type { ISelectOption } from '@/components/select'
+import type { ISelectOption } from '@e201/ui'
 import type { IPaymentGroup, IPaymentResponse } from '@/types/payment'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
@@ -13,14 +13,12 @@ import { grouping } from '@/utils/payment'
 import isBetween from 'dayjs/plugin/isBetween'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
-import { Breadcrumbs } from '@/components/breadcrumbs'
-import { SelectYear, SelectMonth } from '@/components/select'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, Collapse, IconButton } from '@mui/material'
 
-import { Iconify, Typography } from '@e201/ui'
+import { Iconify, Typography, SelectDate, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
@@ -92,6 +90,11 @@ export function PaymentManagementView() {
     deleteAllConfirm.onFalse()
   }
 
+  const dateChangeHandler = (dateYear: number, dateMonth: number) => {
+    setYear(dateYear)
+    setMonth(dateMonth)
+  }
+
   const columns: GridColDef<IPaymentGroup>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
     { field: 'employeeCode', headerName: t('field.employee_code'), width: 100 },
@@ -150,12 +153,12 @@ export function PaymentManagementView() {
 
           <Stack
             direction="row"
-            p={2}
+            px={2}
+            py={1}
             spacing={1}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <SelectYear year={year} onChange={setYear} />
-            <SelectMonth month={month} onChange={setMonth} />
+            <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
           </Stack>
 
           <Collapse in={selected.length > 0}>

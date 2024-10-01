@@ -22,6 +22,7 @@ module.exports = {
     radix: 'off',
     'no-alert': 'warn',
     'no-console': 'off',
+    'no-bitwise': 'off',
     'no-plusplus': 'off',
     'no-unused-vars': 'off',
     'no-nested-ternary': 'off',

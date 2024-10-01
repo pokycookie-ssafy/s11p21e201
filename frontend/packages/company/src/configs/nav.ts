@@ -18,31 +18,31 @@ const nav: INav[] = [
     group: [
       {
         title: 'dashboard.title',
-        path: paths.temp.temp,
+        path: paths.dashboard.root,
         icon: 'teenyicons:donut-chart-solid',
       },
       {
         title: 'dashboard.sales.title',
-        path: paths.temp.temp,
+        path: paths.dashboard.sales.root,
         icon: 'grommet-icons:line-chart',
         group: [
           {
             title: 'dashboard.sales.menu',
-            path: paths.temp.temp,
+            path: paths.dashboard.sales.menu,
           },
           {
             title: 'dashboard.sales.company',
-            path: paths.temp.temp,
+            path: paths.dashboard.sales.company,
           },
           {
             title: 'dashboard.sales.date',
-            path: paths.temp.temp,
+            path: paths.dashboard.sales.time,
           },
         ],
       },
       {
         title: 'dashboard.settlement',
-        path: paths.settlement.root,
+        path: paths.dashboard.settlement,
         icon: 'ph:invoice-duotone',
       },
     ],
@@ -51,14 +51,14 @@ const nav: INav[] = [
     title: 'management.title',
     group: [
       {
-        title: 'management.payment',
-        path: paths.payment.root,
-        icon: 'tabler:contract',
+        title: 'management.member',
+        path: paths.management.member.root,
+        icon: 'fluent:people-team-16-regular',
       },
       {
-        title: 'management.settlement',
-        path: paths.settlement.root,
-        icon: 'uil:money-insert',
+        title: 'management.payment',
+        path: paths.management.payment,
+        icon: 'icon-park-outline:table',
       },
       {
         title: 'management.contract.title',
@@ -69,10 +69,6 @@ const nav: INav[] = [
             title: 'management.contract.now',
             path: paths.management.contract.now,
           },
-          // {
-          //   title: 'management.contract.new',
-          //   path: paths.management.contract.new,
-          // },
           {
             title: 'management.contract.request',
             path: paths.management.contract.request,
@@ -84,9 +80,19 @@ const nav: INav[] = [
         ],
       },
       {
-        title: 'management.member',
-        path: paths.management.member,
-        icon: 'fluent:people-team-16-regular',
+        title: 'management.settlement.title',
+        path: paths.management.settlement.root,
+        icon: 'mingcute:card-pay-line',
+        group: [
+          {
+            title: 'management.settlement.settlement_date',
+            path: paths.management.settlement.date,
+          },
+          {
+            title: 'management.settlement.settlement_store',
+            path: paths.management.settlement.store,
+          },
+        ],
       },
     ],
   },
@@ -95,12 +101,12 @@ const nav: INav[] = [
     group: [
       {
         title: 'setting.account',
-        path: paths.temp.temp,
+        path: paths.setting.account,
         icon: 'majesticons:user-box-line',
       },
       {
         title: 'setting.app',
-        path: paths.temp.temp,
+        path: paths.setting.app,
         icon: 'solar:settings-linear',
       },
     ],

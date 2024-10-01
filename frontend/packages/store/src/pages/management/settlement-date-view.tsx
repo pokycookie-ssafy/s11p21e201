@@ -7,18 +7,15 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { Label } from '@/components/label'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
-import { Breadcrumbs } from '@/components/breadcrumbs'
-import { SelectYear, SelectMonth } from '@/components/select'
 import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
@@ -78,7 +75,7 @@ export default function SettlementDateView() {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     }
     if (tab === 'partial') {
-      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount)
+      filtered = filtered.filter((e) => e.settledAmount < e.settlementAmount && e.settledAmount > 0)
     }
     if (tab === 'settled') {
       filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
@@ -88,6 +85,11 @@ export default function SettlementDateView() {
     }
     return filtered
   }, [data, month, tab, year])
+
+  const dateChangeHandler = (dateYear: number, dateMonth: number) => {
+    setYear(dateYear)
+    setMonth(dateMonth)
+  }
 
   const columns: GridColDef<ISettlementResponse>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
@@ -201,12 +203,12 @@ export default function SettlementDateView() {
           <Stack
             direction="row"
             alignItems="center"
-            p={2}
+            px={2}
+            py={1}
             spacing={1}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <SelectYear year={year} onChange={setYear} />
-            <SelectMonth month={month} onChange={setMonth} />
+            <SelectDate year={year} month={month} t={t} onChange={dateChangeHandler} />
           </Stack>
 
           <DataGrid

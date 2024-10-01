@@ -1,5 +1,6 @@
 import paths from '@/configs/paths'
 import { useBoolean } from '@/hooks/use-boolean'
+import tossLogo from '@/assets/img/toss-logo.jpg'
 import { ModeButton, LocaleButton } from '@/components/setting-button'
 
 import {
@@ -44,11 +45,11 @@ export default function Header({ logo }: IProps) {
       }}
     >
       {logo ? (
-        <Link to={paths.root} sx={{ display: 'flex', alignItems: 'center' }}>
+        <Link to={paths.main} sx={{ display: 'flex', alignItems: 'center' }}>
           <Box
             component="img"
             alt="logo"
-            src="/"
+            src={tossLogo}
             sx={{
               width: 120,
               objectFit: 'cover',

@@ -21,7 +21,7 @@ interface FileUploadButtonProps {
 export default function MemberCreateButton({ onFileUpload }: FileUploadButtonProps) {
   const { t } = useTranslate('member')
   return (
-    <Button variant="contained" component="label" sx={{ alignSelf: 'center', height: 'auto' }}>
+    <Button color="secondary" component="label" sx={{ alignSelf: 'center', height: 'auto' }}>
       {t('upload_excel')}
       <VisuallyHiddenInput type="file" accept=".xlsx, .xls" onChange={onFileUpload} />
     </Button>
