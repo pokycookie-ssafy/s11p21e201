@@ -24,6 +24,11 @@ const mainRoute: RouteObject[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    element: <SignUpLayout />,
+    children: [
       {
         element: <SignUpLayout />,
         children: [

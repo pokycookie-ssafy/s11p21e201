@@ -3,6 +3,8 @@ const PATH = {
   dashboard: '/dashboard',
   management: '/management',
   setting: '/setting',
+  payment: '/payment',
+  settlement: '/settlement',
 }
 
 const paths = {
