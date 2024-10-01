@@ -46,6 +46,7 @@ export default function SettlementCompanyView() {
     if (!data) {
       return []
     }
+
     const companySet = new Set<string>()
     const companyList: ISelectOption[] = []
     data.forEach((e) => {
@@ -209,7 +210,7 @@ export default function SettlementCompanyView() {
           >
             <Select
               value={selectedCompany}
-              onChange={(v) => setSelectedCompany(v)}
+              onChange={setSelectedCompany}
               options={companies}
               size="small"
               label={t('label.company_name')}

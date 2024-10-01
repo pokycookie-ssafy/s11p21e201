@@ -1,11 +1,19 @@
 {
   "paid_at": "결제일시",
   "department_name": "부서명",
-  "employee_name": "직원 이름",
+  "employee_name": "직원명",
   "restaurant_name": "식당명",
   "price": "결제액",
   "payment": "장부 관리",
   "department": "부서",
   "restaurant": "식당",
-  "all": "전체"
+  "all": "전체",
+
+  "breadcrumbs": {
+    "title": "장부 관리",
+    "management": "관리"
+  },
+  "unit": {
+    "date": "{0}년 {1}월"
+  }
 }

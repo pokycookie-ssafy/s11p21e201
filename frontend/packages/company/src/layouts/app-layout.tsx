@@ -10,7 +10,7 @@ export default function AppLayout() {
       <Nav />
       <Stack width={1} height="100vh" sx={{ overflowY: 'auto' }}>
         <Header />
-        <Box sx={{ px: 4, py: 1 }}>
+        <Box p={4} pt={1}>
           <Outlet />
         </Box>
       </Stack>
