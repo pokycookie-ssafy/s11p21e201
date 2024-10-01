@@ -1,8 +1,9 @@
 import type { RouteObject } from 'react-router-dom'
 
 import paths from '@/configs/paths'
-import SettlementView from '@/pages/settlement-view'
 import PaymentListView from '@/pages/payment-list-view'
+import SettlementDateView from '@/pages/settlement-date-view'
+import SettlementStoreView from '@/pages/settlement-store-view'
 import MemberCreateView from '@/pages/member/member-create-view'
 import MemberManagementView from '@/pages/member/member-management-view'
 import ContractNewManagementView from '@/pages/contract/contract-new-management-view'
@@ -12,8 +13,12 @@ import ContractHistoryManagementView from '@/pages/contract/contract-history-man
 
 const appRoute: RouteObject[] = [
   {
-    path: paths.management.settlement,
-    element: <SettlementView />,
+    path: paths.management.settlement.date,
+    element: <SettlementDateView />,
+  },
+  {
+    path: paths.management.settlement.store,
+    element: <SettlementStoreView />,
   },
   {
     path: paths.management.payment,

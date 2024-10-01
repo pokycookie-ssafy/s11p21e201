@@ -21,16 +21,15 @@
       "request": "계약 요청",
       "history": "계약 기록"
     },
-
-    "settlement": "정산 관리"
+    "settlement": {
+      "title": "정산 관리",
+      "settlement_date": "날짜별 관리",
+      "settlement_store": "식당별 관리"
+    }
   },
   "payment": {
     "title": "장부",
     "payment": "장부 관리"
-  },
-  "settlement": {
-    "title": "정산",
-    "settlement": "정산 관리"
   },
   "setting": {
     "title": "설정",

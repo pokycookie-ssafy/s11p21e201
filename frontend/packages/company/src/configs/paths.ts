@@ -37,7 +37,11 @@ const paths = {
       create: `${PATH.management}/member/create`,
     },
     payment: `${PATH.management}/payment`,
-    settlement: `${PATH.management}/settlement`,
+    settlement: {
+      root: `${PATH.management}/settlement`,
+      date: `${PATH.management}/settlement/date`,
+      store: `${PATH.management}/settlement/company`,
+    },
     contract: {
       root: `${PATH.management}/contract`,
       now: `${PATH.management}/contract/now`,

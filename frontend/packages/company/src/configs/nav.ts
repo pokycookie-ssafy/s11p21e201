@@ -80,9 +80,19 @@ const nav: INav[] = [
         ],
       },
       {
-        title: 'management.settlement',
-        path: paths.management.settlement,
+        title: 'management.settlement.title',
+        path: paths.management.settlement.root,
         icon: 'mingcute:card-pay-line',
+        group: [
+          {
+            title: 'management.settlement.settlement_date',
+            path: paths.management.settlement.date,
+          },
+          {
+            title: 'management.settlement.settlement_store',
+            path: paths.management.settlement.store,
+          },
+        ],
       },
     ],
   },
