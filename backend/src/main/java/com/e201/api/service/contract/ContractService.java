@@ -1,5 +1,9 @@
 package com.e201.api.service.contract;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 import java.util.List;
 import java.util.UUID;
 
@@ -17,12 +21,17 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 =======
 =======
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
 >>>>>>> df7e7ba ([#40] feat: Contract 조회 기능 구현)
+=======
+import com.e201.domain.entity.contract.ContractFindCond;
+import com.e201.domain.entity.contract.ContractFindStatus;
+>>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 import com.e201.domain.entity.contract.ContractRespondType;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
@@ -120,18 +129,27 @@ public class ContractService {
 	}
 
 	public Contract findEntity(UUID id) {
-		return contractRepository.findById(id)
+		return contractRepository.findByIdAndDeleteYN(id, "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
 	public UUID findContractId(UUID companyId, UUID storeId) {
+<<<<<<< HEAD
 		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
+=======
+		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId,"N")
+>>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 		return contract.getId();
 	}
 
+<<<<<<< HEAD
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
+=======
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond){
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond,null, 10);
+>>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 		return response;
 	}
 
