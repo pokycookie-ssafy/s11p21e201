@@ -60,14 +60,14 @@ export default function ContractNowManagementView() {
   return (
     <Box>
       <Breadcrumbs
-        title={t('contract_management')}
+        title={t('breadcrumbs.contract_management')}
         routes={[
-          { title: t('contract_management') },
-          { title: t('request_contract'), path: paths.management.contract.request },
-          { title: t('contract_log'), path: paths.management.contract.history },
+          { title: t('breadcrumbs.management'), path: paths.management.contract.now },
+          { title: t('breadcrumbs.contract_management'), path: paths.management.contract.now },
+          { title: t('breadcrumbs.contract_management') },
         ]}
         action={
-          <Button onClick={() => navigate(paths.management.contract.new)}>
+          <Button color="secondary" onClick={() => navigate(paths.management.contract.new)}>
             <Iconify icon="ic:round-plus" />
             <Typography variant="subtitle2" pl={0.5}>
               {t('add_contract')}
@@ -77,24 +77,11 @@ export default function ContractNowManagementView() {
       />
 
       <Card>
-        {/* <Tabs
-          value={tab}
-          onChange={(_, v) => setTab(v)}
-          textColor="secondary"
-          indicatorColor="secondary"
-          variant="scrollable"
-          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab label="전체" value={null} key={0} />
-          {categories.map((category, i) => (
-            <Tab label={category} value={category} key={i + 1} />
-          ))}
-        </Tabs> */}
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-          p={1}
+          p={2}
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Stack width={1} direction="row" alignItems="center" spacing={1}>
@@ -107,35 +94,18 @@ export default function ContractNowManagementView() {
             />
           </Stack>
         </Stack>
+
         <DataGrid
           columns={columns}
           rows={filteredData}
           checkboxSelection
           hideFooter
-          hideFooterPagination
-          disableColumnSorting
-          disableColumnFilter
-          disableColumnMenu
-          disableRowSelectionOnClick
           loading={isPending}
           slotProps={{
             noRowsOverlay: {},
             noResultsOverlay: {},
           }}
-          sx={{
-            height: 500,
-            '& .MuiDataGrid-columnSeparator': {
-              color: 'transparent',
-              ':hover': {
-                color: (theme) => theme.palette.divider,
-              },
-            },
-            '& .MuiDataGrid-cell:focus-within': { outline: 'none' },
-            '& .MuiDataGrid-columnHeader:focus-within': { outline: 'none' },
-            '.MuiDataGrid-columnHeaders': {
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-            },
-          }}
+          sx={{ height: 500 }}
         />
       </Card>
     </Box>

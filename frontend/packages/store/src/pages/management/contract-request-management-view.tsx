@@ -40,24 +40,24 @@ export default function ContractRequestManagementView() {
     { label: t('tab.send'), value: 'send' },
   ]
 
-  const requestQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.request)
+  const receivedQueryFn = async () => {
+    const response = await axios.get<IContractResponse[]>(api.contract.received)
     return response.data
   }
 
-  const responseQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.response)
+  const sendQueryFn = async () => {
+    const response = await axios.get<IContractResponse[]>(api.contract.send)
     return response.data
   }
 
   const { data: receivedData, isPending: receivedIsPending } = useQuery({
-    queryKey: [api.contract.request],
-    queryFn: requestQueryFn,
+    queryKey: [api.contract.received],
+    queryFn: receivedQueryFn,
   })
 
   const { data: sendData, isPending: sendIsPending } = useQuery({
-    queryKey: [api.contract.response],
-    queryFn: responseQueryFn,
+    queryKey: [api.contract.send],
+    queryFn: sendQueryFn,
   })
 
   const filteredReceivedData = useMemo(() => {
@@ -194,7 +194,7 @@ export default function ContractRequestManagementView() {
             bgcolor="background.paper"
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
           >
-            <Typography variant="subtitle1">{selected.length} selected</Typography>
+            <Typography variant="subtitle2">{m(t('label.selected'), [selected.length])}</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
               <Tooltip title={t('tooltip.accept_all')} arrow disableInteractive>
                 <IconButton color="success">

@@ -23,5 +23,39 @@
   "canceled": "취소 및 만료",
   "all": "전체",
   "date": "날짜",
-  "status": "상태"
+  "status": "상태",
+  "breadcrumbs": {
+    "management": "관리",
+    "contract_management": "계약 관리",
+    "contract_request": "계약 요청"
+  },
+  "tab": {
+    "all": "전체",
+    "in_progress": "승인중",
+    "complete": "완료",
+    "reject": "거절",
+    "canceled": "해지",
+    "received": "받은 요청",
+    "send": "보낸요청"
+  },
+  "label": {
+    "selected": "{0}개 선택됨",
+    "store_search": "식당명 검색",
+    "in_progress": "승인중",
+    "complete": "완료",
+    "reject": "거절",
+    "canceled": "해지",
+    "license_upload": "사업자등록증을 업로드해주세요"
+  },
+  "field": {
+    "action": "처리",
+    "status": "상태",
+    "in_progress": "승인중"
+  },
+  "tooltip": {
+    "accept": "수락",
+    "reject": "거절",
+    "accept_all": "일괄 수락",
+    "reject_all": "일괄 거절"
+  }
 }

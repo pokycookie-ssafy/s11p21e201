@@ -8,8 +8,8 @@ import MemberCreateView from '@/pages/member/member-create-view'
 import MemberManagementView from '@/pages/member/member-management-view'
 import ContractNewManagementView from '@/pages/contract/contract-new-management-view'
 import ContractNowManagementView from '@/pages/contract/contract-now-management-view'
-import ContractRequestManagementView from '@/sections/member-management/employee-management'
 import ContractHistoryManagementView from '@/pages/contract/contract-history-management-view'
+import ContractRequestManagementView from '@/pages/contract/contract-request-management-view'
 
 const appRoute: RouteObject[] = [
   {
