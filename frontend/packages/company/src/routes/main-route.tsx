@@ -7,7 +7,6 @@ import SignInView from '@/pages/auth/sign-in-view'
 import SignUpView from '@/pages/auth/sign-up-view'
 import SignInLayout from '@/layouts/sign-in-layout'
 import SignUpLayout from '@/layouts/sign-up-layout'
-import PrivateLayout from '@/layouts/private-layout'
 
 const mainRoute: RouteObject[] = [
   // Auth
