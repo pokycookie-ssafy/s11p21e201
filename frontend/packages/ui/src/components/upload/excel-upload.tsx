@@ -1,8 +1,7 @@
+import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { useState, useEffect, useCallback } from 'react'
 import { Box, alpha, Stack, Typography } from '@mui/material'
 
-import { Preview } from './preview'
 import { Iconify } from '../iconify'
 
 interface IProps {

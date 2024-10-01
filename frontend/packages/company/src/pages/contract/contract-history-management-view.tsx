@@ -1,5 +1,5 @@
+import type { GridColDef } from '@mui/x-data-grid'
 import type { IContractHistory } from '@/types/contract'
-import type { GridColDef, GridSortModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
