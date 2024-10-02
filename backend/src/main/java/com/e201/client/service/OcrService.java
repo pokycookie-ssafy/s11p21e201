@@ -1,8 +1,10 @@
 package com.e201.client.service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,26 +67,24 @@ public class OcrService {
 		Result bizLicense = responseBody.getImages().getFirst().getBizLicense().getResult();
 
 		String taxType = bizLicense.getTaxType().getFirst().getText();
-		System.out.println(taxType);
-		String companyName;
+		String businessName;
 		switch (taxType) {
 			case "법인사업자" -> {
-				companyName = bizLicense.getCorpName().getFirst().getText();
+				businessName = bizLicense.getCorpName().getFirst().getText();
 			}
 			case "일반과세자", "간이과세자" -> {
-				companyName = bizLicense.getCompanyName().getFirst().getText();
+				businessName = bizLicense.getCompanyName().getFirst().getText();
 			}
 			default -> throw new IllegalStateException("Unexpected value: " + taxType);
 		}
 
 		String repName = bizLicense.getRepName().getFirst().getText();
 		String openDate = bizLicense.getOpenDate().getFirst().getText();
-		String bisType = bizLicense.getBisType().getFirst().getText();
-		String bisItem = bizLicense.getBisItem().getFirst().getText();
-		String bisAddress = bizLicense.getBisAddress().getFirst().getText();
+		String businessType = bizLicense.getBisType().getFirst().getText();
+		String address = bizLicense.getBisAddress().getFirst().getText();
 		String registerNumber= bizLicense.getRegisterNumber().getFirst().getText();
 
-		return new LicenseCreateResponse(repName, companyName, registerNumber, openDate, bisType, bisItem, bisAddress);
+		return new LicenseCreateResponse(repName, businessName, registerNumber, address, openDate, businessType);
 	}
 
 	private String createRequestBody(MultipartFile file) {

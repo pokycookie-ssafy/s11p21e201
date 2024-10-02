@@ -1,24 +1,24 @@
 package com.e201.client.controller.response;
 
+import java.util.Date;
+
 import lombok.Getter;
 
 @Getter
 public class LicenseCreateResponse {
-	private String representationName;
-	private String companyName;
+	private String repName;
+	private String businessName;
+	private String address;
 	private String registerNumber;
 	private String openDate;
-	private String bisType;
-	private String bisItem;
-	private String bisAddress;
+	private String businessType;
 
-	public LicenseCreateResponse(String representationName,String companyName, String registerNumber, String openDate, String bisType, String bisItem, String bisAddress) {
-		this.representationName = representationName;
-		this.companyName = companyName;
+	public LicenseCreateResponse(String repName,String businessName, String registerNumber, String address, String openDate, String businessType) {
+		this.repName = repName;
+		this.businessName = businessName;
 		this.registerNumber = registerNumber;
+		this.address = address;
 		this.openDate = openDate;
-		this.bisType = bisType;
-		this.bisItem = bisItem;
-		this.bisAddress = bisAddress;
+		this.businessType = businessType;
 	}
 }
