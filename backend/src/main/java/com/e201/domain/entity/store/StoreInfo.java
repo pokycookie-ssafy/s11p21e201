@@ -42,9 +42,12 @@ public class StoreInfo extends BaseEntity {
 	@Column(name = "rep_name")
 	private String representativeName;
 
+	@Column(name="open_date")
+	private  String openDate;
+
 	@Builder
 	public StoreInfo(UUID id, String registerNumber, String name, String phone, String businessType,
-		String businessAddress, String representativeName) {
+		String businessAddress, String representativeName, String openDate) {
 		this.id = id;
 		this.registerNumber = registerNumber;
 		this.name = name;
@@ -52,16 +55,18 @@ public class StoreInfo extends BaseEntity {
 		this.businessType = businessType;
 		this.businessAddress = businessAddress;
 		this.representativeName = representativeName;
+		this.openDate = openDate;
 	}
 
 	public void update( String registerNumber, String name, String phone, String businessType,
-		String businessAddress, String representativeName) {
+		String businessAddress, String representativeName, String openDate) {
 		this.registerNumber = registerNumber;
 		this.name = name;
 		this.phone = phone;
 		this.businessType = businessType;
 		this.businessAddress = businessAddress;
 		this.representativeName = representativeName;
+		this.openDate= openDate;
 	}
 
 

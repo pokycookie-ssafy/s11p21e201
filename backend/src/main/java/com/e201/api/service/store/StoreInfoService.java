@@ -45,7 +45,7 @@ public class StoreInfoService {
 		StoreInfo updateEntity = findEntity(storeInfoId);
 		updateEntity.update(storeInfoUpdateRequest.getLicenseNo(),storeInfoUpdateRequest.getName(),
 			storeInfoUpdateRequest.getPhone(), storeInfoUpdateRequest.getCategory(),
-			storeInfoUpdateRequest.getAddress(), storeInfoUpdateRequest.getOwnerName());
+			storeInfoUpdateRequest.getAddress(), storeInfoUpdateRequest.getOwnerName(), storeInfoUpdateRequest.getOpenDate());
 		return new StoreInfoUpdateResponse(updateEntity.getId());
 	}
 
