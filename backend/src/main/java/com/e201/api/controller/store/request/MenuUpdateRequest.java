@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NotBlank
 public class MenuUpdateRequest {
 
-	private String menuName;
+	private String name;
 	private int price;
 	private String category;
 
 	@Builder
 	private MenuUpdateRequest(String menuName, int price, String category) {
-		this.menuName= menuName;
+		this.name= menuName;
 		this.price = price;
 		this.category=category;
 	}
