@@ -2,6 +2,8 @@ package com.e201.domain.entity.company;
 
 import java.util.UUID;
 
+import com.e201.domain.entity.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CompanyAccount {
+public class CompanyAccount extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
