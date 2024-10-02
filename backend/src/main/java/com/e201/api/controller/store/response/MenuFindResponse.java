@@ -12,8 +12,10 @@ public class MenuFindResponse {
 	private UUID id;
 	private String menuName;
 	private int price;
+	private String category;
 
 	@Builder
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	public MenuFindResponse(final UUID id, final String menuName, final int price) {
@@ -23,8 +25,12 @@ public class MenuFindResponse {
 =======
 	public MenuFindResponse(final UUID id, final String menuName, final int price) {
 >>>>>>> ad44aae ([#31] feat: 식당 메뉴 리스트 조회 기능 구현)
+=======
+	public MenuFindResponse( UUID id, String menuName,int price, String category) {
+>>>>>>> d51eb1b ([#55] feat: menu 생성, 수정 request 변경, 메뉴리스트 조회 response 변경)
 		this.id = id;
 		this.menuName = menuName;
 		this.price = price;
+		this.category = category;
 	}
 }
