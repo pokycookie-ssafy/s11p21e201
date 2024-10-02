@@ -1,30 +1,72 @@
 {
-  "employee_management": "Member Account",
-  "create_employee": "Create Account",
-  "manager_management": "Manager Manangement",
-  "create_manager": "Create Account",
-  "employee_informantion": "Employee Information",
+  "employee_management": "Employee Account Management",
+  "create_employee": "Add Employee Account",
+  "manager_management": "Manager (Department) Management",
+  "create_manager": "Add Manager Account",
+  "employee_information": "Employee Information",
   "manager_information": "Manager Account Information",
   "employee_name": "Employee Name",
   "department_name": "Department Name",
-  "meal_allowance_amount": "Meal Allowance Amount",
+  "meal_allowance_amount": "Meal Allowance Usage",
   "delete_account": "Delete Account",
-  "create": "create",
-  "employee_number": "Employee Number",
-  "name": "Name",
-  "department_number": "Department Number",
-  "approve": "accept",
-  "spent_amount": "Spent Amount",
+  "create": "Create",
+  "employee_number": "Employee ID",
+  "department_number": "Department Code",
+  "approve": "Approve",
+  "spent_amount": "Amount Used",
   "allotted_amount": "Allotted Amount",
-  "account_created_date": "Creation Date",
+  "account_created_date": "Account Created Date",
   "edit_info": "Edit",
   "delete": "Delete",
   "accept_all": "Accept All",
   "reject_all": "Reject All",
-  "sequence_number": "#",
-  "add": "add",
+  "sequence_number": "Sequence Number",
+  "add": "Add",
   "upload_excel": "Upload Excel File",
   "create_account": "Create Account",
-  "selected": " selected",
-  "save": "save"
+  "selected": "items selected",
+  "save": "Save",
+
+  "breadcrumbs": {
+    "title": "Employee Management",
+    "management": "Management",
+    "member_management": "Employee Management",
+    "create_member": "Create Employee Account"
+  },
+  "button": {
+    "create_member": "Create Employee Account",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "add_member": "Add Employee",
+    "create": "Create"
+  },
+  "field": {
+    "department": "Department Name",
+    "employee_name": "Employee Name",
+    "employee_number": "Employee Number"
+  },
+  "unit": {
+    "won": "KRW"
+  },
+  "label": {
+    "name_search": "Search Employee Name",
+    "department_name": "Search Department Name",
+    "selected": "{0} items selected",
+    "all": "All",
+    "enter_employee_no": "Please enter the Employee Number",
+    "enter_employee_name": "Please enter the Employee Name",
+    "upload_excel": "Please upload the employee Excel file"
+  },
+  "tooltip": {
+    "delete_all": "Delete All",
+    "delete": "Delete"
+  },
+  "dialog": {
+    "delete_all": "Delete",
+    "delete_all_content": "Are you sure you want to delete {0} employees?",
+    "delete_content": "Are you sure you want to delete employee '{0} ({1})'?"
+  },
+  "toast": {
+    "delete": "Delete successfully"
+  }
 }

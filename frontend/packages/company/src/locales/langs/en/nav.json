@@ -21,15 +21,15 @@
       "request": "Contract Request",
       "history": "Contract Log"
     },
-    "settlement": "Settlement"
+    "settlement": {
+      "title": "Settlement Management",
+      "settlement_date": "Management by Date",
+      "settlement_store": "Management by Restaurant"
+    }
   },
   "payment": {
     "title": "Payment",
     "payment": "Payment Management"
-  },
-  "settlement": {
-    "title": "Settlement",
-    "settlement": "Settlement Management"
   },
   "setting": {
     "title": "Settings",
