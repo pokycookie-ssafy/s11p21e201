@@ -4,6 +4,7 @@ import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -140,4 +141,10 @@ public class StoreService {
 		return store.getStoreInfo().getId();
 	}
 
+	public void checkDuplication(String email) {
+		Optional<Store> checkedEmail = storeRepository.findByEmail(email);
+		if (checkedEmail.isPresent()) {
+			throw new RuntimeException("duplicated email");
+		}
+	}
 }
