@@ -52,6 +52,6 @@ public class Payment extends BaseEntity {
 		this.storeName = storeName;
 		this.employeeId = employeeId;
 		this.totalAmount = totalAmount;
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDateTime.now();
 	}
 }

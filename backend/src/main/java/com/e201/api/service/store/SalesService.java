@@ -22,6 +22,7 @@ import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Sales;
+import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.company.DepartmentRepository;
 import com.e201.domain.repository.store.MenuRepository;
 import com.e201.domain.repository.store.SalesRepository;
@@ -37,6 +38,7 @@ public class SalesService {
 	private final ContractService contractService;
 	private final MenuService menuService;
 	private final PaymentService paymentService;
+	private final StoreService storeService;
 
 	public Sales findEntity(UUID id) {
 		return salesRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
@@ -56,7 +58,8 @@ public class SalesService {
 			createSales(menu, company.getId());
 		}
 		//contract_id, employee_id, totalAmount
-		paymentService.save(contract.getId(), storePaymentCreateRequest.getEmployeeId(), storeId, storePaymentCreateRequest.getTotalAmount());
+		Store store = storeService.findEntity(storeId);
+		paymentService.save(contract.getId(), storePaymentCreateRequest.getEmployeeId(), store, storePaymentCreateRequest.getTotalAmount());
 	}
 
 	public void createSales(Menu menu, UUID companyId){
