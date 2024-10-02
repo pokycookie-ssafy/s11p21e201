@@ -12,6 +12,7 @@ import com.e201.api.controller.payment.response.EmployeePaymentResponse;
 import com.e201.api.controller.payment.response.EmployeeTotalPaymentResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.payment.Payment;
+import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.payment.PaymentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -41,11 +42,12 @@ public class PaymentService {
 			condition.getEndDate(), pageable);
 	}
 
-	public void save(UUID contractId,UUID employeeId, UUID storeId,Long totalAmount){
+	public void save(UUID contractId,UUID employeeId, Store store,Long totalAmount){
 		Payment payment = Payment.builder()
 				.contractId(contractId)
 				.employeeId(employeeId)
-				.storeId(storeId)
+				.storeId(store.getId())
+				.storeName(store.getStoreInfo().getName())
 				.totalAmount(totalAmount)
 				.build();
 		paymentRepository.save(payment);
