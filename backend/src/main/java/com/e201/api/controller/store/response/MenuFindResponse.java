@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MenuFindResponse {
 	private UUID id;
-	private String menuName;
+	private String name;
 	private int price;
 	private String category;
 
 	@Builder
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -28,8 +29,11 @@ public class MenuFindResponse {
 =======
 	public MenuFindResponse( UUID id, String menuName,int price, String category) {
 >>>>>>> d51eb1b ([#55] feat: menu 생성, 수정 request 변경, 메뉴리스트 조회 response 변경)
+=======
+	public MenuFindResponse(UUID id, String name, int price, String category) {
+>>>>>>> 9b4834a ([#70] chore: 필드명 변경)
 		this.id = id;
-		this.menuName = menuName;
+		this.name = name;
 		this.price = price;
 		this.category = category;
 	}

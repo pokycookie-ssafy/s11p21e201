@@ -43,7 +43,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		MenuCreateResponse response = new MenuCreateResponse(menuId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(menuService).create(any(),any(), any(MenuCreateRequest.class));
+		doReturn(response).when(menuService).create(any(), any(), any(MenuCreateRequest.class));
 
 		//expected
 		mockMvc.perform(post("/stores/menus")
@@ -54,6 +54,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(status().isCreated())
 			.andExpect(content().json(responseJson));
 	}
+
 	@DisplayName("메뉴를 수정한다.")
 	@Test
 	void modify_menu_success() throws Exception {
@@ -67,7 +68,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		doReturn(response).when(menuService).modify(any(), any(), any(MenuUpdateRequest.class));
 
 		//expected
-		mockMvc.perform(put("/stores/menus/"+menuId)
+		mockMvc.perform(put("/stores/menus/" + menuId)
 				.contentType(APPLICATION_JSON)
 				.content(requestJson)
 				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
@@ -89,7 +90,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		doReturn(response).when(menuService).delete(any(), any());
 
 		//expected
-		mockMvc.perform(delete("/stores/menus/"+menuId)
+		mockMvc.perform(delete("/stores/menus/" + menuId)
 				.contentType(APPLICATION_JSON)
 				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
 			)
@@ -105,7 +106,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		String responseJson = objectMapper.writeValueAsString(response);
 		doReturn(response).when(menuService).findOne(any());
 
-		mockMvc.perform(get("/stores/menus/"+menuId)
+		mockMvc.perform(get("/stores/menus/" + menuId)
 				.contentType(APPLICATION_JSON)
 			)
 			.andExpect(status().isOk())
@@ -124,7 +125,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 
 		List<MenuFindResponse> menuFindResponseList = lists(storeId);
 		String responseJson = objectMapper.writeValueAsString(menuFindResponseList);
-		doReturn(menuFindResponseList).when(menuService).find(any(),any());
+		doReturn(menuFindResponseList).when(menuService).find(any(), any());
 
 		mockMvc.perform(get("/stores/menus")
 				.contentType(APPLICATION_JSON)
@@ -134,11 +135,11 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
-	private List<MenuFindResponse> lists(UUID storeId){
-		MenuFindResponse mr1= createMenuResponse(UUID.randomUUID());
-		MenuFindResponse mr2= createMenuResponse(UUID.randomUUID());
-		MenuFindResponse mr3= createMenuResponse(UUID.randomUUID());
-		List<MenuFindResponse> menuFindResponseList= new ArrayList<>();
+	private List<MenuFindResponse> lists(UUID storeId) {
+		MenuFindResponse mr1 = createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr2 = createMenuResponse(UUID.randomUUID());
+		MenuFindResponse mr3 = createMenuResponse(UUID.randomUUID());
+		List<MenuFindResponse> menuFindResponseList = new ArrayList<>();
 		menuFindResponseList.add(mr1);
 		menuFindResponseList.add(mr2);
 		menuFindResponseList.add(mr3);
@@ -153,12 +154,12 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 	private MenuFindResponse createMenuResponse(UUID menuId) {
 		return MenuFindResponse.builder()
 			.id(menuId)
-			.menuName("메뉴이름")
+			.name("메뉴이름")
 			.category("음료")
 			.price(5000).build();
 	}
 
-	private MenuUpdateRequest createMenuUpdateRequest(){
+	private MenuUpdateRequest createMenuUpdateRequest() {
 		return MenuUpdateRequest.builder()
 			.menuName("메뉴이름")
 			.category("음료")
