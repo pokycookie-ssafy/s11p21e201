@@ -1,5 +1,8 @@
 export const BASE_URL = 'https://sanedaejangbu.site/api'
 
+export type ContractUserCondition = 'all' | 'sender' | 'receiver'
+export type ContractStatus = 'all' | 'in' | 'complete' | 'cancel' | 'reject'
+
 const api = {
   auth: {
     signUp: '/stores',
@@ -8,23 +11,28 @@ const api = {
     check: '/stores/auth/check',
     unregister: '/stores',
   },
-  signUp: {
-    bank: '/bank',
-  },
-  management: {
-    payment: '/stores/menus/sales',
-  },
   menu: {
     list: '/stores/menus',
+    create: '/stores/menus',
+    edit: (menuId: string) => `/stores/menus/${menuId}`,
+    delete: (menuId: string) => `/stores/menus/${menuId}`,
+  },
+  payment: {
+    list: (start: string, end: string, companyId?: string) =>
+      `/payments/stores?start=${start}&end=${end}&company=${companyId}`,
+    create: '/payments/stores',
+    delete: (paymentId: string) => `/payments/stores/${paymentId}`,
   },
   contract: {
-    list: '/stores/contracts',
-    received: '/stores/contracts/received',
-    send: '/stores/contracts/send',
-    history: '/stores/contracts/history',
+    list: (userCond: ContractUserCondition, status: ContractStatus) =>
+      `/contracts?userCond=${userCond}&status=${status}`,
+    create: `/contracts`,
+    response: (contractId: string) => `/contracts/${contractId}`,
+    terminate: (contractId: string) => `/contracts/${contractId}`,
   },
   settlement: {
-    list: '/stores/settlements',
+    list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,
+    invoice: (settlementId: string) => `/settlements/${settlementId}/invoice`,
   },
   common: {
     ocr: '/ocr/license',
