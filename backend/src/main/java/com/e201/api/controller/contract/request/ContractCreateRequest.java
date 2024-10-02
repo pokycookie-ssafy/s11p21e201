@@ -6,6 +6,7 @@ import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.ContractStatus;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ContractCreateRequest {
 
 	@NotBlank
+	// @Size(min = 36)
 	private String senderId;
 
 	@NotBlank
@@ -30,10 +32,10 @@ public class ContractCreateRequest {
 		this.settlementDay = settlementDay;
 	}
 
-	public Contract toEntity(String companyId, String storeId, ContractStatus status) {
+	public Contract toEntity(UUID companyId, UUID storeId, ContractStatus status) {
 		return Contract.builder()
-			.companyId(UUID.fromString(companyId))
-			.storeId(UUID.fromString(storeId))
+			.companyId(companyId)
+			.storeId(storeId)
 			.settlementDay(settlementDay)
 			.status(status)
 			.build();
