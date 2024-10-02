@@ -25,7 +25,7 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 
-	public Payment findDomain(UUID id){
+	public Payment findEntity(UUID id) {
 		return paymentRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
