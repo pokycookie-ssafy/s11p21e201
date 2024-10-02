@@ -14,8 +14,10 @@ const api = {
   menu: {
     list: '/stores/menus',
     create: '/stores/menus',
-    edit: (menuId: string) => `/stores/menus/${menuId}`,
-    delete: (menuId: string) => `/stores/menus/${menuId}`,
+    editWithId: (menuId: string) => `/stores/menus/${menuId}`,
+    deleteWithId: (menuId: string) => `/stores/menus/${menuId}`,
+    delete: '/stores/menus',
+    edit: '/stores/menus',
   },
   payment: {
     list: (start: string, end: string, companyId?: string) =>

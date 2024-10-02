@@ -1,4 +1,4 @@
-import type { IMenu } from '@/types/menu'
+import type { IMenu, IMenuCreateRequest } from '@/types/menu'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import { toast } from 'sonner'
@@ -9,8 +9,9 @@ import { useTranslate } from '@/locales'
 import { useRef, useMemo, useState } from 'react'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import NewMenuModal from '@/sections/menu-management/new-menu-modal'
+import EditMenuModal from '@/sections/menu-management/edit-menu-modal'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -36,10 +37,12 @@ export default function MenuManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
   const newMenuModal = useBoolean()
+  const editMenuModal = useBoolean()
   const deleteConfirm = useBoolean()
   const deleteAllConfirm = useBoolean()
 
   const menuForDelete = useRef<IMenu | null>(null)
+  const menuForEdit = useRef<IMenu | null>(null)
 
   const queryClient = useQueryClient()
 
@@ -49,6 +52,77 @@ export default function MenuManagementView() {
   }
 
   const { data: menus, isPending, isError } = useQuery({ queryKey: [api.menu.list], queryFn })
+  const { mutate: createMenu } = useMutation({
+    mutationKey: [api.menu.create],
+    mutationFn: async ({ name, price, category }: IMenuCreateRequest) => {
+      const response = await axios.post(api.menu.create, { name, price, category })
+      return response.data
+    },
+  })
+  const { mutate: deleteMenu } = useMutation({
+    mutationKey: [api.menu.delete],
+    mutationFn: async (menuId: string) => {
+      const response = await axios.delete(api.menu.deleteWithId(menuId))
+      return response.data
+    },
+  })
+  const { mutate: editMenu } = useMutation({
+    mutationKey: [api.menu.edit],
+    mutationFn: async (menuId: string) => {
+      const response = await axios.delete(api.menu.editWithId(menuId))
+      return response.data
+    },
+  })
+
+  const createMenuHandler = (req: IMenuCreateRequest) => {
+    createMenu(req, {
+      onSuccess: () => {
+        toast.success(t('toast.create'))
+        queryClient.invalidateQueries({ queryKey: [api.menu.list] })
+        newMenuModal.onFalse()
+      },
+    })
+  }
+
+  const deleteMenuHandler = () => {
+    if (!menuForDelete.current) {
+      return
+    }
+    deleteMenu(menuForDelete.current.id, {
+      onSuccess: () => {
+        toast.success(t('toast.delete'))
+        queryClient.invalidateQueries({ queryKey: [api.menu.list] })
+        deleteConfirm.onFalse()
+        deleteAllConfirm.onFalse()
+      },
+    })
+  }
+
+  const deleteAllHandler = () => {
+    selected.forEach((id) => {
+      deleteMenu(id as string, {
+        onSuccess: () => {
+          toast.success(t('toast.delete'))
+          queryClient.invalidateQueries({ queryKey: [api.menu.list] })
+          deleteConfirm.onFalse()
+          deleteAllConfirm.onFalse()
+        },
+      })
+    })
+  }
+
+  const editMenuHandler = () => {
+    if (!menuForEdit.current) {
+      return
+    }
+    editMenu(menuForEdit.current.id, {
+      onSuccess: () => {
+        toast.success(t('toast.edit'))
+        queryClient.invalidateQueries({ queryKey: [api.menu.list] })
+        editMenuModal.onFalse()
+      },
+    })
+  }
 
   const filteredMenus = useMemo<IMenu[]>(() => {
     if (!menus) {
@@ -78,16 +152,14 @@ export default function MenuManagementView() {
     return Array.from(categorySet)
   }, [menus])
 
-  const deleteHandler = (menu: IMenu) => {
-    menuForDelete.current = menu
-    deleteConfirm.onTrue()
+  const editButtonHandler = (menu: IMenu) => {
+    menuForEdit.current = menu
+    editMenuModal.onTrue()
   }
 
-  const deleteSubmitHandler = () => {
-    toast.success(t('toast.delete'))
-    queryClient.invalidateQueries({ queryKey: [api.menu.list] })
-    deleteConfirm.onFalse()
-    deleteAllConfirm.onFalse()
+  const deleteButtonHandler = (menu: IMenu) => {
+    menuForDelete.current = menu
+    deleteConfirm.onTrue()
   }
 
   const columns: GridColDef<IMenu>[] = [
@@ -106,12 +178,12 @@ export default function MenuManagementView() {
       align: 'left',
       getActions: (params) => [
         <Tooltip title={t('tooltip.edit')} disableInteractive>
-          <IconButton>
+          <IconButton onClick={() => editButtonHandler(params.row)}>
             <Iconify icon="solar:pen-linear" />
           </IconButton>
         </Tooltip>,
         <Tooltip title={t('tooltip.delete')} disableInteractive>
-          <IconButton color="error" onClick={() => deleteHandler(params.row)}>
+          <IconButton color="error" onClick={() => deleteButtonHandler(params.row)}>
             <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
           </IconButton>
         </Tooltip>,
@@ -219,17 +291,25 @@ export default function MenuManagementView() {
         open={newMenuModal.value}
         onClose={newMenuModal.onFalse}
         categories={categories}
+        onSubmit={createMenuHandler}
+      />
+      <EditMenuModal
+        data={menuForEdit.current}
+        open={editMenuModal.value}
+        onClose={editMenuModal.onFalse}
+        categories={categories}
+        onSubmit={editMenuHandler}
       />
       <DialogDelete
         open={deleteConfirm.value}
         onClose={deleteConfirm.onFalse}
-        onSubmit={deleteSubmitHandler}
-        content={m(t('dialog.delete_content'), [menuForDelete.current?.name])}
+        onSubmit={deleteMenuHandler}
+        content={m(t('dialog.delete_content'), [menuForDelete.current?.name ?? ''])}
       />
       <DialogDelete
         open={deleteAllConfirm.value}
         onClose={deleteAllConfirm.onFalse}
-        onSubmit={deleteSubmitHandler}
+        onSubmit={deleteAllHandler}
         title={t('dialog.delete_all')}
         content={m(t('dialog.delete_all_content'), [selected.length])}
       />
