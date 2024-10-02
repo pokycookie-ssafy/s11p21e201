@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.store.request.SalesCreateRequest;
+import com.e201.api.controller.store.request.StorePaymentCreateRequest;
 import com.e201.api.controller.store.response.SalesCreateResponse;
 import com.e201.api.service.store.SalesService;
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,9 +21,10 @@ import lombok.RequiredArgsConstructor;
 public class SalesController {
 	private final SalesService salesService;
 
-	@PostMapping("/stores/sales")
-	public ResponseEntity<SalesCreateResponse> create(@RequestBody SalesCreateRequest salesRequest){
-		SalesCreateResponse response = salesService.create(salesRequest);
-		return ResponseEntity.status(CREATED).body(response);
+	@PostMapping("/payments/stores")
+	public ResponseEntity<Void> payment(@Auth AuthInfo authInfo,
+		@RequestBody StorePaymentCreateRequest storePaymentCreateRequest) {
+		salesService.createPayment(storePaymentCreateRequest, authInfo.getId());
+		return ResponseEntity.ok().build();
 	}
 }
