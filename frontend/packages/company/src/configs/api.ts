@@ -5,6 +5,7 @@ export type ContractStatus = 'all' | 'in' | 'complete' | 'cancel' | 'reject'
 
 const api = {
   auth: {
+    signUpInfo: '/companies/info',
     signUp: '/companies',
     login: '/companies/auth',
     logout: '/companies/auth',

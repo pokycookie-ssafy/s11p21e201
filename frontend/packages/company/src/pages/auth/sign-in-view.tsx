@@ -33,7 +33,7 @@ export default function SignInView() {
   })
   const { control } = formMethod
 
-  const submitHandler = async (form: any) => {
+  const submitHandler = async (form: IForm) => {
     try {
       const { data, status } = await axios.post(api.auth.login, form)
       if (status === 201) {
@@ -92,12 +92,9 @@ export default function SignInView() {
         </Stack>
 
         <Stack spacing={1} width={1}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" justifyContent="flex-end" alignItems="center">
             <Link to={paths.auth.signUp}>
               <Typography variant="subtitle2">{t('button.sign_up')}</Typography>
-            </Link>
-            <Link to={paths.auth.signUp}>
-              <Typography variant="subtitle2">{t('button.forgot_account')}</Typography>
             </Link>
           </Stack>
 
