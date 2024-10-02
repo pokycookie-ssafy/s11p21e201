@@ -145,6 +145,18 @@ class StoreServiceTest {
 
 		assertThatThrownBy(() -> sut.delete(store.getId(), RoleType.COMPANY)).isInstanceOf(RuntimeException.class);
 	}
+	
+	@DisplayName("사업자등록번호를 통해 Store을 조회한다.")
+	@Test
+	void find_store_by_registerNo(){
+		//given
+		StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest = createStoreAndStoreInfoCreateRequest();
+		sut.create(storeAndStoreInfoCreateRequest);
+
+		//when
+		Store store = sut.findStoreIdByRegisterNo(storeAndStoreInfoCreateRequest.getRegisterNumber());
+		assertThat(store.getId()).isNotNull();
+	}
 
 	
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
