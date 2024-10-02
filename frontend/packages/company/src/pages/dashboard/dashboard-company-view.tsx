@@ -33,13 +33,9 @@ export default function DashboardCompanyView() {
       <TotalCompany data={data} />
       <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
         <Box sx={{ flex: 1 }}>
-          {' '}
-          {/* DepartmentCompany가 차지할 공간 */}
           <DepartmentCompany data={data} />
         </Box>
         <Box sx={{ flex: 1 }}>
-          {' '}
-          {/* RestaurantCompany가 차지할 공간 */}
           <RestaurantCompany data={data} />
         </Box>
       </Stack>

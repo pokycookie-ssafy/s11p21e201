@@ -11,6 +11,7 @@ import {
   Stack,
   Select,
   MenuItem,
+  useTheme,
   InputLabel,
   Typography,
   FormControl,
@@ -65,9 +66,12 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
         show: false,
       },
     },
+    theme: {
+      palette: 'palette1', // ApexCharts의 내장 팔레트를 사용
+    },
     labels: restaurants,
     dataLabels: {
-      enabled: false, // 원그래프 조각 위의 라벨 비활성화
+      enabled: false,
     },
     tooltip: {
       y: {
@@ -82,7 +86,7 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
     <Card>
       <Stack p={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" align="left" sx={{ flex: 1 }}>
+          <Typography variant="h6" align="left" sx={{ flex: 1 }} pl={1}>
             식당별 식대 사용 총액
           </Typography>
 

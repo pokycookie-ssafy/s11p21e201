@@ -4,7 +4,16 @@ import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
 import React, { useState, useEffect } from 'react'
 
-import { Box, Card, Stack, Select, MenuItem, Typography, FormControl } from '@mui/material'
+import {
+  Box,
+  Card,
+  Stack,
+  Select,
+  MenuItem,
+  useTheme,
+  Typography,
+  FormControl,
+} from '@mui/material'
 
 interface TotalCompanyProps {
   data: IDashboardPayment[]
@@ -15,6 +24,8 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
   const [xaxisRange, setXaxisRange] = useState<{ min?: number; max?: number }>({})
+
+  const theme = useTheme()
 
   useEffect(() => {
     if (data.length > 0) {
@@ -72,6 +83,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         show: false,
       },
     },
+    colors: [theme.palette.primary.main],
     xaxis: {
       categories,
       min: xaxisRange.min, // 최소 범위 (시작)
@@ -79,17 +91,18 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     },
     yaxis: {
       min: 0,
-      title: {
-        text: '총 결제액 (원)',
-      },
       labels: {
         formatter(value: number) {
-          return `${value.toLocaleString()}원`
+          return `${value.toLocaleString()}`
         },
       },
     },
     stroke: {
       curve: 'smooth',
+      width: 3,
+    },
+    grid: {
+      strokeDashArray: 3,
     },
     tooltip: {
       y: {
@@ -102,8 +115,8 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
 
   const chartSeries = [
     {
-      name: '총 결제액',
       data: seriesData,
+      name: '',
     },
   ]
 
