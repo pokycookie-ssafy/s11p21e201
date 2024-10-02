@@ -38,8 +38,24 @@ export default function SettlementDateView() {
     { label: t('tab.upload'), value: 'upload' },
   ]
 
+  const { start, end } = useMemo(
+    () => ({
+      start: dayjs()
+        .year(year)
+        .month(month - 1)
+        .startOf('month')
+        .format(),
+      end: dayjs()
+        .year(year)
+        .month(month - 1)
+        .endOf('month')
+        .format(),
+    }),
+    [month, year]
+  )
+
   const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list)
+    const response = await axios.get<ISettlementResponse[]>(api.settlement.list(start, end))
     return response.data
   }
 

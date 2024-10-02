@@ -34,7 +34,7 @@ export default function ContractNowManagementView() {
   const deleteAllConfirm = useBoolean()
 
   const queryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.list)
+    const response = await axios.get<IContractResponse[]>(api.contract.list('all', 'complete'))
     return response.data
   }
 

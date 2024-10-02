@@ -1,4 +1,4 @@
-import type { IBankResponse, ISignUpResponse } from '@/types/sign-up'
+import type { ILicenseOcr } from '@/types/ocr'
 
 import api from '@/configs/api'
 import axios from '@/configs/axios'
@@ -8,16 +8,7 @@ import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
-import {
-  Box,
-  Stack,
-  Button,
-  useTheme,
-  MenuItem,
-  Typography,
-  useMediaQuery,
-  CircularProgress,
-} from '@mui/material'
+import { Box, Stack, Button, useTheme, Typography, useMediaQuery } from '@mui/material'
 
 import { Upload, FormInput } from '@e201/ui'
 
@@ -68,7 +59,7 @@ export default function SignUpFormView({ onNext }: IProps) {
   const { control, watch } = formMethod
 
   const queryFn = async () => {
-    const response = await axios.post<ISignUpResponse>(api.common.ocr, {})
+    const response = await axios.post<ILicenseOcr>(api.common.ocr, {})
     return response.data
   }
 
@@ -84,22 +75,6 @@ export default function SignUpFormView({ onNext }: IProps) {
     gcTime: Infinity,
   })
 
-  const queryFn2 = async () => {
-    const response = await axios.get<IBankResponse[]>(api.signUp.bank)
-    return response.data
-  }
-
-  const {
-    data: bankData,
-    isPending: bankPending,
-    isError: bankError,
-  } = useQuery({
-    queryKey: [api.signUp.bank],
-    queryFn: queryFn2,
-    staleTime: Infinity,
-    gcTime: Infinity,
-  })
-
   const fileChangeHandler = (files: File[]) => {
     if (files.length === 0) {
       setFile(null)
@@ -111,28 +86,6 @@ export default function SignUpFormView({ onNext }: IProps) {
   const submitHandler = () => {
     onNext()
   }
-
-  const BankDataOptions = useMemo(() => {
-    if (bankPending) {
-      return (
-        <Stack p={0.5} justifyContent="center" alignItems="center">
-          <CircularProgress size={20} />
-        </Stack>
-      )
-    }
-    if (bankError) {
-      return (
-        <Stack p={0.5} justifyContent="center" alignItems="center">
-          <Typography>{t('error.bank')}</Typography>
-        </Stack>
-      )
-    }
-    return bankData.map((option, i) => (
-      <MenuItem key={i} value={option.bankCode}>
-        {option.bankName}
-      </MenuItem>
-    ))
-  }, [bankData, bankError, bankPending, t])
 
   const BusinessLicenseFormRender = useMemo(() => {
     if (!file) {
@@ -200,16 +153,6 @@ export default function SignUpFormView({ onNext }: IProps) {
               label={t('form.phone')}
               type="tel"
             />
-          </Stack>
-
-          <Stack spacing={2} width={1} sx={{ mb: 2 }}>
-            <Typography variant="subtitle1" sx={{ pl: 1 }}>
-              {t('title.account')}
-            </Typography>
-            <FormInput name="bank" control={control} label={t('form.bank')} select>
-              {BankDataOptions}
-            </FormInput>
-            <FormInput name="account" control={control} label={t('form.account')} />
           </Stack>
         </Stack>
 

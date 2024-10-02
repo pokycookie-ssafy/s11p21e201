@@ -23,11 +23,11 @@ export default function ContractHistoryManagementView() {
   const [companySearch, setCompanySearch] = useState<string>('')
 
   const queryFn = async () => {
-    const response = await axios.get<IContractHistory[]>(api.contract.history)
+    const response = await axios.get<IContractHistory[]>(api.contract.list('all', 'all'))
     return response.data
   }
 
-  const { data, isPending } = useQuery({ queryKey: [api.contract.history], queryFn })
+  const { data, isPending } = useQuery({ queryKey: [api.contract.list('all', 'all')], queryFn })
 
   const TABS = [
     { label: t('tab.all'), value: null },

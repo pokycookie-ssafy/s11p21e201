@@ -36,7 +36,7 @@ export default function SettlementCompanyView() {
   ]
 
   const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list)
+    const response = await axios.get<ISettlementResponse[]>(api.settlement.list('', ''))
     return response.data
   }
 

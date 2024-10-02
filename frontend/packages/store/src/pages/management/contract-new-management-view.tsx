@@ -1,4 +1,4 @@
-import type { ISignUpResponse } from '@/types/sign-up'
+import type { ILicenseOcr } from '@/types/ocr'
 
 import api from '@/configs/api'
 import paths from '@/configs/paths'
@@ -18,7 +18,7 @@ export default function ContractNewManagementView() {
   const [file, setFile] = useState<File | null>(null)
 
   const queryFn = async () => {
-    const response = await axios.post<ISignUpResponse>(api.common.ocr, {})
+    const response = await axios.post<ILicenseOcr>(api.common.ocr, {})
     return response.data
   }
 

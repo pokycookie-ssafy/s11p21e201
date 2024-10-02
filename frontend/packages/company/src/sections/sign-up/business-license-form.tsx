@@ -1,18 +1,11 @@
+import type { ILicenseOcr } from '@/types/ocr'
+
 import { useTranslate } from '@/locales'
 
 import { Box, Stack, useTheme, TextField, useMediaQuery, CircularProgress } from '@mui/material'
 
-interface ILicense {
-  companyName: string
-  repName: string
-  address: string
-  registerNumber: string
-  type: string
-  openDate: string
-}
-
 interface IProps {
-  license?: ILicense
+  license?: ILicenseOcr
   isPending?: boolean
 }
 
@@ -38,7 +31,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.company_name')}
-            value={license?.companyName ?? ''}
+            value={license?.businessName ?? ''}
             size="small"
             aria-readonly
             disabled={isPending}
@@ -65,7 +58,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.type')}
-            value={license?.type ?? ''}
+            value={license?.businessType ?? ''}
             size="small"
             aria-readonly
             disabled={isPending}
