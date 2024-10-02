@@ -170,7 +170,6 @@ export function PaymentManagementView() {
               alignItems="center"
               px={2}
               py={1}
-              zIndex={1}
               bgcolor="background.paper"
               sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
             >
@@ -203,6 +202,7 @@ export function PaymentManagementView() {
           />
         </Card>
       </Box>
+
       <DialogDelete
         open={deleteAllConfirm.value}
         onClose={deleteAllConfirm.onFalse}

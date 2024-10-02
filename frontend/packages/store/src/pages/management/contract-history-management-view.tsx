@@ -12,7 +12,7 @@ import { useQuery } from '@tanstack/react-query'
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, TextField } from '@mui/material'
 
-import { Label, Breadcrumbs } from '@e201/ui'
+import { Label, Typography, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'in' | 'complete' | 'reject' | 'canceled'
 
@@ -68,12 +68,23 @@ export default function ContractHistoryManagementView() {
     return filtered
   }, [companySearch, data, tab])
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<IContractHistory>[] = [
     {
       field: 'companyName',
-      headerName: t('field.company_name'),
       flex: 1,
       minWidth: 150,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('field.company_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.companyName}
+          </Typography>
+        </Stack>
+      ),
     },
     { field: 'companyEmail', headerName: t('field.email'), width: 200 },
     { field: 'companyPhone', headerName: t('field.phone'), width: 150, resizable: false },
