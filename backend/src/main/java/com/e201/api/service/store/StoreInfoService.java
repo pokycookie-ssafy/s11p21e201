@@ -10,6 +10,7 @@ import com.e201.api.controller.store.request.StoreInfoUpdateRequest;
 import com.e201.api.controller.store.response.StoreInfoCreateResponse;
 import com.e201.api.controller.store.response.StoreInfoFindResponse;
 import com.e201.api.controller.store.response.StoreInfoUpdateResponse;
+import com.e201.api.controller.store.response.StoreRegisterNoInfoResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
@@ -33,7 +34,6 @@ public class StoreInfoService {
 	public StoreInfo findEntity(UUID id) {
 		return storeInfoRepository.findById(id).orElseThrow(() -> new RuntimeException("not found Exception"));
 	}
-
 	public StoreInfoFindResponse findOne(UUID storeId, UUID storeInfoId){
 		StoreInfo storeInfo = findEntity(storeInfoId);
 		return createStoreFindResponse(storeId, storeInfo);
