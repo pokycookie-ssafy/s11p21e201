@@ -10,10 +10,12 @@
   "breadcrumbs": {
     "management": "관리",
     "menu_management": "메뉴 관리",
-    "create_menu": "메뉴 추가"
+    "create_menu": "메뉴 추가",
+    "edit_menu": "메뉴 수정"
   },
   "button": {
-    "create_menu": "메뉴 추가"
+    "create_menu": "메뉴 추가",
+    "edit_menu": "메뉴 수정"
   },
   "label": {
     "all": "전체",
@@ -34,6 +36,8 @@
     "delete_all_content": "{0}개의 메뉴를 모두 삭제하시겠습니까?"
   },
   "toast": {
-    "delete": "메뉴가 삭제되었습니다"
+    "create": "메뉴가 생성되었습니다",
+    "delete": "메뉴가 삭제되었습니다",
+    "edit": "메뉴가 수정되었습니다"
   }
 }

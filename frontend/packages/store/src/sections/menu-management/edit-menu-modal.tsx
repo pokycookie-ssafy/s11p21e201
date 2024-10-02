@@ -1,10 +1,10 @@
 import type { ISelectOption } from '@e201/ui'
-import type { IMenuCreateRequest } from '@/types/menu'
+import type { IMenuEditRequest } from '@/types/menu'
 
-import { useState } from 'react'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 
 import { Box, Stack, Dialog, Button } from '@mui/material'
 
@@ -16,22 +16,26 @@ interface IForm {
 }
 
 interface IProps {
+  data: IMenuEditRequest | null
   open: boolean
   onClose: () => void
   categories: string[]
-  onSubmit?: (data: IMenuCreateRequest) => void
+  onSubmit?: (data: IMenuEditRequest) => void
 }
 
-export default function NewMenuModal({ open, onClose, categories, onSubmit }: IProps) {
+export default function EditMenuModal({ data, open, onClose, categories, onSubmit }: IProps) {
   const { t } = useTranslate('menu-management')
 
-  const [category, setCategory] = useState<ISelectOption | null>(null)
+  const [category, setCategory] = useState<ISelectOption | null>({
+    label: data?.category ?? '',
+    value: data?.category ?? '',
+  })
 
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',
     defaultValues: {
-      name: '',
-      price: 0,
+      name: data?.name ?? '',
+      price: data?.price ?? 0,
     },
   })
   const { control } = formMethod
@@ -39,19 +43,32 @@ export default function NewMenuModal({ open, onClose, categories, onSubmit }: IP
   const submitHandler = (form: IForm) => {
     if (onSubmit && category) {
       onSubmit({ name: form.name, price: form.price, category: category.value })
+      onClose()
     }
   }
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+    formMethod.setValue('name', data?.name ?? '')
+    formMethod.setValue('price', data?.price ?? 0)
+    setCategory({
+      label: data?.category ?? '',
+      value: data?.category ?? '',
+    })
+  }, [data, formMethod, open])
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <form onSubmit={formMethod.handleSubmit(submitHandler)} noValidate>
         <Box p={3}>
           <Breadcrumbs
-            title={t('breadcrumbs.create_menu')}
+            title={t('breadcrumbs.edit_menu')}
             routes={[
               { title: t('breadcrumbs.management'), path: paths.management.menu },
               { title: t('breadcrumbs.menu_management'), path: paths.management.menu },
-              { title: t('breadcrumbs.create_menu') },
+              { title: t('breadcrumbs.edit_menu') },
             ]}
           />
           <Stack spacing={2}>
@@ -65,7 +82,7 @@ export default function NewMenuModal({ open, onClose, categories, onSubmit }: IP
             />
             <FormInput name="price" control={control} label={t('label.price')} size="small" />
             <Button size="large" color="secondary" type="submit">
-              {t('button.create_menu')}
+              {t('button.edit_menu')}
             </Button>
           </Stack>
         </Box>

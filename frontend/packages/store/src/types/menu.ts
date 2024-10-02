@@ -2,7 +2,19 @@ interface IMenu {
   id: string
   name: string
   price: number
-  category?: string
+  category: string
 }
 
-export type { IMenu }
+interface IMenuCreateRequest {
+  name: string
+  price: number
+  category: string
+}
+
+interface IMenuEditRequest {
+  name: string
+  price: number
+  category: string
+}
+
+export type { IMenu, IMenuEditRequest, IMenuCreateRequest }
