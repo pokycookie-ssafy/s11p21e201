@@ -27,9 +27,10 @@ import lombok.NoArgsConstructor;
 public class ContractCreateRequest {
 
 	@NotBlank
-	private String companyId;
+	private String senderId;
 
 	@NotBlank
+<<<<<<< HEAD
 	private String storeId;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -37,19 +38,22 @@ public class ContractCreateRequest {
 <<<<<<< HEAD
 	private int settlementDate;
 =======
+=======
+	private String receiverRegisterNumber;
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 
 	@NotBlank
 	private int settlementDay;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 
 	@Builder
-	private ContractCreateRequest(String companyId, String storeId, int settlementDay) {
-		this.companyId = companyId;
-		this.storeId = storeId;
+	private ContractCreateRequest(String senderId, String receiverRegisterNumber, int settlementDay) {
+		this.senderId = senderId;
+		this.receiverRegisterNumber = receiverRegisterNumber;
 		this.settlementDay = settlementDay;
 	}
 
-	public Contract toEntity(ContractStatus status) {
+	public Contract toEntity(String companyId, String storeId, ContractStatus status) {
 		return Contract.builder()
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))

@@ -68,6 +68,7 @@ public class ContractController {
 =======
 	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo,
 		@RequestBody ContractCreateRequest request) {
+<<<<<<< HEAD
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
 =======
@@ -85,6 +86,9 @@ public class ContractController {
 	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo, @RequestBody ContractCreateRequest request) {
 		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		ContractCreateResponse response = contractService.create(authInfo, request);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 		return ResponseEntity.status(CREATED).body(response);
 	}
 

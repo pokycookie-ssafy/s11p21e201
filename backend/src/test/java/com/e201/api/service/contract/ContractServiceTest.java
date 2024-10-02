@@ -118,10 +118,11 @@ public class ContractServiceTest {
 	@Test
 	void company_create_contract_entity_success() {
 		//given
-		String companyId = UUID.randomUUID().toString();
-		String storeId = UUID.randomUUID().toString();
-		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+		String senderId = UUID.randomUUID().toString();
+		String receiverRegisterNumber = UUID.randomUUID().toString();
+		ContractCreateRequest request = createContractCreateRequest(senderId, receiverRegisterNumber);
 		//when
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -135,6 +136,9 @@ public class ContractServiceTest {
 =======
 		ContractCreateResponse actual = sut.create(RoleType.COMPANY, request);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		ContractCreateResponse actual = sut.create(new AuthInfo(UUID.fromString(senderId), RoleType.COMPANY), request);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -147,7 +151,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//expect
-		assertThatThrownBy(() -> sut.create(RoleType.EMPLOYEE, request)).isInstanceOf(
+		assertThatThrownBy(() -> sut.create(new AuthInfo(UUID.randomUUID(), RoleType.COMPANY), request)).isInstanceOf(
 			IllegalArgumentException.class);
 	}
 
@@ -162,6 +166,7 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 =======
 		ContractCreateResponse actual = sut.create("STORE", request);
@@ -172,6 +177,9 @@ public class ContractServiceTest {
 =======
 		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		ContractCreateResponse actual = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE), request);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -183,11 +191,14 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+<<<<<<< HEAD
 		//when
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
+=======
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 		//expect
 		assertThatThrownBy(() -> sut.create(null, request)).isInstanceOf(RuntimeException.class);
 =======
@@ -253,7 +264,12 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+=======
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
@@ -324,7 +340,12 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+=======
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, null);
@@ -364,7 +385,12 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+=======
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
@@ -412,7 +438,12 @@ public class ContractServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+=======
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(companyId), RoleType.COMPANY),
+			contractCreateRequest);
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
@@ -520,8 +551,9 @@ public class ContractServiceTest {
 			.build();
 	}
 
-	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
+	private ContractCreateRequest createContractCreateRequest(String senderId, String receiverRegisterNumber) {
 		return ContractCreateRequest.builder()
+<<<<<<< HEAD
 			.companyId(companyId)
 			.storeId(storeId)
 <<<<<<< HEAD
@@ -557,6 +589,10 @@ public class ContractServiceTest {
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDate) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 =======
+=======
+			.senderId(senderId)
+			.receiverRegisterNumber(receiverRegisterNumber)
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 			.settlementDay(10)
 			.build();
 	}

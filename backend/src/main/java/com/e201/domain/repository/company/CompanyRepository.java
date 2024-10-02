@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.e201.domain.entity.company.Company;
 
-public interface CompanyRepository extends JpaRepository<Company, UUID> {
+public interface CompanyRepository extends JpaRepository<Company, UUID>, CompanyCustomRepository {
 
 	Optional<Company> findByEmail(String email);
 }

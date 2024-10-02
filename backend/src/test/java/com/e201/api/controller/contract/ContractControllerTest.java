@@ -305,6 +305,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest (String companyId, String storeId) {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
@@ -339,6 +340,12 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.settlementDate(10)
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
+=======
+	private ContractCreateRequest createContractCreateRequest(String senderId, String receiverRegisterNumber) {
+		return ContractCreateRequest.builder()
+			.senderId(senderId)
+			.receiverRegisterNumber(receiverRegisterNumber)
+>>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 			.settlementDay(10)
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 			.build();
