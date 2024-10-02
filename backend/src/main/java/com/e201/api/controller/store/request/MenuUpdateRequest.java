@@ -14,11 +14,12 @@ public class MenuUpdateRequest {
 
 	private String menuName;
 	private int price;
+	private String category;
 
 	@Builder
-	private MenuUpdateRequest(String menuName, int price) {
-
+	private MenuUpdateRequest(String menuName, int price, String category) {
 		this.menuName= menuName;
 		this.price = price;
+		this.category=category;
 	}
 }

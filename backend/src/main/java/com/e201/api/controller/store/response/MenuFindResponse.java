@@ -12,11 +12,13 @@ public class MenuFindResponse {
 	private UUID id;
 	private String menuName;
 	private int price;
+	private String category;
 
 	@Builder
-	public MenuFindResponse(final UUID id, final String menuName, final int price) {
+	public MenuFindResponse( UUID id, String menuName,int price, String category) {
 		this.id = id;
 		this.menuName = menuName;
 		this.price = price;
+		this.category = category;
 	}
 }
