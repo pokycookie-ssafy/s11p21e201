@@ -154,12 +154,14 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 		return MenuFindResponse.builder()
 			.id(menuId)
 			.menuName("메뉴이름")
+			.category("음료")
 			.price(5000).build();
 	}
 
 	private MenuUpdateRequest createMenuUpdateRequest(){
 		return MenuUpdateRequest.builder()
 			.menuName("메뉴이름")
+			.category("음료")
 			.price(2132)
 			.build();
 	}
@@ -167,6 +169,7 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 	private MenuCreateRequest createMenuRequest() {
 		return MenuCreateRequest.builder()
 			.price(10000)
+			.category("음료")
 			.build();
 	}
 }
