@@ -1,0 +1,168 @@
+package com.e201.domain.repository.payment;
+
+import static com.e201.domain.entity.company.QDepartment.*;
+import static com.e201.domain.entity.company.QEmployee.*;
+import static com.e201.domain.entity.payment.QPayment.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+
+import com.e201.api.controller.payment.response.EmployeePaymentResponse;
+import com.e201.api.controller.payment.response.EmployeeSpentAmount;
+import com.e201.api.controller.payment.response.EmployeeTotalPaymentResponse;
+import com.e201.api.controller.payment.response.PaymentFindResponse;
+import com.e201.domain.entity.company.Employee;
+import com.e201.domain.entity.payment.Payment;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
+
+	private static final Logger log = LoggerFactory.getLogger(PaymentRepositoryCustomImpl.class);
+	private final JPAQueryFactory companyQueryFactory;
+	private final JPAQueryFactory paymentQueryFactory;
+
+	public PaymentRepositoryCustomImpl(
+		@Qualifier("companyJpaQueryFactory") JPAQueryFactory companyQueryFactory,
+		@Qualifier("paymentJpaQueryFactory") JPAQueryFactory paymentQueryFactory) {
+		this.companyQueryFactory = companyQueryFactory;
+		this.paymentQueryFactory = paymentQueryFactory;
+	}
+
+	@Override
+	public Page<EmployeeTotalPaymentResponse> findEmployeeTotalPayments(UUID companyId, UUID departmentId,
+		LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+		List<Employee> employees = findEmployees(companyId, departmentId, pageable);
+		List<UUID> employeeIds = getEmployeeIds(employees);
+		List<EmployeeSpentAmount> spentAmounts = sumEmployeeSpentAmount(startDate, endDate, employeeIds);
+		List<EmployeeTotalPaymentResponse> responses = createEmployeePaymentResponses(employees, spentAmounts);
+		JPAQuery<Long> countQuery = createCountQuery(companyId, departmentId);
+		return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchFirst);
+	}
+
+	@Override
+	public EmployeePaymentResponse findEmployeePayments(UUID employeeId, LocalDateTime startDate,
+		LocalDateTime endDate, Pageable pageable) {
+
+		// 대상 직원 조회
+		Employee findEmployee = companyQueryFactory
+			.selectFrom(employee)
+			.join(employee.department, department).fetchJoin()
+			.where(employee.id.eq(employeeId))
+			.fetchFirst();
+
+		// 직원의 결제 내역 페이지 조회
+		List<Payment> payments = paymentQueryFactory
+			.selectFrom(payment)
+			.where(payment.employeeId.eq(findEmployee.getId()))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+		List<PaymentFindResponse> content = payments.stream().map(PaymentFindResponse::of).toList();
+
+		JPAQuery<Long> countQuery = paymentQueryFactory
+			.select(payment.count())
+			.from(payment)
+			.where(payment.employeeId.eq(findEmployee.getId()));
+
+		Page<PaymentFindResponse> paymentPage = PageableExecutionUtils.getPage(content, pageable,
+			countQuery::fetchFirst);
+
+		return EmployeePaymentResponse.builder()
+			.employeeId(findEmployee.getId())
+			.employeeName(findEmployee.getName())
+			.employeeCode(findEmployee.getCode())
+			.departmentId(findEmployee.getDepartment().getId())
+			.departmentName(findEmployee.getDepartment().getName())
+			.payments(paymentPage)
+			.build();
+	}
+
+	private JPAQuery<Long> createCountQuery(UUID companyId, UUID departmentId) {
+		return companyQueryFactory
+			.select(employee.count())
+			.from(employee)
+			.join(employee.department, department)
+			.where(
+				matchDepartment(departmentId),
+				employee.department.company.id.eq(companyId)
+			);
+	}
+
+	private List<EmployeeTotalPaymentResponse> createEmployeePaymentResponses(List<Employee> employees,
+		List<EmployeeSpentAmount> spentAmounts) {
+		return employees.stream()
+			.map(employee -> {
+				Long totalSpent = spentAmounts.stream()
+					.filter(spentAmount -> spentAmount.getEmployeeId().equals(employee.getId()))
+					.map(EmployeeSpentAmount::getSpentAmount)
+					.findFirst()
+					.orElse(0L);
+
+				return new EmployeeTotalPaymentResponse(
+					employee.getId(),
+					employee.getName(),
+					employee.getDepartment().getId(),
+					employee.getDepartment().getName(),
+					employee.getSupportAmount(),
+					totalSpent,
+					employee.getCreatedAt() // 필요한 경우 적절한 createdAt 값을 설정
+				);
+			})
+			.collect(Collectors.toList());
+	}
+
+	private List<EmployeeSpentAmount> sumEmployeeSpentAmount(LocalDateTime startDate, LocalDateTime endDate,
+		List<UUID> employeeIds) {
+		return paymentQueryFactory
+			.select(Projections.constructor(
+				EmployeeSpentAmount.class,
+				payment.employeeId,
+				payment.totalAmount.sum()
+			))
+			.from(payment)
+			.where(
+				payment.employeeId.in(employeeIds),  // 추출된 employeeId로 payment 조회
+				payment.paymentDate.between(startDate, endDate)
+			)
+			.groupBy(payment.employeeId)
+			.fetch();
+	}
+
+	private List<UUID> getEmployeeIds(List<Employee> employees) {
+		return employees.stream()
+			.map(Employee::getId)
+			.collect(Collectors.toList());
+	}
+
+	private List<Employee> findEmployees(UUID companyId, UUID departmentId, Pageable pageable) {
+		return companyQueryFactory
+			.selectFrom(employee)
+			.join(employee.department, department)
+			.where(
+				matchDepartment(departmentId),
+				employee.department.company.id.eq(companyId)
+			)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+	}
+
+	private BooleanExpression matchDepartment(UUID departmentId) {
+		if (departmentId != null) {
+			return department.id.eq(departmentId);
+		}
+		return null;
+	}
+}
