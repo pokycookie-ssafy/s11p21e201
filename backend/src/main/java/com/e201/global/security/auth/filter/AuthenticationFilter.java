@@ -29,6 +29,12 @@ public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
 		IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
+
+		if (httpRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
+			chain.doFilter(request, response);
+			return;
+		}
+
 		HttpSession session = httpRequest.getSession(false);
 		authenticate(httpRequest, session);
 		chain.doFilter(request, response);
