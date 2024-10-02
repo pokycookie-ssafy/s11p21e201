@@ -4,7 +4,6 @@ import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.domain.annotation.JtaTransactional;
-
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
 import com.e201.domain.repository.store.StoreInfoRepository;
@@ -40,10 +38,10 @@ public class StoreService {
 	private final StoreInfoRepository storeInfoRepository;
 
 	@JtaTransactional
-	public StoreCreateResponse create(StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest){
+	public StoreCreateResponse create(StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest) {
 
 		StoreInfoCreateRequest storeInfoRequest = storeAndStoreInfoCreateRequest.createStoreInfoRequest();
-		StoreCreateRequest storeCreateRequest  = storeAndStoreInfoCreateRequest.createStoreRequest();
+		StoreCreateRequest storeCreateRequest = storeAndStoreInfoCreateRequest.createStoreRequest();
 		doubleCheckPassword(storeCreateRequest);
 		StoreInfo storeInfo = storeInfoRequest.toEntity();
 		StoreInfo savedStoreInfo = storeInfoRepository.save(storeInfo);
@@ -55,7 +53,7 @@ public class StoreService {
 	}
 
 	@JtaTransactional
-	public StoreDeleteResponse delete(UUID id, RoleType roleType){
+	public StoreDeleteResponse delete(UUID id, RoleType roleType) {
 		validationStore(roleType);
 		Store store = findEntity(id);
 		store.softDelete();
@@ -72,23 +70,22 @@ public class StoreService {
 	}
 
 	public void doubleCheckPassword(StoreCreateRequest storeCreateRequest) {
-		if(!storeCreateRequest.getPassword().equals(storeCreateRequest.getPasswordConfirm())){
+		if (!storeCreateRequest.getPassword().equals(storeCreateRequest.getPasswordConfirm())) {
 			throw new RuntimeException("password not match");
 		}
 	}
 
-	public Store findByEmail(String email){
+	public Store findByEmail(String email) {
 		return storeRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public Store findStoreIdByRegisterNo(String registerNo){
+	public Store findStoreIdByRegisterNo(String registerNo) {
 		List<Store> stores = storeRepository.findByRegisterNoWithStoreInfo(registerNo);
 		Store store = stores.getFirst();
 		return store;
-
 	}
 
-	public StoreAuthResponse login(StoreAuthRequest storeAuthRequest){
+	public StoreAuthResponse login(StoreAuthRequest storeAuthRequest) {
 		Store store = findByEmail(storeAuthRequest.getEmail());
 		return StoreAuthResponse.builder()
 			.id(store.getId())
@@ -97,17 +94,16 @@ public class StoreService {
 			.phone(store.getStoreInfo().getPhone())
 			.build();
 
-
 	}
 
 	public Store findEntity(UUID id) {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public StoreAuthResponse checkLogin(UUID id,RoleType roleType) {
+	public StoreAuthResponse checkLogin(UUID id, RoleType roleType) {
 		validationStore(roleType);
 		Store store = findEntity(id);
-		StoreInfo storeInfo= store.getStoreInfo();
+		StoreInfo storeInfo = store.getStoreInfo();
 		return StoreAuthResponse.builder()
 			.id(store.getId())
 			.name(storeInfo.getName())
@@ -119,7 +115,6 @@ public class StoreService {
 		String encryptedPassword = oneWayCipherService.encrypt(store.getPassword());
 		store.changePassword(encryptedPassword);
 	}
-
 
 	private void validationStore(RoleType roleType) {
 		if (roleType != RoleType.STORE) {
@@ -133,9 +128,9 @@ public class StoreService {
 		}
 	}
 
-	public UUID findStoreInfoId(UUID id, RoleType roleType){
+	public UUID findStoreInfoId(UUID id, RoleType roleType) {
 		validationStore(roleType);
-		Store store =findEntity(id);
+		Store store = findEntity(id);
 		return store.getStoreInfo().getId();
 
 	}
@@ -145,8 +140,4 @@ public class StoreService {
 		return store.getStoreInfo().getId();
 	}
 
-	public void checkDuplication(String email) {
-		Optional<Store> checkedEmail = storeRepository.findByEmail(email);
-		if(checkedEmail.isPresent()) { throw new RuntimeException("duplicated email"); }
-	}
 }

@@ -105,10 +105,10 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 			.build();
 	}
 
-	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
+	private ContractCreateRequest createContractCreateRequest(String senderId, String receiverRegisterNumber) {
 		return ContractCreateRequest.builder()
-			.companyId(companyId)
-			.storeId(storeId)
+			.senderId(senderId)
+			.receiverRegisterNumber(receiverRegisterNumber)
 			.settlementDay(10)
 			.build();
 	}

@@ -3,6 +3,7 @@ package com.e201.api.service.company;
 import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.global.exception.EntityNotFoundException;
-import com.e201.global.exception.ErrorCode;
 import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -63,5 +63,11 @@ public class CompanyService extends BaseEntity {
 		if (!oneWayCipherService.match(request.getPassword(), company.getPassword())) {
 			throw new PasswordIncorrectException(AUTHENTICATION_FAILED, COMPANY.name());
 		}
+	}
+
+	public Company findCompanyByRegisterNo(String registerNo) {
+		List<Company> companies = companyRepository.findByRegisterNoWithCompanyInfo(registerNo);
+		Company company = companies.getFirst();
+		return company;
 	}
 }

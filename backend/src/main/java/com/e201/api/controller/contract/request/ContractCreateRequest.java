@@ -15,22 +15,22 @@ import lombok.NoArgsConstructor;
 public class ContractCreateRequest {
 
 	@NotBlank
-	private String companyId;
+	private String senderId;
 
 	@NotBlank
-	private String storeId;
+	private String receiverRegisterNumber;
 
 	@NotBlank
 	private int settlementDay;
 
 	@Builder
-	private ContractCreateRequest(String companyId, String storeId, int settlementDay) {
-		this.companyId = companyId;
-		this.storeId = storeId;
+	private ContractCreateRequest(String senderId, String receiverRegisterNumber, int settlementDay) {
+		this.senderId = senderId;
+		this.receiverRegisterNumber = receiverRegisterNumber;
 		this.settlementDay = settlementDay;
 	}
 
-	public Contract toEntity(ContractStatus status) {
+	public Contract toEntity(String companyId, String storeId, ContractStatus status) {
 		return Contract.builder()
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))
