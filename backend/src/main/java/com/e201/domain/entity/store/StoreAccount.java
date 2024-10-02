@@ -31,13 +31,13 @@ public class StoreAccount extends BaseEntity {
 	private Store store;
 
 	@Column(name = "bank_code")
-	private String bankCode;
+	private String bankCode ="999";
 
 	@Column(name = "bank_name")
-	private String bankName;
+	private String bankName="싸피 은행";
 
 	@Column(name = "account_number")
-	private String accountNumber;
+	private String accountNumber="123123123123";
 
 	@Builder
 	public StoreAccount(UUID id, Store store, String bankCode, String bankName, String accountNumber) {

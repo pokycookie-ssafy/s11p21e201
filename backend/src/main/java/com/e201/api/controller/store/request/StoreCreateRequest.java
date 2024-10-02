@@ -17,12 +17,14 @@ public class StoreCreateRequest {
 	private UUID storeInfoId;
 	private String email;
 	private String password;
+	private String passwordConfirm;
 
 	@Builder
-	private StoreCreateRequest(UUID storeInfoId, String email, String password) {
+	private StoreCreateRequest(UUID storeInfoId, String email, String password, String passwordConfirm) {
 		this.storeInfoId = storeInfoId;
 		this.email = email;
 		this.password= password;
+		this.passwordConfirm = passwordConfirm;
 	}
 
 	public Store toEntity(StoreInfo storeInfo){

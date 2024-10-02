@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e201.api.controller.store.request.StoreAndStoreInfoCreateRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
@@ -23,8 +24,8 @@ public class StoreController {
 	private final StoreService storeService;
 
 	@PostMapping("/stores")
-	public ResponseEntity<StoreCreateResponse> create(@RequestBody StoreCreateRequest storeCreateRequest){
-		StoreCreateResponse response = storeService.create(storeCreateRequest);
+	public ResponseEntity<StoreCreateResponse> create(@RequestBody StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest){
+		StoreCreateResponse response = storeService.create(storeAndStoreInfoCreateRequest);
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
