@@ -56,6 +56,14 @@
     "accept": "수락",
     "reject": "거절",
     "accept_all": "일괄 수락",
-    "reject_all": "일괄 거절"
+    "reject_all": "일괄 거절",
+    "contract_cancel": "계약 해지"
+  },
+  "dialog": {
+    "cancel": "계약 해지",
+    "cancel_content": "'{0}' 기업과 계약을 정말로 해지하시겠습니까?"
+  },
+  "toast": {
+    "contract_cancel": "계약이 해지되었습니다"
   }
 }
