@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run dev --workspaces",
     "build": "npm run build -w @e201/utils && npm run build -w @e201/ui && npm run build --workspaces",
+    "postinstall": "npm install rollup @rollup/plugin-node-resolve @rollup/plugin-commonjs",
     "lint": "npm run lint --workspaces"
   },
   "author": "",
