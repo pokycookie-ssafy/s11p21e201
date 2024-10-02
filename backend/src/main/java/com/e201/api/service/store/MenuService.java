@@ -12,11 +12,9 @@ import com.e201.api.controller.store.response.MenuDeleteResponse;
 import com.e201.api.controller.store.response.MenuFindResponse;
 import com.e201.api.controller.store.response.MenuUpdateResponse;
 import com.e201.domain.annotation.JtaTransactional;
-import com.e201.domain.entity.EntityConstant;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.store.MenuRepository;
-import com.e201.global.exception.EntityNotFoundException;
 import com.e201.global.security.auth.constant.RoleType;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,7 @@ public class MenuService {
 	private final StoreService storeService;
 
 	@JtaTransactional
-	public MenuCreateResponse create(UUID id, RoleType roleType, MenuCreateRequest menuCreateRequest){
+	public MenuCreateResponse create(UUID id, RoleType roleType, MenuCreateRequest menuCreateRequest) {
 		validationStore(roleType);
 		Store store = storeService.findEntity(id);
 		Menu menu = menuCreateRequest.toEntity(store);
@@ -39,31 +37,32 @@ public class MenuService {
 	}
 
 	public Menu findEntity(UUID id) {
-		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id,"N","N")
+		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id, "N", "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public MenuFindResponse findOne(UUID id){
+	public MenuFindResponse findOne(UUID id) {
 		Menu menu = findEntity(id);
 		return MenuFindResponse.builder()
 			.id(id)
-			.menuName(menu.getName())
+			.name(menu.getName())
 			.price(menu.getPrice())
 			.category(menu.getCategory())
 			.build();
 	}
 
-	public List<MenuFindResponse> find(RoleType roleType, UUID id){
+	public List<MenuFindResponse> find(RoleType roleType, UUID id) {
 		validationStore(roleType);
-		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id,"N","N")
+		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id, "N", "N")
 			.stream()
-			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice(), menu.getCategory()))  // Menu -> MenuFindResponse로 변환
+			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice(),
+				menu.getCategory()))  // Menu -> MenuFindResponse로 변환
 			.toList();  // List<MenuFindResponse>로 수집
 		return responseList;
 	}
 
 	@JtaTransactional
-	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest){
+	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest) {
 		validationStore(roleType);
 		Menu originMenu = findEntity(menuId);
 		originMenu.softUpdate();
@@ -74,7 +73,7 @@ public class MenuService {
 	}
 
 	@JtaTransactional
-	public MenuDeleteResponse delete(UUID menuId,RoleType roleType){
+	public MenuDeleteResponse delete(UUID menuId, RoleType roleType) {
 		validationStore(roleType);
 		Menu originMenu = findEntity(menuId);
 		originMenu.softDelete();
@@ -82,7 +81,7 @@ public class MenuService {
 	}
 
 	private Menu createModifiedStoreEntity(MenuUpdateRequest menuUpdateRequest, Menu originMenu) {
-			return Menu.builder()
+		return Menu.builder()
 			.store(originMenu.getStore())
 			.price(menuUpdateRequest.getPrice())
 			.name(menuUpdateRequest.getName())
