@@ -11,6 +11,7 @@ import com.e201.api.controller.store.request.StoreAndStoreInfoCreateRequest;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
+import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.domain.annotation.JtaTransactional;
@@ -76,6 +77,18 @@ public class StoreService {
 
 	public Store findByEmail(String email){
 		return storeRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
+	public StoreAuthResponse login(StoreAuthRequest storeAuthRequest){
+		Store store = findByEmail(storeAuthRequest.getEmail());
+		return StoreAuthResponse.builder()
+			.id(store.getId())
+			.email(store.getEmail())
+			.name(store.getStoreInfo().getName())
+			.phone(store.getStoreInfo().getPhone())
+			.build();
+
+
 	}
 
 	public Store findEntity(UUID id) {
