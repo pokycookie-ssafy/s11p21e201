@@ -22,7 +22,7 @@ interface ISignUpRequest {
   address: string
   registerNumber: string
   businessType: string
-  openDate: Date
+  openDate: string
 }
 
 export type { IBankResponse, ISignUpRequest, ISignUpResponse }

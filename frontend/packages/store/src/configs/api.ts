@@ -27,7 +27,7 @@ const api = {
     list: '/stores/settlements',
   },
   common: {
-    ocr: '/licenses/signup',
+    ocr: '/ocr/license',
   },
 }
 
