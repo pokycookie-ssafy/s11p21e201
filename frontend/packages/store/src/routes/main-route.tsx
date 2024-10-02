@@ -11,24 +11,30 @@ import PrivateLayout from '@/layouts/private-layout'
 import dashboardRoute from '@/routes/dashboard-route'
 import managementRoute from '@/routes/management-route'
 import QrPaymentView from '@/pages/payment/qr-payment-view'
+import OnlyPublicLayout from '@/layouts/only-public-layout'
 
 const mainRoute: RouteObject[] = [
   // Auth
   {
-    element: <SignInLayout />,
+    element: <OnlyPublicLayout />,
     children: [
       {
-        path: paths.auth.signIn,
-        element: <SignInView />,
+        element: <SignInLayout />,
+        children: [
+          {
+            path: paths.auth.signIn,
+            element: <SignInView />,
+          },
+        ],
       },
-    ],
-  },
-  {
-    element: <SignUpLayout />,
-    children: [
       {
-        path: paths.auth.signUp,
-        element: <SignUpView />,
+        element: <SignUpLayout />,
+        children: [
+          {
+            path: paths.auth.signUp,
+            element: <SignUpView />,
+          },
+        ],
       },
     ],
   },
