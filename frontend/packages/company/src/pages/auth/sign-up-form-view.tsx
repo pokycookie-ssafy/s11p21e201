@@ -1,5 +1,7 @@
 import type { ILicenseOcr } from '@/types/ocr'
+import type { ISignUpRequest, ISignUpInfoRequest, ISignUpInfoResponse } from '@/types/sign-up'
 
+import dayjs from 'dayjs'
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
@@ -17,8 +19,6 @@ interface IForm {
   password: string
   passwordConfirm: string
   phone: string
-  bank: string
-  account: string
   companyName: string
   repName: string
   address: string
@@ -46,8 +46,6 @@ export default function SignUpFormView({ onNext }: IProps) {
       password: '',
       passwordConfirm: '',
       phone: '',
-      bank: '',
-      account: '',
       companyName: '',
       repName: '',
       address: '',
@@ -83,8 +81,35 @@ export default function SignUpFormView({ onNext }: IProps) {
     setFile(files[0])
   }
 
-  const submitHandler = () => {
-    onNext()
+  const submitHandler = async (form: IForm) => {
+    if (!licenseData) {
+      return
+    }
+
+    const info: ISignUpInfoRequest = {
+      phone: form.phone,
+      address: licenseData.address,
+      businessName: licenseData.businessName,
+      businessType: licenseData.businessType,
+      repName: licenseData.repName,
+      registerNumber: licenseData.registerNumber,
+      openDate: dayjs(licenseData.openDate).format(),
+    }
+
+    try {
+      const { data } = await axios.post<ISignUpInfoResponse>(api.auth.signUpInfo, info)
+
+      const req: ISignUpRequest = {
+        companyInfoId: data.id,
+        email: form.email,
+        password: form.password,
+      }
+      await axios.post(api.auth.signUp, req)
+
+      onNext()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const BusinessLicenseFormRender = useMemo(() => {
