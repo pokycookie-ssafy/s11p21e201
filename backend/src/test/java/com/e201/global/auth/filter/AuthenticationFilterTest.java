@@ -39,6 +39,7 @@ class AuthenticationFilterTest {
 	private static final String STORE_CREATE_PATH = "/stores";
 	private static final String STORE_AUTH_PATH ="/stores/auth";
 
+
 	AuthenticationFilter authenticationFilter;
 
 	PathProperties pathProperties;
