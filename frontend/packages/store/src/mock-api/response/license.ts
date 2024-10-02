@@ -1,4 +1,12 @@
-export const licenseResponse = {
+import type { ILicenseOcr } from '@/types/ocr'
+
+type MockLiscense =
+  | ILicenseOcr
+  | {
+      openDate: string
+    }
+
+export const licenseResponse: MockLiscense = {
   businessName: 'Welstory',
   registerNumber: '104-86-51732',
   repName: '정해린',
