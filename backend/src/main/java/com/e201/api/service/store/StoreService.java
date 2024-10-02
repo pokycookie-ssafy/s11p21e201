@@ -145,5 +145,8 @@ public class StoreService {
 		return store.getStoreInfo().getId();
 	}
 
-
+	public void checkDuplication(String email) {
+		Optional<Store> checkedEmail = storeRepository.findByEmail(email);
+		if(checkedEmail.isPresent()) { throw new RuntimeException("duplicated email"); }
+	}
 }
