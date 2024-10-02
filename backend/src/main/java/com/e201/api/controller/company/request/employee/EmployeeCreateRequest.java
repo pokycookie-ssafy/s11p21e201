@@ -1,7 +1,5 @@
 package com.e201.api.controller.company.request.employee;
 
-import java.util.UUID;
-
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
 
@@ -22,10 +20,19 @@ public class EmployeeCreateRequest {
 	@Size(min = 8)
 	private String password;
 
+	@NotBlank
+	@Size(min = 8)
+	private String name;
+
+	@NotBlank
+	private Integer supportAmount;
+
 	@Builder
-	private EmployeeCreateRequest(String code, String password) {
+	public EmployeeCreateRequest(String code, String password, String name, Integer supportAmount) {
 		this.code = code;
 		this.password = password;
+		this.name = name;
+		this.supportAmount = supportAmount;
 	}
 
 	public Employee toEntity(Department department) {
@@ -33,6 +40,8 @@ public class EmployeeCreateRequest {
 			.department(department)
 			.code(code)
 			.password(password)
+			.name(name)
+			.supportAmount(supportAmount)
 			.build();
 	}
 }
