@@ -17,14 +17,16 @@ public class StoreInfoUpdateRequest {
 	private String category;
 	private String ownerName;
 	private String phone;
+	private String openDate;
 
 	@Builder
-	private StoreInfoUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone) {
+	private StoreInfoUpdateRequest(String name, String licenseNo, String address, String category, String ownerName, String phone, String openDate) {
 		this.name = name;
 		this.licenseNo = licenseNo;
 		this.address = address;
 		this.category = category;
 		this.ownerName = ownerName;
 		this.phone = phone;
+		this.openDate= openDate;
 	}
 }
