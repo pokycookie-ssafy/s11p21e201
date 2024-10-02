@@ -1,8 +1,9 @@
 import type { ISelectOption } from '@e201/ui'
 import type { GridColDef } from '@mui/x-data-grid'
-import type { IPaymentResponse } from '@/types/payment'
+import type { IPayment, IPaymentDetail, IPaymentEmployee } from '@/types/payment'
 
 import dayjs from 'dayjs'
+import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
@@ -18,37 +19,64 @@ import { Select, SelectDate, Typography, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
-const fetchPayments = async () => {
-  const payment = await axios.get<IPaymentResponse[]>('/companies/payment')
-  return payment.data
-}
-
 export default function PaymentManagementView() {
   const { t } = useTranslate('payment')
 
-  const { data: payments, isPending: paymentIsPending } = useQuery({
-    queryKey: ['payments'],
-    queryFn: fetchPayments,
-  })
-
   const [selectedDepartment, setSelectedDepartment] = useState<ISelectOption | null>(null)
-  const [selectedStore, setSelectedStore] = useState<ISelectOption | null>(null)
+  const [selectedEmployee, setSelectedEmployee] = useState<ISelectOption | null>(null)
 
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
+
+  const dateFilter = useMemo(() => {
+    const start = dayjs()
+      .year(year)
+      .month(month - 1)
+      .startOf('month')
+      .format()
+
+    const end = dayjs()
+      .year(year)
+      .month(month - 1)
+      .endOf('month')
+      .format()
+
+    return { start, end }
+  }, [month, year])
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)
     setMonth(dateMonth)
   }
 
-  const departments = useMemo(() => {
+  const { data: payments, isPending: paymentIsPending } = useQuery({
+    queryKey: [api.payments.list(dateFilter.start, dateFilter.end, selectedDepartment?.value)],
+    queryFn: async () => {
+      const response = await axios.get<IPayment[]>(
+        api.payments.list(dateFilter.start, dateFilter.end, selectedDepartment?.value)
+      )
+      return response.data
+    },
+  })
+
+  const { data: paymentEmployees, isPending: paymentDetailIsPending } = useQuery({
+    queryKey: [api.payments.detail(dateFilter.start, dateFilter.end, selectedEmployee?.value)],
+    queryFn: async () => {
+      const response = await axios.get<IPaymentEmployee>(
+        api.payments.detail(dateFilter.start, dateFilter.end, selectedEmployee?.value)
+      )
+      return response.data
+    },
+  })
+
+  const departmentOptions = useMemo<ISelectOption[]>(() => {
     if (!payments) {
       return []
     }
 
     const departmentSet = new Set<string>()
     const departmentList: ISelectOption[] = []
+
     payments.forEach((e) => {
       if (!departmentSet.has(e.departmentId)) {
         departmentList.push({ label: e.departmentName, value: e.departmentId })
@@ -58,56 +86,32 @@ export default function PaymentManagementView() {
     return departmentList
   }, [payments])
 
-  const stores = useMemo(() => {
+  const employeeOptions = useMemo<ISelectOption[]>(() => {
     if (!payments) {
       return []
     }
 
-    const storeSet = new Set<string>()
-    const storeList: ISelectOption[] = []
+    const employeeSet = new Set<string>()
+    const employeeList: ISelectOption[] = []
+
     payments.forEach((e) => {
-      if (!storeSet.has(e.storeId)) {
-        storeList.push({ label: e.storeName, value: e.storeId })
+      if (!employeeSet.has(e.departmentId)) {
+        employeeList.push({ label: e.departmentName, value: e.departmentId })
       }
-      storeSet.add(e.storeId)
+      employeeSet.add(e.departmentId)
     })
-    return storeList
+    return employeeList
   }, [payments])
 
-  const filteredRows = useMemo(() => {
-    if (!payments) {
-      return []
-    }
-
-    const filterDate = dayjs()
-      .year(year)
-      .month(month - 1)
-    const startDate = filterDate.startOf('month')
-    const endDate = filterDate.endOf('month')
-
-    let filtered = [...payments]
-
-    filtered = filtered.filter((payment) =>
-      dayjs(payment.paidAt).isBetween(startDate, endDate, 'date', '[]')
-    )
-    if (selectedDepartment) {
-      filtered = filtered.filter((payment) => payment.departmentId === selectedDepartment.value)
-    }
-    if (selectedStore) {
-      filtered = filtered.filter((payment) => payment.storeId === selectedStore.value)
-    }
-    return filtered
-  }, [payments, year, month, selectedDepartment, selectedStore])
-
-  const columns: GridColDef<IPaymentResponse>[] = [
+  const paymentColumns: GridColDef<IPayment>[] = [
     {
       field: 'departmentName',
-      headerName: t('department_name'),
+      headerName: t('field.department_name'),
       flex: 1,
       minWidth: 150,
       renderHeader: () => (
         <Typography pl={1} fontSize={14} fontWeight={500}>
-          {t('department_name')}
+          {t('field.department_name')}
         </Typography>
       ),
       renderCell: (params) => (
@@ -118,22 +122,72 @@ export default function PaymentManagementView() {
         </Stack>
       ),
     },
-    { field: 'employeeName', headerName: t('employee_name'), width: 120 },
-    { field: 'employeeId', headerName: t('field.employee_no'), width: 150 },
-    { field: 'storeName', headerName: t('store_name'), width: 200 },
+    { field: 'employeeName', headerName: t('field.employee_name'), width: 120 },
+    { field: 'employeeCode', headerName: t('field.employee_code'), width: 150 },
     {
-      field: 'price',
-      headerName: t('price'),
+      field: 'spentAmount',
+      headerName: t('field.spent_amount'),
       type: 'number',
-      width: 100,
-      renderCell: (params) => `${fNumber(params.value)} ${t('unit.won')}`,
+      width: 120,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
-
     {
-      field: 'paidAt',
-      headerName: t('paid_at'),
-      width: 160,
-      resizable: false,
+      field: 'supportAmount',
+      headerName: t('field.support_amount'),
+      type: 'number',
+      width: 120,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
+    },
+  ]
+
+  const paymentDetailColumns: GridColDef<IPaymentDetail>[] = [
+    {
+      field: 'departmentName',
+      headerName: t('field.department_name'),
+      flex: 1,
+      minWidth: 150,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('field.department_name')}
+        </Typography>
+      ),
+      renderCell: () => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {paymentEmployees?.departmentName}
+          </Typography>
+        </Stack>
+      ),
+    },
+    {
+      field: 'employeeName',
+      headerName: t('field.employee_name'),
+      width: 120,
+      valueGetter: () => paymentEmployees?.employeeName,
+    },
+    {
+      field: 'employeeCode',
+      headerName: t('field.employee_code'),
+      width: 150,
+      valueGetter: () => paymentEmployees?.employeeCode,
+    },
+    {
+      field: 'storeName',
+      headerName: t('field.store_name'),
+      width: 150,
+    },
+    {
+      field: 'spentAmount',
+      headerName: t('field.payment_amount'),
+      type: 'number',
+      width: 120,
+      valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
+    },
+    {
+      field: 'createdAt',
+      headerName: t('field.payment_date'),
+      type: 'dateTime',
+      width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD HH:mm'),
     },
   ]
@@ -160,30 +214,44 @@ export default function PaymentManagementView() {
           <Select
             value={selectedDepartment}
             onChange={setSelectedDepartment}
-            options={departments}
+            options={departmentOptions}
             placeholder={t('label.select_department')}
             size="small"
           />
           <Select
-            value={selectedStore}
-            onChange={setSelectedStore}
-            options={stores}
-            placeholder={t('label.select_store')}
+            value={selectedEmployee}
+            onChange={setSelectedEmployee}
+            options={employeeOptions}
+            placeholder={t('label.select_employee')}
             size="small"
           />
         </Stack>
 
-        <DataGrid
-          columns={columns}
-          rows={filteredRows}
-          hideFooter
-          loading={paymentIsPending}
-          slotProps={{
-            noRowsOverlay: {},
-            noResultsOverlay: {},
-          }}
-          sx={{ height: 500 }}
-        />
+        {selectedEmployee ? (
+          <DataGrid
+            columns={paymentDetailColumns}
+            rows={paymentEmployees?.payments ?? []}
+            hideFooter
+            loading={selectedEmployee ? paymentIsPending : paymentDetailIsPending}
+            slotProps={{
+              noRowsOverlay: {},
+              noResultsOverlay: {},
+            }}
+            sx={{ height: 500 }}
+          />
+        ) : (
+          <DataGrid
+            columns={paymentColumns}
+            rows={payments}
+            hideFooter
+            loading={selectedEmployee ? paymentIsPending : paymentDetailIsPending}
+            slotProps={{
+              noRowsOverlay: {},
+              noResultsOverlay: {},
+            }}
+            sx={{ height: 500 }}
+          />
+        )}
       </Card>
     </Box>
   )
