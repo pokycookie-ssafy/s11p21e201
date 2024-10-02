@@ -112,6 +112,7 @@ class MenuServiceTest {
 
 		//then
 		assertThat(response.getId()).isNotEqualTo(menu.getId());
+
 	}
 
 	@DisplayName("메뉴를 삭제한다.")
@@ -176,6 +177,7 @@ class MenuServiceTest {
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
+			.category("음료")
 			.build();
 	}
 
@@ -183,6 +185,7 @@ class MenuServiceTest {
 		return MenuUpdateRequest.builder()
 			.menuName(menu.getName())
 			.price(33433)
+			.category("음료")
 			.build();
 	}
 
@@ -191,6 +194,7 @@ class MenuServiceTest {
 			.store(store)
 			.name("메뉴이름")
 			.price(5000)
+			.category("음료")
 			.build();
 	}
 
