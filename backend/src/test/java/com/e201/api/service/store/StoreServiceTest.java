@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.e201.api.controller.store.request.StoreAndStoreInfoCreateRequest;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
@@ -80,11 +81,9 @@ class StoreServiceTest {
 	@Test
 	void create_store_success(){
 		//given
-		StoreInfo storeInfo = createStoreInfo("사업자 등록 번호");
-		StoreInfo saved = storeInfoRepository.save(storeInfo);
-		StoreCreateRequest storeCreateRequest = createStoreRequest(saved.getId());
+		StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest= createStoreAndStoreInfoCreateRequest();
 		//when
-		StoreCreateResponse actual = sut.create(storeCreateRequest);
+		StoreCreateResponse actual = sut.create(createStoreAndStoreInfoCreateRequest());
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -97,7 +96,7 @@ class StoreServiceTest {
 		Store store = createStore(storeInfo, "storeTest@test.com", encryptedPassword);
 		storeRepository.save(store);
 		StoreAuthRequest storeAuthRequest = createStoreAuthRequest("storeTest@test.com", "12341234");
-		
+
 		//when
 		AuthInfo actual = sut.checkPassword(storeAuthRequest);
 		//then
@@ -125,7 +124,7 @@ class StoreServiceTest {
 
 		assertThatThrownBy(() -> sut.checkPassword(storeAuthRequest)).isInstanceOf(RuntimeException.class);
 	}
-	
+
 	@DisplayName("식당이 탈퇴를 한다.")
 	@Test
 	void delete_store_success(){
@@ -146,6 +145,7 @@ class StoreServiceTest {
 
 		assertThatThrownBy(() -> sut.delete(store.getId(), RoleType.COMPANY)).isInstanceOf(RuntimeException.class);
 	}
+
 	
 	private StoreAuthRequest createStoreAuthRequest(String email, String password) {
 		return StoreAuthRequest.builder()
@@ -153,7 +153,7 @@ class StoreServiceTest {
 			.password(password)
 			.build();
 	}
-
+	
 	private StoreInfo createStoreInfo(String registerNumber) {
 		return StoreInfo.builder()
 			.registerNumber(registerNumber)
@@ -180,6 +180,23 @@ class StoreServiceTest {
 			.password("비밀번호")
 			.build();
 	}
+
+
+	private StoreAndStoreInfoCreateRequest createStoreAndStoreInfoCreateRequest() {
+		return StoreAndStoreInfoCreateRequest.builder()
+			.email("이메일")
+			.password("비밀번호")
+			.passwordConfirm("비밀번호")
+			.phone("핸드폰번호")
+			.businessName("사업장이름")
+			.repName("대표이름")
+			.address("주소")
+			.registerNumber("사업자등록번호")
+			.businessType("비즈니스타입")
+			.openDate("개업일")
+			.build();
+	}
+
 
 	private void assertThatStoreMatchExactly(Store store) {
 		assertThat(store)

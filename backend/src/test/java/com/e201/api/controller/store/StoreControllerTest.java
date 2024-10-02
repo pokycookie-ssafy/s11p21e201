@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.e201.api.controller.store.request.StoreAndStoreInfoCreateRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
@@ -33,13 +34,12 @@ public class StoreControllerTest extends AbstractRestDocsTest {
 	void create_store_success() throws Exception {
 		// given
 		UUID storeId = UUID.randomUUID();
-		UUID storeInfoId = UUID.randomUUID();
-		StoreCreateRequest request = createStoreRequest(storeInfoId);
+		StoreAndStoreInfoCreateRequest request = createStoreAndStoreInfoCreateRequest();
 		String requestJson = objectMapper.writeValueAsString(request);
 		StoreCreateResponse response = new StoreCreateResponse(storeId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(storeService).create(any(StoreCreateRequest.class));
+		doReturn(response).when(storeService).create(any(StoreAndStoreInfoCreateRequest.class));
 
 		// expected
 		mockMvc.perform(post("/stores")
@@ -73,4 +73,20 @@ public class StoreControllerTest extends AbstractRestDocsTest {
 			.password("비밀번호")
 			.build();
 	}
+
+	private StoreAndStoreInfoCreateRequest createStoreAndStoreInfoCreateRequest() {
+		return StoreAndStoreInfoCreateRequest.builder()
+			.email("이메일")
+			.password("비밀번호")
+			.passwordConfirm("비밀번호")
+			.phone("핸드폰번호")
+			.businessName("사업장이름")
+			.repName("대표이름")
+			.address("주소")
+			.registerNumber("사업자등록번호")
+			.businessType("비즈니스타입")
+			.openDate("개업일")
+			.build();
+	}
+
 }
