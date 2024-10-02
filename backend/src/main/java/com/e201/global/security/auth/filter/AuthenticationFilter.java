@@ -57,7 +57,8 @@ public class AuthenticationFilter implements Filter {
 		boolean isCompanyAuthPath = matchURIAndMethod(request, method, authPath.getCompanyPath());
 		boolean isManagerAuthPath = matchURIAndMethod(request, method, authPath.getManagerPath());
 		boolean isEmployeeAuthPath = matchURIAndMethod(request, method, authPath.getEmployeePath());
-		return isCompanyAuthPath || isManagerAuthPath || isEmployeeAuthPath;
+		boolean isStoreAuthPath = matchURIAndMethod(request,method, authPath.getStorePath());
+		return isCompanyAuthPath || isManagerAuthPath || isEmployeeAuthPath || isStoreAuthPath;
 	}
 
 	private boolean isCreatePath(HttpServletRequest request, PathProperties.CreationPath creationPath) {
@@ -66,7 +67,8 @@ public class AuthenticationFilter implements Filter {
 		boolean isCompanyCreatePath = matchURIAndMethod(request, method, creationPath.getCompanyPath());
 		boolean isManagerCreatePath = matchURIAndMethod(request, method, creationPath.getManagerPath());
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
-		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath;
+		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
+		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath || isStoreCreatePath;
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

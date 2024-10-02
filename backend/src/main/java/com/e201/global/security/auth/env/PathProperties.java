@@ -22,6 +22,7 @@ public class PathProperties {
 		private String companyPath;
 		private String managerPath;
 		private String employeePath;
+		private String storePath;
 	}
 
 	@Getter
@@ -32,5 +33,6 @@ public class PathProperties {
 		private String companyPath;
 		private String managerPath;
 		private String employeePath;
+		private String storePath;
 	}
 }
