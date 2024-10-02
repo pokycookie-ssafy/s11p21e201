@@ -1,6 +1,7 @@
 import type { ILicenseOcr } from '@/types/ocr'
 import type { ISignUpRequest } from '@/types/sign-up'
 
+import dayjs from 'dayjs'
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
@@ -62,7 +63,7 @@ export default function SignUpFormView({ onNext }: IProps) {
     }
     formData.append('image', file)
 
-    const response = await axios.post<ILicenseOcr>(api.common.ocr, {})
+    const response = await axios.post<ILicenseOcr>(api.common.ocr, formData)
     return response.data
   }
 
@@ -101,7 +102,7 @@ export default function SignUpFormView({ onNext }: IProps) {
       businessType: licenseData.businessType,
       repName: licenseData.repName,
       registerNumber: licenseData.registerNumber,
-      openDate: licenseData.openDate,
+      openDate: dayjs(licenseData.openDate).format(),
     }
 
     try {
