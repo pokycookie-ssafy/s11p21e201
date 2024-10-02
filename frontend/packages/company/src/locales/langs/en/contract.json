@@ -23,5 +23,39 @@
   "canceled": "Canceled",
   "all": "All",
   "date": "Date",
-  "status": "Status"
+  "status": "Status",
+  "breadcrumbs": {
+    "management": "Management",
+    "contract_management": "Contract Management",
+    "contract_request": "Contract Request"
+  },
+  "tab": {
+    "all": "All",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Rejected",
+    "canceled": "Terminated",
+    "received": "Received Requests",
+    "send": "Sent Requests"
+  },
+  "label": {
+    "selected": "{0} items selected",
+    "store_search": "Search Restaurant by Name",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Rejected",
+    "canceled": "Terminated",
+    "license_upload": "Please upload the business license"
+  },
+  "field": {
+    "action": "Action",
+    "status": "Status",
+    "in_progress": "Awaiting Approval"
+  },
+  "tooltip": {
+    "accept": "Accept",
+    "reject": "Reject",
+    "accept_all": "Accept All",
+    "reject_all": "Reject All"
+  }
 }
