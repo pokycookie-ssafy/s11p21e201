@@ -145,6 +145,19 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	@Override
+	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
+		QContract contract = QContract.contract;
+		return contractQueryFactory.selectFrom(contract)
+			.where(contract.storeId.eq(storeId),
+				contract.companyId.eq(companyId),
+				contract.deleteYN.eq("N"))
+			.fetch();
+	}
+
+>>>>>>> 65a8c38 ([#58] feat: contractId 조회 기능 추가 구현)
 	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		if (status == null)
 			return null;

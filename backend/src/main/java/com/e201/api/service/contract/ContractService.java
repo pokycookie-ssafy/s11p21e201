@@ -158,6 +158,7 @@ public class ContractService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+<<<<<<< HEAD
 	public UUID findContractId(UUID companyId, UUID storeId) {
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -170,6 +171,11 @@ public class ContractService {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 		return contract.getId();
+=======
+	public Contract findContractWithCompanyIdAndStoreId(UUID companyId, UUID storeId) {
+		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(companyId, storeId).getFirst();
+		return contract;
+>>>>>>> 65a8c38 ([#58] feat: contractId 조회 기능 추가 구현)
 	}
 
 <<<<<<< HEAD
