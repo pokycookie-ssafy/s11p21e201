@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.service.store.StoreService;
+import com.e201.domain.entity.store.Store;
 import com.e201.global.security.auth.dto.AuthInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +26,11 @@ public class StoreAuthController {
 	@PostMapping("/stores/auth")
 	public ResponseEntity<StoreAuthResponse> login(@RequestBody StoreAuthRequest request, HttpServletRequest httpRequest){
 		AuthInfo authInfo = storeService.checkPassword(request);
+		StoreAuthResponse storeAuthResponse = storeService.login(request);
 
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
-		return ResponseEntity.status(CREATED).build();
+		
+		return ResponseEntity.status(CREATED).body(storeAuthResponse);
 	}
 
 	@DeleteMapping("/stores/auth")

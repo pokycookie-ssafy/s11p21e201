@@ -9,4 +9,5 @@ import com.e201.domain.entity.store.Store;
 
 public interface StoreRepository extends JpaRepository<Store, UUID> {
 	Optional<Store> findByEmail(String email);
+
 }
