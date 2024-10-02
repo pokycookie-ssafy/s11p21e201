@@ -15,7 +15,7 @@ import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
+import { Label, Iconify, SelectDate, Typography, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
@@ -92,7 +92,23 @@ export default function SettlementDateView() {
   }
 
   const columns: GridColDef<ISettlementResponse>[] = [
-    { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
+    {
+      field: 'companyName',
+      flex: 1,
+      minWidth: 100,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('field.company_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.companyName}
+          </Typography>
+        </Stack>
+      ),
+    },
     {
       field: 'settledDate',
       type: 'date',
