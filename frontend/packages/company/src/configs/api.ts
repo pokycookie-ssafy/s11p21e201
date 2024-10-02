@@ -1,36 +1,44 @@
-export const BASE_URL = '/api'
+export const BASE_URL = 'https://sanedaejangbu.site/api'
+
+export type ContractUserCondition = 'all' | 'sender' | 'receiver'
+export type ContractStatus = 'all' | 'in' | 'complete' | 'cancel' | 'reject'
 
 const api = {
   auth: {
-    signUp: '/company',
-    login: '/company/auth',
-    logout: '/company/auth',
-    check: '/company/auth/check',
-    unregister: '/company',
+    signUp: '/companies',
+    login: '/companies/auth',
+    logout: '/companies/auth',
+    check: '/companies/auth/check',
+    unregister: '/companies',
   },
-  signUp: {
-    bank: '/bank',
+  manager: {
+    signUp: '/companies/managers',
+    login: '/companies/managers/auth',
   },
-  common: {
-    ocr: '/licenses/signup',
+  department: {
+    list: '/companies/departments',
   },
-  contract: {
-    list: '/stores/contracts',
-    received: '/stores/contracts/received',
-    send: '/stores/contracts/send',
-    history: '/stores/contracts/history',
+  employee: {
+    list: (departmentId?: string) => `/companies/employees?department=${departmentId}`,
   },
-  payments: {
+  payment: {
     list: (start: string, end: string, departmentId?: string) =>
       `/payments/companies?start=${start}&end=${end}&department=${departmentId}`,
     detail: (start: string, end: string, employeeId?: string) =>
       `/payments/companies/employees/${employeeId}?start=${start}&end=${end}`,
   },
-  departments: {
-    list: '/companies/departments',
+  contract: {
+    list: (userCond: ContractUserCondition, status: ContractStatus) =>
+      `/contracts?userCond=${userCond}&status=${status}`,
+    create: `/contracts`,
+    response: (contractId: string) => `/contracts/${contractId}`,
+    terminate: (contractId: string) => `/contracts/${contractId}`,
   },
-  employees: {
-    list: (departmentId?: string) => `/companies/employees?department=${departmentId}`,
+  settlement: {
+    list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,
+  },
+  common: {
+    ocr: '/ocr/license',
   },
 }
 
