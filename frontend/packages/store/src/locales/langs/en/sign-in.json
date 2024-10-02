@@ -1,0 +1,23 @@
+{
+  "title": "Login",
+  "label": {
+    "email": "Email",
+    "password": "Password"
+  },
+  "button": {
+    "forgot_account": "Forgot Email/Password",
+    "sign_in": "Sign-In",
+    "sign_up": "Sign-Up"
+  },
+  "validate": {
+    "email": {
+      "required": "Please enter your email",
+      "pattern": "Invalid email format"
+    },
+    "password": {
+      "required": "Please enter your password",
+      "minLength": "Password must be at least 8 characters"
+    },
+    "login": "Incorrect email or password"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "breadcrumbs": {
+    "management": "Management",
+    "payment_management": "Ledger Management"
+  },
+  "field": {
+    "company": "Company",
+    "price": "Price",
+    "time": "Time",
+    "company_name": "Company Name",
+    "employee_code": "Employee Number",
+    "menu": "Menu",
+    "total_price": "Payment Amount",
+    "payment_time": "Payment Time"
+  },
+  "unit": {
+    "won": "KRW",
+    "date": "{0} Year {1} Month"
+  },
+  "tooltip": {
+    "delete_all": "Delete All"
+  },
+  "dialog": {
+    "delete_all": "Delete",
+    "delete_all_content": "Are you sure you want to delete {0} payment records?"
+  },
+  "toast": {
+    "delete": "The menu has been deleted"
+  },
+  "label": {
+    "selected": "{0} items selected"
+  },
+  "tab": {
+    "all": "All"
+  }
+}
