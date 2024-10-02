@@ -1,6 +1,5 @@
 package com.e201.api.service.contract;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,18 +120,18 @@ public class ContractService {
 	}
 
 	public Contract findEntity(UUID id) {
-		return contractRepository.findByIdAndDeleteYN(id, "N")
+		return contractRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
 	public UUID findContractId(UUID companyId, UUID storeId) {
-		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId,"N")
+		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 		return contract.getId();
 	}
 
-	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond){
-		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond,null, 10);
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
 		return response;
 	}
 
@@ -205,8 +204,12 @@ public class ContractService {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
 	public void delete(String contractId) {
+<<<<<<< HEAD
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		Contract contract = contractRepository.findById(UUID.fromString(contractId))
+=======
+		Contract contract = contractRepository.findByIdAndDeleteYN(UUID.fromString(contractId), "N")
+>>>>>>> 13366f8 ([#40] feat: 계약 조회 기능 구현)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 <<<<<<< HEAD
