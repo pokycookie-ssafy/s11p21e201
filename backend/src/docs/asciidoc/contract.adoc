@@ -1,0 +1,13 @@
+== 계약 API
+
+=== 계약 생성
+
+operation::contract-controller-test/create_contract_success[snippets="http-request,http-response"]
+
+=== 계약 응답
+
+operation::contract-controller-test/respond_contract_success[snippets="http-request,http-response"]
+
+=== 계약 삭제
+
+operation::contract-controller-test/delete_contract_success[snippets="http-request,http-response"]

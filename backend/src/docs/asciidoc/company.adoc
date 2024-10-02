@@ -10,6 +10,10 @@ operation::company-info-controller-test/create_company-info_success[snippets="ht
 
 operation::company-controller-test/create_company_success[snippets="http-request,http-response"]
 
+=== 기업 로그인
+
+operation::company-auth-controller-test/company_auth_success[snippets="http-request,http-response"]
+
 === 부서 등록
 
 operation::department-controller-test/create_company-info_success[snippets="http-request,http-response"]
@@ -18,9 +22,17 @@ operation::department-controller-test/create_company-info_success[snippets="http
 
 operation::manager-controller-test/create_company-info_success[snippets="http-request,http-response"]
 
+=== 관리자 로그인
+
+operation::company-auth-controller-test/manager_auth_success[snippets="http-request,http-response"]
+
 === 직원 계정 생성
 
 operation::employee-controller-test/create_company-info_success[snippets="http-request,http-response"]
+
+=== 직원 로그인
+
+operation::company-auth-controller-test/employee_auth_success[snippets="http-request,http-response"]
 
 === 관리자 목록 조회
 
