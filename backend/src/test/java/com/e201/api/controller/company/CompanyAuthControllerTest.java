@@ -51,7 +51,6 @@ class CompanyAuthControllerTest extends AbstractRestDocsTest {
 				.content(requestJson)
 			)
 			.andExpect(status().isCreated());
-		// TODO <jhl221123> 세션에 값이 저장된 것을 확인해야함
 	}
 
 	@DisplayName("관리자 계정으로 로그인한다.")
