@@ -85,7 +85,7 @@ public class MenuService {
 			return Menu.builder()
 			.store(originMenu.getStore())
 			.price(menuUpdateRequest.getPrice())
-			.name(menuUpdateRequest.getMenuName())
+			.name(menuUpdateRequest.getName())
 			.category(menuUpdateRequest.getCategory())
 			.build();
 
