@@ -1,5 +1,6 @@
 package com.e201.domain.entity.payment;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.e201.domain.entity.BaseEntity;
@@ -27,17 +28,30 @@ public class Payment extends BaseEntity {
 	@Column(name = "contract_id")
 	private UUID contractId;
 
+	@Column(name = "store_id")
+	private UUID storeId;
+
+	@Column(name = "store_name")
+	private String storeName;
+
 	@Column(name = "employee_id")
 	private UUID employeeId;
 
 	@Column(name = "total_amount")
 	private Long totalAmount;
 
+	@Column(name = "payment_date")
+	private LocalDateTime paymentDate;
+
 	@Builder
-	public Payment(UUID id, UUID contractId, UUID employeeId, Long totalAmount) {
+	public Payment(UUID id, UUID contractId, UUID storeId, String storeName, UUID employeeId, Long totalAmount,
+		LocalDateTime paymentDate) {
 		this.id = id;
 		this.contractId = contractId;
+		this.storeId = storeId;
+		this.storeName = storeName;
 		this.employeeId = employeeId;
 		this.totalAmount = totalAmount;
+		this.paymentDate = paymentDate;
 	}
 }
