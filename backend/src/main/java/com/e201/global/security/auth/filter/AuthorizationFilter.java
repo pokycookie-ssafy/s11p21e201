@@ -35,7 +35,8 @@ public class AuthorizationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
 		IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
-		if(httpRequest.getMethod().equals("OPTIONS")) {
+		if (httpRequest.getMethod().equalsIgnoreCase("OPTIONS")) {
+			chain.doFilter(request, response);
 			return;
 		}
 		boolean isManagerCreationPath = matchURIAndMethod(httpRequest, POST, creationPath.getManagerPath());
