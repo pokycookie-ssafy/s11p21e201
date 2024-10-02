@@ -37,15 +37,27 @@ public class Employee extends BaseEntity {
 	@Column(name = "password")
 	private String password;
 
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "support_amount")
+	private Integer supportAmount;
+
 	@Builder
-	private Employee(UUID id, Department department, String code, String password) {
+	private Employee(UUID id, Department department, String code, String password, String name, Integer supportAmount) {
 		this.id = id;
 		this.department = department;
 		this.code = code;
 		this.password = password;
+		this.name = name;
+		this.supportAmount = supportAmount;
 	}
 
 	public void changePassword(String password) {
 		this.password = password;
+	}
+
+	public void changeSupportAmount(Integer supportAmount) {
+		this.supportAmount = supportAmount;
 	}
 }
