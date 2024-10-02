@@ -164,5 +164,5 @@ jacocoTestCoverageVerification {
 tasks.named('test') {
     useJUnitPlatform()
     outputs.dir snippetsDir
-    finalizedBy jacocoTestReport
+//    finalizedBy jacocoTestReport
 }
