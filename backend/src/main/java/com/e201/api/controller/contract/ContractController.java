@@ -21,7 +21,6 @@ import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
-import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 
@@ -41,9 +40,10 @@ public class ContractController {
 	}
 
 	@GetMapping("/contracts")
-	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo, @RequestParam(value="status", required=false)
-	ContractFindStatus status, @RequestParam(value="userCond", required = false) ContractFindCond userCond) {
-		List<ContractFindResponse> response = contractService.find(status, userCond);
+	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@RequestParam(value = "status") ContractFindStatus status,
+		@RequestParam(value = "userCond") ContractFindCond userCond) {
+		List<ContractFindResponse> response = contractService.find(authInfo, status, userCond);
 
 		return ResponseEntity.status(OK).body(response);
 	}

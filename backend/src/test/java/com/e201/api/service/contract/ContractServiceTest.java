@@ -2,6 +2,7 @@ package com.e201.api.service.contract;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
+import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
+import com.e201.domain.entity.contract.ContractFindCond;
+import com.e201.domain.entity.contract.ContractFindStatus;
 import com.e201.domain.entity.contract.ContractRespondType;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
+import com.e201.global.security.auth.dto.AuthInfo;
 
 @SpringBootTest
 public class ContractServiceTest {
@@ -45,6 +50,24 @@ public class ContractServiceTest {
 
 		// then
 		assertThatContractMatchExactly(actual, companyId, storeId);
+	}
+
+	@JtaTransactional
+	@DisplayName("계약(Entity) List를 조회한다.")
+	@Test
+	void find_contract_entity_list_success() {
+		//given
+		UUID companyId = UUID.randomUUID();
+		UUID storeId = UUID.randomUUID();
+		Contract contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
+		contractRepository.save(contract);
+
+		//when
+		List<ContractFindResponse> actual = sut.find(new AuthInfo(companyId, RoleType.COMPANY), ContractFindStatus.IN,
+			ContractFindCond.ALL);
+
+		//then
+		assertThat(actual).isNotNull();
 	}
 
 	@DisplayName("존재하지 않는 계약(Entity)를 조회하면 예외가 발생한다.")
@@ -197,12 +220,20 @@ public class ContractServiceTest {
 	@Test
 	void delete_contract_success() {
 		//given
-		String companyId = UUID.randomUUID().toString();
-		String storeId = UUID.randomUUID().toString();
-		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+		UUID companyId = UUID.randomUUID();
+		UUID storeId = UUID.randomUUID();
+		// ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
+		// ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+		Contract contract = Contract.builder()
+			.companyId(companyId)
+			.storeId(storeId)
+			.settlementDay(10)
+			.status(ContractStatus.COMPLETE)
+			.build();
 
-		String contractId = contract.getId().toString();
+		Contract savedContract = contractRepository.save(contract);
+
+		String contractId = savedContract.getId().toString();
 
 		//when
 		sut.delete(contractId);

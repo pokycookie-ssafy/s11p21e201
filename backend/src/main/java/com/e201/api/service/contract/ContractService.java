@@ -1,6 +1,5 @@
 package com.e201.api.service.contract;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,18 +45,18 @@ public class ContractService {
 	}
 
 	public Contract findEntity(UUID id) {
-		return contractRepository.findByIdAndDeleteYN(id, "N")
+		return contractRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
 	public UUID findContractId(UUID companyId, UUID storeId) {
-		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId,"N")
+		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 		return contract.getId();
 	}
 
-	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond){
-		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond,null, 10);
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
 		return response;
 	}
 
@@ -81,7 +80,7 @@ public class ContractService {
 
 	@JtaTransactional
 	public void delete(String contractId) {
-		Contract contract = contractRepository.findById(UUID.fromString(contractId))
+		Contract contract = contractRepository.findByIdAndDeleteYN(UUID.fromString(contractId), "N")
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 		contract.softDelete();

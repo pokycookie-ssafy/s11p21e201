@@ -67,9 +67,7 @@ public class InvoiceService {
 
 	@JtaTransactional
 	public void delete(String invoiceId) {
-		Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceId))
-			.orElseThrow(() -> new RuntimeException("not found exception"));
-
+		Invoice invoice = findEntity(UUID.fromString(invoiceId));
 		invoice.softDelete();
 	}
 
