@@ -10,6 +10,7 @@ import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { grouping } from '@/utils/payment'
+import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { DialogDelete } from '@/components/dialog'
 import { m, fNumber, useBoolean } from '@e201/utils'
@@ -29,21 +30,7 @@ export function PaymentManagementView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null)
 
-  const { start, end } = useMemo(
-    () => ({
-      start: dayjs()
-        .year(year)
-        .month(month - 1)
-        .startOf('month')
-        .format(),
-      end: dayjs()
-        .year(year)
-        .month(month - 1)
-        .endOf('month')
-        .format(),
-    }),
-    [month, year]
-  )
+  const { start, end } = getMonthRange(year, month - 1)
 
   const deleteAllConfirm = useBoolean()
 

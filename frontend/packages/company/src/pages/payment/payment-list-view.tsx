@@ -8,6 +8,7 @@ import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useQuery } from '@tanstack/react-query'
@@ -28,21 +29,7 @@ export default function PaymentListView() {
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
 
-  const dateFilter = useMemo(() => {
-    const start = dayjs()
-      .year(year)
-      .month(month - 1)
-      .startOf('month')
-      .format()
-
-    const end = dayjs()
-      .year(year)
-      .month(month - 1)
-      .endOf('month')
-      .format()
-
-    return { start, end }
-  }, [month, year])
+  const { start, end } = getMonthRange(year, month - 1)
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)
@@ -50,20 +37,20 @@ export default function PaymentListView() {
   }
 
   const { data: payments, isPending: paymentIsPending } = useQuery({
-    queryKey: [api.payment.list(dateFilter.start, dateFilter.end, selectedDepartment?.value)],
+    queryKey: [api.payment.list(start, end, selectedDepartment?.value)],
     queryFn: async () => {
       const response = await axios.get<IPayment[]>(
-        api.payment.list(dateFilter.start, dateFilter.end, selectedDepartment?.value)
+        api.payment.list(start, end, selectedDepartment?.value)
       )
       return response.data
     },
   })
 
   const { data: paymentEmployees, isPending: paymentDetailIsPending } = useQuery({
-    queryKey: [api.payment.detail(dateFilter.start, dateFilter.end, selectedEmployee?.value)],
+    queryKey: [api.payment.detail(start, end, selectedEmployee?.value)],
     queryFn: async () => {
       const response = await axios.get<IPaymentEmployee>(
-        api.payment.detail(dateFilter.start, dateFilter.end, selectedEmployee?.value)
+        api.payment.detail(start, end, selectedEmployee?.value)
       )
       return response.data
     },
