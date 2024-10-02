@@ -8,4 +8,7 @@ endif::[]
 :toclevels: 2
 :seclinks:
 include::company.adoc[]
+include::store.adoc[]
 include::payment.adoc[]
+include::contract.adoc[]
+include::invoice.adoc[]

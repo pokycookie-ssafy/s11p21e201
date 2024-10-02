@@ -1,0 +1,13 @@
+== 현금영수증 API
+
+=== 현금영수증 업로드
+
+operation::invoice-controller-test/upload_invoice_success[snippets="http-request,http-response"]
+
+=== 현금영수증 다운로드
+
+operation::invoice-controller-test/download_invoice_success[snippets="http-request,http-response"]
+
+=== 현금영수증 삭제
+
+operation::invoice-controller-test/delete_invoice_success[snippets="http-request,http-response"]
