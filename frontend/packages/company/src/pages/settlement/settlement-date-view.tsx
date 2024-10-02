@@ -5,6 +5,7 @@ import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useBoolean } from '@/hooks/use-boolean'
@@ -85,17 +86,11 @@ export default function SettlementDateView() {
       return []
     }
 
-    const filterDate = dayjs()
-      .year(year)
-      .month(month - 1)
-    const startDate = filterDate.startOf('month')
-    const endDate = filterDate.endOf('month')
+    const { start, end } = getMonthRange(year, month - 1)
 
     let filtered = [...settlements]
 
-    filtered = filtered.filter((e) =>
-      dayjs(e.settlementDate).isBetween(startDate, endDate, 'date', '[]')
-    )
+    filtered = filtered.filter((e) => dayjs(e.settlementDate).isBetween(start, end, 'date', '[]'))
     if (tab === 'unsettled') {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     } else if (tab === 'partial') {

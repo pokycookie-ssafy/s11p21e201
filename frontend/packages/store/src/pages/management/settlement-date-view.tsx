@@ -7,6 +7,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
@@ -38,21 +39,7 @@ export default function SettlementDateView() {
     { label: t('tab.upload'), value: 'upload' },
   ]
 
-  const { start, end } = useMemo(
-    () => ({
-      start: dayjs()
-        .year(year)
-        .month(month - 1)
-        .startOf('month')
-        .format(),
-      end: dayjs()
-        .year(year)
-        .month(month - 1)
-        .endOf('month')
-        .format(),
-    }),
-    [month, year]
-  )
+  const { start, end } = getMonthRange(year, month - 1)
 
   const queryFn = async () => {
     const response = await axios.get<ISettlementResponse[]>(api.settlement.list(start, end))
