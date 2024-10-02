@@ -148,16 +148,14 @@ public class OcrService {
 		Result bizLicense = responseBody.getImages().getFirst().getBizLicense().getResult();
 
 		String taxType = bizLicense.getTaxType().getFirst().getText();
+		System.out.println(taxType);
 		String companyName;
-		String registerNumber;
 		switch (taxType) {
 			case "법인사업자" -> {
 				companyName = bizLicense.getCorpName().getFirst().getText();
-				registerNumber = bizLicense.getCorpRegisterNum().getFirst().getText();
 			}
-			case "개인사업자" -> {
+			case "일반과세자", "간이과세자" -> {
 				companyName = bizLicense.getCompanyName().getFirst().getText();
-				registerNumber = bizLicense.getRegisterNumber().getFirst().getText();
 			}
 			default -> throw new IllegalStateException("Unexpected value: " + taxType);
 		}
@@ -218,6 +216,7 @@ public class OcrService {
 		String bisType = bizLicense.getBisType().getFirst().getText();
 		String bisItem = bizLicense.getBisItem().getFirst().getText();
 		String bisAddress = bizLicense.getBisAddress().getFirst().getText();
+		String registerNumber= bizLicense.getRegisterNumber().getFirst().getText();
 
 <<<<<<< HEAD
 <<<<<<< HEAD
