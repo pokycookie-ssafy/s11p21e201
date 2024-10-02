@@ -5,11 +5,9 @@ import static com.e201.global.security.auth.constant.AuthConstant.*;
 
 import java.io.IOException;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.PatternMatchUtils;
 
-import com.e201.global.exception.ErrorCode;
 import com.e201.global.security.auth.env.PathProperties;
 import com.e201.global.security.auth.exception.AuthenticationException;
 
@@ -57,7 +55,7 @@ public class AuthenticationFilter implements Filter {
 		boolean isCompanyAuthPath = matchURIAndMethod(request, method, authPath.getCompanyPath());
 		boolean isManagerAuthPath = matchURIAndMethod(request, method, authPath.getManagerPath());
 		boolean isEmployeeAuthPath = matchURIAndMethod(request, method, authPath.getEmployeePath());
-		boolean isStoreAuthPath = matchURIAndMethod(request,method, authPath.getStorePath());
+		boolean isStoreAuthPath = matchURIAndMethod(request, method, authPath.getStorePath());
 		return isCompanyAuthPath || isManagerAuthPath || isEmployeeAuthPath || isStoreAuthPath;
 	}
 
@@ -68,7 +66,9 @@ public class AuthenticationFilter implements Filter {
 		boolean isManagerCreatePath = matchURIAndMethod(request, method, creationPath.getManagerPath());
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
 		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
-		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath || isStoreCreatePath;
+		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
+		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
+			|| isStoreCreatePath || isLicenseCreatePath;
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

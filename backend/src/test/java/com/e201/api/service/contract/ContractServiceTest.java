@@ -81,11 +81,11 @@ public class ContractServiceTest {
 	@Test
 	void company_create_contract_entity_success() {
 		//given
-		String companyId = UUID.randomUUID().toString();
-		String storeId = UUID.randomUUID().toString();
-		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+		String senderId = UUID.randomUUID().toString();
+		String receiverRegisterNumber = UUID.randomUUID().toString();
+		ContractCreateRequest request = createContractCreateRequest(senderId, receiverRegisterNumber);
 		//when
-		ContractCreateResponse actual = sut.create(RoleType.COMPANY, request);
+		ContractCreateResponse actual = sut.create(new AuthInfo(UUID.fromString(senderId), RoleType.COMPANY), request);
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -98,7 +98,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//expect
-		assertThatThrownBy(() -> sut.create(RoleType.EMPLOYEE, request)).isInstanceOf(
+		assertThatThrownBy(() -> sut.create(new AuthInfo(UUID.randomUUID(), RoleType.COMPANY), request)).isInstanceOf(
 			IllegalArgumentException.class);
 	}
 
@@ -110,7 +110,7 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 		//when
-		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
+		ContractCreateResponse actual = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE), request);
 		//then
 		assertThat(actual.getId()).isNotNull();
 	}
@@ -122,8 +122,6 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
-		//when
-		ContractCreateResponse actual = sut.create(RoleType.STORE, request);
 		//expect
 		assertThatThrownBy(() -> sut.create(null, request)).isInstanceOf(RuntimeException.class);
 	}
@@ -147,7 +145,8 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
@@ -167,7 +166,8 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, null);
@@ -183,7 +183,8 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create(RoleType.STORE, contractCreateRequest);
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(storeId), RoleType.STORE),
+			contractCreateRequest);
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
@@ -203,7 +204,8 @@ public class ContractServiceTest {
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
-		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+		ContractCreateResponse contract = sut.create(new AuthInfo(UUID.fromString(companyId), RoleType.COMPANY),
+			contractCreateRequest);
 
 		String contractId = contract.getId().toString();
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.REJECT);
@@ -251,10 +253,10 @@ public class ContractServiceTest {
 			.build();
 	}
 
-	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
+	private ContractCreateRequest createContractCreateRequest(String senderId, String receiverRegisterNumber) {
 		return ContractCreateRequest.builder()
-			.companyId(companyId)
-			.storeId(storeId)
+			.senderId(senderId)
+			.receiverRegisterNumber(receiverRegisterNumber)
 			.settlementDay(10)
 			.build();
 	}

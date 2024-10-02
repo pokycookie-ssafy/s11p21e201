@@ -10,6 +10,8 @@ import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
+import com.e201.api.service.company.CompanyService;
+import com.e201.api.service.store.StoreService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.ContractFindCond;
@@ -28,20 +30,35 @@ import lombok.RequiredArgsConstructor;
 public class ContractService {
 
 	private final ContractRepository contractRepository;
+	private final CompanyService companyService;
+	private final StoreService storeService;
 
 	@JtaTransactional
-	public ContractCreateResponse create(RoleType senderType, ContractCreateRequest request) {
-		Contract contract = createContractBySenderType(senderType, request);
+	public ContractCreateResponse create(AuthInfo authInfo, ContractCreateRequest request) {
+		Contract contract = createContractBySenderType(authInfo, request);
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 	}
 
-	private Contract createContractBySenderType(RoleType senderType, ContractCreateRequest request) {
-		return switch (senderType) {
-			case STORE -> request.toEntity(ContractStatus.STORE_REQUEST);
-			case COMPANY -> request.toEntity(ContractStatus.COMPANY_REQUEST);
-			default -> throw new IllegalArgumentException("Unknown sender type: " + senderType);
-		};
+	private Contract createContractBySenderType(AuthInfo authInfo, ContractCreateRequest request) {
+		String companyId = "";
+		String storeId = "";
+		ContractStatus status;
+		switch (authInfo.getRoleType()) {
+			case STORE -> {
+				storeId = authInfo.getId().toString();
+				companyId = companyService.findCompanyByRegisterNo(request.getReceiverRegisterNumber()).toString();
+				status = ContractStatus.STORE_REQUEST;
+			}
+			case COMPANY -> {
+				companyId = authInfo.getId().toString();
+				storeId = storeService.findStoreIdByRegisterNo(request.getReceiverRegisterNumber()).getId().toString();
+				status = ContractStatus.COMPANY_REQUEST;
+			}
+			default -> throw new IllegalArgumentException("Unknown sender type: " + authInfo.getRoleType());
+		}
+
+		return request.toEntity(companyId, storeId, status);
 	}
 
 	public Contract findEntity(UUID id) {

@@ -35,7 +35,7 @@ public class ContractController {
 	@PostMapping("/contracts")
 	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo,
 		@RequestBody ContractCreateRequest request) {
-		ContractCreateResponse response = contractService.create(authInfo.getRoleType(), request);
+		ContractCreateResponse response = contractService.create(authInfo, request);
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
