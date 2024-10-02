@@ -36,6 +36,8 @@ class AuthenticationFilterTest {
 	public static final String COMPANY_CREATE_PATH = "/companies";
 	public static final String MANAGER_CREATE_PATH = "/companies/managers";
 	public static final String EMPLOYEE_CREATE_PATH = "/companies/employees";
+	private static final String STORE_CREATE_PATH = "/stores";
+	private static final String STORE_AUTH_PATH ="/stores/auth";
 
 	AuthenticationFilter authenticationFilter;
 
@@ -57,7 +59,7 @@ class AuthenticationFilterTest {
 	void whitelist_pass_authentication_filter() throws ServletException, IOException {
 		// given
 		List<String> whitelist = List.of(COMPANY_AUTH_PATH, MANAGER_AUTH_PATH, EMPLOYEE_AUTH_PATH,
-			COMPANY_CREATE_PATH, MANAGER_CREATE_PATH, EMPLOYEE_CREATE_PATH
+			COMPANY_CREATE_PATH, MANAGER_CREATE_PATH, EMPLOYEE_CREATE_PATH, STORE_CREATE_PATH, STORE_AUTH_PATH
 		);
 
 		// when
@@ -105,6 +107,7 @@ class AuthenticationFilterTest {
 		authPath.setCompanyPath(COMPANY_AUTH_PATH);
 		authPath.setManagerPath(MANAGER_AUTH_PATH);
 		authPath.setEmployeePath(EMPLOYEE_AUTH_PATH);
+		authPath.setStorePath(STORE_AUTH_PATH);
 		return authPath;
 	}
 
@@ -114,6 +117,7 @@ class AuthenticationFilterTest {
 		creationPath.setCompanyPath(COMPANY_CREATE_PATH);
 		creationPath.setManagerPath(MANAGER_CREATE_PATH);
 		creationPath.setEmployeePath(EMPLOYEE_CREATE_PATH);
+		creationPath.setStorePath(STORE_CREATE_PATH);
 		return creationPath;
 	}
 }
