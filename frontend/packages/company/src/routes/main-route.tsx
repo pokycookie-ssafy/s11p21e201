@@ -38,7 +38,7 @@ const mainRoute: RouteObject[] = [
 
   // App
   {
-    element: <PrivateLayout />,
+    // element: <PrivateLayout />,
     children: [
       {
         element: <AppLayout />,

@@ -1,4 +1,4 @@
-export const BASE_URL = '/api'
+export const BASE_URL = 'https://sanedaejangbu.site/api'
 
 const api = {
   auth: {
