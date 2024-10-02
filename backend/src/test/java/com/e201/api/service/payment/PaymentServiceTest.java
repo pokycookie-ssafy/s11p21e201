@@ -25,7 +25,7 @@ public class PaymentServiceTest {
 	@JtaTransactional
 	@DisplayName("장부(Entity)를 조회한다.")
 	@Test
-	void find_payment_entity_success(){
+	void find_payment_entity_success() {
 		UUID contractId = UUID.randomUUID();
 		UUID employeeId = UUID.randomUUID();
 		// given
@@ -33,7 +33,7 @@ public class PaymentServiceTest {
 		paymentRepository.save(payment);
 
 		// when
-		Payment actual = sut.findDomain(payment.getId());
+		Payment actual = sut.findEntity(payment.getId());
 
 		// then
 		assertThat(actual.getTotalAmount()).isEqualTo(1000L);
@@ -41,11 +41,11 @@ public class PaymentServiceTest {
 
 	@DisplayName("존재하지 않는 장부(Entity)를 조회하면 예외가 발생한다.")
 	@Test
-	void find_payment_entity_fail(){
-		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
+	void find_payment_entity_fail() {
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
-	private Payment createPayment(UUID contractId, UUID employeeId, Long totalAmount){
+	private Payment createPayment(UUID contractId, UUID employeeId, Long totalAmount) {
 		return Payment.builder()
 			.contractId(contractId)
 			.employeeId(employeeId)
