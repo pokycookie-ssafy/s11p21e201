@@ -1,10 +1,10 @@
 import type { ISelectOption } from '@e201/ui'
 import type { IMenuEditRequest } from '@/types/menu'
 
+import { useState } from 'react'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
-import { useState, useEffect } from 'react'
 
 import { Box, Stack, Dialog, Button } from '@mui/material'
 
@@ -16,11 +16,11 @@ interface IForm {
 }
 
 interface IProps {
-  data: IMenuEditRequest | null
+  data: Omit<IMenuEditRequest, 'menuId'> | null
   open: boolean
   onClose: () => void
   categories: string[]
-  onSubmit?: (data: IMenuEditRequest) => void
+  onSubmit?: (data: Omit<IMenuEditRequest, 'menuId'>) => void
 }
 
 export default function EditMenuModal({ data, open, onClose, categories, onSubmit }: IProps) {
@@ -46,18 +46,6 @@ export default function EditMenuModal({ data, open, onClose, categories, onSubmi
       onClose()
     }
   }
-
-  useEffect(() => {
-    if (!open) {
-      return
-    }
-    formMethod.setValue('name', data?.name ?? '')
-    formMethod.setValue('price', data?.price ?? 0)
-    setCategory({
-      label: data?.category ?? '',
-      value: data?.category ?? '',
-    })
-  }, [data, formMethod, open])
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
