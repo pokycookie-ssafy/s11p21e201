@@ -1,9 +1,12 @@
 package com.e201.api.service.contract;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.util.ArrayList;
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
+=======
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 import java.util.List;
 import java.util.UUID;
 
@@ -129,20 +132,25 @@ public class ContractService {
 	}
 
 	public Contract findEntity(UUID id) {
-		return contractRepository.findByIdAndDeleteYN(id, "N")
+		return contractRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
 	public UUID findContractId(UUID companyId, UUID storeId) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
 =======
 		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId,"N")
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
+=======
+		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 		return contract.getId();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
@@ -150,6 +158,10 @@ public class ContractService {
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond){
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond,null, 10);
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
+=======
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 		return response;
 	}
 
@@ -191,8 +203,13 @@ public class ContractService {
 	}
 
 	@JtaTransactional
+<<<<<<< HEAD
 	public ContractRespondResponse respond(RoleType senderType, ContractRespondCondition request){
 		Contract contract = contractRepository.findById(UUID.fromString(request.getContractId()))
+=======
+	public void delete(String contractId) {
+		Contract contract = contractRepository.findByIdAndDeleteYN(UUID.fromString(contractId), "N")
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 		ContractStatus status = updateContractStatus(contract, request.getRespondResult());

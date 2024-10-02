@@ -22,12 +22,17 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 =======
 =======
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
 >>>>>>> 13366f8 ([#40] feat: 계약 조회 기능 구현)
+=======
+import com.e201.domain.entity.contract.ContractFindCond;
+import com.e201.domain.entity.contract.ContractFindStatus;
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 import com.e201.domain.entity.contract.ContractRespondType;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
@@ -434,6 +439,7 @@ public class ContractServiceTest {
 			.settlementDay(10)
 			.status(ContractStatus.COMPLETE)
 			.build();
+<<<<<<< HEAD
 
 		Contract savedContract = contractRepository.save(contract);
 
@@ -484,8 +490,12 @@ public class ContractServiceTest {
 		String storeId = UUID.randomUUID().toString();
 		ContractCreateRequest contractCreateRequest = createContractCreateRequest(companyId, storeId);
 		ContractCreateResponse contract = sut.create(RoleType.COMPANY, contractCreateRequest);
+=======
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 
-		String contractId = contract.getId().toString();
+		Contract savedContract = contractRepository.save(contract);
+
+		String contractId = savedContract.getId().toString();
 
 		//when
 		sut.delete(contractId);

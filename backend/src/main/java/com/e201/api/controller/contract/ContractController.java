@@ -35,8 +35,11 @@ import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
+=======
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 =======
@@ -87,15 +90,21 @@ public class ContractController {
 
 	@GetMapping("/contracts")
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
 		@RequestParam(value = "status") ContractFindStatus status,
 		@RequestParam(value = "userCond") ContractFindCond userCond) {
 		List<ContractFindResponse> response = contractService.find(authInfo, status, userCond);
+<<<<<<< HEAD
 =======
 	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo, @RequestParam(value="status", required=false)
 	ContractFindStatus status, @RequestParam(value="userCond", required = false) ContractFindCond userCond) {
 		List<ContractFindResponse> response = contractService.find(status, userCond);
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
+=======
+>>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 
 		return ResponseEntity.status(OK).body(response);
 	}
