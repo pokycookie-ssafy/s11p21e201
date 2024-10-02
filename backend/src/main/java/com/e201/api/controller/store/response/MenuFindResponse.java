@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MenuFindResponse {
 	private UUID id;
-	private String menuName;
+	private String name;
 	private int price;
 	private String category;
 
 	@Builder
-	public MenuFindResponse( UUID id, String menuName,int price, String category) {
+	public MenuFindResponse(UUID id, String name, int price, String category) {
 		this.id = id;
-		this.menuName = menuName;
+		this.name = name;
 		this.price = price;
 		this.category = category;
 	}

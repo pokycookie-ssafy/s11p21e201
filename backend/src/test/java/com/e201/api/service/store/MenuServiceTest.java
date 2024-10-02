@@ -83,7 +83,7 @@ class MenuServiceTest {
 		MenuCreateRequest menuCreateRequest = createMenuRequest(store.getId());
 
 		//when
-		MenuCreateResponse actual = sut.create(store.getId(), RoleType.STORE ,menuCreateRequest);
+		MenuCreateResponse actual = sut.create(store.getId(), RoleType.STORE, menuCreateRequest);
 
 		//then
 		assertThat(actual.getId()).isNotNull();
@@ -96,7 +96,8 @@ class MenuServiceTest {
 		MenuCreateRequest menuCreateRequest = createMenuRequest(store.getId());
 
 		//then
-		assertThatThrownBy(() ->sut.create(UUID.randomUUID(), RoleType.COMPANY, menuCreateRequest)).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.create(UUID.randomUUID(), RoleType.COMPANY, menuCreateRequest)).isInstanceOf(
+			RuntimeException.class);
 	}
 
 	@DisplayName("메뉴를 수정한다.")
@@ -105,10 +106,10 @@ class MenuServiceTest {
 		//given
 		Menu menu = createMenu();
 		Menu saveMenu = menuRepository.save(menu);
-		MenuUpdateRequest request= createMenuUpdateRequest(menu);
+		MenuUpdateRequest request = createMenuUpdateRequest(menu);
 
 		//when
-		MenuUpdateResponse response = sut.modify(RoleType.STORE,saveMenu.getId(),request);
+		MenuUpdateResponse response = sut.modify(RoleType.STORE, saveMenu.getId(), request);
 
 		//then
 		assertThat(response.getId()).isNotEqualTo(menu.getId());
@@ -140,15 +141,15 @@ class MenuServiceTest {
 		MenuFindResponse menuFindResponse = sut.findOne(saveMenu.getId());
 
 		//then
-		assertThatMenuMatchExactly(menuFindResponse,saveMenu.getId());
+		assertThatMenuMatchExactly(menuFindResponse, saveMenu.getId());
 	}
 
 	@DisplayName("한 식당의 여러 메뉴를 조회한다.")
 	@Test
 	void findAll_menu_entity_success() {
-		Menu menu= createMenu();
-		Menu menu1 =createMenu();
-		Menu menu2 =createMenu();
+		Menu menu = createMenu();
+		Menu menu1 = createMenu();
+		Menu menu2 = createMenu();
 		menuRepository.save(menu);
 		menuRepository.save(menu1);
 		menuRepository.save(menu2);
@@ -163,17 +164,18 @@ class MenuServiceTest {
 	@DisplayName("인증 오류로 인해 식당의 여러 메뉴를 조회하는데 예외 처리가 발생한다. ")
 	@Test
 	void findAll_menu_entity_fail() {
-		Menu menu= createMenu();
-		Menu menu1 =createMenu();
-		Menu menu2 =createMenu();
+		Menu menu = createMenu();
+		Menu menu1 = createMenu();
+		Menu menu2 = createMenu();
 		menuRepository.save(menu);
 		menuRepository.save(menu1);
 		menuRepository.save(menu2);
 
 		//then
-		assertThatThrownBy(() ->sut.find(RoleType.COMPANY, store.getId())).isInstanceOf(RuntimeException.class);
+		assertThatThrownBy(() -> sut.find(RoleType.COMPANY, store.getId())).isInstanceOf(RuntimeException.class);
 
 	}
+
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)
@@ -219,7 +221,7 @@ class MenuServiceTest {
 
 	private void assertThatMenuMatchExactly(MenuFindResponse menu, UUID menuId) {
 		assertThat(menu)
-			.extracting("id", "menuName", "price")
-			.containsExactly(menuId, "메뉴이름",5000);
+			.extracting("id", "name", "price")
+			.containsExactly(menuId, "메뉴이름", 5000);
 	}
 }
