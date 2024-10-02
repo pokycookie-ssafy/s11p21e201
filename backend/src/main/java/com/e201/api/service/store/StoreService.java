@@ -74,6 +74,10 @@ public class StoreService {
 		}
 	}
 
+	public Store findByEmail(String email){
+		return storeRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
 	public Store findEntity(UUID id) {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}

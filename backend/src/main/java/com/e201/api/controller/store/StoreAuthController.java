@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.store.request.StoreAuthRequest;
+import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.service.store.StoreService;
 import com.e201.global.security.auth.dto.AuthInfo;
 
@@ -22,8 +23,9 @@ public class StoreAuthController {
 
 	private final StoreService storeService;
 	@PostMapping("/stores/auth")
-	public ResponseEntity<Void> login(@RequestBody StoreAuthRequest request, HttpServletRequest httpRequest){
+	public ResponseEntity<StoreAuthResponse> login(@RequestBody StoreAuthRequest request, HttpServletRequest httpRequest){
 		AuthInfo authInfo = storeService.checkPassword(request);
+
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
 		return ResponseEntity.status(CREATED).build();
 	}
