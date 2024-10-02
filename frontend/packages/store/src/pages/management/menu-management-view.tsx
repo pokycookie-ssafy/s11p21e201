@@ -1,5 +1,5 @@
-import type { IMenu, IMenuCreateRequest } from '@/types/menu'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
+import type { IMenu, IMenuEditRequest, IMenuCreateRequest } from '@/types/menu'
 
 import { toast } from 'sonner'
 import api from '@/configs/api'
@@ -68,8 +68,8 @@ export default function MenuManagementView() {
   })
   const { mutate: editMenu } = useMutation({
     mutationKey: [api.menu.edit],
-    mutationFn: async (menuId: string) => {
-      const response = await axios.delete(api.menu.editWithId(menuId))
+    mutationFn: async ({ menuId, name, price, category }: IMenuEditRequest) => {
+      const response = await axios.put(api.menu.editWithId(menuId), { name, price, category })
       return response.data
     },
   })
@@ -111,17 +111,25 @@ export default function MenuManagementView() {
     })
   }
 
-  const editMenuHandler = () => {
+  const editMenuHandler = (data: Omit<IMenuEditRequest, 'menuId'>) => {
     if (!menuForEdit.current) {
       return
     }
-    editMenu(menuForEdit.current.id, {
-      onSuccess: () => {
-        toast.success(t('toast.edit'))
-        queryClient.invalidateQueries({ queryKey: [api.menu.list] })
-        editMenuModal.onFalse()
+    editMenu(
+      {
+        menuId: menuForEdit.current.id,
+        name: data.name,
+        price: data.price,
+        category: data.category,
       },
-    })
+      {
+        onSuccess: () => {
+          toast.success(t('toast.edit'))
+          queryClient.invalidateQueries({ queryKey: [api.menu.list] })
+          editMenuModal.onFalse()
+        },
+      }
+    )
   }
 
   const filteredMenus = useMemo<IMenu[]>(() => {
@@ -293,13 +301,15 @@ export default function MenuManagementView() {
         categories={categories}
         onSubmit={createMenuHandler}
       />
-      <EditMenuModal
-        data={menuForEdit.current}
-        open={editMenuModal.value}
-        onClose={editMenuModal.onFalse}
-        categories={categories}
-        onSubmit={editMenuHandler}
-      />
+      {editMenuModal.value && (
+        <EditMenuModal
+          data={menuForEdit.current}
+          open={editMenuModal.value}
+          onClose={editMenuModal.onFalse}
+          categories={categories}
+          onSubmit={editMenuHandler}
+        />
+      )}
       <DialogDelete
         open={deleteConfirm.value}
         onClose={deleteConfirm.onFalse}

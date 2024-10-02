@@ -12,6 +12,7 @@ interface IMenuCreateRequest {
 }
 
 interface IMenuEditRequest {
+  menuId: string
   name: string
   price: number
   category: string
