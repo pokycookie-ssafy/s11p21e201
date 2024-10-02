@@ -49,6 +49,7 @@ public class MenuService {
 			.id(id)
 			.menuName(menu.getName())
 			.price(menu.getPrice())
+			.category(menu.getCategory())
 			.build();
 	}
 
@@ -56,7 +57,7 @@ public class MenuService {
 		validationStore(roleType);
 		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id,"N","N")
 			.stream()
-			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice()))  // Menu -> MenuFindResponse로 변환
+			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice(), menu.getCategory()))  // Menu -> MenuFindResponse로 변환
 			.toList();  // List<MenuFindResponse>로 수집
 		return responseList;
 	}
@@ -84,7 +85,8 @@ public class MenuService {
 			return Menu.builder()
 			.store(originMenu.getStore())
 			.price(menuUpdateRequest.getPrice())
-			.name(originMenu.getName())
+			.name(menuUpdateRequest.getMenuName())
+			.category(menuUpdateRequest.getCategory())
 			.build();
 
 	}

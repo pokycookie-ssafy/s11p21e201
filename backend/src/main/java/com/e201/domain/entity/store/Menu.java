@@ -39,15 +39,19 @@ public class Menu extends BaseEntity {
 	@Column(name="name")
 	private String name;
 
+	@Column(name="category")
+	private String category;
+
 	@Column(name = "modifiedYN")
 	private String modifiedYN = "N";
 
 	@Builder
-	public Menu(UUID id, Store store, String name, int price){
+	public Menu(UUID id, Store store, String name, int price, String category){
 		this.id =id;
 		this.store = store;
 		this.name = name;
 		this.price = price;
+		this.category= category;
 
 	}
 

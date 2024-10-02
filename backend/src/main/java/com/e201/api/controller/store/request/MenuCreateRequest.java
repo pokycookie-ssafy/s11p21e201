@@ -14,18 +14,20 @@ import lombok.NoArgsConstructor;
 public class MenuCreateRequest {
 	private String name;
 	private int price;
-
+	private String category;
 	@Builder
-	private MenuCreateRequest(String name, int price) {
+	private MenuCreateRequest(String name, int price, String category) {
 		this.name = name;
 		this.price = price;
+		this.category = category;
 	}
 
 	public Menu toEntity(Store store){
 		return Menu.builder()
 			.store(store)
 			.name(name)
-			.price(this.price)
+			.price(price)
+			.category(category)
 			.build();
 	}
 
