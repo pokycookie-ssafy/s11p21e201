@@ -7,31 +7,38 @@ import SignInView from '@/pages/auth/sign-in-view'
 import SignUpView from '@/pages/auth/sign-up-view'
 import SignInLayout from '@/layouts/sign-in-layout'
 import SignUpLayout from '@/layouts/sign-up-layout'
+import PrivateLayout from '@/layouts/private-layout'
+import OnlyPublicLayout from '@/layouts/only-public-layout'
 
 const mainRoute: RouteObject[] = [
   // Auth
   {
-    element: <SignInLayout />,
+    element: <OnlyPublicLayout />,
     children: [
       {
-        path: paths.auth.signIn,
-        element: <SignInView />,
+        element: <SignInLayout />,
+        children: [
+          {
+            path: paths.auth.signIn,
+            element: <SignInView />,
+          },
+        ],
       },
-    ],
-  },
-  {
-    element: <SignUpLayout />,
-    children: [
       {
-        path: paths.auth.signUp,
-        element: <SignUpView />,
+        element: <SignUpLayout />,
+        children: [
+          {
+            path: paths.auth.signUp,
+            element: <SignUpView />,
+          },
+        ],
       },
     ],
   },
 
   // App
   {
-    // element: <PrivateLayout />,
+    element: <PrivateLayout />,
     children: [
       {
         element: <AppLayout />,
