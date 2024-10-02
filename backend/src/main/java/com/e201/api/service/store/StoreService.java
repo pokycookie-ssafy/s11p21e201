@@ -3,6 +3,8 @@ package com.e201.api.service.store;
 import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -77,6 +79,13 @@ public class StoreService {
 
 	public Store findByEmail(String email){
 		return storeRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("not found exception"));
+	}
+
+	public Store findStoreIdByRegisterNo(String registerNo){
+		List<Store> stores = storeRepository.findByRegisterNoWithStoreInfo(registerNo);
+		Store store = stores.getFirst();
+		return store;
+
 	}
 
 	public StoreAuthResponse login(StoreAuthRequest storeAuthRequest){
