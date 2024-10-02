@@ -95,6 +95,16 @@ public class StoreService {
 		return storeRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+	public StoreAuthResponse checkLogin(UUID id,RoleType roleType) {
+		validationStore(roleType);
+		Store store = findEntity(id);
+		StoreInfo storeInfo= store.getStoreInfo();
+		return StoreAuthResponse.builder()
+			.id(store.getId())
+			.name(storeInfo.getName())
+			.email(store.getEmail())
+			.phone(storeInfo.getPhone()).build();
+	}
 
 	private void encryptPassword(Store store) {
 		String encryptedPassword = oneWayCipherService.encrypt(store.getPassword());
@@ -125,4 +135,6 @@ public class StoreService {
 		Store store = findEntity(id);
 		return store.getStoreInfo().getId();
 	}
+
+
 }

@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.service.store.StoreService;
 import com.e201.domain.entity.store.Store;
 import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,12 @@ public class StoreAuthController {
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
 		
 		return ResponseEntity.status(CREATED).body(storeAuthResponse);
+	}
+
+	@GetMapping("/stores/auth/check")
+	public ResponseEntity<StoreAuthResponse> loginCheck(@Auth AuthInfo authInfo){
+		StoreAuthResponse storeAuthResponse = storeService.checkLogin(authInfo.getId(), authInfo.getRoleType());
+		return ResponseEntity.status(OK).body(storeAuthResponse);
 	}
 
 	@DeleteMapping("/stores/auth")
