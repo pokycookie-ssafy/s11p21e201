@@ -1,7 +1,7 @@
-import type { IPaymentResponse } from '@/types/payment'
+import type { IPayment } from '@/types/payment'
 
 type MockResponse =
-  | IPaymentResponse
+  | IPayment
   | {
       paidAt: string
     }

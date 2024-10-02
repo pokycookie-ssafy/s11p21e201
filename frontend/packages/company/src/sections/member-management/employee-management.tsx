@@ -49,7 +49,7 @@ const fetchEmployees = async () => {
   return response.data
 }
 
-export default function ContractRequestManagementView() {
+export default function EmployeeManagement() {
   const { t } = useTranslate('member')
 
   const queryClient = useQueryClient()
@@ -140,14 +140,6 @@ export default function ContractRequestManagementView() {
       resizable: false,
       width: 120,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD'),
-    },
-    {
-      field: 'spentAmount',
-      headerName: t('spent_amount'),
-      type: 'number',
-      width: 120,
-      resizable: false,
-      renderCell: (params) => `${fNumber(params.value)} ${t('unit.won')}`,
     },
     {
       field: 'supportAmount',
