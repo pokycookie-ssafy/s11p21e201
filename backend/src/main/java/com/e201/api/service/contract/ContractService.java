@@ -66,10 +66,9 @@ public class ContractService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public UUID findContractId(UUID companyId, UUID storeId) {
-		Contract contract = contractRepository.findContractByCompanyIdAndStoreIdAndDeleteYN(companyId, storeId, "N")
-			.orElseThrow(() -> new RuntimeException("not found exception"));
-		return contract.getId();
+	public Contract findContractWithCompanyIdAndStoreId(UUID companyId, UUID storeId) {
+		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(companyId, storeId).getFirst();
+		return contract;
 	}
 
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {

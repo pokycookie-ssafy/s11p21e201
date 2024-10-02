@@ -84,6 +84,16 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		return result;
 	}
 
+	@Override
+	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
+		QContract contract = QContract.contract;
+		return contractQueryFactory.selectFrom(contract)
+			.where(contract.storeId.eq(storeId),
+				contract.companyId.eq(companyId),
+				contract.deleteYN.eq("N"))
+			.fetch();
+	}
+
 	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		if (status == null)
 			return null;
