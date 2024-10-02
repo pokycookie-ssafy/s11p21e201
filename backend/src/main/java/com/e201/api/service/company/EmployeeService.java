@@ -5,11 +5,14 @@ import static com.e201.global.exception.ErrorCode.*;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
+import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.BaseEntity;
 import com.e201.domain.entity.company.Department;
@@ -17,7 +20,6 @@ import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.EmployeeRepository;
 import com.e201.global.exception.EntityNotFoundException;
-import com.e201.global.exception.ErrorCode;
 import com.e201.global.exception.PasswordIncorrectException;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -54,6 +56,10 @@ public class EmployeeService extends BaseEntity {
 	public Employee findEntity(UUID id) {
 		return employeeRepository.findById(id)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EMPLOYEE.name()));
+	}
+
+	public Page<EmployeeFindResponse> findPage(UUID departmentId, Pageable pageable) {
+		return employeeRepository.findPage(departmentId, pageable).map(EmployeeFindResponse::of);
 	}
 
 	private void encryptPassword(Employee employee) {

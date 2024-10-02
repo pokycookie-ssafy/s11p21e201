@@ -5,12 +5,16 @@ import static com.e201.global.exception.ErrorCode.*;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
 import com.e201.api.controller.company.request.manager.ManagerCreateRequest;
 import com.e201.api.controller.company.response.manager.ManagerCreateResponse;
+import com.e201.api.controller.company.response.manager.ManagerFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
+import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.ManagerRepository;
@@ -27,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @JtaTransactional(readOnly = true)
 public class ManagerService {
 
+	private final CompanyService companyService;
 	private final ManagerRepository managerRepository;
 	private final DepartmentService departmentService;
 	private final OneWayCipherService oneWayCipherService;
@@ -50,6 +55,11 @@ public class ManagerService {
 	public Manager findEntity(UUID id) {
 		return managerRepository.findById(id)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, MANAGER.name()));
+	}
+
+	public Page<ManagerFindResponse> findPage(UUID companyId, Pageable pageable) {
+		Company company = companyService.findEntity(companyId);
+		return managerRepository.findAllByCompany(company, pageable).map(ManagerFindResponse::of);
 	}
 
 	private void encryptPassword(Manager manager) {
