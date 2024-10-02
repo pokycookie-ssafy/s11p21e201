@@ -11,6 +11,7 @@ import {
   Stack,
   Select,
   MenuItem,
+  useTheme,
   InputLabel,
   Typography,
   FormControl,
@@ -26,36 +27,34 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
   const [departments, setDepartments] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
 
+  const theme = useTheme()
+
   useEffect(() => {
-    // 선택한 연도와 월에 해당하는 데이터 필터링
     const filteredData = data.filter((payment) => {
       const paymentDate = dayjs(payment.paidAt)
       return paymentDate.year() === selectedYear && paymentDate.month() + 1 === selectedMonth
     })
 
-    // 부서별 식대 합계 계산
     const departmentTotals: { [key: string]: number } = {}
     filteredData.forEach((payment) => {
       const { departmentName, price } = payment
       departmentTotals[departmentName] = (departmentTotals[departmentName] || 0) + price
     })
 
-    // 상위 7개 부서만 표시
-    const sortedDepartments = Object.entries(departmentTotals)
-      .sort(([, totalA], [, totalB]) => totalB - totalA) // 총액이 높은 순으로 정렬
-      .slice(0, 5) // 상위 7개 부서 선택
+    const sortedDepartments = Object.entries(departmentTotals).sort(
+      ([, totalA], [, totalB]) => totalB - totalA
+    )
 
     setDepartments(sortedDepartments.map(([name]) => name))
     setSeriesData(sortedDepartments.map(([, total]) => total))
   }, [data, selectedYear, selectedMonth])
 
-  // 연도 및 월 선택 처리
   const handleYearChange = (e: SelectChangeEvent<number>) => {
-    setSelectedYear(Number(e.target.value)) // SelectChangeEvent는 string 타입이므로 변환 필요
+    setSelectedYear(Number(e.target.value))
   }
 
   const handleMonthChange = (e: SelectChangeEvent<number>) => {
-    setSelectedMonth(Number(e.target.value)) // SelectChangeEvent는 string 타입이므로 변환 필요
+    setSelectedMonth(Number(e.target.value))
   }
 
   const chartOptions: ApexCharts.ApexOptions = {
@@ -65,22 +64,27 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
         enabled: true,
         autoScaleYaxis: true,
       },
+
       toolbar: {
         show: false,
       },
     },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: [theme.palette.primary.light],
     xaxis: {
       categories: departments,
     },
     yaxis: {
-      title: {
-        text: '식대 사용액 합계 (원)',
-      },
       labels: {
         formatter(value: number) {
-          return `${value.toLocaleString()}원`
+          return `${value.toLocaleString()}`
         },
       },
+    },
+    grid: {
+      strokeDashArray: 3,
     },
     tooltip: {
       y: {
@@ -93,7 +97,7 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
 
   const chartSeries = [
     {
-      name: '식대 사용액',
+      name: '',
       data: seriesData,
     },
   ]
@@ -102,7 +106,7 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
     <Card>
       <Stack p={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" align="left" sx={{ flex: 1 }}>
+          <Typography variant="h6" align="left" sx={{ flex: 1 }} pl={1}>
             부서별 식대 사용액
           </Typography>
 
