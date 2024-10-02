@@ -23,7 +23,7 @@ export default function ContractHistoryManagementView() {
   const [storeSearch, setStoreSearch] = useState<string>('')
 
   const queryFn = async () => {
-    const response = await axios.get<IContractHistory[]>(api.contract.history, {})
+    const response = await axios.get<IContractHistory[]>(api.contract.list('all', 'all'), {})
     return response.data
   }
 

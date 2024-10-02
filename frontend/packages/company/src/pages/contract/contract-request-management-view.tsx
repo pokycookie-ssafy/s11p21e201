@@ -42,22 +42,22 @@ export default function ContractRequestManagementView() {
   ]
 
   const receivedQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.received)
+    const response = await axios.get<IContractResponse[]>(api.contract.list('receiver', 'all'))
     return response.data
   }
 
   const sendQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.send)
+    const response = await axios.get<IContractResponse[]>(api.contract.list('sender', 'all'))
     return response.data
   }
 
   const { data: receivedData, isPending: receivedIsPending } = useQuery({
-    queryKey: [api.contract.received],
+    queryKey: [api.contract.list('receiver', 'all')],
     queryFn: receivedQueryFn,
   })
 
   const { data: sendData, isPending: sendIsPending } = useQuery({
-    queryKey: [api.contract.send],
+    queryKey: [api.contract.list('sender', 'all')],
     queryFn: sendQueryFn,
   })
 

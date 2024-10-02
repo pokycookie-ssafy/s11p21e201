@@ -29,6 +29,22 @@ export function PaymentManagementView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null)
 
+  const { start, end } = useMemo(
+    () => ({
+      start: dayjs()
+        .year(year)
+        .month(month - 1)
+        .startOf('month')
+        .format(),
+      end: dayjs()
+        .year(year)
+        .month(month - 1)
+        .endOf('month')
+        .format(),
+    }),
+    [month, year]
+  )
+
   const deleteAllConfirm = useBoolean()
 
   const queryClient = useQueryClient()
@@ -36,11 +52,11 @@ export function PaymentManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
   const queryFn = async () => {
-    const response = await axios.get<IPaymentResponse[]>(api.management.payment)
+    const response = await axios.get<IPaymentResponse[]>(api.payment.list(start, end))
     return response.data
   }
 
-  const { data, isPending, isError } = useQuery({ queryKey: [api.management.payment], queryFn })
+  const { data, isPending, isError } = useQuery({ queryKey: [api.payment], queryFn })
 
   const companies = useMemo(() => {
     if (!data) {

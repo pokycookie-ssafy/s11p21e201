@@ -6,7 +6,7 @@ type MockResponse =
       paidAt: string
     }
 
-export const paymentResponse: MockResponse[] = [
+export const paymentResponse = [
   {
     id: '1',
     employeeId: 'E001',
