@@ -57,7 +57,17 @@ export default function SignUpFormView({ onNext }: IProps) {
   const { control, watch } = formMethod
 
   const queryFn = async () => {
-    const response = await axios.post<ILicenseOcr>(api.common.ocr, {})
+    const formData = new FormData()
+    if (!file) {
+      return undefined
+    }
+    formData.append('image', file)
+
+    const response = await axios.post<ILicenseOcr>(api.common.ocr, formData, {
+      headers: {
+        'Content-Type': 'multipart/formdata',
+      },
+    })
     return response.data
   }
 
