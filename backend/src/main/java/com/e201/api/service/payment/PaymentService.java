@@ -35,8 +35,9 @@ public class PaymentService {
 			condition.getStartDate(), condition.getEndDate(), pageable);
 	}
 
-	public EmployeePaymentResponse findEmployeePayments(EmployeePaymentCondition condition, Pageable pageable) {
-		return paymentRepository.findEmployeePayments(condition.getEmployeeId(), condition.getStartDate(),
+	public EmployeePaymentResponse findEmployeePayments(UUID employeeId, EmployeePaymentCondition condition,
+		Pageable pageable) {
+		return paymentRepository.findEmployeePayments(employeeId, condition.getStartDate(),
 			condition.getEndDate(), pageable);
 	}
 }

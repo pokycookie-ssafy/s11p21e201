@@ -17,15 +17,15 @@ public class PaymentFindResponse {
 	private UUID storeId;
 	private String storeName;
 	private Long spentAmount;
-	private LocalDateTime createdAt;
+	private LocalDateTime paymentDate;
 
 	@Builder
-	private PaymentFindResponse(UUID id, UUID storeId, String storeName, Long spentAmount, LocalDateTime createdAt) {
+	private PaymentFindResponse(UUID id, UUID storeId, String storeName, Long spentAmount, LocalDateTime paymentDate) {
 		this.id = id;
 		this.storeId = storeId;
 		this.storeName = storeName;
 		this.spentAmount = spentAmount;
-		this.createdAt = createdAt;
+		this.paymentDate = paymentDate;
 	}
 
 	public static PaymentFindResponse of(Payment payment) {
@@ -34,7 +34,7 @@ public class PaymentFindResponse {
 			.storeId(payment.getStoreId())
 			.storeName(payment.getStoreName())
 			.spentAmount(payment.getTotalAmount())
-			.createdAt(payment.getCreatedAt())
+			.paymentDate(payment.getPaymentDate())
 			.build();
 	}
 }

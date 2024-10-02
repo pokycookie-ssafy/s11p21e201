@@ -110,15 +110,15 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 					.findFirst()
 					.orElse(0L);
 
-				return new EmployeeTotalPaymentResponse(
-					employee.getId(),
-					employee.getName(),
-					employee.getDepartment().getId(),
-					employee.getDepartment().getName(),
-					employee.getSupportAmount(),
-					totalSpent,
-					employee.getCreatedAt() // 필요한 경우 적절한 createdAt 값을 설정
-				);
+				return EmployeeTotalPaymentResponse.builder()
+					.employeeId(employee.getId())
+					.employeeName(employee.getName())
+					.departmentId(employee.getDepartment().getId())
+					.departmentName(employee.getDepartment().getName())
+					.supportAmount(employee.getSupportAmount())
+					.spentAmount(totalSpent)
+					.createdAt(employee.getCreatedAt())
+					.build();
 			})
 			.collect(Collectors.toList());
 	}
