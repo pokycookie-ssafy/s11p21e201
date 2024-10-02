@@ -108,8 +108,13 @@ public class ContractService {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
 	public ContractCreateResponse create(AuthInfo authInfo, ContractCreateRequest request) {
+		System.out.println(request.getSenderId());
 		Contract contract = createContractBySenderType(authInfo, request);
+<<<<<<< HEAD
 >>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
+=======
+		System.out.println("PASSED");
+>>>>>>> 2190cdc ([#63] fix: contract 생성/조회 시 UUID 수신 불가)
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 =======
@@ -133,19 +138,21 @@ public class ContractService {
 	}
 
 	private Contract createContractBySenderType(AuthInfo authInfo, ContractCreateRequest request) {
-		String companyId = "";
-		String storeId = "";
+		UUID companyId;
+		UUID storeId;
 		ContractStatus status;
 		switch (authInfo.getRoleType()) {
 			case STORE -> {
-				storeId = authInfo.getId().toString();
-				companyId = companyService.findCompanyByRegisterNo(request.getReceiverRegisterNumber()).toString();
+				storeId = authInfo.getId();
+				companyId = companyService.findCompanyByRegisterNo(request.getReceiverRegisterNumber()).getId();
 				status = ContractStatus.STORE_REQUEST;
+				System.out.println("PASSED @ STORE");
 			}
 			case COMPANY -> {
-				companyId = authInfo.getId().toString();
-				storeId = storeService.findStoreIdByRegisterNo(request.getReceiverRegisterNumber()).getId().toString();
+				companyId = authInfo.getId();
+				storeId = storeService.findStoreIdByRegisterNo(request.getReceiverRegisterNumber()).getId();
 				status = ContractStatus.COMPANY_REQUEST;
+				System.out.println("PASSED @ COMPANY");
 			}
 			default -> throw new IllegalArgumentException("Unknown sender type: " + authInfo.getRoleType());
 		}

@@ -18,6 +18,7 @@ import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 public class ContractCreateRequest {
 
 	@NotBlank
+	// @Size(min = 36)
 	private String senderId;
 
 	@NotBlank
@@ -53,8 +55,9 @@ public class ContractCreateRequest {
 		this.settlementDay = settlementDay;
 	}
 
-	public Contract toEntity(String companyId, String storeId, ContractStatus status) {
+	public Contract toEntity(UUID companyId, UUID storeId, ContractStatus status) {
 		return Contract.builder()
+<<<<<<< HEAD
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))
 <<<<<<< HEAD
@@ -88,6 +91,10 @@ public class ContractCreateRequest {
 			.settlementDate(settlementDate)
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
+=======
+			.companyId(companyId)
+			.storeId(storeId)
+>>>>>>> 2190cdc ([#63] fix: contract 생성/조회 시 UUID 수신 불가)
 			.settlementDay(settlementDay)
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 			.status(status)
