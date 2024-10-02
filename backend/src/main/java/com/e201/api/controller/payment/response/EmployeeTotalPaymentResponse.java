@@ -3,6 +3,7 @@ package com.e201.api.controller.payment.response;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -16,7 +17,8 @@ public class EmployeeTotalPaymentResponse {
 	private Long spentAmount;
 	private LocalDateTime createdAt;
 
-	public EmployeeTotalPaymentResponse(UUID employeeId, String employeeName, UUID departmentId, String departmentName,
+	@Builder
+	private EmployeeTotalPaymentResponse(UUID employeeId, String employeeName, UUID departmentId, String departmentName,
 		Integer supportAmount, Long spentAmount, LocalDateTime createdAt) {
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
