@@ -1,0 +1,12 @@
+{
+  "button": {
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "title": {
+    "delete": "Delete"
+  },
+  "content": {
+    "delete": "Are you sure you want to delete it?"
+  }
+}

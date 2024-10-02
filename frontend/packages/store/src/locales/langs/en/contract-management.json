@@ -1,0 +1,52 @@
+{
+  "tab": {
+    "all": "All",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Reject",
+    "canceled": "Terminated",
+    "received": "Received Requests",
+    "send": "Sent Requests"
+  },
+  "field": {
+    "company_name": "Company Name",
+    "email": "Email",
+    "phone": "Contact Number",
+    "application_date": "Applicate Date",
+    "contract_date": "Contract Date",
+    "settlement_date": "Payment Date",
+    "status": "Status",
+    "action": "Action",
+    "in_progress": "Processing Request"
+  },
+  "row": {
+    "settlement_date": "Every {0}th of each month"
+  },
+  "breadcrumbs": {
+    "management": "Management",
+    "contract_management": "Contract Management",
+    "contract_history": "Contract History",
+    "contract_create": "Create Contract",
+    "contract_request": "Request Contract"
+  },
+  "button": {
+    "create_contract": "Create Contract",
+    "request_contract": "Request Contract",
+    "need_ocr": "Please select the business license"
+  },
+  "tooltip": {
+    "accept": "Accept",
+    "reject": "Reject",
+    "accept_all": "Accept All",
+    "reject_all": "Reject All"
+  },
+  "label": {
+    "company_search": "Search by Company Name",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Reject",
+    "canceled": "Terminated",
+    "license_upload": "Please upload the business license",
+    "selected": "{0} items selected"
+  }
+}

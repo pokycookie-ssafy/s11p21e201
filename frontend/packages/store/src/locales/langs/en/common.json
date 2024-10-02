@@ -1,3 +1,6 @@
 {
-  "test": "TEST"
+  "button": {
+    "delete": "Delete",
+    "cancel": "Cancel"
+  }
 }
