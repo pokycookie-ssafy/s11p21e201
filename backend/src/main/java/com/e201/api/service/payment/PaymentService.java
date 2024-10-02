@@ -23,7 +23,7 @@ public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
 
-	public Payment findEntity(UUID id) {
+	public Payment findDomain(UUID id){
 		return paymentRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
@@ -40,4 +40,15 @@ public class PaymentService {
 		return paymentRepository.findEmployeePayments(employeeId, condition.getStartDate(),
 			condition.getEndDate(), pageable);
 	}
+
+	public void save(UUID contractId,UUID employeeId, UUID storeId,Long totalAmount){
+		Payment payment = Payment.builder()
+				.contractId(contractId)
+				.employeeId(employeeId)
+				.storeId(storeId)
+				.totalAmount(totalAmount)
+				.build();
+		paymentRepository.save(payment);
+	}
+
 }

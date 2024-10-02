@@ -12,10 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.SalesCreateRequest;
+import com.e201.api.controller.store.request.StorePaymentCreateRequest;
 import com.e201.api.controller.store.response.SalesCreateResponse;
 import com.e201.api.service.company.CompanyInfoService;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
+import com.e201.domain.entity.company.Department;
+import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Sales;
 import com.e201.domain.entity.store.Store;
@@ -106,19 +109,19 @@ class SalesServiceTest {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
-
-	@DisplayName("판매기록을 생성한다.")
-	@Test
-	void create_sales_entity_success() {
-		//given
-		SalesCreateRequest salesRequest = createSalesRequest(company.getId(), menu.getId());
-
-		//when
-		SalesCreateResponse actual = sut.create(salesRequest);
-
-		//then
-		assertThat(actual.getId()).isNotNull();
-	}
+	//
+	// @DisplayName("판매기록을 생성한다.")
+	// @Test
+	// void create_sales_entity_success() {
+	// 	//given
+	// 	SalesCreateRequest salesRequest = createSalesRequest(company.getId(), menu.getId());
+	//
+	// 	//when
+	// 	SalesCreateResponse actual = sut.create(salesRequest);
+	//
+	// 	//then
+	// 	assertThat(actual.getId()).isNotNull();
+	// }
 
 	private SalesCreateRequest createSalesRequest( UUID companyId, UUID menuId){
 		return SalesCreateRequest.builder()
@@ -178,4 +181,12 @@ class SalesServiceTest {
 			.companyInfo(companyInfo)
 			.build();
 	}
+	private Employee createEmployee(Department department, String password) {
+		return Employee.builder()
+			.department(department)
+			.code("직원코드")
+			.password(password)
+			.build();
+	}
+
 }

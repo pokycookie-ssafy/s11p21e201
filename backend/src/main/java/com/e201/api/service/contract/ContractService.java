@@ -180,7 +180,7 @@ public class ContractService {
 		return contract.getId();
 =======
 	public Contract findContractWithCompanyIdAndStoreId(UUID companyId, UUID storeId) {
-		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(companyId, storeId).getFirst();
+		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(storeId, companyId).getFirst();
 		return contract;
 >>>>>>> 65a8c38 ([#58] feat: contractId 조회 기능 추가 구현)
 	}
