@@ -41,7 +41,7 @@ public class Payment extends BaseEntity {
 	private Long totalAmount;
 
 	@Column(name = "payment_date")
-	private LocalDateTime paymentDate;
+	private LocalDateTime paymentDate = LocalDateTime.now();
 
 	@Builder
 	public Payment(UUID id, UUID contractId, UUID storeId, String storeName, UUID employeeId, Long totalAmount,
@@ -52,6 +52,6 @@ public class Payment extends BaseEntity {
 		this.storeName = storeName;
 		this.employeeId = employeeId;
 		this.totalAmount = totalAmount;
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDateTime.now();
 	}
 }

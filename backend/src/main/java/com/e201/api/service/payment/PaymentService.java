@@ -1,5 +1,6 @@
 package com.e201.api.service.payment;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import com.e201.api.controller.payment.response.EmployeePaymentResponse;
 import com.e201.api.controller.payment.response.EmployeeTotalPaymentResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.payment.Payment;
+import com.e201.domain.entity.store.Store;
 import com.e201.domain.repository.payment.PaymentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -40,4 +42,17 @@ public class PaymentService {
 		return paymentRepository.findEmployeePayments(employeeId, condition.getStartDate(),
 			condition.getEndDate(), pageable);
 	}
+
+	public void save(UUID contractId,UUID employeeId, Store store,Long totalAmount){
+		Payment payment = Payment.builder()
+				.contractId(contractId)
+				.employeeId(employeeId)
+				.storeId(store.getId())
+				.storeName(store.getStoreInfo().getName())
+				.totalAmount(totalAmount)
+				.paymentDate(LocalDateTime.now())
+				.build();
+		paymentRepository.save(payment);
+	}
+
 }

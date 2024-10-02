@@ -71,7 +71,7 @@ public class ContractService {
 	}
 
 	public Contract findContractWithCompanyIdAndStoreId(UUID companyId, UUID storeId) {
-		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(companyId, storeId).getFirst();
+		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(storeId, companyId).getFirst();
 		return contract;
 	}
 
