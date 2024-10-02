@@ -133,7 +133,7 @@ class EmployeeServiceTest {
 
 	@DisplayName("직원(엔티티)를 조회한다.")
 	@Test
-	void find_employee_entity_success() {
+	void find_List_employee_entity_success() {
 		// given
 		Employee employee = createEmployee(department, "12341234");
 		employeeRepository.save(employee);
@@ -147,7 +147,7 @@ class EmployeeServiceTest {
 
 	@DisplayName("존재하지 않는 직원(엔티티)을 조회하면 예외가 발생한다.")
 	@Test
-	void find_employee_entity_fail() {
+	void find_List_employee_entity_fail() {
 		// expected
 		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isExactlyInstanceOf(EntityNotFoundException.class);
 	}
@@ -156,6 +156,8 @@ class EmployeeServiceTest {
 		return EmployeeCreateRequest.builder()
 			.code("직원코드")
 			.password("12341234")
+			.name("직원이름")
+			.supportAmount(100000)
 			.build();
 	}
 

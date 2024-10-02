@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.payment.Payment;
 
-public interface PaymentRepository extends JpaRepository<Payment, UUID> {
+public interface PaymentRepository extends JpaRepository<Payment, UUID>, PaymentRepositoryCustom {
+	
 }

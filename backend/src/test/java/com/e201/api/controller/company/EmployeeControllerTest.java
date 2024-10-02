@@ -2,7 +2,7 @@ package com.e201.api.controller.company;
 
 import static com.e201.global.security.auth.constant.AuthConstant.*;
 import static com.e201.global.security.auth.constant.RoleType.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,6 +55,8 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		return EmployeeCreateRequest.builder()
 			.code("직원코드")
 			.password("12341234")
+			.name("직원이름")
+			.supportAmount(100000)
 			.build();
 	}
 }
