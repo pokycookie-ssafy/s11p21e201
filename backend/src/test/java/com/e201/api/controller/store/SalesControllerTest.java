@@ -26,7 +26,6 @@ public class SalesControllerTest extends AbstractRestDocsTest {
 		//given
 		UUID companyId = UUID.randomUUID();
 		UUID menuId = UUID.randomUUID();
-		UUID salesId = UUID.randomUUID();
 
 		SalesCreateRequest request = createSalesRequest(menuId, companyId);
 		String requestJson = objectMapper.writeValueAsString(request);

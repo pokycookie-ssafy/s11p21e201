@@ -25,7 +25,7 @@ public class PaymentMonthlySumServiceTest {
 	@JtaTransactional
 	@DisplayName("장부_월별집계(Entity)를 조회한다.")
 	@Test
-	void find_payment_monthly_sum_entity_success(){
+	void find_payment_monthly_sum_entity_success() {
 		UUID contractId = UUID.randomUUID();
 		// given
 		PaymentMonthlySum paymentMonthlySum = createPaymentMonthlySum(contractId, 10000L, 5000L, 5000L);
@@ -33,14 +33,14 @@ public class PaymentMonthlySumServiceTest {
 
 		// when
 		PaymentMonthlySum actual = sut.findDomain(paymentMonthlySum.getId());
-		
+
 		// then
 		assertThatPaymentMonthlyMatchExactly(actual, contractId, 10000L, 5000L, 5000L);
 	}
 
 	@DisplayName("존재하지 않는 장부_월별집계(Entity)를 조회하면 예외가 발생한다.")
 	@Test
-	void find_payment_monthly_sum_entity_fail(){
+	void find_payment_monthly_sum_entity_fail() {
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
@@ -49,13 +49,14 @@ public class PaymentMonthlySumServiceTest {
 			.contractId(contractId)
 			.amount(amount)
 			.paid(paid)
-			.receivable(receivable)
+			.unpaid(receivable)
 			.build();
 	}
 
-	private void assertThatPaymentMonthlyMatchExactly(PaymentMonthlySum paymentMonthlySum, UUID contractId, Long amount, Long paid, Long receivable) {
+	private void assertThatPaymentMonthlyMatchExactly(PaymentMonthlySum paymentMonthlySum, UUID contractId, Long amount,
+		Long paid, Long unpaid) {
 		assertThat(paymentMonthlySum)
-			.extracting("contractId", "amount", "paid", "receivable")
-			.containsExactly(contractId, amount, paid, receivable);
+			.extracting("contractId", "amount", "paid", "unpaid")
+			.containsExactly(contractId, amount, paid, unpaid);
 	}
 }

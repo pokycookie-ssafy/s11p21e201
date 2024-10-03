@@ -36,7 +36,7 @@ public class PaymentServiceTest {
 		Payment actual = sut.findEntity(payment.getId());
 
 		// then
-		assertThat(actual.getTotalAmount()).isEqualTo(1000L);
+		assertThat(actual.getAmount()).isEqualTo(1000L);
 	}
 
 	@DisplayName("존재하지 않는 장부(Entity)를 조회하면 예외가 발생한다.")
@@ -49,7 +49,7 @@ public class PaymentServiceTest {
 		return Payment.builder()
 			.contractId(contractId)
 			.employeeId(employeeId)
-			.totalAmount(totalAmount)
+			.amount(totalAmount)
 			.build();
 	}
 }
