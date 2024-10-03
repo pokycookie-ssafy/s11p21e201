@@ -67,7 +67,7 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		var response = List.of(response1, response2, response3);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(employeeService).findAllByDepartmentId(any(), any());
+		doReturn(response).when(employeeService).findAll(any());
 
 		// expected
 		mockMvc.perform(get("/companies/employees")
