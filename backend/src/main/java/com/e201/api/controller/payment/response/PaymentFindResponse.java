@@ -33,7 +33,7 @@ public class PaymentFindResponse {
 			.id(payment.getId())
 			.storeId(payment.getStoreId())
 			.storeName(payment.getStoreName())
-			.spentAmount(payment.getTotalAmount())
+			.spentAmount(payment.getAmount())
 			.paymentDate(payment.getPaymentDate())
 			.build();
 	}

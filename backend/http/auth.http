@@ -16,8 +16,8 @@ POST localhost:8080/companies
 Content-Type: application/json
 
 {
-  "companyInfoId": "75013f9e-4b32-49d6-8620-87d2244aa3e6",
-  "email": "company@test.com",
+  "companyInfoId": "1c374dbd-9ee3-4c9e-a4b7-b04df2f22f7d",
+  "email": "company_sc@test.com",
   "password": "12341234"
 }
 
@@ -26,7 +26,7 @@ POST localhost:8080/companies/auth
 Content-Type: application/json
 
 {
-  "email": "company@test.com",
+  "email": "company_sc@test.com",
   "password": "12341234"
 }
 
@@ -44,8 +44,8 @@ POST localhost:8080/companies/managers
 Content-Type: application/json
 
 {
-  "departmentId": "bfe29632-d07b-40a0-a018-cf7ca1567ad9",
-  "code": "manager1",
+  "departmentId": "6d3a6f27-20dc-4a4a-99f7-a37b19e21b14",
+  "code": "manager_sc",
   "password": "12341234"
 }
 
@@ -54,7 +54,7 @@ POST localhost:8080/companies/managers/auth
 Content-Type: application/json
 
 {
-  "code": "manager1",
+  "code": "manager_sc",
   "password": "12341234"
 }
 
@@ -63,8 +63,9 @@ POST localhost:8080/companies/employees
 Content-Type: application/json
 
 {
-  "code": "employee1",
-  "password": "12341234"
+  "code": "employee_sc2",
+  "password": "12341234",
+  "name": "스케줄링테스트"
 }
 
 ### 직원 로그인
@@ -72,7 +73,7 @@ POST localhost:8080/companies/employees/auth
 Content-Type: application/json
 
 {
-  "code": "employee1",
+  "code": "employee_sc2",
   "password": "12341234"
 }
 

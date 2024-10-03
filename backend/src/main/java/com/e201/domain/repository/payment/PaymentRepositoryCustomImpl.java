@@ -129,7 +129,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.select(Projections.constructor(
 				EmployeeSpentAmount.class,
 				payment.employeeId,
-				payment.totalAmount.sum()
+				payment.amount.sum()
 			))
 			.from(payment)
 			.where(
