@@ -5,6 +5,7 @@ import { Response, createServer } from 'miragejs'
 
 import { menuResponse } from './response/menu'
 import { paymentResponse } from './response/payment'
+import { dashboardResponse } from './response/dashboard'
 import { settlementResponse } from './response/settlement'
 import {
   contractNow,
@@ -31,6 +32,7 @@ export default function initServer() {
       this.get(api.contract.send, () => contractRequestSend, { timing: 1000 })
       this.get(api.contract.history, () => contractHistory, { timing: 1000 })
       this.get(api.settlement.list, () => settlementResponse, { timing: 1000 })
+      this.get('/dashboard', () => dashboardResponse)
 
       this.get(api.auth.check, () => !!user)
 
