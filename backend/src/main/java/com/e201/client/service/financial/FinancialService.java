@@ -107,7 +107,7 @@ public class FinancialService {
 		}
 	}
 
-	private void updateAccountBalance(String accountNo, Long transactionBalance){
+	public void updateAccountBalance(String accountNo, Long transactionBalance){
 		Map<String, Object> requestBodyMap = new HashMap<>();
 		requestBodyMap.put("Header", createRequestHeader("updateAccountBalance",true));
 		requestBodyMap.put("accountNo", accountNo);
