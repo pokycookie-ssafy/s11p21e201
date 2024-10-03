@@ -2,18 +2,12 @@ import type { IDashboardPayment } from '@/types/dashboard-payment'
 
 import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
-import React, { useState, useEffect } from 'react'
+import { useTranslate } from '@/locales'
+import { useState, useEffect } from 'react'
 
-import {
-  Box,
-  Card,
-  Stack,
-  Select,
-  MenuItem,
-  useTheme,
-  Typography,
-  FormControl,
-} from '@mui/material'
+import { Box, Card, Stack, Select, MenuItem, useTheme, FormControl } from '@mui/material'
+
+import { Typography } from '@e201/ui'
 
 interface TotalCompanyProps {
   data: IDashboardPayment[]
@@ -25,6 +19,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
   const [seriesData, setSeriesData] = useState<number[]>([])
   const [xaxisRange, setXaxisRange] = useState<{ min?: number; max?: number }>({})
 
+  const { t } = useTranslate('dashboard')
   const theme = useTheme()
 
   useEffect(() => {
@@ -65,7 +60,6 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         setCategories(newCategories)
         setSeriesData(newSeriesData)
 
-        // 처음에는 마지막 30일만 보여주기
         const last30DaysIndex = newCategories.length > 15 ? newCategories.length - 15 : 0
         setXaxisRange({ min: last30DaysIndex, max: newCategories.length - 1 })
       }
@@ -86,13 +80,25 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     colors: [theme.palette.primary.main],
     xaxis: {
       categories,
-      min: xaxisRange.min, // 최소 범위 (시작)
-      max: xaxisRange.max, // 최대 범위 (끝)
+      min: xaxisRange.min,
+      max: xaxisRange.max,
+      labels: {
+        formatter(value: string) {
+          if (viewType === '일별') {
+            return dayjs(value).format('MM/DD')
+          }
+          return dayjs(value).format('YYYY/MM')
+        },
+      },
     },
     yaxis: {
       min: 0,
+
       labels: {
         formatter(value: number) {
+          if (value === 0) {
+            return ''
+          }
           return `${value.toLocaleString()}`
         },
       },
@@ -107,7 +113,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     tooltip: {
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}원`
+          return `${value.toLocaleString()}${t('won')}`
         },
       },
     },
@@ -121,20 +127,27 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
   ]
 
   return (
-    <Card>
+    <Card
+      sx={{
+        backdropFilter: 'blur(10px)',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '16px',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+      }}
+    >
       <Stack p={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" sx={{ flex: 1, textAlign: 'center' }}>
-            {viewType} 총 결제액
+            {viewType === '월별' ? t('total_month') : t('total_day')}
           </Typography>
-          <FormControl variant="outlined" size="small">
+          <FormControl variant="outlined" size="small" sx={{ pr: 1 }}>
             <Select
               labelId="view-type-select-label"
               value={viewType}
               onChange={(e) => setViewType(e.target.value as '월별' | '일별')}
             >
-              <MenuItem value="월별">월별</MenuItem>
-              <MenuItem value="일별">일별</MenuItem>
+              <MenuItem value="월별">{t('monthly')}</MenuItem>
+              <MenuItem value="일별">{t('daily')}</MenuItem>
             </Select>
           </FormControl>
         </Box>
