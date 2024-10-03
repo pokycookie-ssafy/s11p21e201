@@ -3,9 +3,12 @@ package com.e201.api.service.contract;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
@@ -75,8 +78,8 @@ public class ContractService {
 		return contract;
 	}
 
-	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
-		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
+	public Page<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request, Pageable pageable) {
+		Page<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request, pageable);
 		return response;
 	}
 

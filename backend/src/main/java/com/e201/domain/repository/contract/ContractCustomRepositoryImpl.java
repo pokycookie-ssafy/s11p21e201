@@ -1,9 +1,11 @@
 package com.e201.domain.repository.contract;
 
+import static com.e201.domain.entity.contract.ContractFindStatus.*;
 import static com.e201.domain.entity.contract.ContractStatus.*;
 import static com.e201.domain.entity.contract.QContract.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +14,24 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.domain.entity.company.QCompany;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
+import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.contract.QContract;
 import com.e201.domain.entity.store.QStore;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -42,27 +50,39 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	}
 
 	@Override
-	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindStatus status,
-		ContractFindCond cond, LocalDateTime lastContractDate, int pageSize) {
-		// 1. contractDB에서 계약 데이터 조회
+	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
 		QContract contract = QContract.contract;
-		List<Contract> contracts = contractQueryFactory
-			.selectFrom(contract)
-			.where(
-				lastContractDate != null ? contract.createdAt.gt(lastContractDate) :
-					null,
-				eqStatus(authInfo, status, cond),
-				eqId(authInfo),
+		return contractQueryFactory.selectFrom(contract)
+			.where(contract.storeId.eq(storeId),
+				contract.companyId.eq(companyId),
 				contract.deleteYN.eq("N"))
-			.orderBy(contract.createdAt.desc())
-			.limit(pageSize)
 			.fetch();
+	}
 
+	@Override
+	public Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request,
+		Pageable pageable) {
+		List<Contract> contracts = findContracts(authInfo, request, pageable);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
+		List<ContractFindResponse> responses = createContractFindResponse(contracts, companyMap, storeMap);
+		JPAQuery<Long> countQuery = createCountQuery(authInfo, request);
+		return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchFirst);
+	}
 
-		// DTO로 변환
-		List<ContractFindResponse> result = contracts.stream()
+	private JPAQuery<Long> createCountQuery(AuthInfo authInfo, ContractFindRequest request) {
+		return contractQueryFactory
+			.select(contract.count())
+			.from(contract)
+			.where(
+				eqStatus(authInfo, request),
+				eqId(authInfo)
+			);
+	}
+
+	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts, Map<UUID, Map<String, String>> companyMap,
+		Map<UUID, Map<String, String>> storeMap){
+		return contracts.stream()
 			.map(contractData -> new ContractFindResponse(
 				String.valueOf(contractData.getId()),
 				String.valueOf(contractData.getCompanyId()),
@@ -80,47 +100,43 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				String.valueOf(contractData.getStatus())
 			))
 			.collect(Collectors.toList());
-
-		return result;
 	}
 
-	@Override
-	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
-		QContract contract = QContract.contract;
-		return contractQueryFactory.selectFrom(contract)
-			.where(contract.storeId.eq(storeId),
-				contract.companyId.eq(companyId),
-				contract.deleteYN.eq("N"))
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request,
+		Pageable pageable){
+		return contractQueryFactory
+			.selectFrom(contract)
+			.where(
+				eqStatus(authInfo, request),
+				eqId(authInfo)
+			)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
-	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
-		if (status == null)
-			return null;
-
-		return switch (status) {
-			case IN -> getProgressStatusExpression(authInfo, cond);
-			case REJECT -> contract.status.eq(COMPANY_REJECT).or(contract.status.eq(STORE_REJECT));
-			case CANCELED -> contract.status.eq(CANCEL);
-			case COMPLETE -> contract.status.eq(COMPLETE);
-			default -> null;
+	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request){
+		return switch(request.getStatus()){
+			case ALL -> null;
+			case IN -> getProgressStatusExpression(authInfo, request);
+			case COMPLETE -> contract.status.eq(ContractStatus.COMPLETE);
+			case CANCELED -> contract.deleteYN.eq("Y");
+			case REJECT -> contract.status.eq(STORE_REJECT).or(contract.status.eq(STORE_REJECT));
 		};
 	}
 
-	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindCond cond) {
-		if (authInfo == null || cond == null)
-			return null;
+	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
 
-		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
+		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY)?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
-
-		return switch (cond) {
+		
+		return switch (request.getUserCond()){
+			case ALL -> senderCondition.or(receiverCondition);
 			case SENDER -> senderCondition;
 			case RECEIVER -> receiverCondition;
-			default -> senderCondition.or(receiverCondition);
 		};
 	}
 
