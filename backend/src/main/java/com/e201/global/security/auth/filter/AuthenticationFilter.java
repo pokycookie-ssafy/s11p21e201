@@ -73,8 +73,9 @@ public class AuthenticationFilter implements Filter {
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
 		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
+		boolean isFinCreatePath = matchURIAndMethod(request, method, creationPath.getFinPath());
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
-			|| isStoreCreatePath || isLicenseCreatePath;
+			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {
