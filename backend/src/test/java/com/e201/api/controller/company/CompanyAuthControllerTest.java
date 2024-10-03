@@ -43,7 +43,7 @@ class CompanyAuthControllerTest extends AbstractRestDocsTest {
 		String requestJson = objectMapper.writeValueAsString(request);
 		AuthInfo response = new AuthInfo(companyId, COMPANY);
 
-		doReturn(response).when(companyService).checkPassword(request);
+		doReturn(response).when(companyService).checkPassword(any());
 
 		// when //then
 		mockMvc.perform(post("/companies/auth")
@@ -62,7 +62,7 @@ class CompanyAuthControllerTest extends AbstractRestDocsTest {
 		String requestJson = objectMapper.writeValueAsString(request);
 		AuthInfo response = new AuthInfo(managerId, MANAGER);
 
-		doReturn(response).when(managerService).checkPassword(request);
+		doReturn(response).when(managerService).checkPassword(any());
 
 		// when //then
 		mockMvc.perform(post("/companies/managers/auth")
@@ -81,7 +81,7 @@ class CompanyAuthControllerTest extends AbstractRestDocsTest {
 		String requestJson = objectMapper.writeValueAsString(request);
 		AuthInfo response = new AuthInfo(employee, EMPLOYEE);
 
-		doReturn(response).when(employeeService).checkPassword(request);
+		doReturn(response).when(employeeService).checkPassword(any());
 
 		// when //then
 		mockMvc.perform(post("/companies/employees/auth")

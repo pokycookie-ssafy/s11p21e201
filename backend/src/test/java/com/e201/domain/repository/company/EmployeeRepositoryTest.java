@@ -86,7 +86,7 @@ class EmployeeRepositoryTest {
 		sut.saveAll(List.of(employee1, employee2));
 
 		// when
-		List<Employee> actual = sut.findAllByDepartmentId(department.getId());
+		List<Employee> actual = sut.findAllByDepartmentId(company.getId(), department.getId());
 
 		//then
 		assertThat(actual.size()).isEqualTo(1);
@@ -103,7 +103,7 @@ class EmployeeRepositoryTest {
 		sut.saveAll(List.of(employee1, employee2));
 
 		// when
-		List<Employee> actual = sut.findAllByDepartmentId(null);
+		List<Employee> actual = sut.findAllByDepartmentId(company.getId(), null);
 
 		//then
 		assertThat(actual.size()).isEqualTo(2);
