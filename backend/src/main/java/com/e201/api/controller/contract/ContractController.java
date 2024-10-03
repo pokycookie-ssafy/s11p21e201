@@ -102,6 +102,7 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
@@ -131,6 +132,11 @@ public class ContractController {
 		@ModelAttribute ContractFindRequest request, Pageable pageable) {
 		Page<ContractFindResponse> response = contractService.find(authInfo, request, pageable);
 >>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
+=======
+	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@ModelAttribute ContractFindRequest request) {
+		List<ContractFindResponse> response = contractService.find(authInfo, request);
+>>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
 
 		return ResponseEntity.status(OK).body(response);
 	}

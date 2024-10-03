@@ -131,9 +131,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 =======
 	@Override
-	public Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request,
-		Pageable pageable) {
-		List<Contract> contracts = findContracts(authInfo, request, pageable);
+	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request) {
+		List<Contract> contracts = findContracts(authInfo, request);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
 =======
@@ -153,6 +152,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
 >>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
 		List<ContractFindResponse> responses = createContractFindResponse(contracts, companyMap, storeMap);
+<<<<<<< HEAD
 		JPAQuery<Long> countQuery = createCountQuery(authInfo, request);
 		return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchFirst);
 	}
@@ -172,6 +172,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				eqStatus(authInfo, request),
 				eqId(authInfo)
 			);
+=======
+		return responses;
+>>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
 	}
 
 	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts, Map<UUID, Map<String, String>> companyMap,
@@ -215,6 +218,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toList());
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -294,14 +298,15 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request,
 		Pageable pageable){
+=======
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request){
+>>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
 				eqStatus(authInfo, request),
 				eqId(authInfo)
 			)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
