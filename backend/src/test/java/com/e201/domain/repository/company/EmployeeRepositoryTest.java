@@ -1,8 +1,8 @@
 package com.e201.domain.repository.company;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.e201.api.service.company.EmployeeService;
+import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
 
 @SpringBootTest
+@JtaTransactional
 class EmployeeRepositoryTest {
 
 	@Autowired
@@ -72,6 +73,40 @@ class EmployeeRepositoryTest {
 
 		//then
 		assertThat(actual).isEmpty();
+	}
+
+	@DisplayName("부서별 직원 목록을 조회한다.")
+	@Test
+	void find_all_by_department_success() {
+		// given
+		Department otherDepartment = createDepartment(company);
+		departmentRepository.save(otherDepartment);
+		Employee employee1 = createEmployee(department);
+		Employee employee2 = createEmployee(otherDepartment);
+		sut.saveAll(List.of(employee1, employee2));
+
+		// when
+		List<Employee> actual = sut.findAllByDepartmentId(department.getId());
+
+		//then
+		assertThat(actual.size()).isEqualTo(1);
+	}
+
+	@DisplayName("기업에 존재하는 모든 직원 목록을 조회한다.")
+	@Test
+	void find_all_success() {
+		// given
+		Department otherDepartment = createDepartment(company);
+		departmentRepository.save(otherDepartment);
+		Employee employee1 = createEmployee(department);
+		Employee employee2 = createEmployee(otherDepartment);
+		sut.saveAll(List.of(employee1, employee2));
+
+		// when
+		List<Employee> actual = sut.findAllByDepartmentId(null);
+
+		//then
+		assertThat(actual.size()).isEqualTo(2);
 	}
 
 	private Employee createEmployee(Department department) {
