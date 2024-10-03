@@ -66,7 +66,7 @@ class ManagerControllerTest extends AbstractRestDocsTest {
 		var response = new PageImpl<>(content, PageRequest.of(0, 10), 10);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(managerService).findPage(any(), any());
+		doReturn(response).when(managerService).findAllByCompanyId(any());
 
 		// expected
 		mockMvc.perform(get("/companies/managers")
