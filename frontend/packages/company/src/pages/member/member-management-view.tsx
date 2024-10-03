@@ -1,9 +1,6 @@
 import type { ISelectOption } from '@e201/ui'
+import type { IEmployee } from '@/types/employees'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
-
-// import EmployeeCreateDialog from '@/sections/member-management/employee-createdialog'
-// import EmployeeInfoDialog from '@/sections/member-management/employee-infodialog'
-// import paths from '@/configs/paths'
 
 import dayjs from 'dayjs'
 import { toast } from 'sonner'
@@ -34,21 +31,6 @@ import {
 
 import { Iconify, Breadcrumbs } from '@e201/ui'
 
-interface IEmployee {
-  id: string
-  name: string
-  departmentId: string
-  departmentName: string
-  supportAmount: number
-  spentAmount: number
-  createdAt: Date
-}
-
-const fetchEmployees = async () => {
-  const response = await axios.get<IEmployee[]>('/companies/employees')
-  return response.data
-}
-
 export default function MemberManagementView() {
   const { t } = useTranslate('member')
 
@@ -65,41 +47,46 @@ export default function MemberManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
   const [memberSearch, setMemberSearch] = useState<string>('')
 
-  const { data, isPending } = useQuery({
+  const queryFn = async () => {
+    const response = await axios.get<IEmployee[]>('/companies/employees')
+    return response.data
+  }
+
+  const { data: employees, isPending: employeeIsPending } = useQuery({
     queryKey: ['employees'],
-    queryFn: fetchEmployees,
+    queryFn,
   })
 
   const departments = useMemo(() => {
-    if (!data) {
+    if (!employees) {
       return []
     }
 
     const departmentSet = new Set<string>()
     const departmentList: ISelectOption[] = []
-    data.forEach((e) => {
+    employees.forEach((e) => {
       if (!departmentSet.has(e.departmentId)) {
         departmentList.push({ label: e.departmentName, value: e.departmentId })
       }
       departmentSet.add(e.departmentId)
     })
     return departmentList
-  }, [data])
+  }, [employees])
 
   const filteredData = useMemo(() => {
-    if (!data) {
+    if (!employees) {
       return []
     }
 
-    let filtered = [...data]
+    let filtered = [...employees]
     if (memberSearch.trim() !== '') {
-      filtered = filtered.filter((member) => member.name.includes(memberSearch.trim()))
+      filtered = filtered.filter((member) => member.employeeName.includes(memberSearch.trim()))
     }
     if (tab) {
       filtered = filtered.filter((member) => member.departmentId === tab)
     }
     return filtered
-  }, [data, memberSearch, tab])
+  }, [employees, memberSearch, tab])
 
   const handleNavigate = () => {
     navigate('create')
@@ -250,7 +237,7 @@ export default function MemberManagementView() {
             onRowSelectionModelChange={setSelected}
             checkboxSelection
             hideFooter
-            loading={isPending}
+            loading={employeeIsPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
@@ -264,8 +251,8 @@ export default function MemberManagementView() {
         onClose={deleteConfirm.onFalse}
         onSubmit={deleteSubmitHandler}
         content={m(t('dialog.delete_content'), [
-          employeeForDelete.current?.name,
-          employeeForDelete.current?.id,
+          employeeForDelete.current?.employeeName,
+          employeeForDelete.current?.employeeCode,
         ])}
       />
       <DialogDelete

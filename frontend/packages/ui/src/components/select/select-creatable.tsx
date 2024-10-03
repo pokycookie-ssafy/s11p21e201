@@ -36,7 +36,7 @@ export function SelectCreatable({ options, onChange, ...others }: TProps) {
         const isExisting = filterOptions.some((option) => inputValue === option.label)
 
         if (inputValue.trim() !== '' && !isExisting) {
-          filtered.push({ label: `ADD ${inputValue}`, value: inputValue })
+          filtered.push({ label: `${inputValue}`, value: inputValue })
         }
         return filtered
       }}

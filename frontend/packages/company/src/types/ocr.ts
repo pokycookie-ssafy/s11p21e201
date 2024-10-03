@@ -4,7 +4,7 @@ interface ILicenseOcr {
   address: string
   registerNumber: string
   businessType: string
-  openDate: Date
+  openDate: string
 }
 
 export type { ILicenseOcr }

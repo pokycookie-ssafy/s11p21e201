@@ -1,8 +1,10 @@
 interface IEmployee {
   id: string
-  name: string
+  employeeName: string
+  employeeCode: string
   departmentId: string
   departmentName: string
+  createdAt: Date
 }
 
 interface IDepartment {

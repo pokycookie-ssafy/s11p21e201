@@ -20,7 +20,8 @@ const api = {
     list: '/companies/departments',
   },
   employee: {
-    list: (departmentId?: string) => `/companies/employees?department=${departmentId}`,
+    list: `/companies/employees`,
+    listWith: (departmentId?: string) => `/companies/employees?department=${departmentId}`,
   },
   payment: {
     list: (start: string, end: string, departmentId?: string) =>

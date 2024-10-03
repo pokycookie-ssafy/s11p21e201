@@ -1,6 +1,8 @@
 import type { ILicenseOcr } from '@/types/ocr'
 
+import dayjs from 'dayjs'
 import { useTranslate } from '@/locales'
+import { parseDateString } from '@/utils/date'
 
 import { Box, Stack, useTheme, TextField, useMediaQuery, CircularProgress } from '@mui/material'
 
@@ -50,7 +52,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.open_date')}
-            value={license?.openDate ?? ''}
+            value={dayjs(parseDateString(license?.openDate ?? '')).format('YYYY-MM-DD')}
             size="small"
             aria-readonly
             disabled={isPending}

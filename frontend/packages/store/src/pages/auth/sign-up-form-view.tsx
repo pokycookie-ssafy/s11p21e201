@@ -7,6 +7,7 @@ import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import { useMemo, useState } from 'react'
+import { parseDateString } from '@/utils/date'
 import { useQuery } from '@tanstack/react-query'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
@@ -106,11 +107,12 @@ export default function SignUpFormView({ onNext }: IProps) {
       businessType: licenseData.businessType,
       repName: licenseData.repName,
       registerNumber: licenseData.registerNumber,
-      openDate: dayjs(licenseData.openDate).format(),
+      openDate: dayjs(parseDateString(licenseData.openDate)).format(),
     }
 
     try {
-      await axios.post(api.auth.signUp, body)
+      const res = await axios.post(api.auth.signUp, body)
+      console.log(res)
       onNext()
     } catch (error) {
       console.error(error)
