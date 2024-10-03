@@ -79,6 +79,7 @@ public class AuthenticationFilter implements Filter {
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			|| isStoreCreatePath || isLicenseCreatePath;
 =======
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
@@ -96,6 +97,9 @@ public class AuthenticationFilter implements Filter {
 =======
 			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
+>>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

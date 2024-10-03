@@ -7,8 +7,11 @@ import java.util.Map;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 import lombok.Builder;
@@ -51,6 +55,8 @@ import lombok.NoArgsConstructor;
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
 public class Image {
 	private String uid;
 	private String name;
