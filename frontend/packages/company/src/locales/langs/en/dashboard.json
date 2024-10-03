@@ -1,0 +1,11 @@
+{
+  "total_month": "Total Payment by Month",
+  "total_day": "Total Payment by Day",
+  "monthly": "Monthly",
+  "daily": "Daily",
+  "won": "KRW",
+  "deparment_amount": "Payment by Department",
+  "year": "year",
+  "month": "month",
+  "restaurant_amount": "Payment by Restaurant"
+}

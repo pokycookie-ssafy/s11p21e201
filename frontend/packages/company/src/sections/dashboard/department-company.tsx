@@ -3,6 +3,7 @@ import type { IDashboardPayment } from '@/types/dashboard-payment'
 
 import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
+import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 
 import {
@@ -28,6 +29,7 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
   const [seriesData, setSeriesData] = useState<number[]>([])
 
   const theme = useTheme()
+  const { t } = useTranslate('dashboard')
 
   useEffect(() => {
     const filteredData = data.filter((payment) => {
@@ -79,6 +81,9 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
     yaxis: {
       labels: {
         formatter(value: number) {
+          if (value === 0) {
+            return ''
+          }
           return `${value.toLocaleString()}`
         },
       },
@@ -89,7 +94,7 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
     tooltip: {
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}원`
+          return `${value.toLocaleString()}${t('won')}`
         },
       },
     },
@@ -103,21 +108,29 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
   ]
 
   return (
-    <Card>
+    <Card
+      sx={{
+        backdropFilter: 'blur(10px)',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        borderRadius: '16px',
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        height: '300px',
+      }}
+    >
       <Stack p={1}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box display="flex" justifyContent="space-between" alignItems="center" pt={1}>
           <Typography variant="h6" align="left" sx={{ flex: 1 }} pl={1}>
-            부서별 식대 사용액
+            {t('deparment_amount')}{' '}
           </Typography>
 
-          <Box display="flex" justifyContent="flex-end">
+          <Box display="flex" justifyContent="flex-end" gap={1}>
             <FormControl variant="outlined" size="small">
-              <InputLabel id="year-select-label">연도</InputLabel>
+              <InputLabel id="year-select-label">{t('year')}</InputLabel>
               <Select
                 labelId="year-select-label"
                 value={selectedYear}
                 onChange={handleYearChange}
-                label="연도"
+                label={t('year')}
               >
                 {[2022, 2023, 2024].map((year) => (
                   <MenuItem key={year} value={year}>
@@ -127,17 +140,17 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
               </Select>
             </FormControl>
 
-            <FormControl variant="outlined" size="small" sx={{ minWidth: 120 }}>
-              <InputLabel id="month-select-label">월</InputLabel>
+            <FormControl variant="outlined" size="small">
+              <InputLabel id="month-select-label">{t('month')}</InputLabel>
               <Select
                 labelId="month-select-label"
                 value={selectedMonth}
                 onChange={handleMonthChange}
-                label="월"
+                label={t('month')}
               >
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
                   <MenuItem key={month} value={month}>
-                    {month}월
+                    {month}
                   </MenuItem>
                 ))}
               </Select>
@@ -145,7 +158,7 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
           </Box>
         </Box>
 
-        <Chart options={chartOptions} series={chartSeries} type="bar" height={200} />
+        <Chart options={chartOptions} series={chartSeries} type="bar" height={270} />
       </Stack>
     </Card>
   )

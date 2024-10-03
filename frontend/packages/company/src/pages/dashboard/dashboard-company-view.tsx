@@ -4,10 +4,13 @@ import React from 'react'
 import axios from '@/configs/axios'
 import { useQuery } from '@tanstack/react-query'
 import TotalCompany from '@/sections/dashboard/total-company'
+import SummaryCompany from '@/sections/dashboard/summary-company'
 import DepartmentCompany from '@/sections/dashboard/department-company'
 import RestaurantCompany from '@/sections/dashboard/restaurant-company'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack } from '@mui/material'
+
+import { Typography } from '@e201/ui'
 
 const queryFn = async (): Promise<IDashboardPayment[]> => {
   const response = await axios.get('/dashboard')
@@ -29,9 +32,12 @@ export default function DashboardCompanyView() {
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h5">대시보드</Typography>
+      <Typography variant="h3" fontWeight={800}>
+        대시보드
+      </Typography>
+      <SummaryCompany data={data} />
       <TotalCompany data={data} />
-      <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
+      <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
         <Box sx={{ flex: 1 }}>
           <DepartmentCompany data={data} />
         </Box>
