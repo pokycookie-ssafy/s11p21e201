@@ -4,9 +4,12 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
@@ -40,10 +44,9 @@ public class ContractController {
 	}
 
 	@GetMapping("/contracts")
-	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
-		@RequestParam(value = "status") ContractFindStatus status,
-		@RequestParam(value = "userCond") ContractFindCond userCond) {
-		List<ContractFindResponse> response = contractService.find(authInfo, status, userCond);
+	public ResponseEntity<Page<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@ModelAttribute ContractFindRequest request, Pageable pageable) {
+		Page<ContractFindResponse> response = contractService.find(authInfo, request, pageable);
 
 		return ResponseEntity.status(OK).body(response);
 	}
