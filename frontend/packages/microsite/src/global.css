@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'suit-variable';
+  font-weight: 100 900;
+  font-style: normal;
+  src: url('./assets/fonts/SUIT-Variable.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'suite-variable';
+  font-weight: 100 900;
+  font-style: normal;
+  src: url('./assets/fonts/SUITE-Variable.ttf') format('truetype');
+}
