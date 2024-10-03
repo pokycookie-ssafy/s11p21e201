@@ -23,24 +23,24 @@ public class PaymentMonthlySum extends BaseEntity {
 	@Column(name = "payment_monthly_id", columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@Column(name="contract_id")
+	@Column(name = "contract_id")
 	private UUID contractId;
 
-	@Column(name="amount")
+	@Column(name = "amount")
 	private Long amount;
 
-	@Column(name="paid")
+	@Column(name = "paid")
 	private Long paid;
 
-	@Column(name="receivable")
-	private Long receivable;
+	@Column(name = "unpaid")
+	private Long unpaid;
 
 	@Builder
-	public PaymentMonthlySum(UUID id, UUID contractId, Long amount, Long paid, Long receivable) {
+	private PaymentMonthlySum(UUID id, UUID contractId, Long amount, Long paid, Long unpaid) {
 		this.id = id;
 		this.contractId = contractId;
 		this.amount = amount;
 		this.paid = paid;
-		this.receivable = receivable;
+		this.unpaid = unpaid;
 	}
 }

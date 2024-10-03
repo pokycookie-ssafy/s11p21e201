@@ -1,5 +1,6 @@
 package com.e201.domain.repository.contract;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,5 +10,8 @@ import com.e201.domain.entity.contract.Contract;
 
 public interface ContractRepository extends JpaRepository<Contract, UUID>, ContractCustomRepository {
 	Optional<Contract> findByIdAndDeleteYN(UUID id, String deleteYN);
+
 	Optional<Contract> findContractByCompanyIdAndStoreIdAndDeleteYN(UUID companyId, UUID storeId, String deleteYN);
+
+	List<Contract> findBySettlementDay(int dayOfMonth);
 }

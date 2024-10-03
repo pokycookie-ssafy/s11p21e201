@@ -37,21 +37,21 @@ public class Payment extends BaseEntity {
 	@Column(name = "employee_id")
 	private UUID employeeId;
 
-	@Column(name = "total_amount")
-	private Long totalAmount;
+	@Column(name = "amount")
+	private Long amount;
 
 	@Column(name = "payment_date")
 	private LocalDateTime paymentDate = LocalDateTime.now();
 
 	@Builder
-	public Payment(UUID id, UUID contractId, UUID storeId, String storeName, UUID employeeId, Long totalAmount,
+	public Payment(UUID id, UUID contractId, UUID storeId, String storeName, UUID employeeId, Long amount,
 		LocalDateTime paymentDate) {
 		this.id = id;
 		this.contractId = contractId;
 		this.storeId = storeId;
 		this.storeName = storeName;
 		this.employeeId = employeeId;
-		this.totalAmount = totalAmount;
+		this.amount = amount;
 		this.paymentDate = LocalDateTime.now();
 	}
 }
