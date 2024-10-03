@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e201.api.controller.company.request.company.CompanyAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
+import com.e201.api.controller.company.response.company.CompanyAuthResponse;
+import com.e201.api.controller.company.response.employee.EmployeeAuthResponse;
+import com.e201.api.controller.company.response.manager.ManagerAuthResponse;
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.company.EmployeeService;
 import com.e201.api.service.company.ManagerService;
@@ -28,23 +31,28 @@ public class CompanyAuthController {
 	private final EmployeeService employeeService;
 
 	@PostMapping("/companies/auth")
-	public ResponseEntity<Void> authCompany(@RequestBody CompanyAuthRequest request, HttpServletRequest httpRequest) {
+	public ResponseEntity<CompanyAuthResponse> authCompany(@RequestBody CompanyAuthRequest request,
+		HttpServletRequest httpRequest) {
 		AuthInfo authInfo = companyService.checkPassword(request);
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
-		return ResponseEntity.status(CREATED).build();
+		return ResponseEntity.status(CREATED).body(new CompanyAuthResponse(authInfo.getId()));
 	}
 
 	@PostMapping("/companies/managers/auth")
-	public ResponseEntity<Void> authManager(@RequestBody ManagerAuthRequest request, HttpServletRequest httpRequest) {
+	public ResponseEntity<ManagerAuthResponse> authManager(@RequestBody ManagerAuthRequest request,
+		HttpServletRequest httpRequest) {
 		AuthInfo authInfo = managerService.checkPassword(request);
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
-		return ResponseEntity.status(CREATED).build();
+		ManagerAuthResponse authResponse = managerService.findAuth(authInfo.getId());
+		return ResponseEntity.status(CREATED).body(authResponse);
 	}
 
 	@PostMapping("/companies/employees/auth")
-	public ResponseEntity<Void> authEmployee(@RequestBody EmployeeAuthRequest request, HttpServletRequest httpRequest) {
+	public ResponseEntity<EmployeeAuthResponse> authEmployee(@RequestBody EmployeeAuthRequest request,
+		HttpServletRequest httpRequest) {
 		AuthInfo authInfo = employeeService.checkPassword(request);
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
-		return ResponseEntity.status(CREATED).build();
+		EmployeeAuthResponse authResponse = employeeService.findAuth(authInfo.getId());
+		return ResponseEntity.status(CREATED).body(authResponse);
 	}
 }

@@ -16,6 +16,7 @@ import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.api.service.company.EmployeeService;
+import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 
@@ -35,9 +36,18 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/companies/employees")
-	public ResponseEntity<List<EmployeeFindResponse>> findPage(@RequestParam(required = false) UUID departmentId) {
-		// TODO <jhl221123> 권한 검증 필요
-		List<EmployeeFindResponse> response = employeeService.findAllByDepartmentId(departmentId);
+	public ResponseEntity<List<EmployeeFindResponse>> findPage(@Auth AuthInfo authInfo,
+		@RequestParam(required = false) UUID departmentId) {
+		UUID companyId = validateCompany(authInfo);
+		List<EmployeeFindResponse> response = employeeService.findAllByDepartmentId(companyId, departmentId);
 		return ResponseEntity.ok(response);
+	}
+
+	private UUID validateCompany(AuthInfo authInfo) {
+		UUID companyId = null;
+		if (authInfo.getRoleType().equals(RoleType.COMPANY)) {
+			companyId = authInfo.getId();
+		}
+		return companyId;
 	}
 }

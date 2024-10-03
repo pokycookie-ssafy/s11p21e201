@@ -21,12 +21,22 @@ public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
 	}
 
 	@Override
-	public List<Employee> findAllByDepartmentId(UUID departmentId) {
+	public List<Employee> findAllByDepartmentId(UUID companyId, UUID departmentId) {
 		return jpaQueryFactory
 			.selectFrom(employee)
 			.join(employee.department, department).fetchJoin()
-			.where(matchDepartment(departmentId))
+			.where(
+				matchCompany(companyId),
+				matchDepartment(departmentId)
+			)
 			.fetch();
+	}
+
+	private BooleanExpression matchCompany(UUID companyId) {
+		if (companyId != null) {
+			return department.company.id.eq(companyId);
+		}
+		return null;
 	}
 
 	private BooleanExpression matchDepartment(UUID departmentId) {
