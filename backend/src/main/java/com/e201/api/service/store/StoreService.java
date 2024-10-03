@@ -23,7 +23,9 @@ import com.e201.api.controller.store.response.StoreDeleteResponse;
 import com.e201.client.service.financial.FinancialService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.store.Store;
+import com.e201.domain.entity.store.StoreAccount;
 import com.e201.domain.entity.store.StoreInfo;
+import com.e201.domain.repository.store.StoreAccountRepository;
 import com.e201.domain.repository.store.StoreInfoRepository;
 import com.e201.domain.repository.store.StoreRepository;
 import com.e201.global.exception.EntityNotFoundException;
@@ -40,9 +42,9 @@ import lombok.RequiredArgsConstructor;
 public class StoreService {
 
 	private final StoreRepository storeRepository;
+	private final StoreAccountRepository storeAccountRepository;
 	private final OneWayCipherService oneWayCipherService;
 	private final StoreInfoRepository storeInfoRepository;
-	private final StoreAccountService storeAccountService;
 	private final FinancialService financialService;
 
 	@JtaTransactional
@@ -66,7 +68,8 @@ public class StoreService {
 			.accountNumber(accountNo)
 			.build();
 
-		StoreAccountCreateResponse res = storeAccountService.create(store.getId(), RoleType.STORE, accountCreateRequest);
+		StoreAccount storeAccount = accountCreateRequest.toEntity(store);
+		StoreAccount savedStoreAccount = storeAccountRepository.save(storeAccount);
 
 		//TODO(KJK) : useremail로 account 생성, 저장
 		return new StoreCreateResponse(savedStore.getId());
