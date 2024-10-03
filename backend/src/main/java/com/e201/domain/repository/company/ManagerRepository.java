@@ -1,10 +1,9 @@
 package com.e201.domain.repository.company;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +16,5 @@ public interface ManagerRepository extends JpaRepository<Manager, UUID> {
 	Optional<Manager> findByCode(String code);
 
 	@Query("select m from Manager m where m.department.company = :company")
-	Page<Manager> findAllByCompany(@Param("company") Company company, Pageable pageable);
+	List<Manager> findAllByCompany(@Param("company") Company company);
 }
