@@ -1,42 +1,63 @@
-
 ### 식당 회원가입
 POST localhost:8080/stores
 Content-Type: application/json
+
 {
-	"email": "string@test.com",
-	"password": "string",
-	"passwordConfirm": "string",
-	"phone": "string",
-	"businessName": "string",
-	"repName": "string",
-	"address": "string",
-	"registerNumber": "string",
-	"businessType":"string",
-	"openDate": "Date"
+  "email": "store_sc33@test.com",
+  "password": "string",
+  "passwordConfirm": "string",
+  "phone": "string",
+  "businessName": "string",
+  "repName": "string",
+  "address": "string",
+  "registerNumber": "store3",
+  "businessType": "string",
+  "openDate": "Date"
 }
 
 ### 식당 로그인
 POST localhost:8080/stores/auth
 Content-Type: application/json
+
 {
-	"email": "string@test.com",
-	"password": "string"
+  "email": "store_sc11@test.com",
+  "password": "string"
 }
 
-## 메뉴 생성
-POST localhost:8080/stores/menus
+### 메뉴 생성
+POST localhost: 8080/stores/menus
 Content-Type: application/json
+
 {
-"name": "메뉴이름",
-"price": "600",
-"category": "음료"
+  "name": "메뉴6",
+  "price": 12000,
+  "category": "한식"
 }
 
 ### 메뉴 수정
 PUT localhost:8080/stores/menus/{menuId}
 Content-Type: application/json
+
 {
-"menuName": "수정된메뉴이름",
-"price": "60330",
-"category": "음식",
+  "menuName": "수정된메뉴이름",
+  "price": "60330",
+  "category": "음식"
+}
+
+### QR 결제
+POST localhost:8080/stores/sales
+Content-Type: application/json
+
+{
+  "employeeId": "4eaf44cb-d01f-4d81-a313-4d416aea02ab",
+  "qrId": "qrid",
+  "menus": [
+    {
+      "id": "ca468053-b470-4d39-90a3-b995642d9774"
+    },
+    {
+      "id": "801e2b6f-4580-4769-9dd0-eea619220ee0"
+    }
+  ],
+  "totalAmount": 13000
 }
