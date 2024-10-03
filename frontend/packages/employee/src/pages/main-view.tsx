@@ -1,6 +1,6 @@
+import { SwipableEdge } from '@/components/drawer'
 import { StoresList } from '@/sections/stores-list'
 import { MealUsageBar } from '@/sections/meal-usage-bar'
-import { SwipeableEdge } from '@/sections/swipeable-edge'
 
 import { Stack } from '@mui/material'
 
@@ -22,9 +22,10 @@ export default function MainView() {
         [theme.breakpoints.up('lg')]: { width: '70%' },
       })}
     >
-      <MealUsageBar />
-      <StoresList />
-      <SwipeableEdge />
+      {/* <MealUsageBar /> */}
+      {/* <StoresList /> */}
+      {/* <SwipeableEdge /> */}
+      <SwipableEdge />
     </Stack>
   )
 }
