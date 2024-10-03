@@ -1,5 +1,5 @@
 import type { GridColDef } from '@mui/x-data-grid'
-import type { IContractHistory } from '@/types/contract'
+import type { IContract, ContractStatus } from '@/types/contract'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
@@ -14,43 +14,39 @@ import { Box, Tab, Card, Tabs, Stack, TextField } from '@mui/material'
 
 import { Label, Typography, Breadcrumbs } from '@e201/ui'
 
-type StatusType = 'in' | 'complete' | 'reject' | 'canceled'
-
 export default function ContractHistoryManagementView() {
   const { t } = useTranslate('contract')
 
-  const [tab, setTab] = useState<StatusType | null>(null)
+  const [tab, setTab] = useState<ContractStatus | null>(null)
   const [storeSearch, setStoreSearch] = useState<string>('')
 
-  const queryFn = async () => {
-    const response = await axios.get<IContractHistory[]>(api.contract.list('all', 'all'), {})
-    return response.data
-  }
-
   const { data, isPending } = useQuery({
-    queryKey: ['contractHistory'],
-    queryFn,
+    queryKey: [api.contract.list],
+    queryFn: async () => {
+      const response = await axios.get<IContract[]>(api.contract.listWith('ALL', 'ALL'))
+      return response.data
+    },
   })
 
-  const TABS = [
+  const TABS: { label: string; value: ContractStatus | null }[] = [
     { label: t('tab.all'), value: null },
-    { label: t('tab.in_progress'), value: 'in' },
-    { label: t('tab.complete'), value: 'complete' },
-    { label: t('tab.reject'), value: 'reject' },
-    { label: t('tab.canceled'), value: 'canceled' },
+    { label: t('tab.in_progress'), value: 'IN' },
+    { label: t('tab.complete'), value: 'COMPLETE' },
+    { label: t('tab.reject'), value: 'REJECT' },
+    { label: t('tab.canceled'), value: 'CANCEL' },
   ]
 
-  const statusProvider = (row: IContractHistory) => {
-    if (row.status === 'complete') {
+  const statusProvider = (row: IContract) => {
+    if (row.status === 'COMPLETE') {
       return <Label status="success">{t('label.complete')}</Label>
     }
-    if (row.status === 'in') {
+    if (row.status === 'COMPANY_REQUEST' || row.status === 'STORE_REQUEST') {
       return <Label status="warning">{t('label.in_progress')}</Label>
     }
-    if (row.status === 'reject') {
+    if (row.status === 'COMPANY_REJECT' || row.status === 'STORE_REJECT') {
       return <Label status="error">{t('label.reject')}</Label>
     }
-    if (row.status === 'canceled') {
+    if (row.status === 'CANCEL') {
       return <Label status="error">{t('label.canceled')}</Label>
     }
     return <Label status="error">ERROR</Label>
@@ -71,7 +67,7 @@ export default function ContractHistoryManagementView() {
     return filtered
   }, [storeSearch, data, tab])
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<IContract>[] = [
     {
       field: 'storeName',
       flex: 1,
@@ -89,10 +85,11 @@ export default function ContractHistoryManagementView() {
         </Stack>
       ),
     },
+    { field: 'storeEmail', headerName: t('field.email'), width: 200 },
     { field: 'storePhone', headerName: t('phone_number'), width: 150, resizable: false },
     {
       field: 'contractDate',
-      headerName: t('date'),
+      headerName: t('field.contract_date'),
       type: 'date',
       resizable: false,
       width: 120,

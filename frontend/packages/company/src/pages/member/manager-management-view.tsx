@@ -55,7 +55,7 @@ export default function ManagerManagementView() {
     {
       field: 'code',
       headerName: t('field.manager_code'),
-      width: 100,
+      width: 150,
     },
     {
       field: 'departmentName',

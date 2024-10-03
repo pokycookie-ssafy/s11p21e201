@@ -1,4 +1,4 @@
-import type { IContractResponse } from '@/types/contract'
+import type { IContract } from '@/types/contract'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
@@ -33,28 +33,29 @@ export default function ContractNowManagementView() {
 
   const deleteAllConfirm = useBoolean()
 
-  const queryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.list('all', 'complete'))
-    return response.data
-  }
-
-  const { data, isPending } = useQuery({ queryKey: [api.contract.list], queryFn })
+  const { data: contracts, isPending: contractIsPending } = useQuery({
+    queryKey: [api.contract.list],
+    queryFn: async () => {
+      const response = await axios.get<IContract[]>(api.contract.listWith('ALL', 'COMPLETE'))
+      return response.data
+    },
+  })
 
   const filteredData = useMemo(() => {
-    if (!data) {
+    if (!contracts) {
       return []
     }
 
-    let filtered = [...data]
+    let filtered = [...contracts]
     if (companySearch.trim() !== '') {
       filtered = filtered.filter((contract) => contract.companyName.includes(companySearch.trim()))
     }
     return filtered
-  }, [data, companySearch])
+  }, [contracts, companySearch])
 
   const deleteSubmitHandler = () => {
     toast.success(t('toast.contract_cancel'))
-    queryClient.invalidateQueries({ queryKey: [api.contract.list] })
+    queryClient.invalidateQueries({ queryKey: [api.contract.listWith] })
     deleteAllConfirm.onFalse()
   }
 
@@ -62,6 +63,8 @@ export default function ContractNowManagementView() {
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
     { field: 'companyEmail', headerName: t('field.email'), width: 200 },
     { field: 'companyPhone', headerName: t('field.phone'), width: 150, resizable: false },
+    { field: 'companyAddress', headerName: t('field.address'), width: 300 },
+
     {
       field: 'settlementDate',
       headerName: t('field.settlement_date'),
@@ -143,14 +146,14 @@ export default function ContractNowManagementView() {
 
           <DataGrid
             columns={columns}
-            getRowId={(row) => row.contractId}
             rows={filteredData}
+            getRowId={(row) => row.contractId}
             rowSelectionModel={selected}
             onRowSelectionModelChange={setSelected}
             disableMultipleRowSelection
             checkboxSelection
             hideFooter
-            loading={isPending}
+            loading={contractIsPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
@@ -166,7 +169,7 @@ export default function ContractNowManagementView() {
         onSubmit={deleteSubmitHandler}
         title={t('dialog.cancel')}
         content={m(t('dialog.cancel_content'), [
-          data?.find((e) => e.contractId === selected[0])?.companyName ?? '',
+          contracts?.find((e) => e.contractId === selected[0])?.companyName ?? '',
         ])}
       />
     </>
