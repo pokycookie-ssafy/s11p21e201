@@ -434,7 +434,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toSet());
 
 		QStore store = QStore.store;
-		return storeQueryFactory.select(store.id, store.storeInfo.name)
+		return storeQueryFactory.select(store.id, store.storeInfo.name, store.email, store.storeInfo.phone, store.storeInfo.businessAddress)
 			.from(store)
 			.where(store.id.in(storeIds),
 				store.deleteYN.eq("N"))
@@ -478,7 +478,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 		QCompany company = QCompany.company;
 		return companyQueryFactory
-			.select(company.id, company.companyInfo.name)
+			.select(company.id, company.companyInfo.name, company.email, company.companyInfo.phone, company.companyInfo.businessAddress)
 			.from(company)
 			.where(company.id.in(companyIds))
 			.fetch()
