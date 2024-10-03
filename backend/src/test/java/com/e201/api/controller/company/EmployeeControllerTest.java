@@ -67,7 +67,7 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		var response = List.of(response1, response2, response3);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(employeeService).findAllByDepartmentId(any());
+		doReturn(response).when(employeeService).findAllByDepartmentId(any(), any());
 
 		// expected
 		mockMvc.perform(get("/companies/employees")
@@ -82,8 +82,8 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		int supportAmount) {
 		return EmployeeFindResponse.builder()
 			.id(UUID.randomUUID())
-			.code(code)
-			.name(name)
+			.employeeCode(code)
+			.employeeName(name)
 			.departmentId(departmentId)
 			.departmentName("부서 이름")
 			.supportAmount(supportAmount)
