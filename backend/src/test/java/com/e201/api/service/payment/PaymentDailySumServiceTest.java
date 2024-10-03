@@ -25,11 +25,11 @@ public class PaymentDailySumServiceTest {
 	@JtaTransactional
 	@DisplayName("장부_일일 집계(Entity)를 조회한다.")
 	@Test
-	void find_payment_daily_sum_entity_success(){
+	void find_payment_daily_sum_entity_success() {
 		UUID contractId = UUID.randomUUID();
 
 		// given
-		PaymentDailySum paymentDailySum = createPaymentDailySum(contractId, 1000);
+		PaymentDailySum paymentDailySum = createPaymentDailySum(contractId, 1000L);
 		paymentDailySumRepository.save(paymentDailySum);
 
 		// when
@@ -41,11 +41,11 @@ public class PaymentDailySumServiceTest {
 
 	@DisplayName("존재하지 않는 장부_일일집계(Entity)를 조회하면 예외가 발생한다.")
 	@Test
-	void find_payment_daily_sum_entity_fail(){
+	void find_payment_daily_sum_entity_fail() {
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
-	private PaymentDailySum createPaymentDailySum(UUID contractId, int amount) {
+	private PaymentDailySum createPaymentDailySum(UUID contractId, Long amount) {
 		return PaymentDailySum.builder()
 			.contractId(contractId)
 			.amount(amount)

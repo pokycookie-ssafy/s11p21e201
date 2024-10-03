@@ -116,7 +116,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(15000L)
+			.amount(15000L)
 			.paymentDate(paymentDate)
 			.build();
 
@@ -125,7 +125,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(25000L)
+			.amount(25000L)
 			.paymentDate(paymentDate)
 			.build();
 
@@ -134,7 +134,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(13000L)
+			.amount(13000L)
 			.paymentDate(paymentDate)
 			.build();
 
@@ -167,7 +167,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(15000L)
+			.amount(15000L)
 			.paymentDate(paymentDate)
 			.build();
 
@@ -176,7 +176,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(25000L)
+			.amount(25000L)
 			.paymentDate(paymentDate)
 			.build();
 
@@ -185,7 +185,7 @@ class PaymentRepositoryTest {
 			.contractId(contract.getId())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
-			.totalAmount(13000L)
+			.amount(13000L)
 			.paymentDate(paymentDate)
 			.build();
 
