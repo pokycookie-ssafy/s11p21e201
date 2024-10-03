@@ -10,11 +10,16 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.company.CompanyAuthRequest;
 import com.e201.api.controller.company.request.company.CompanyCreateRequest;
+import com.e201.api.controller.company.request.companyAccount.CompanyAccountCreateRequest;
 import com.e201.api.controller.company.response.company.CompanyCreateResponse;
+import com.e201.api.controller.store.request.StoreAccountCreateRequest;
+import com.e201.client.service.financial.FinancialService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.BaseEntity;
 import com.e201.domain.entity.company.Company;
+import com.e201.domain.entity.company.CompanyAccount;
 import com.e201.domain.entity.company.CompanyInfo;
+import com.e201.domain.repository.company.CompanyAccountRepository;
 import com.e201.domain.repository.company.CompanyRepository;
 import com.e201.global.exception.EntityNotFoundException;
 import com.e201.global.exception.PasswordIncorrectException;
@@ -31,6 +36,8 @@ public class CompanyService extends BaseEntity {
 
 	private final CompanyRepository companyRepository;
 	private final CompanyInfoService companyInfoService;
+	private final CompanyAccountRepository comapanyAccountRepository;
+	private final FinancialService financialService;
 	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
@@ -39,6 +46,17 @@ public class CompanyService extends BaseEntity {
 		Company company = request.toEntity(companyInfo);
 		encryptPassword(company);
 		Company savedCompany = companyRepository.save(company);
+		// 계좌 생성
+		String accountNo = financialService.createAccount();
+		financialService.updateAccountBalance(accountNo, 1000000000L);
+		CompanyAccountCreateRequest accountCreateRequest = CompanyAccountCreateRequest
+			.builder()
+			.bankCode("999")
+			.bankName("싸피은행")
+			.accountNumber(accountNo)
+			.build();
+		CompanyAccount savedCompanyAccount = comapanyAccountRepository.save(accountCreateRequest.toEntity(company));
+
 		return new CompanyCreateResponse(savedCompany.getId());
 	}
 
