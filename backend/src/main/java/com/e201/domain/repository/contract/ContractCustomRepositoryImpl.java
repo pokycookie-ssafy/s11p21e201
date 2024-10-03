@@ -8,9 +8,13 @@ import java.time.LocalDateTime;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.util.ArrayList;
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
+=======
+import java.util.ArrayList;
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 import java.util.HashMap;
 =======
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
@@ -77,6 +81,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindStatus status,
 		ContractFindCond cond, LocalDateTime lastContractDate, int pageSize) {
 =======
@@ -90,6 +95,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
+=======
+	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 		QContract contract = QContract.contract;
 		return contractQueryFactory.selectFrom(contract)
 			.where(contract.storeId.eq(storeId),
@@ -98,6 +106,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -118,11 +127,22 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		List<Contract> contracts = findContracts(authInfo, request, pageable);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
+=======
+	@Override
+	public Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request,
+		Pageable pageable) {
+		List<Contract> contracts = findContracts(authInfo, request, pageable);
+		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
+		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 		List<ContractFindResponse> responses = createContractFindResponse(contracts, companyMap, storeMap);
 		JPAQuery<Long> countQuery = createCountQuery(authInfo, request);
 		return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchFirst);
 	}
+<<<<<<< HEAD
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
+=======
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 
 	private JPAQuery<Long> createCountQuery(AuthInfo authInfo, ContractFindRequest request) {
 		return contractQueryFactory
@@ -175,6 +195,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toList());
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -265,12 +286,39 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		if (authInfo == null || cond == null)
 			return null;
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request,
+		Pageable pageable){
+		return contractQueryFactory
+			.selectFrom(contract)
+			.where(
+				eqStatus(authInfo, request),
+				eqId(authInfo)
+			)
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize())
+			.fetch();
+	}
 
-		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
+	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request){
+		return switch(request.getStatus()){
+			case ALL -> null;
+			case IN -> getProgressStatusExpression(authInfo, request);
+			case COMPLETE -> contract.status.eq(ContractStatus.COMPLETE);
+			case CANCELED -> contract.deleteYN.eq("Y");
+			case REJECT -> contract.status.eq(STORE_REJECT).or(contract.status.eq(STORE_REJECT));
+		};
+	}
+
+	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
+
+		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY)?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 		return switch(cond){
@@ -283,6 +331,11 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		return switch (request.getUserCond()){
 			case ALL -> senderCondition.or(receiverCondition);
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
+=======
+		
+		return switch (request.getUserCond()){
+			case ALL -> senderCondition.or(receiverCondition);
+>>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 			case SENDER -> senderCondition;
 			case RECEIVER -> receiverCondition;
 		};
