@@ -44,9 +44,9 @@ public class ContractController {
 	}
 
 	@GetMapping("/contracts")
-	public ResponseEntity<Page<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
-		@ModelAttribute ContractFindRequest request, Pageable pageable) {
-		Page<ContractFindResponse> response = contractService.find(authInfo, request, pageable);
+	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@ModelAttribute ContractFindRequest request) {
+		List<ContractFindResponse> response = contractService.find(authInfo, request);
 
 		return ResponseEntity.status(OK).body(response);
 	}

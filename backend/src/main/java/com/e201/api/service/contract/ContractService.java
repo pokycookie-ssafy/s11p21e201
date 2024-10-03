@@ -78,8 +78,8 @@ public class ContractService {
 		return contract;
 	}
 
-	public Page<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request, Pageable pageable) {
-		Page<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request, pageable);
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request) {
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request);
 		return response;
 	}
 

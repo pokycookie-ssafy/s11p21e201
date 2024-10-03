@@ -15,6 +15,6 @@ import com.e201.domain.entity.contract.ContractFindStatus;
 import com.e201.global.security.auth.dto.AuthInfo;
 
 public interface ContractCustomRepository {
-	Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request, Pageable pageable);
+	List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request);
 	List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId);
 }
