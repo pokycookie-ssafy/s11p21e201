@@ -1,8 +1,5 @@
 const PATH = {
   root: '/',
-  component: '/components',
-  mirage: '/mirage',
-  locale: '/locale',
 }
 
 const paths = {
