@@ -109,7 +109,7 @@ public class FinancialService {
 
 	public void updateAccountBalance(String accountNo, Long transactionBalance){
 		Map<String, Object> requestBodyMap = new HashMap<>();
-		requestBodyMap.put("Header", createRequestHeader("updateAccountBalance",true));
+		requestBodyMap.put("Header", createRequestHeader("updateDemandDepositAccountDeposit",true));
 		requestBodyMap.put("accountNo", accountNo);
 		requestBodyMap.put("transactionBalance", transactionBalance);
 		String requestBody = mapToStringConverter(requestBodyMap);
