@@ -18,7 +18,7 @@ interface IForm {
 export default function ManagerForm() {
   const { t } = useTranslate('sign-in')
 
-  const { login } = useAuthStore()
+  const { loginManager: login } = useAuthStore()
 
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',
@@ -31,7 +31,7 @@ export default function ManagerForm() {
 
   const submitHandler = async (form: IForm) => {
     try {
-      const { data, status } = await axios.post(api.auth.login, form)
+      const { data, status } = await axios.post(api.manager.login, form)
       if (status === 201) {
         login(data)
       }

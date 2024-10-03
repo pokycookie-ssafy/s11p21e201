@@ -7,9 +7,25 @@ interface IEmployee {
   createdAt: Date
 }
 
+interface IEmployeeCreate {
+  code: string
+  name: string
+  supportAmount: number
+  password: string
+}
+
 interface IDepartment {
   id: string
+  code: string
   name: string
 }
 
-export type { IEmployee, IDepartment }
+interface IManager {
+  id: string
+  code: string
+  departmentId: string
+  departmentName: string
+  createdAt: Date
+}
+
+export type { IManager, IEmployee, IDepartment, IEmployeeCreate }

@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import axios from '@/configs/axios'
 import { useThemeStore } from '@/stores'
 import { Outlet } from 'react-router-dom'
+import { useMemo, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
@@ -12,6 +13,10 @@ export default function MainLayout() {
 
   const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme() : darkTheme()), [mode])
   const queryClient = useMemo(() => new QueryClient(), [])
+
+  useEffect(() => {
+    // axios.p
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>

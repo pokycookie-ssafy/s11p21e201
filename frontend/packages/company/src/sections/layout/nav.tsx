@@ -30,7 +30,7 @@ interface IProps {
 export default function Nav({ drawer }: IProps) {
   const { t } = useTranslate('nav')
 
-  const { logout } = useAuthStore()
+  const { logout, isCompany } = useAuthStore()
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -39,6 +39,8 @@ export default function Nav({ drawer }: IProps) {
     logout()
     navigate(paths.auth.signIn)
   }
+
+  const navList = nav(isCompany)
 
   const { breakpoints } = useTheme()
   const invisible = useMediaQuery(breakpoints.down('md')) && !drawer
@@ -57,14 +59,17 @@ export default function Nav({ drawer }: IProps) {
       <NavLogo />
       <ScrollContainer sx={{ flex: 1 }}>
         <Stack component="nav" py={1} px={2} spacing={3}>
-          {nav.map((group, i1) => (
+          {navList.map((group, i1) => (
             <Stack key={i1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
               <Typography variant="subtitle1" pl={2} pb={1}>
                 {t(group.title)}
               </Typography>
-              {group.group.map((item, i2) => (
-                <NavItem key={i2} item={item} path={location.pathname} />
-              ))}
+              {group.group.map((item, i2) => {
+                if (item === null) {
+                  return null
+                }
+                return <NavItem key={i2} item={item} path={location.pathname} />
+              })}
             </Stack>
           ))}
         </Stack>
@@ -191,9 +196,12 @@ function NavItem({ item, depth = 0, path }: INavItemProps) {
           <Stack direction="row" width={1} height="calc(100% - 21px)" pl={3}>
             <Box sx={{ height: 1, borderLeft: (theme) => `2px solid ${theme.palette.divider}` }} />
             <Stack width={1} spacing={0.5} sx={{ color: (theme) => theme.palette.text.secondary }}>
-              {item.group.map((e, i) => (
-                <NavItem key={i} item={e} depth={depth + 1} path={path} />
-              ))}
+              {item.group.map((e, i) => {
+                if (e === null) {
+                  return null
+                }
+                return <NavItem key={i} item={e} depth={depth + 1} path={path} />
+              })}
             </Stack>
           </Stack>
         </Collapse>

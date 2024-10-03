@@ -36,7 +36,15 @@ const paths = {
   management: {
     member: {
       root: `${PATH.management}/member`,
+      list: `${PATH.management}/member/list`,
       create: `${PATH.management}/member/create`,
+    },
+    department: {
+      root: `${PATH.management}/member/department`,
+    },
+    manager: {
+      root: `${PATH.management}/member/manager`,
+      create: `${PATH.management}/member/manager/create`,
     },
     payment: `${PATH.management}/payment`,
     settlement: {

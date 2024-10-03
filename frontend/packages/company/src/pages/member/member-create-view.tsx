@@ -1,29 +1,36 @@
+import type { IEmployeeCreate } from '@/types/employees'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import ExcelJS from 'exceljs'
 import { toast } from 'sonner'
+import api from '@/configs/api'
 import { useState } from 'react'
 import paths from '@/configs/paths'
+import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
+import { useNavigate } from 'react-router-dom'
 import { DialogDelete } from '@/components/dialog'
 import { m, uuidv4, useBoolean } from '@e201/utils'
-import MemberCreateField from '@/sections/member-create/member-create-field'
+import MemberCreateField from '@/sections/member-management/member-create-field'
 
 import { DataGrid } from '@mui/x-data-grid'
 import { Card, Stack, Button, Tooltip, Collapse, Typography, IconButton } from '@mui/material'
 
 import { Iconify, Container, Breadcrumbs, ExcelUpload } from '@e201/ui'
 
-interface IEmployeeCreate {
+interface IEmployeeCreateForm {
   id: string
-  employeeNo?: string
-  employeeName?: string
+  code?: string
+  name?: string
+  supportAmount?: string
 }
 
 export default function MemberCreateView() {
   const { t } = useTranslate('member')
 
-  const [employees, setEmployees] = useState<IEmployeeCreate[]>([])
+  const navigate = useNavigate()
+
+  const [employees, setEmployees] = useState<IEmployeeCreateForm[]>([])
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
   const deleteAllConfirm = useBoolean()
@@ -44,23 +51,28 @@ export default function MemberCreateView() {
       const headerRow = worksheet.getRow(1).values
       const headers = Array.isArray(headerRow) ? headerRow : []
 
-      let indexOfEmpNo = headers.indexOf('사번')
+      let indexOfCode = headers.indexOf('사번')
       let indexOfName = headers.indexOf('이름')
+      let indexOfSupportAmount = headers.indexOf('할당금액')
 
-      if (indexOfEmpNo === -1) {
-        indexOfEmpNo = 1
+      if (indexOfCode === -1) {
+        indexOfCode = 1
       }
       if (indexOfName === -1) {
         indexOfName = 2
       }
+      if (indexOfSupportAmount === -1) {
+        indexOfSupportAmount = 3
+      }
 
-      const newRows: IEmployeeCreate[] = []
+      const newRows: IEmployeeCreateForm[] = []
       for (let i = 2; i <= worksheet.rowCount; i++) {
         const row = worksheet.getRow(i)
         const id = uuidv4()
-        const employeeNo = String(row.getCell(indexOfEmpNo).value)
-        const employeeName = String(row.getCell(indexOfName).value)
-        newRows.push({ employeeName, employeeNo, id })
+        const code = String(row.getCell(indexOfCode).value)
+        const name = String(row.getCell(indexOfName).value)
+        const supportAmount = String(row.getCell(indexOfSupportAmount).value)
+        newRows.push({ name, code, id, supportAmount })
       }
       setEmployees((prev) => [...prev, ...newRows])
     }
@@ -71,20 +83,33 @@ export default function MemberCreateView() {
   }
 
   const addRow = () => {
-    setEmployees((prev) => [
-      ...prev,
-      { id: uuidv4(), employeeName: undefined, employeeNo: undefined },
-    ])
+    setEmployees((prev) => [...prev, { id: uuidv4(), name: undefined, code: undefined }])
   }
 
   const deleteRow = (id: string) => {
     setEmployees((prev) => prev.filter((row) => row.id !== id))
   }
 
-  const editRowNo = (id: string, no?: string) => {
+  const editRowCode = (id: string, code?: string) => {
     setEmployees((prev) => {
       const idx = prev.findIndex((row) => row.id === id)
-      prev[idx].employeeNo = no
+      prev[idx].code = code
+      return prev
+    })
+  }
+
+  const editRowName = (id: string, name?: string) => {
+    setEmployees((prev) => {
+      const idx = prev.findIndex((row) => row.id === id)
+      prev[idx].name = name
+      return prev
+    })
+  }
+
+  const editRowSupportAmount = (id: string, amount?: string) => {
+    setEmployees((prev) => {
+      const idx = prev.findIndex((row) => row.id === id)
+      prev[idx].supportAmount = amount
       return prev
     })
   }
@@ -95,36 +120,60 @@ export default function MemberCreateView() {
     deleteAllConfirm.onFalse()
   }
 
-  const editRowName = (id: string, name?: string) => {
-    setEmployees((prev) => {
-      const idx = prev.findIndex((row) => row.id === id)
-      prev[idx].employeeName = name
-      return prev
-    })
+  const submitHandler = async () => {
+    for await (const employee of employees) {
+      if (!employee.name || !employee.code || !employee.supportAmount) {
+        continue
+      }
+      const req: IEmployeeCreate = {
+        code: employee.code,
+        name: employee.name,
+        supportAmount: Number(employee.supportAmount),
+        password: '0000',
+      }
+      try {
+        await axios.post(api.employee.create, req)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    navigate(paths.management.member.list)
   }
 
-  const columns: GridColDef<IEmployeeCreate>[] = [
+  const columns: GridColDef<IEmployeeCreateForm>[] = [
     {
-      field: 'employeeNo',
+      field: 'code',
       headerName: t('field.employee_number'),
       width: 200,
       renderCell: (params) => (
         <MemberCreateField
-          value={params.row.employeeNo}
-          onChange={(value) => editRowNo(params.row.id, value)}
+          value={params.row.code}
+          onChange={(value) => editRowCode(params.row.id, value)}
           placeholder={t('label.enter_employee_name')}
         />
       ),
     },
     {
-      field: 'employeeName',
+      field: 'name',
       headerName: t('field.employee_name'),
       flex: 1,
       renderCell: (params) => (
         <MemberCreateField
-          value={params.row.employeeName}
+          value={params.row.name}
           onChange={(value) => editRowName(params.row.id, value)}
           placeholder={t('label.enter_employee_no')}
+        />
+      ),
+    },
+    {
+      field: 'supportAmount',
+      headerName: t('field.support_amount'),
+      flex: 1,
+      renderCell: (params) => (
+        <MemberCreateField
+          value={params.row.supportAmount}
+          onChange={(value) => editRowSupportAmount(params.row.id, value)}
+          placeholder={t('label.enter_support_amount')}
         />
       ),
     },
@@ -156,7 +205,7 @@ export default function MemberCreateView() {
             { title: t('breadcrumbs.create_member') },
           ]}
           action={
-            <Button color="secondary" onClick={() => console.log(employees)}>
+            <Button color="secondary" onClick={submitHandler}>
               {t('button.create')}
             </Button>
           }
@@ -202,20 +251,6 @@ export default function MemberCreateView() {
             }}
             sx={{ height: 500 }}
           />
-          {/* <MemberCreateHeader check={false} onCheck={() => {}} />
-          <ScrollContainer sx={{ height: 500 }}>
-            <Stack>
-              {employees.map(({ employeeName, employeeNo }, i) => (
-                <MemberCreateList
-                  key={i}
-                  employeeNo={employeeNo}
-                  employeeName={employeeName}
-                  onChange={(no, name) => editRow(i, no, name)}
-                  onDelete={() => deleteRow(i)}
-                />
-              ))}
-            </Stack>
-          </ScrollContainer> */}
 
           <Stack
             spacing={1}

@@ -18,7 +18,7 @@ interface IForm {
 export default function CompanyForm() {
   const { t } = useTranslate('sign-in')
 
-  const { login } = useAuthStore()
+  const { loginCompany: login } = useAuthStore()
 
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',

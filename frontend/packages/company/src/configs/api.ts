@@ -13,6 +13,7 @@ const api = {
     unregister: '/companies',
   },
   manager: {
+    list: '/companies/managers',
     signUp: '/companies/managers',
     login: '/companies/managers/auth',
   },
@@ -21,7 +22,7 @@ const api = {
   },
   employee: {
     list: `/companies/employees`,
-    listWith: (departmentId?: string) => `/companies/employees?department=${departmentId}`,
+    create: `/companies/employees`,
   },
   payment: {
     list: (start: string, end: string, departmentId?: string) =>
