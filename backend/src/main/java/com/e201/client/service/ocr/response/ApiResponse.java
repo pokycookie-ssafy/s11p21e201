@@ -1,4 +1,6 @@
-package com.e201.client.service.response;
+package com.e201.client.service.ocr.response;
+
+import java.util.List;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -43,6 +45,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
-public class BizLicense {
-	private Result result;
+public class ApiResponse {
+	private String version;
+	private String requestId;
+	private long timestamp;
+	private List<Image> images;
 }

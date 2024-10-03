@@ -41,5 +41,6 @@ public class PathProperties {
 =======
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
 		private String licensePath;
+		private String finPath;
 	}
 }

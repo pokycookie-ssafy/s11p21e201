@@ -75,7 +75,9 @@ public class AuthenticationFilter implements Filter {
 <<<<<<< HEAD
 		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
+		boolean isFinCreatePath = matchURIAndMethod(request, method, creationPath.getFinPath());
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
+<<<<<<< HEAD
 			|| isStoreCreatePath || isLicenseCreatePath;
 =======
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
@@ -87,6 +89,9 @@ public class AuthenticationFilter implements Filter {
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
 			|| isLicenseCreatePath;
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
+=======
+			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
+>>>>>>> 603930d ([#41] feat: 싸피 금융망 API 연동완료)
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

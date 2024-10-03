@@ -1,10 +1,8 @@
-package com.e201.client.service;
+package com.e201.client.service.ocr;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 <<<<<<< HEAD
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
+<<<<<<< HEAD:backend/src/main/java/com/e201/client/service/OcrService.java
 import com.e201.client.controller.response.LicenseCreateResponse;
 =======
 import com.e201.client.controller.response.OcrResultResponse;
@@ -40,6 +39,11 @@ import com.e201.client.service.response.ApiResponse;
 import com.e201.client.service.response.Result;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
+=======
+import com.e201.client.controller.ocr.response.LicenseCreateResponse;
+import com.e201.client.service.ocr.response.ApiResponse;
+import com.e201.client.service.ocr.response.Result;
+>>>>>>> 603930d ([#41] feat: 싸피 금융망 API 연동완료):backend/src/main/java/com/e201/client/service/ocr/OcrService.java
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

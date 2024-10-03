@@ -1,4 +1,6 @@
-package com.e201.client.service.response;
+package com.e201.client.service.ocr.response;
+
+import java.util.Map;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -43,8 +45,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
-public class CommonResponse {
-	private String text;
-	private String keyText;
-	private String confidenceScore;
+public class Image {
+	private String uid;
+	private String name;
+	private String inferResult;
+	private String message;
+	private Map<String, String> validationResult;
+	private BizLicense bizLicense;
 }
