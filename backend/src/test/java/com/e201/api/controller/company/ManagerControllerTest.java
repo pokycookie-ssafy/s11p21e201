@@ -14,8 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import com.e201.api.controller.company.request.manager.ManagerCreateRequest;
 import com.e201.api.controller.company.response.manager.ManagerCreateResponse;
@@ -62,8 +60,7 @@ class ManagerControllerTest extends AbstractRestDocsTest {
 		ManagerFindResponse response1 = createManagerFindResponse("관리자 코드1", "부서 이름1");
 		ManagerFindResponse response2 = createManagerFindResponse("관리자 코드2", "부서 이름2");
 		ManagerFindResponse response3 = createManagerFindResponse("관리자 코드3", "부서 이름3");
-		var content = List.of(response1, response2, response3);
-		var response = new PageImpl<>(content, PageRequest.of(0, 10), 10);
+		var response = List.of(response1, response2, response3);
 		String responseJson = objectMapper.writeValueAsString(response);
 
 		doReturn(response).when(managerService).findAllByCompanyId(any());
