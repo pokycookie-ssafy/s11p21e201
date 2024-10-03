@@ -6,6 +6,9 @@ import java.util.List;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+<<<<<<< HEAD
 =======
 import lombok.Builder;
 =======
@@ -45,6 +49,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 >>>>>>> 4608df5 ([#25] feat: Auth filer에 사업자 등록증 api 등록)
+=======
+>>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 public class Result {
 	private List<CommonResponse> repName; // 대표자명
 	private List<CommonResponse> companyName;// 상호명
@@ -52,6 +58,7 @@ public class Result {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private List<CommonResponse> corpName; // 법인(기업)명
 	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
 =======
@@ -62,6 +69,10 @@ public class Result {
 	private List<CommonResponse> corpName; // 법인(기업)명
 	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
 >>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
+=======
+	private List<CommonResponse> corpName; // 법인(기업)명
+	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
+>>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 	private List<CommonResponse> openDate;// 개업연원일
 	private List<CommonResponse> bisType;// 업종
 	private List<CommonResponse> bisItem;// 종목
@@ -69,6 +80,7 @@ public class Result {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private List<CommonResponse> taxType; // 법입 or 개인사업자
 =======
 >>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
@@ -77,4 +89,7 @@ public class Result {
 =======
 	private List<CommonResponse> taxType; // 법입 or 개인사업자
 >>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
+=======
+	private List<CommonResponse> taxType; // 법입 or 개인사업자
+>>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 }
