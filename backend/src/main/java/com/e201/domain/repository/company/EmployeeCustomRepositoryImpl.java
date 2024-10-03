@@ -24,7 +24,7 @@ public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
 	public List<Employee> findAllByDepartmentId(UUID departmentId) {
 		return jpaQueryFactory
 			.selectFrom(employee)
-			.join(department).fetchJoin()
+			.join(employee.department, department).fetchJoin()
 			.where(matchDepartment(departmentId))
 			.fetch();
 	}
