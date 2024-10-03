@@ -12,19 +12,20 @@ import lombok.Getter;
 public class EmployeeFindResponse {
 
 	private UUID id;
-	private String code;
-	private String name;
+	private String employeeCode;
+	private String employeeName;
 	private UUID departmentId;
 	private String departmentName;
 	private Integer supportAmount;
 	private LocalDateTime createdAt;
 
 	@Builder
-	public EmployeeFindResponse(UUID id, String code, String name, UUID departmentId, String departmentName,
+	public EmployeeFindResponse(UUID id, String employeeCode, String employeeName, UUID departmentId,
+		String departmentName,
 		Integer supportAmount, LocalDateTime createdAt) {
 		this.id = id;
-		this.code = code;
-		this.name = name;
+		this.employeeCode = employeeCode;
+		this.employeeName = employeeName;
 		this.departmentId = departmentId;
 		this.departmentName = departmentName;
 		this.supportAmount = supportAmount;
@@ -34,8 +35,8 @@ public class EmployeeFindResponse {
 	public static EmployeeFindResponse of(Employee employee) {
 		return EmployeeFindResponse.builder()
 			.id(employee.getId())
-			.code(employee.getCode())
-			.name(employee.getName())
+			.employeeCode(employee.getCode())
+			.employeeName(employee.getName())
 			.departmentId(employee.getDepartment().getId())
 			.departmentName(employee.getDepartment().getName())
 			.supportAmount(employee.getSupportAmount())

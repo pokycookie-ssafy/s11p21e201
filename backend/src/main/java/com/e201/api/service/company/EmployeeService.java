@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
+import com.e201.api.controller.company.response.employee.EmployeeAuthResponse;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
@@ -33,7 +34,6 @@ public class EmployeeService extends BaseEntity {
 
 	private final ManagerService managerService;
 	private final EmployeeRepository employeeRepository;
-	private final DepartmentService departmentService;
 	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
@@ -58,8 +58,21 @@ public class EmployeeService extends BaseEntity {
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EMPLOYEE.name()));
 	}
 
-	public List<EmployeeFindResponse> findAllByDepartmentId(UUID departmentId) {
-		return employeeRepository.findAllByDepartmentId(departmentId).stream().map(EmployeeFindResponse::of).toList();
+	public EmployeeAuthResponse findAuth(UUID id) {
+		Employee employee = findEntity(id);
+		return EmployeeAuthResponse.builder()
+			.employeeId(id)
+			.employeeName(employee.getName())
+			.departmentId(employee.getDepartment().getId())
+			.departmentName(employee.getDepartment().getName())
+			.build();
+	}
+
+	public List<EmployeeFindResponse> findAllByDepartmentId(UUID companyId, UUID departmentId) {
+		return employeeRepository.findAllByDepartmentId(companyId, departmentId)
+			.stream()
+			.map(EmployeeFindResponse::of)
+			.toList();
 	}
 
 	private void encryptPassword(Employee employee) {

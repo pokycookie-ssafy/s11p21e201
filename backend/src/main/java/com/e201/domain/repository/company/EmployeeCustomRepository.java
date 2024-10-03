@@ -6,5 +6,5 @@ import java.util.UUID;
 import com.e201.domain.entity.company.Employee;
 
 public interface EmployeeCustomRepository {
-	List<Employee> findAllByDepartmentId(UUID departmentId);
+	List<Employee> findAllByDepartmentId(UUID companyId, UUID departmentId);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
 import com.e201.api.controller.company.request.manager.ManagerCreateRequest;
+import com.e201.api.controller.company.response.manager.ManagerAuthResponse;
 import com.e201.api.controller.company.response.manager.ManagerCreateResponse;
 import com.e201.api.controller.company.response.manager.ManagerFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
@@ -54,6 +55,15 @@ public class ManagerService {
 	public Manager findEntity(UUID id) {
 		return managerRepository.findById(id)
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, MANAGER.name()));
+	}
+
+	public ManagerAuthResponse findAuth(UUID id) {
+		Manager manager = findEntity(id);
+		return ManagerAuthResponse.builder()
+			.managerId(id)
+			.departmentId(manager.getDepartment().getId())
+			.departmentName(manager.getDepartment().getName())
+			.build();
 	}
 
 	public List<ManagerFindResponse> findAllByCompanyId(UUID companyId) {
