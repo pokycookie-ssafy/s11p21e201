@@ -3,10 +3,9 @@ package com.e201.api.service.company;
 import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
@@ -34,6 +33,7 @@ public class EmployeeService extends BaseEntity {
 
 	private final ManagerService managerService;
 	private final EmployeeRepository employeeRepository;
+	private final DepartmentService departmentService;
 	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
@@ -58,8 +58,8 @@ public class EmployeeService extends BaseEntity {
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EMPLOYEE.name()));
 	}
 
-	public Page<EmployeeFindResponse> findPage(UUID departmentId, Pageable pageable) {
-		return employeeRepository.findPage(departmentId, pageable).map(EmployeeFindResponse::of);
+	public List<EmployeeFindResponse> findAllByDepartmentId(UUID departmentId) {
+		return employeeRepository.findAllByDepartmentId(departmentId).stream().map(EmployeeFindResponse::of).toList();
 	}
 
 	private void encryptPassword(Employee employee) {

@@ -2,7 +2,9 @@ package com.e201.api.controller.company;
 
 import static org.springframework.http.HttpStatus.*;
 
-import org.springframework.data.domain.Page;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +34,10 @@ public class ManagerController {
 	}
 
 	@GetMapping("/companies/managers")
-	public ResponseEntity<Page<ManagerFindResponse>> findPage(@Auth AuthInfo authInfo, Pageable pageable) {
-		Page<ManagerFindResponse> response = managerService.findPage(authInfo.getId(), pageable);
+	public ResponseEntity<List<ManagerFindResponse>> findPage(@Auth AuthInfo authInfo, Pageable pageable) {
+		UUID companyId = authInfo.getId();
+		// TODO <jhl221123> 기업 권한 확인 필요
+		List<ManagerFindResponse> response = managerService.findAllByCompanyId(companyId);
 		return ResponseEntity.ok(response);
 	}
 }

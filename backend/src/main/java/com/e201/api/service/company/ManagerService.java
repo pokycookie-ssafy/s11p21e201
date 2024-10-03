@@ -3,10 +3,9 @@ package com.e201.api.service.company;
 import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.manager.ManagerAuthRequest;
@@ -57,9 +56,9 @@ public class ManagerService {
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, MANAGER.name()));
 	}
 
-	public Page<ManagerFindResponse> findPage(UUID companyId, Pageable pageable) {
+	public List<ManagerFindResponse> findAllByCompanyId(UUID companyId) {
 		Company company = companyService.findEntity(companyId);
-		return managerRepository.findAllByCompany(company, pageable).map(ManagerFindResponse::of);
+		return managerRepository.findAllByCompany(company).stream().map(ManagerFindResponse::of).toList();
 	}
 
 	private void encryptPassword(Manager manager) {

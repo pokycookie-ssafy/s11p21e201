@@ -2,10 +2,9 @@ package com.e201.api.controller.company;
 
 import static org.springframework.http.HttpStatus.*;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +35,9 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/companies/employees")
-	public ResponseEntity<Page<EmployeeFindResponse>> findPage(@RequestParam(required = false) UUID departmentId,
-		Pageable pageable) {
-		Page<EmployeeFindResponse> response = employeeService.findPage(departmentId, pageable);
+	public ResponseEntity<List<EmployeeFindResponse>> findPage(@RequestParam(required = false) UUID departmentId) {
+		// TODO <jhl221123> 권한 검증 필요
+		List<EmployeeFindResponse> response = employeeService.findAllByDepartmentId(departmentId);
 		return ResponseEntity.ok(response);
 	}
 }
