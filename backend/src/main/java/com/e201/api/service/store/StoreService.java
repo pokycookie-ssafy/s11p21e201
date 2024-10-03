@@ -45,6 +45,10 @@ public class StoreService {
 	private final StoreAccountRepository storeAccountRepository;
 	private final OneWayCipherService oneWayCipherService;
 	private final StoreInfoRepository storeInfoRepository;
+<<<<<<< HEAD
+=======
+	private final StoreAccountService storeAccountService;
+>>>>>>> f79a5ca ([#41] feat: Store 계정 생성 시, 계좌 생성 기능 구현)
 	private final FinancialService financialService;
 
 	@JtaTransactional
@@ -68,8 +72,12 @@ public class StoreService {
 			.accountNumber(accountNo)
 			.build();
 
+<<<<<<< HEAD
 		StoreAccount storeAccount = accountCreateRequest.toEntity(store);
 		StoreAccount savedStoreAccount = storeAccountRepository.save(storeAccount);
+=======
+		StoreAccountCreateResponse res = storeAccountService.create(store.getId(), RoleType.STORE, accountCreateRequest);
+>>>>>>> f79a5ca ([#41] feat: Store 계정 생성 시, 계좌 생성 기능 구현)
 
 		//TODO(KJK) : useremail로 account 생성, 저장
 		return new StoreCreateResponse(savedStore.getId());
