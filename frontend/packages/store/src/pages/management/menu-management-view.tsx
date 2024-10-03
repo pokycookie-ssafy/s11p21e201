@@ -295,12 +295,14 @@ export default function MenuManagementView() {
           />
         </Card>
       </Box>
-      <NewMenuModal
-        open={newMenuModal.value}
-        onClose={newMenuModal.onFalse}
-        categories={categories}
-        onSubmit={createMenuHandler}
-      />
+      {newMenuModal.value && (
+        <NewMenuModal
+          open={newMenuModal.value}
+          onClose={newMenuModal.onFalse}
+          categories={categories}
+          onSubmit={createMenuHandler}
+        />
+      )}
       {editMenuModal.value && (
         <EditMenuModal
           data={menuForEdit.current}
