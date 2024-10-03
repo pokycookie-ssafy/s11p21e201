@@ -1,4 +1,14 @@
 {
+  "nav": {
+    "main": "메인",
+    "setting": "세팅",
+    "payments": "장부"
+  },
+  "header": {
+    "user": "{0}님!",
+    "greeting": "오늘도 맛있는 식사 하세요 :)"
+  },
+
   "main": {
     "title": "메인 페이지",
     "qr-title": "QR 코드 생성하기",
