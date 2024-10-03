@@ -4,9 +4,12 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
@@ -95,6 +99,7 @@ public class ContractController {
 	@GetMapping("/contracts")
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
@@ -109,6 +114,11 @@ public class ContractController {
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+	public ResponseEntity<Page<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@ModelAttribute ContractFindRequest request, Pageable pageable) {
+		Page<ContractFindResponse> response = contractService.find(authInfo, request, pageable);
+>>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
 
 		return ResponseEntity.status(OK).body(response);
 	}

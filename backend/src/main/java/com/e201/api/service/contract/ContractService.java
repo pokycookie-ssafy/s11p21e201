@@ -10,9 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
+import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
@@ -187,6 +190,7 @@ public class ContractService {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
 =======
@@ -197,6 +201,10 @@ public class ContractService {
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+	public Page<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request, Pageable pageable) {
+		Page<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request, pageable);
+>>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
 		return response;
 	}
 
