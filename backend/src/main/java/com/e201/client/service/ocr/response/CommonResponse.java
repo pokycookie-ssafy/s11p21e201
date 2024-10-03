@@ -1,4 +1,4 @@
-package com.e201.client.service.response;
+package com.e201.client.service.ocr.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

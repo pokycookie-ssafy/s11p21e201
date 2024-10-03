@@ -1,6 +1,4 @@
-package com.e201.client.controller.response;
-
-import java.util.Date;
+package com.e201.client.controller.ocr.response;
 
 import lombok.Getter;
 
