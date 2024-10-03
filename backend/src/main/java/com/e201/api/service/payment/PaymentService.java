@@ -43,15 +43,15 @@ public class PaymentService {
 			condition.getEndDate(), pageable);
 	}
 
-	public void save(UUID contractId,UUID employeeId, Store store,Long totalAmount){
+	public void save(UUID contractId, UUID employeeId, Store store, Long totalAmount) {
 		Payment payment = Payment.builder()
-				.contractId(contractId)
-				.employeeId(employeeId)
-				.storeId(store.getId())
-				.storeName(store.getStoreInfo().getName())
-				.totalAmount(totalAmount)
-				.paymentDate(LocalDateTime.now())
-				.build();
+			.contractId(contractId)
+			.employeeId(employeeId)
+			.storeId(store.getId())
+			.storeName(store.getStoreInfo().getName())
+			.amount(totalAmount)
+			.paymentDate(LocalDateTime.now())
+			.build();
 		paymentRepository.save(payment);
 	}
 

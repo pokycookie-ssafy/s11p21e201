@@ -9,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,10 +27,10 @@ public class PaymentDailySum extends BaseEntity {
 	private UUID contractId;
 
 	@Column(name = "amount")
-	private int amount;
+	private Long amount;
 
 	@Builder
-	public PaymentDailySum(UUID id, UUID contractId, int amount) {
+	public PaymentDailySum(UUID id, UUID contractId, Long amount) {
 		this.id = id;
 		this.contractId = contractId;
 		this.amount = amount;
