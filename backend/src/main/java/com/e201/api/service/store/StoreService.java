@@ -7,15 +7,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.management.relation.Role;
+
 import org.springframework.stereotype.Service;
 
+import com.e201.api.controller.store.request.StoreAccountCreateRequest;
 import com.e201.api.controller.store.request.StoreAndStoreInfoCreateRequest;
 import com.e201.api.controller.store.request.StoreAuthRequest;
 import com.e201.api.controller.store.request.StoreCreateRequest;
 import com.e201.api.controller.store.request.StoreInfoCreateRequest;
+import com.e201.api.controller.store.response.StoreAccountCreateResponse;
 import com.e201.api.controller.store.response.StoreAuthResponse;
 import com.e201.api.controller.store.response.StoreCreateResponse;
 import com.e201.api.controller.store.response.StoreDeleteResponse;
+import com.e201.client.service.financial.FinancialService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.store.Store;
 import com.e201.domain.entity.store.StoreInfo;
@@ -37,6 +42,8 @@ public class StoreService {
 	private final StoreRepository storeRepository;
 	private final OneWayCipherService oneWayCipherService;
 	private final StoreInfoRepository storeInfoRepository;
+	private final StoreAccountService storeAccountService;
+	private final FinancialService financialService;
 
 	@JtaTransactional
 	public StoreCreateResponse create(StoreAndStoreInfoCreateRequest storeAndStoreInfoCreateRequest) {
@@ -49,6 +56,18 @@ public class StoreService {
 		Store store = storeCreateRequest.toEntity(savedStoreInfo);
 		encryptPassword(store);
 		Store savedStore = storeRepository.save(store);
+
+		// 계좌번호 생성
+		String accountNo = financialService.createAccount();
+		StoreAccountCreateRequest accountCreateRequest = StoreAccountCreateRequest
+			.builder()
+			.bankCode("999")
+			.bankName("싸피은행")
+			.accountNumber(accountNo)
+			.build();
+
+		StoreAccountCreateResponse res = storeAccountService.create(store.getId(), RoleType.STORE, accountCreateRequest);
+
 		//TODO(KJK) : useremail로 account 생성, 저장
 		return new StoreCreateResponse(savedStore.getId());
 	}
