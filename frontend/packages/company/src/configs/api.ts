@@ -14,15 +14,18 @@ const api = {
   },
   manager: {
     list: '/companies/managers',
-    signUp: '/companies/managers',
+    create: '/companies/managers',
     login: '/companies/managers/auth',
   },
   department: {
     list: '/companies/departments',
+    create: '/companies/departments',
   },
   employee: {
     list: `/companies/employees`,
     create: `/companies/employees`,
+    delete: `/companies/employees`,
+    deleteWith: (id: string) => `/companies/employees/${id}`,
   },
   payment: {
     list: (start: string, end: string, departmentId?: string) =>

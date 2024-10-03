@@ -20,6 +20,11 @@ interface IDepartment {
   name: string
 }
 
+interface IDepartmentCreateRequest {
+  code: string
+  name: string
+}
+
 interface IManager {
   id: string
   code: string
@@ -28,4 +33,17 @@ interface IManager {
   createdAt: Date
 }
 
-export type { IManager, IEmployee, IDepartment, IEmployeeCreate }
+interface IManagerCreateRequest {
+  departmentId: string
+  code: string
+  password: string
+}
+
+export type {
+  IManager,
+  IEmployee,
+  IDepartment,
+  IEmployeeCreate,
+  IManagerCreateRequest,
+  IDepartmentCreateRequest as IDepartmentCreateRequset,
+}

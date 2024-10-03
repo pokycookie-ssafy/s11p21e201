@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { fNumber } from '@/utils/number-format'
 import { useRef, useMemo, useState } from 'react'
 import { DialogDelete } from '@/components/dialog'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -59,13 +59,21 @@ export default function MemberManagementView() {
     },
   })
 
-  const { data: departments, isPending: departmentIsPending } = useQuery({
+  const { data: departments } = useQuery({
     queryKey: [api.department.list],
     queryFn: async () => {
       const response = await axios.get<IDepartment[]>(api.department.list)
       return response.data
     },
     enabled: isCompany,
+  })
+
+  const { mutate: deleteEmployee } = useMutation({
+    mutationKey: [api.employee.delete],
+    mutationFn: async (employeeId: string) => {
+      const response = await axios.delete(api.employee.deleteWith(employeeId))
+      return response.data
+    },
   })
 
   const departmentOptions = useMemo<ISelectOption[]>(() => {
@@ -144,14 +152,13 @@ export default function MemberManagementView() {
     {
       field: 'action',
       type: 'actions',
-      align: 'left',
       resizable: false,
       getActions: (params) => [
-        <Tooltip title={t('edit_info')} arrow disableInteractive>
-          <IconButton>
-            <Iconify icon="solar:pen-linear" />
-          </IconButton>
-        </Tooltip>,
+        // <Tooltip title={t('edit_info')} arrow disableInteractive>
+        //   <IconButton>
+        //     <Iconify icon="solar:pen-linear" />
+        //   </IconButton>
+        // </Tooltip>,
         <Tooltip title={t('delete')} arrow disableInteractive>
           <IconButton color="error" onClick={() => deleteHandler(params.row)}>
             <Iconify icon="solar:trash-bin-minimalistic-2-linear" />
