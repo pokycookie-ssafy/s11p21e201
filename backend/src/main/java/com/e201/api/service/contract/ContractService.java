@@ -192,6 +192,7 @@ public class ContractService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindStatus status, ContractFindCond cond) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, status, cond, null, 10);
 =======
@@ -210,6 +211,10 @@ public class ContractService {
 	public Page<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request, Pageable pageable) {
 		Page<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request, pageable);
 >>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
+=======
+	public Page<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request, Pageable pageable) {
+		Page<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request, pageable);
+>>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
 		return response;
 	}
 
