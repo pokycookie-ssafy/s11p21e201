@@ -1,10 +1,8 @@
-package com.e201.client.service;
+package com.e201.client.service.ocr;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
-import com.e201.client.controller.response.LicenseCreateResponse;
-import com.e201.client.service.response.ApiResponse;
-import com.e201.client.service.response.Result;
+import com.e201.client.controller.ocr.response.LicenseCreateResponse;
+import com.e201.client.service.ocr.response.ApiResponse;
+import com.e201.client.service.ocr.response.Result;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

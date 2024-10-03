@@ -35,5 +35,6 @@ public class PathProperties {
 		private String employeePath;
 		private String storePath;
 		private String licensePath;
+		private String finPath;
 	}
 }

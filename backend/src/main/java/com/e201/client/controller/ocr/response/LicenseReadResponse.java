@@ -1,6 +1,5 @@
-package com.e201.client.controller.response;
+package com.e201.client.controller.ocr.response;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
