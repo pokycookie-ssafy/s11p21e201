@@ -17,7 +17,8 @@
     "settlement_date": "결제날짜",
     "status": "상태",
     "action": "처리",
-    "in_progress": "요청 처리 중"
+    "in_progress": "요청 처리 중",
+    "address": "주소"
   },
   "row": {
     "settlement_date": "매달 {0}일"

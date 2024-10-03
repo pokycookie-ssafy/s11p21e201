@@ -1,7 +1,7 @@
-import type { IContractResponse } from '@/types/contract'
+import type { IContract } from '@/types/contract'
 
 type ContractMock =
-  | IContractResponse
+  | IContract
   | {
       contractDate: string
     }

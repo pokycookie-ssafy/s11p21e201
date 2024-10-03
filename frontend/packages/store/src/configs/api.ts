@@ -1,7 +1,6 @@
-export const BASE_URL = 'https://sanedaejangbu.site/api'
+import type { ContractStatus, ContractUserCondition } from '@/types/contract'
 
-export type ContractUserCondition = 'all' | 'sender' | 'receiver'
-export type ContractStatus = 'all' | 'in' | 'complete' | 'cancel' | 'reject'
+export const BASE_URL = 'https://sanedaejangbu.site/api'
 
 const api = {
   auth: {
@@ -26,11 +25,13 @@ const api = {
     delete: (paymentId: string) => `/payments/stores/${paymentId}`,
   },
   contract: {
-    list: (userCond: ContractUserCondition, status: ContractStatus) =>
+    list: `/contracts`,
+    listWith: (userCond: ContractUserCondition, status: ContractStatus) =>
       `/contracts?userCond=${userCond}&status=${status}`,
     create: `/contracts`,
-    response: (contractId: string) => `/contracts/${contractId}`,
-    terminate: (contractId: string) => `/contracts/${contractId}`,
+    response: `/contracts/respond`,
+    terminate: `/contracts`,
+    terminateWith: (contractId: string) => `/contracts/${contractId}`,
   },
   settlement: {
     list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,

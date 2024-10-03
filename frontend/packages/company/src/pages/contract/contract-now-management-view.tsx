@@ -1,8 +1,9 @@
-import type { IContract, IContractResponse } from '@/types/contract'
+import type { IContract } from '@/types/contract'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
 import { toast } from 'sonner'
+import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
@@ -39,27 +40,25 @@ export default function ContractNowManagementView() {
 
   const deleteAllConfirm = useBoolean()
 
-  const fetchContracts = async () => {
-    const response = await axios.get<IContractResponse[]>('/companies/stores')
-    return response.data
-  }
-
-  const { data, isPending } = useQuery({
-    queryKey: ['contract-stores'],
-    queryFn: fetchContracts,
+  const { data: contracts, isPending: contractIsPending } = useQuery({
+    queryKey: [api.contract.list],
+    queryFn: async () => {
+      const response = await axios.get<IContract[]>(api.contract.listWith('ALL', 'COMPLETE'))
+      return response.data
+    },
   })
 
   const filteredData = useMemo(() => {
-    if (!data) {
+    if (!contracts) {
       return []
     }
 
-    let filtered = [...data]
+    let filtered = [...contracts]
     if (storeSearch.trim() !== '') {
       filtered = filtered.filter((contract) => contract.storeName.includes(storeSearch.trim()))
     }
     return filtered
-  }, [data, storeSearch])
+  }, [contracts, storeSearch])
 
   const deleteSubmitHandler = () => {
     toast.success(t('toast.contract_cancel'))
@@ -67,10 +66,17 @@ export default function ContractNowManagementView() {
     deleteAllConfirm.onFalse()
   }
 
-  const columns: GridColDef<IContractResponse>[] = [
-    { field: 'name', headerName: t('restaurant_name'), flex: 1, minWidth: 100 },
-    { field: 'phone', headerName: t('phone_number'), width: 180, resizable: false },
-    { field: 'address', headerName: t('address'), width: 300 },
+  const columns: GridColDef<IContract>[] = [
+    { field: 'storeName', headerName: t('restaurant_name'), flex: 1, minWidth: 100 },
+    { field: 'storeEmail', headerName: t('field.email'), width: 200 },
+    { field: 'storePhone', headerName: t('phone_number'), width: 180, resizable: false },
+    { field: 'storeAddress', headerName: t('address'), width: 300 },
+    {
+      field: 'settlementDate',
+      headerName: t('field.settlement_date'),
+      width: 100,
+      valueFormatter: (value: number) => m(t('row.settlement_date'), [value]),
+    },
     {
       field: 'createdAt',
       type: 'date',
@@ -148,12 +154,13 @@ export default function ContractNowManagementView() {
           <DataGrid
             columns={columns}
             rows={filteredData}
+            getRowId={(row) => row.contractId}
             rowSelectionModel={selected}
             onRowSelectionModelChange={setSelected}
             disableMultipleRowSelection
             checkboxSelection
             hideFooter
-            loading={isPending}
+            loading={contractIsPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
@@ -169,7 +176,7 @@ export default function ContractNowManagementView() {
         onSubmit={deleteSubmitHandler}
         title={t('dialog.cancel')}
         content={m(t('dialog.cancel_content'), [
-          data?.find((e) => e.contractId === selected[0])?.companyName ?? '',
+          contracts?.find((e) => e.contractId === selected[0])?.companyName ?? '',
         ])}
       />
     </>
