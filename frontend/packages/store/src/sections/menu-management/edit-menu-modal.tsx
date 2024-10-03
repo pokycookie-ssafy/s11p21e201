@@ -59,6 +59,7 @@ export default function EditMenuModal({ data, open, onClose, categories, onSubmi
               { title: t('breadcrumbs.edit_menu') },
             ]}
           />
+
           <Stack spacing={2}>
             <FormInput name="name" control={control} label={t('label.menu_name')} size="small" />
             <SelectCreatable
