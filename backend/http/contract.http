@@ -1,0 +1,9 @@
+### 계약 생성
+POST localhost:8080/contracts
+Content-Type: application/json
+
+{
+  "senderId": "6e985544-0d94-4179-a299-5e0644426bcf",
+  "receiverRegisterNumber": "store3",
+  "settlementDay": 4
+}
