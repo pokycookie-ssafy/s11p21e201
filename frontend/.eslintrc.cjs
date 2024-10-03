@@ -22,12 +22,17 @@ module.exports = {
     radix: 'off',
     'no-alert': 'warn',
     'no-console': 'off',
+<<<<<<< HEAD:frontend/.eslintrc.cjs
     'no-bitwise': 'off',
+=======
+    'no-continue': 'off',
+>>>>>>> 859fe5b ([#54] feat: 직원 계정 생성):frontend/packages/company/.eslintrc.cjs
     'no-plusplus': 'off',
     'no-unused-vars': 'off',
     'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
+    'no-restricted-syntax': 'off',
     'no-restricted-exports': 'off',
     'no-promise-executor-return': 'off',
     'import/prefer-default-export': 'off',

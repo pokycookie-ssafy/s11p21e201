@@ -1,11 +1,13 @@
 import type { ISelectOption } from '@e201/ui'
-import type { IEmployee } from '@/types/employees'
+import type { IEmployee, IDepartment } from '@/types/employees'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
 import { toast } from 'sonner'
+import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { m, useBoolean } from '@e201/utils'
 import { useNavigate } from 'react-router-dom'
@@ -36,6 +38,8 @@ export default function MemberManagementView() {
 
   const queryClient = useQueryClient()
 
+  const { isCompany } = useAuthStore()
+
   const navigate = useNavigate()
 
   const deleteConfirm = useBoolean()
@@ -47,31 +51,32 @@ export default function MemberManagementView() {
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
   const [memberSearch, setMemberSearch] = useState<string>('')
 
-  const queryFn = async () => {
-    const response = await axios.get<IEmployee[]>('/companies/employees')
-    return response.data
-  }
-
   const { data: employees, isPending: employeeIsPending } = useQuery({
-    queryKey: ['employees'],
-    queryFn,
+    queryKey: [api.employee.list],
+    queryFn: async () => {
+      const response = await axios.get<IEmployee[]>(api.employee.list)
+      return response.data
+    },
   })
 
-  const departments = useMemo(() => {
-    if (!employees) {
+  const { data: departments, isPending: departmentIsPending } = useQuery({
+    queryKey: [api.department.list],
+    queryFn: async () => {
+      const response = await axios.get<IDepartment[]>(api.department.list)
+      return response.data
+    },
+    enabled: isCompany,
+  })
+
+  const departmentOptions = useMemo<ISelectOption[]>(() => {
+    if (!isCompany) {
       return []
     }
-
-    const departmentSet = new Set<string>()
-    const departmentList: ISelectOption[] = []
-    employees.forEach((e) => {
-      if (!departmentSet.has(e.departmentId)) {
-        departmentList.push({ label: e.departmentName, value: e.departmentId })
-      }
-      departmentSet.add(e.departmentId)
-    })
-    return departmentList
-  }, [employees])
+    if (!departments) {
+      return []
+    }
+    return departments.map((e) => ({ label: e.name, value: e.id }))
+  }, [departments, isCompany])
 
   const filteredData = useMemo(() => {
     if (!employees) {
@@ -88,8 +93,8 @@ export default function MemberManagementView() {
     return filtered
   }, [employees, memberSearch, tab])
 
-  const handleNavigate = () => {
-    navigate('create')
+  const navigateToCreate = () => {
+    navigate(paths.management.member.create)
   }
 
   const deleteHandler = (employee: IEmployee) => {
@@ -99,18 +104,18 @@ export default function MemberManagementView() {
 
   const deleteSubmitHandler = () => {
     toast.success(t('toast.delete'))
-    queryClient.invalidateQueries({ queryKey: [''] })
+    // queryClient.invalidateQueries({ queryKey: [''] })
     deleteAllConfirm.onFalse()
   }
 
   const columns: GridColDef[] = [
     {
-      field: 'name',
+      field: 'employeeName',
       headerName: t('field.employee_name'),
       width: 100,
     },
     {
-      field: 'id',
+      field: 'employeeCode',
       headerName: t('field.employee_number'),
       width: 150,
     },
@@ -166,12 +171,14 @@ export default function MemberManagementView() {
             { title: t('breadcrumbs.title') },
           ]}
           action={
-            <Button color="secondary" onClick={handleNavigate}>
-              <Iconify icon="ic:round-plus" />
-              <Typography variant="subtitle2" pl={0.5}>
-                {t('button.create_member')}
-              </Typography>
-            </Button>
+            isCompany ? null : (
+              <Button color="secondary" onClick={navigateToCreate}>
+                <Iconify icon="ic:round-plus" />
+                <Typography variant="subtitle2" pl={0.5}>
+                  {t('button.create_member')}
+                </Typography>
+              </Button>
+            )
           }
         />
 
@@ -184,7 +191,7 @@ export default function MemberManagementView() {
               sx={{ borderColor: 'red' }}
             >
               <Tab label={t('label.all')} value={null} key={0} />
-              {departments.map((department, i) => (
+              {departmentOptions.map((department, i) => (
                 <Tab label={department.label} value={department.value} key={i + 1} />
               ))}
             </Tabs>
@@ -265,73 +272,3 @@ export default function MemberManagementView() {
     </>
   )
 }
-
-// export default function EmployeeManagement() {
-//   const { t } = useTranslate('management')
-//   const navigate = useNavigate()
-
-//   const handleNavigate = () => {
-//     navigate('create')
-//   }
-
-//   const [openEmployeeInfoDialog, setOpenEmployeeInfoDialog] = useState(false)
-//   const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(null)
-
-//   const [openEmployeeCreateDialog, setOpenEmployeeCreateDialog] = useState(false)
-
-//   const handleOpenEmployeeInfoDialog = (employee: IEmployee) => {
-//     setSelectedEmployee(employee)
-//     setOpenEmployeeInfoDialog(true)
-//   }
-
-//   const handleCloseEmployeeInfoDialog = () => {
-//     setOpenEmployeeInfoDialog(false)
-//     setSelectedEmployee(null)
-//   }
-
-//   const handleCloseEmployeeCreateDialog = () => {
-//     setOpenEmployeeCreateDialog(false)
-//   }
-
-//   const { data: employees = [] } = useQuery({
-//     queryKey: ['employees'],
-
-//     queryFn: fetchEmployees,
-//   })
-
-//   return (
-//     <Stack spacing={5}>
-//       <Stack direction="row" justifyContent="space-between" alignItems="center">
-//         <Typography variant="h5">{t('employee_management')}</Typography>
-//         <Button variant="contained" onClick={() => handleNavigate()}>
-//           {t('create_employee')}
-//         </Button>
-//       </Stack>
-//       <Stack>
-//         {employees.map((employee: IEmployee) => (
-//           <Stack key={employee.id}>
-//             <Stack direction="row" alignItems="center" padding={2}>
-//               <Typography
-//                 onClick={() => handleOpenEmployeeInfoDialog(employee)}
-//                 sx={{ cursor: 'pointer' }}
-//               >
-//                 {employee.name}
-//               </Typography>
-//             </Stack>
-//             <Divider />
-//           </Stack>
-//         ))}
-//       </Stack>
-//       <Pagination count={10} sx={{ display: 'flex', justifyContent: 'center' }} />
-//       <EmployeeInfoDialog
-//         open={openEmployeeInfoDialog}
-//         employee={selectedEmployee}
-//         onClose={handleCloseEmployeeInfoDialog}
-//       />
-//       <EmployeeCreateDialog
-//         open={openEmployeeCreateDialog}
-//         onClose={handleCloseEmployeeCreateDialog}
-//       />
-//     </Stack>
-//   )
-// }

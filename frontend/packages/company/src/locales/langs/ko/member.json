@@ -31,10 +31,15 @@
     "title": "직원 관리",
     "management": "관리",
     "member_management": "직원 관리",
-    "create_member": "직원 계정 생성"
+    "manager_management": "관리자 관리",
+    "department_management": "부서 관리",
+    "create_member": "직원 계정 생성",
+    "create_manager": "관리자 계정 생성"
   },
   "button": {
     "create_member": "직원 계정 생성",
+    "create_manager": "관리자 계정 생성",
+    "create_department": "부서 생성",
     "delete": "삭제",
     "cancel": "취소",
     "add_member": "직원 추가",
@@ -42,8 +47,12 @@
   },
   "field": {
     "department": "부서명",
+    "department_code": "부서코드",
     "employee_name": "직원명",
-    "employee_number": "사번"
+    "employee_number": "사번",
+    "manager_code": "관리자 코드",
+    "created_at": "계정 생성일",
+    "support_amount": "할당 금액"
   },
   "unit": {
     "won": "원"
@@ -55,7 +64,8 @@
     "all": "전체",
     "enter_employee_no": "사번을 작성해주세요",
     "enter_employee_name": "직원명을 작성해주세요",
-    "upload_excel": "직원 엑셀 파일을 업로드해주세요"
+    "upload_excel": "직원 엑셀 파일을 업로드해주세요",
+    "enter_support_amount": "할당 금액을 입력해주세요"
   },
   "tooltip": {
     "delete_all": "일괄 삭제",

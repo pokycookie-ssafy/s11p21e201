@@ -6,7 +6,9 @@ import MemberCreateView from '@/pages/member/member-create-view'
 import SettlementDateView from '@/pages/settlement/settlement-date-view'
 import MemberManagementView from '@/pages/member/member-management-view'
 import SettlementStoreView from '@/pages/settlement/settlement-store-view'
+import ManagerManagementView from '@/pages/member/manager-management-view'
 import DashboardCompanyView from '@/pages/dashboard/dashboard-company-view'
+import DepartmentManagementView from '@/pages/member/department-management-view'
 import ContractNewManagementView from '@/pages/contract/contract-new-management-view'
 import ContractNowManagementView from '@/pages/contract/contract-now-management-view'
 import ContractHistoryManagementView from '@/pages/contract/contract-history-management-view'
@@ -26,8 +28,16 @@ const appRoute: RouteObject[] = [
     element: <PaymentListView />,
   },
   {
-    path: paths.management.member.root,
+    path: paths.management.member.list,
     element: <MemberManagementView />,
+  },
+  {
+    path: paths.management.manager.root,
+    element: <ManagerManagementView />,
+  },
+  {
+    path: paths.management.department.root,
+    element: <DepartmentManagementView />,
   },
   {
     path: paths.management.contract.now,
