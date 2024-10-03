@@ -60,24 +60,12 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	}
 
 	@Override
-	public Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request,
-		Pageable pageable) {
-		List<Contract> contracts = findContracts(authInfo, request, pageable);
+	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request) {
+		List<Contract> contracts = findContracts(authInfo, request);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
 		List<ContractFindResponse> responses = createContractFindResponse(contracts, companyMap, storeMap);
-		JPAQuery<Long> countQuery = createCountQuery(authInfo, request);
-		return PageableExecutionUtils.getPage(responses, pageable, countQuery::fetchFirst);
-	}
-
-	private JPAQuery<Long> createCountQuery(AuthInfo authInfo, ContractFindRequest request) {
-		return contractQueryFactory
-			.select(contract.count())
-			.from(contract)
-			.where(
-				eqStatus(authInfo, request),
-				eqId(authInfo)
-			);
+		return responses;
 	}
 
 	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts, Map<UUID, Map<String, String>> companyMap,
@@ -102,16 +90,13 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toList());
 	}
 
-	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request,
-		Pageable pageable){
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request){
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
 				eqStatus(authInfo, request),
 				eqId(authInfo)
 			)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
