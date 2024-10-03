@@ -7,13 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 
 import com.e201.domain.entity.company.Employee;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
@@ -25,19 +21,12 @@ public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
 	}
 
 	@Override
-	public Page<Employee> findPage(UUID departmentId, Pageable pageable) {
-		List<Employee> employees = jpaQueryFactory
+	public List<Employee> findAllByDepartmentId(UUID departmentId) {
+		return jpaQueryFactory
 			.selectFrom(employee)
+			.join(department).fetchJoin()
 			.where(matchDepartment(departmentId))
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
 			.fetch();
-
-		JPAQuery<Long> countQuery = jpaQueryFactory
-			.select(employee.count())
-			.from(employee)
-			.where(matchDepartment(departmentId));
-		return PageableExecutionUtils.getPage(employees, pageable, countQuery::fetchFirst);
 	}
 
 	private BooleanExpression matchDepartment(UUID departmentId) {

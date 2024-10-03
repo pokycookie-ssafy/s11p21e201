@@ -16,8 +16,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
@@ -66,11 +64,10 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		var response1 = createEmployeeFindResponse("직원 코드1", "직원 이름1", departmentId, 100000);
 		var response2 = createEmployeeFindResponse("직원 코드2", "직원 이름2", departmentId, 100000);
 		var response3 = createEmployeeFindResponse("직원 코드3", "직원 이름3", departmentId, 100000);
-		var content = List.of(response1, response2, response3);
-		var response = new PageImpl<>(content, PageRequest.of(0, 10), 10);
+		var response = List.of(response1, response2, response3);
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(employeeService).findPage(any(), any());
+		doReturn(response).when(employeeService).findAllByDepartmentId(any());
 
 		// expected
 		mockMvc.perform(get("/companies/employees")
