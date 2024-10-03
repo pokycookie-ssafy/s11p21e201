@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslate } from '@/locales'
+import { useBoolean } from '@e201/utils'
 import { useStoresList } from '@/hooks/api'
-import { useBoolean } from '@/hooks/use-boolean'
 
 import {
   Box,

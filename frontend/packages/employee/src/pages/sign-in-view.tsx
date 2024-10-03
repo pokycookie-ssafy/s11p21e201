@@ -1,6 +1,9 @@
+import { toast } from 'sonner'
 import api from '@/configs/api'
+import { useEffect } from 'react'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import logo from '@/assets/img/toss-logo.jpg'
@@ -18,6 +21,8 @@ interface IForm {
 export default function SignInView() {
   const { t } = useTranslate('sign-in')
 
+  const { login, isLogin } = useAuthStore()
+
   const navigate = useNavigate()
 
   const formMethod = useForm<IForm>({
@@ -30,9 +35,23 @@ export default function SignInView() {
   const { control } = formMethod
 
   const submitHandler = async (form: IForm) => {
-    await axios.post(api.auth.login, form)
-    navigate(paths.root)
+    try {
+      const { data, status } = await axios.post(api.auth.login, form)
+      if (status === 201) {
+        login(data)
+        navigate(paths.main)
+      }
+      navigate(paths.root)
+    } catch (error) {
+      toast.error(t('validate.login'))
+    }
   }
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate(paths.main)
+    }
+  }, [isLogin, navigate])
 
   return (
     <FullContainer sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

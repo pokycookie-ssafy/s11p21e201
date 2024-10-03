@@ -122,7 +122,7 @@ export default function PwChangeView() {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             {t('auth.changePw')}
           </Button>
-          <Link to={paths.auth.signIn} sx={{ ml: 'auto' }}>
+          <Link to={paths.signIn} sx={{ ml: 'auto' }}>
             {t('auth.logout')}
           </Link>
         </Stack>

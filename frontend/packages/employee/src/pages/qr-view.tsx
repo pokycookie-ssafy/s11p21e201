@@ -1,15 +1,15 @@
-import { v4 as uuidv4 } from 'uuid' // UUID 생성 함수
-import QRCode from 'react-qr-code' // QR 코드 렌더링 라이브러리, QR 코드는 value 속성에 따라 생성
+import dayjs from 'dayjs'
+import QRCode from 'react-qr-code'
+import { v4 as uuidv4 } from 'uuid'
 import { useTranslate } from '@/locales'
+import { useBoolean } from '@e201/utils'
 import { useState, useEffect } from 'react'
+import duration from 'dayjs/plugin/duration'
 import { useEmployeeMeal, useValidationId } from '@/hooks/api'
 
-import { Iconify } from '@e201/ui' // React | 생명주기 관리, 상태 관리
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
-import { useBoolean } from '@/hooks/use-boolean'
-
 import { Box, Stack, Button, Typography } from '@mui/material'
+
+import { Iconify } from '@e201/ui'
 
 export default function Qr() {
   const { t } = useTranslate('common')

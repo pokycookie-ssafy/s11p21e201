@@ -7,8 +7,6 @@ export default function initServer() {
     routes() {
       this.namespace = 'api'
 
-      this.get(api.todo, () => 'TEST', { timing: 2000 })
-
       this.get('/employees/:id/meals', (schema, request) => {
         const { id } = request.params
         console.log('Requested Employee ID:', id)

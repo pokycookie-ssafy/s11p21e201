@@ -4,12 +4,11 @@ const PATH = {
 
 const paths = {
   root: PATH.root,
-  qr: '/qr',
+  main: PATH.root,
   payments: '/payments',
-  auth: {
-    signIn: '/sign-in',
-    changePw: '/change-pw',
-  },
+  signIn: '/sign-in',
+  setting: '/setting',
+  changePw: '/change-pw',
 }
 
 export default paths

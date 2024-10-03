@@ -1,6 +1,6 @@
 import Qr from '@/pages/qr-view'
+import { useBoolean } from '@e201/utils'
 import { useState, useEffect } from 'react'
-import { useBoolean } from '@/hooks/use-boolean'
 
 import { Box, Stack } from '@mui/material'
 
