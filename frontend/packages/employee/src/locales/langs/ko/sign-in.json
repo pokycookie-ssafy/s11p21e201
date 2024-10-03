@@ -1,0 +1,18 @@
+{
+  "field": {
+    "code": "직원코드",
+    "password": "비밀번호"
+  },
+  "button": {
+    "login": "로그인"
+  },
+  "validate": {
+    "code": {
+      "required": "직원코드를 입력하세요"
+    },
+    "password": {
+      "required": "비밀번호를 입력하세요",
+      "minLength": "비밀번호는 8자리 이상이어야 합니다"
+    }
+  }
+}
