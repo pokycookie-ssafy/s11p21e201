@@ -15,7 +15,7 @@ public class CompanyInfoCreateRequest {
 	private String registerNumber;
 
 	@NotBlank
-	private String name;
+	private String businessName;
 
 	@NotBlank
 	private String representativeName;
@@ -27,27 +27,27 @@ public class CompanyInfoCreateRequest {
 	private String businessType;
 
 	@NotBlank
-	private String businessAddress;
+	private String address;
 
 	@Builder
-	private CompanyInfoCreateRequest(String registerNumber, String name, String representativeName, String phone,
-		String businessType, String businessAddress) {
+	private CompanyInfoCreateRequest(String registerNumber, String businessName, String representativeName, String phone,
+		String businessType, String address) {
 		this.registerNumber = registerNumber;
-		this.name = name;
+		this.businessName = businessName;
 		this.representativeName = representativeName;
 		this.phone = phone;
 		this.businessType = businessType;
-		this.businessAddress = businessAddress;
+		this.address = address;
 	}
 
 	public CompanyInfo toEntity() {
 		return CompanyInfo.builder()
 			.registerNumber(registerNumber)
-			.name(name)
+			.name(businessName)
 			.representativeName(representativeName)
 			.phone(phone)
 			.businessType(businessType)
-			.businessAddress(businessAddress)
+			.businessAddress(address)
 			.build();
 	}
 }
