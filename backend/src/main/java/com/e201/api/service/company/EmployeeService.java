@@ -1,7 +1,7 @@
 package com.e201.api.service.company;
 
-import static com.e201.domain.entity.EntityConstant.*;
 import static com.e201.global.exception.ErrorCode.*;
+import static com.e201.global.security.auth.constant.RoleType.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,8 +21,8 @@ import com.e201.domain.entity.company.Manager;
 import com.e201.domain.repository.company.EmployeeRepository;
 import com.e201.global.exception.EntityNotFoundException;
 import com.e201.global.exception.PasswordIncorrectException;
-import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.exception.AuthorizationException;
 import com.e201.global.security.cipher.service.OneWayCipherService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class EmployeeService extends BaseEntity {
 		Employee employee = employeeRepository.findByCode(request.getCode())
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EMPLOYEE.name()));
 		validatePassword(request, employee);
-		return new AuthInfo(employee.getId(), RoleType.EMPLOYEE);
+		return new AuthInfo(employee.getId(), EMPLOYEE);
 	}
 
 	public Employee findEntity(UUID id) {
@@ -68,11 +68,22 @@ public class EmployeeService extends BaseEntity {
 			.build();
 	}
 
-	public List<EmployeeFindResponse> findAllByDepartmentId(UUID companyId, UUID departmentId) {
+	public List<EmployeeFindResponse> findAll(AuthInfo authInfo) {
+		validateAuthorization(authInfo);
+		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
+		UUID departmentId = authInfo.getRoleType().equals(MANAGER) ?
+			managerService.findEntity(authInfo.getId()).getDepartment().getId() : null;
+
 		return employeeRepository.findAllByDepartmentId(companyId, departmentId)
 			.stream()
 			.map(EmployeeFindResponse::of)
 			.toList();
+	}
+
+	private void validateAuthorization(AuthInfo authInfo) {
+		if (!(authInfo.getRoleType().equals(COMPANY) || authInfo.getRoleType().equals(MANAGER))) {
+			throw new AuthorizationException(AUTHORIZATION_FAILED, "직원 목록 조회에 권한이 없음");
+		}
 	}
 
 	private void encryptPassword(Employee employee) {
