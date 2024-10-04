@@ -3,8 +3,6 @@ package com.e201.api.service.contract;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
@@ -13,12 +11,11 @@ import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
+import com.e201.api.controller.contract.response.EmployeeFindStoreResponse;
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.ContractFindCond;
-import com.e201.domain.entity.contract.ContractFindStatus;
 import com.e201.domain.entity.contract.ContractRespondType;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.repository.contract.ContractRepository;
@@ -80,6 +77,11 @@ public class ContractService {
 
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request);
+		return response;
+	}
+
+	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
+		List<EmployeeFindStoreResponse> response = contractRepository.findStores(authInfo);
 		return response;
 	}
 
