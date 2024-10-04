@@ -31,10 +31,13 @@ public class PaymentService {
 	}
 
 	public Page<EmployeeTotalPaymentResponse> findEmployeeTotalPayments(UUID companyId,
-		EmployeeTotalPaymentCondition condition,
-		Pageable pageable) {
+		EmployeeTotalPaymentCondition condition, Pageable pageable) {
 		return paymentRepository.findEmployeeTotalPayments(companyId, condition.getDepartmentId(),
 			condition.getStartDate(), condition.getEndDate(), pageable);
+	}
+
+	public Long findUsageByEmployee(UUID employeeId, LocalDateTime startDate, LocalDateTime endDate) {
+		return paymentRepository.findUsageByEmployeeId(employeeId, startDate, endDate);
 	}
 
 	public EmployeePaymentResponse findEmployeePayments(UUID employeeId, EmployeePaymentCondition condition,

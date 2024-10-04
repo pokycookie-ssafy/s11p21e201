@@ -15,4 +15,8 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, Payment
 	@Query("select new com.e201.global.quartz.dto.PaymentDailySumDto(p.contractId, SUM(p.amount)) " +
 		"from Payment p where p.createdAt between :startDate and :endDate group by p.contractId")
 	List<PaymentDailySumDto> sumByContractId(LocalDateTime startDate, LocalDateTime endDate);
+
+	@Query("select SUM(p.amount) " +
+		"from Payment p where p.createdAt between :startDate and :endDate group by p.employeeId")
+	Long findUsageByEmployeeId(UUID employeeId, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
+import com.e201.api.controller.company.request.employee.EmployeeUsageRequest;
 import com.e201.api.controller.company.response.employee.EmployeeAuthResponse;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
+import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
+import com.e201.api.service.payment.PaymentService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.BaseEntity;
 import com.e201.domain.entity.company.Department;
@@ -34,6 +37,7 @@ public class EmployeeService extends BaseEntity {
 
 	private final ManagerService managerService;
 	private final EmployeeRepository employeeRepository;
+	private final PaymentService paymentService;
 	private final OneWayCipherService oneWayCipherService;
 
 	@JtaTransactional
@@ -78,6 +82,17 @@ public class EmployeeService extends BaseEntity {
 			.stream()
 			.map(EmployeeFindResponse::of)
 			.toList();
+	}
+
+	public EmployeeUsageResponse findUsage(AuthInfo authInfo, EmployeeUsageRequest request) {
+		UUID employeeId = authInfo.getId();
+		Employee employee = findEntity(employeeId);
+		Long usage = paymentService.findUsageByEmployee(employeeId, request.getStartDate(), request.getEndDate());
+		return EmployeeUsageResponse
+			.builder()
+			.supportAmount(employee.getSupportAmount())
+			.usage(usage)
+			.build();
 	}
 
 	private void validateAuthorization(AuthInfo authInfo) {

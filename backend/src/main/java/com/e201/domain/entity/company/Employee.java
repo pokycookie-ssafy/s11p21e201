@@ -41,10 +41,10 @@ public class Employee extends BaseEntity {
 	private String name;
 
 	@Column(name = "support_amount")
-	private Integer supportAmount;
+	private Long supportAmount;
 
 	@Builder
-	private Employee(UUID id, Department department, String code, String password, String name, Integer supportAmount) {
+	private Employee(UUID id, Department department, String code, String password, String name, Long supportAmount) {
 		this.id = id;
 		this.department = department;
 		this.code = code;
@@ -57,7 +57,7 @@ public class Employee extends BaseEntity {
 		this.password = password;
 	}
 
-	public void changeSupportAmount(Integer supportAmount) {
+	public void changeSupportAmount(Long supportAmount) {
 		this.supportAmount = supportAmount;
 	}
 }
