@@ -13,17 +13,17 @@ export default function Microsite() {
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (e.deltaY > 0 && currentSection === 1 && main2Ref.current) {
       main2Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(2) // 상태 업데이트
+      setCurrentSection(2)
     } else if (e.deltaY < 0 && currentSection === 2 && main1Ref.current) {
       main1Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(1) // 상태 업데이트
+      setCurrentSection(1)
     }
   }
 
   const handleScrollToNextSection = () => {
     if (main2Ref.current) {
       main2Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(2) // 버튼 클릭 시에도 상태 업데이트
+      setCurrentSection(2)
     }
   }
 
@@ -34,7 +34,7 @@ export default function Microsite() {
         width: '100vw',
         overflow: 'hidden',
       }}
-      onWheel={handleWheel} // 휠 이벤트 처리
+      onWheel={handleWheel}
     >
       <Header />
       <Box

@@ -1,9 +1,12 @@
+import { useTranslate } from '@/locales'
 import { keyframes } from '@emotion/react'
 import background1 from '@/assets/img/background1.jpg'
 
 import { Box, Stack, Button, Typography } from '@mui/material'
 
 export default function Main1({ scrollToNextSection }: { scrollToNextSection: () => void }) {
+  const { t } = useTranslate('microsite')
+
   const fadeIn = keyframes`
     0% {
       opacity: 0;
@@ -51,25 +54,25 @@ export default function Main1({ scrollToNextSection }: { scrollToNextSection: ()
       >
         <Stack>
           <Typography variant="h1" sx={{ fontFamily: 'suite-variable', fontSize: '4rem' }}>
-            장부 관리에 믿음과
+            {t('title1')}
           </Typography>
           <Typography variant="h1" sx={{ fontFamily: 'suite-variable', fontSize: '4rem' }}>
-            편리함을 더하다
+            {t('title2')}
           </Typography>
         </Stack>
         <Stack>
           <Typography variant="h3" sx={{ fontFamily: 'suit-variable' }}>
-            결제부터 정산, 계약 관리까지 모든 과정을
+            {t('subtitle1')}
           </Typography>
           <Typography variant="h3" sx={{ fontFamily: 'suit-variable' }}>
-            사내대장부가 도와드립니다
+            {t('subtitle2')}
           </Typography>
         </Stack>
 
         <Stack justifyContent="center" alignItems="center" pt={4} spacing={2}>
           <Button variant="contained" onClick={scrollToNextSection}>
             <Typography variant="h6" sx={{ fontFamily: 'suit-variable' }}>
-              시작하기
+              {t('start')}
             </Typography>
           </Button>
         </Stack>
