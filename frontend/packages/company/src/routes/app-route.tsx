@@ -6,6 +6,7 @@ import SettlementDateView from '@/pages/settlement-date-view'
 import SettlementStoreView from '@/pages/settlement-store-view'
 import MemberCreateView from '@/pages/member/member-create-view'
 import MemberManagementView from '@/pages/member/member-management-view'
+import DashboardCompanyView from '@/pages/dashboard/dashboard-company-view'
 import ContractNewManagementView from '@/pages/contract/contract-new-management-view'
 import ContractNowManagementView from '@/pages/contract/contract-now-management-view'
 import ContractHistoryManagementView from '@/pages/contract/contract-history-management-view'
@@ -48,6 +49,10 @@ const appRoute: RouteObject[] = [
   {
     path: paths.management.member.create,
     element: <MemberCreateView />,
+  },
+  {
+    path: paths.dashboard.total,
+    element: <DashboardCompanyView />,
   },
 ]
 

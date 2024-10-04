@@ -113,8 +113,9 @@ function NavLogo() {
           alt="logo"
           src={tossLogo}
           sx={{
-            height: 60,
+            height: 70,
             objectFit: 'cover',
+            pl: 2,
           }}
         />
       </Link>

@@ -16,6 +16,7 @@ import { managerResponse } from './response/managers'
 import { paymentResponse } from './response/payments'
 import { employeeResponse } from './response/employees'
 import { contractsResponse } from './response/contracts'
+import { dashboardResponse } from './response/dashboard'
 import { settlementResponse } from './response/settlements'
 import { contractStoreResponse } from './response/contract-stores'
 import { contractHistoryResponse } from './response/contracts-history'
@@ -90,6 +91,7 @@ export default function initServer() {
         user = null
         return new Response(204)
       })
+      this.get('/dashboard', () => dashboardResponse)
     },
   })
 }

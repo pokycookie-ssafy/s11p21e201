@@ -3,11 +3,13 @@ const PATH = {
   dashboard: '/dashboard',
   management: '/management',
   setting: '/setting',
+  payment: '/payment',
+  settlement: '/settlement',
 }
 
 const paths = {
   root: PATH.root,
-  main: `${PATH.management}/member`,
+  main: `${PATH.dashboard}/total`,
 
   // auth
   auth: {
