@@ -23,7 +23,10 @@ import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
+import com.e201.api.controller.payment.response.PaymentAndMenusFindResponse;
 import com.e201.api.service.company.EmployeeService;
+import com.e201.api.service.payment.PaymentService;
+import com.e201.domain.entity.store.Menu;
 import com.e201.global.security.auth.constant.AuthConstant;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.restdocs.AbstractRestDocsTest;
@@ -33,6 +36,8 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 
 	@MockBean
 	EmployeeService employeeService;
+	@MockBean
+	private PaymentService paymentService;
 
 	@DisplayName("직원 계정을 생성한다.")
 	@Test
@@ -92,7 +97,7 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 			.build();
 		String responseJson = objectMapper.writeValueAsString(response);
 
-		doReturn(response).when(employeeService).findUsage(any(), any());
+		doReturn(response).when(paymentService).findUsage(any(), any());
 
 		// when //then
 		mockMvc.perform(MockMvcRequestBuilders.get("/companies/employees/usages")
@@ -103,6 +108,59 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 			)
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content().json(responseJson));
+	}
+
+	@DisplayName("해당 기간내 직원의 상세 사용 내역을 조회한다.")
+	@Test
+	void find_payment_details_success() throws Exception {
+		// given
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), EMPLOYEE);
+		Menu menu1 = createMenu("메뉴1", 10000);
+		Menu menu2 = createMenu("메뉴2", 11000);
+		PaymentAndMenusFindResponse detailResponse1 = createPaymentDetail("식당1", 21000L);
+		detailResponse1.addMenus(menu1);
+		detailResponse1.addMenus(menu2);
+
+		Menu menu3 = createMenu("메뉴3", 12000);
+		Menu menu4 = createMenu("메뉴4", 13000);
+		PaymentAndMenusFindResponse detailResponse2 = createPaymentDetail("식당2", 25000L);
+		detailResponse2.addMenus(menu3);
+		detailResponse2.addMenus(menu4);
+
+		List<PaymentAndMenusFindResponse> detailResponses = List.of(detailResponse1, detailResponse2);
+
+		String responseJson = objectMapper.writeValueAsString(detailResponses);
+
+		doReturn(detailResponses).when(paymentService).findUserPaymentDetails(any(), any());
+
+		// when //then
+		mockMvc.perform(MockMvcRequestBuilders.get("/companies/employees/usages/detail")
+				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+				.param("startDate", LocalDateTime.now().minusMonths(1).toString())
+				.param("endDate", LocalDateTime.now().toString())
+			)
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(responseJson));
+	}
+
+	private PaymentAndMenusFindResponse createPaymentDetail(String storeName, long amount) {
+		return PaymentAndMenusFindResponse.builder()
+			.id(UUID.randomUUID())
+			.storeId(UUID.randomUUID())
+			.storeName(storeName)
+			.amount(amount)
+			.paymentDate(LocalDateTime.now())
+			.build();
+	}
+
+	private Menu createMenu(String name, int price) {
+		return Menu.builder()
+			.id(UUID.randomUUID())
+			.name(name)
+			.price(price)
+			.category("카테고리")
+			.build();
 	}
 
 	private static EmployeeFindResponse createEmployeeFindResponse(String code, String name, UUID departmentId,
