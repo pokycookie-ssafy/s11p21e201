@@ -30,6 +30,7 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractResponse;
 =======
 =======
@@ -42,6 +43,8 @@ import com.e201.domain.entity.contract.ContractFindStatus;
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 =======
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 import com.e201.domain.entity.contract.ContractRespondType;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.domain.entity.contract.ContractStatus;
@@ -222,6 +225,11 @@ public class ContractService {
 	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request) {
 		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request);
 >>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
+		return response;
+	}
+
+	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
+		List<EmployeeFindStoreResponse> response = contractRepository.findStores(authInfo);
 		return response;
 	}
 

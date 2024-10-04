@@ -8,6 +8,7 @@ import static com.e201.domain.entity.contract.QContract.*;
 import static com.e201.domain.entity.store.QStore.*;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 >>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
 =======
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 import java.util.HashMap;
 =======
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
@@ -163,6 +166,36 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	}
 
 	@Override
+	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
+		// find companyId using employee ID;
+		UUID companyId = companyQueryFactory
+			.select(company.id)
+			.from(employee)
+			.join(employee.department, department)
+			.join(department.company, company)
+			.where(employee.id.eq(authInfo.getId()))
+			.fetchOne();
+
+		// find contracts using companyId;
+		List<UUID> stores = companyQueryFactory
+			.select(contract.storeId)
+			.from(contract)
+			.where(contract.companyId.eq(companyId),
+				contract.status.eq(COMPLETE))
+			.fetch();
+
+		// createResponse
+
+		return storeQueryFactory.select(Projections.constructor(EmployeeFindStoreResponse.class,
+				storeInfo.name.as("storeName"),
+				storeInfo.businessAddress.as("storeAddress"),
+				storeInfo.phone.as("storePhone")))
+			.from(store)
+			.where(store.id.in(stores))
+			.fetch();
+	}
+
+	@Override
 	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request) {
 		List<Contract> contracts = findContracts(authInfo, request);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
@@ -259,6 +292,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	@Override
 	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
@@ -305,6 +339,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request,
 		Pageable pageable){
+=======
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
@@ -316,8 +353,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
-	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request){
-		return switch(request.getStatus()){
+	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request) {
+		return switch (request.getStatus()) {
 			case ALL -> null;
 			case IN -> getProgressStatusExpression(authInfo, request);
 			case COMPLETE -> contract.status.eq(ContractStatus.COMPLETE);
@@ -326,6 +363,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		};
 	}
 
+<<<<<<< HEAD
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
 
@@ -419,12 +457,16 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
 >>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
+=======
+	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 
-		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY)?
+		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <<<<<<< HEAD
@@ -436,6 +478,10 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 		
 		return switch (request.getUserCond()){
+=======
+
+		return switch (request.getUserCond()) {
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 			case ALL -> senderCondition.or(receiverCondition);
 >>>>>>> eae207b ([#60] refactor: Contract 조회 로직 수정)
 =======

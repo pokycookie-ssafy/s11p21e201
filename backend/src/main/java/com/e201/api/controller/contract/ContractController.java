@@ -27,6 +27,7 @@ import com.e201.api.service.contract.ContractService;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
@@ -45,6 +46,8 @@ import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
 =======
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 =======
@@ -154,11 +157,15 @@ public class ContractController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
 =======
 =======
 
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+
+>>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo,
 		@RequestBody ContractRespondCondition request) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
