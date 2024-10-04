@@ -13,13 +13,13 @@ public class EmployeeTotalPaymentResponse {
 	private String employeeName;
 	private UUID departmentId;
 	private String departmentName;
-	private Integer supportAmount;
+	private Long supportAmount;
 	private Long spentAmount;
 	private LocalDateTime createdAt;
 
 	@Builder
 	private EmployeeTotalPaymentResponse(UUID employeeId, String employeeName, UUID departmentId, String departmentName,
-		Integer supportAmount, Long spentAmount, LocalDateTime createdAt) {
+		Long supportAmount, Long spentAmount, LocalDateTime createdAt) {
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
 		this.departmentId = departmentId;

@@ -25,10 +25,10 @@ public class EmployeeCreateRequest {
 	private String name;
 
 	@NotBlank
-	private Integer supportAmount;
+	private Long supportAmount;
 
 	@Builder
-	public EmployeeCreateRequest(String code, String password, String name, Integer supportAmount) {
+	public EmployeeCreateRequest(String code, String password, String name, Long supportAmount) {
 		this.code = code;
 		this.password = password;
 		this.name = name;
