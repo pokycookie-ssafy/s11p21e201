@@ -45,3 +45,7 @@ operation::employee-controller-test/find_employees_success[snippets="http-reques
 === 직원 사용량 조회
 
 operation::employee-controller-test/find_usage_success[snippets="http-request,http-response"]
+
+=== 직원 상세 내역 조회
+
+operation::employee-controller-test/find_payment_details_success[snippets="http-request,http-response"]
