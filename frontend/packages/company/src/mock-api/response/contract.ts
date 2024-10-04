@@ -10,7 +10,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958123',
-    storeName: '삼성전자',
+    storeName: '맛있는 한식당',
     storeEmail: 'electronic@samsung.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -24,7 +24,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-1234-ab7d-61a7d370a958123',
-    storeName: '멀티캠퍼스',
+    storeName: '김치나라',
     storeEmail: 'multi@campus.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -38,7 +38,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
     storeId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a123',
-    storeName: 'LG전자',
+    storeName: '바다횟집',
     storeEmail: 'contact@lg.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -52,7 +52,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '54153db3-91f0-48b4-875f-5633895d9e4c',
     storeId: '54153db3-91f0-48b4-875f-5633895d9e4c123',
-    storeName: '네이버',
+    storeName: '달콤카페',
     storeEmail: 'contact@naver.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -66,7 +66,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '5f59a356-e1f0-4899-a3a6-2521631b5640',
     storeId: '5f59a356-e1f0-4899-a3a6-2521631b5640123',
-    storeName: '카카오',
+    storeName: '정통불고기',
     storeEmail: 'contact@kakao.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -80,7 +80,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
     storeId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f123',
-    storeName: '현대자동차',
+    storeName: '왕돈까스',
     storeEmail: 'contact@hyundai.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -94,7 +94,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175',
     storeId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175123',
-    storeName: 'CJ제일제당',
+    storeName: '고깃집 명가',
     storeEmail: 'contact@cj.co.kr',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -108,7 +108,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'd187314b-8944-4ffb-af0f-2c235af278c5',
     storeId: 'd187314b-8944-4ffb-af0f-2c235af278c5123',
-    storeName: '포스코',
+    storeName: '해물찜 명인',
     storeEmail: 'contact@posco.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -122,7 +122,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3',
     storeId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3123',
-    storeName: 'SK하이닉스',
+    storeName: '갈비명가',
     storeEmail: 'contact@sk.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -136,7 +136,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '1e95a244-7862-43db-9343-b219284239d5',
     storeId: '1e95a244-7862-43db-9343-b219284239d5123',
-    storeName: '셀트리온',
+    storeName: '양념치킨집',
     storeEmail: 'contact@celltrion.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -150,7 +150,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1',
     storeId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1123',
-    storeName: '한화',
+    storeName: '푸드코트',
     storeEmail: 'contact@hanwha.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -164,7 +164,7 @@ export const contractNow: ContractMock[] = [
   {
     contractId: '7ab0512b-065b-4424-9e8a-890e0ced9880',
     storeId: '7ab0512b-065b-4424-9e8a-890e0ced9880123',
-    storeName: '롯데',
+    storeName: '이탈리안 레스토랑',
     storeEmail: 'contact@lotte.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -181,7 +181,7 @@ export const contractRequestReceived = [
   {
     contractId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958123',
-    storeName: '삼성전자',
+    storeName: '맛있는 집밥',
     storeEmail: 'electronic@samsung.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -195,7 +195,7 @@ export const contractRequestReceived = [
   {
     contractId: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-1234-ab7d-61a7d370a958123',
-    storeName: '멀티캠퍼스',
+    storeName: '황금돼지 고깃집',
     storeEmail: 'multi@campus.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -209,7 +209,7 @@ export const contractRequestReceived = [
   {
     contractId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
     storeId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a123',
-    storeName: 'LG전자',
+    storeName: '김치찌개 전문점',
     storeEmail: 'contact@lg.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -223,7 +223,7 @@ export const contractRequestReceived = [
   {
     contractId: '54153db3-91f0-48b4-875f-5633895d9e4c',
     storeId: '54153db3-91f0-48b4-875f-5633895d9e4c123',
-    storeName: '네이버',
+    storeName: '왕대박 치킨',
     storeEmail: 'contact@naver.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -237,7 +237,7 @@ export const contractRequestReceived = [
   {
     contractId: '5f59a356-e1f0-4899-a3a6-2521631b5640',
     storeId: '5f59a356-e1f0-4899-a3a6-2521631b5640123',
-    storeName: '카카오',
+    storeName: '정통 한식당',
     storeEmail: 'contact@kakao.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -251,7 +251,7 @@ export const contractRequestReceived = [
   {
     contractId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
     storeId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f123',
-    storeName: '현대자동차',
+    storeName: '고향의 맛 순댓국',
     storeEmail: 'contact@hyundai.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -265,7 +265,7 @@ export const contractRequestReceived = [
   {
     contractId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175',
     storeId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175123',
-    storeName: 'CJ제일제당',
+    storeName: '담백한 국밥집',
     storeEmail: 'contact@cj.co.kr',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -279,7 +279,7 @@ export const contractRequestReceived = [
   {
     contractId: 'd187314b-8944-4ffb-af0f-2c235af278c5',
     storeId: 'd187314b-8944-4ffb-af0f-2c235af278c5123',
-    storeName: '포스코',
+    storeName: '비빔밥 전문점',
     storeEmail: 'contact@posco.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -293,7 +293,7 @@ export const contractRequestReceived = [
   {
     contractId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3',
     storeId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3123',
-    storeName: 'SK하이닉스',
+    storeName: '행복한 떡볶이',
     storeEmail: 'contact@sk.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -307,7 +307,7 @@ export const contractRequestReceived = [
   {
     contractId: '1e95a244-7862-43db-9343-b219284239d5',
     storeId: '1e95a244-7862-43db-9343-b219284239d5123',
-    storeName: '셀트리온',
+    storeName: '멸치국수 명가',
     storeEmail: 'contact@celltrion.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -321,7 +321,7 @@ export const contractRequestReceived = [
   {
     contractId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1',
     storeId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1123',
-    storeName: '한화',
+    storeName: '팔도 감자탕',
     storeEmail: 'contact@hanwha.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -335,7 +335,7 @@ export const contractRequestReceived = [
   {
     contractId: '7ab0512b-065b-4424-9e8a-890e0ced9880',
     storeId: '7ab0512b-065b-4424-9e8a-890e0ced9880123',
-    storeName: '롯데',
+    storeName: '한상차림 한식당',
     storeEmail: 'contact@lotte.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -352,7 +352,7 @@ export const contractRequestSend = [
   {
     contractId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958123',
-    storeName: '삼성전자',
+    storeName: '쌈밥 고기집',
     storeEmail: 'electronic@samsung.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -366,7 +366,7 @@ export const contractRequestSend = [
   {
     contractId: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-1234-ab7d-61a7d370a958123',
-    storeName: '멀티캠퍼스',
+    storeName: '다채로운 비빔국수',
     storeEmail: 'multi@campus.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -380,7 +380,7 @@ export const contractRequestSend = [
   {
     contractId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
     storeId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a123',
-    storeName: 'LG전자',
+    storeName: '전통 떡갈비',
     storeEmail: 'contact@lg.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -394,7 +394,7 @@ export const contractRequestSend = [
   {
     contractId: '54153db3-91f0-48b4-875f-5633895d9e4c',
     storeId: '54153db3-91f0-48b4-875f-5633895d9e4c123',
-    storeName: '네이버',
+    storeName: '매운 닭발집',
     storeEmail: 'contact@naver.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -408,7 +408,7 @@ export const contractRequestSend = [
   {
     contractId: '5f59a356-e1f0-4899-a3a6-2521631b5640',
     storeId: '5f59a356-e1f0-4899-a3a6-2521631b5640123',
-    storeName: '카카오',
+    storeName: '정통 매운탕',
     storeEmail: 'contact@kakao.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -422,7 +422,7 @@ export const contractRequestSend = [
   {
     contractId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
     storeId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f123',
-    storeName: '현대자동차',
+    storeName: '해물찜 명인',
     storeEmail: 'contact@hyundai.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -439,7 +439,7 @@ export const contractHistory = [
   {
     contractId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958123',
-    storeName: '삼성전자',
+    storeName: '푸짐한 스시집',
     storeEmail: 'electronic@samsung.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -454,7 +454,7 @@ export const contractHistory = [
   {
     contractId: '71ca0179-bf2c-1234-ab7d-61a7d370a958',
     storeId: '71ca0179-bf2c-1234-ab7d-61a7d370a958123',
-    storeName: '멀티캠퍼스',
+    storeName: '이태리 피자집',
     storeEmail: 'multi@campus.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -469,7 +469,7 @@ export const contractHistory = [
   {
     contractId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a',
     storeId: 'c9e32d88-3e4d-4381-9ce8-dc643c26010a123',
-    storeName: 'LG전자',
+    storeName: '향긋한 국밥집',
     storeEmail: 'contact@lg.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -484,7 +484,7 @@ export const contractHistory = [
   {
     contractId: '54153db3-91f0-48b4-875f-5633895d9e4c',
     storeId: '54153db3-91f0-48b4-875f-5633895d9e4c123',
-    storeName: '네이버',
+    storeName: '전주비빔밥',
     storeEmail: 'contact@naver.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -499,7 +499,7 @@ export const contractHistory = [
   {
     contractId: '5f59a356-e1f0-4899-a3a6-2521631b5640',
     storeId: '5f59a356-e1f0-4899-a3a6-2521631b5640123',
-    storeName: '카카오',
+    storeName: '수제 냉면집',
     storeEmail: 'contact@kakao.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -514,7 +514,7 @@ export const contractHistory = [
   {
     contractId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f',
     storeId: 'c63eaaad-992d-4cb5-82fb-c114ac0d787f123',
-    storeName: '현대자동차',
+    storeName: '대박 김밥',
     storeEmail: 'contact@hyundai.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -529,7 +529,7 @@ export const contractHistory = [
   {
     contractId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175',
     storeId: 'ca4dfdcd-4184-4ada-a45f-74ff56b8b175123',
-    storeName: 'CJ제일제당',
+    storeName: '매운 족발집',
     storeEmail: 'contact@cj.co.kr',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -544,7 +544,7 @@ export const contractHistory = [
   {
     contractId: 'd187314b-8944-4ffb-af0f-2c235af278c5',
     storeId: 'd187314b-8944-4ffb-af0f-2c235af278c5123',
-    storeName: '포스코',
+    storeName: '갈비명가',
     storeEmail: 'contact@posco.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -559,7 +559,7 @@ export const contractHistory = [
   {
     contractId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3',
     storeId: 'cf2862b4-2fe9-48a9-922f-e71ab2f7cbf3123',
-    storeName: 'SK하이닉스',
+    storeName: '고추장 삼겹살',
     storeEmail: 'contact@sk.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -574,7 +574,7 @@ export const contractHistory = [
   {
     contractId: '1e95a244-7862-43db-9343-b219284239d5',
     storeId: '1e95a244-7862-43db-9343-b219284239d5123',
-    storeName: '셀트리온',
+    storeName: '감성카페',
     storeEmail: 'contact@celltrion.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -589,7 +589,7 @@ export const contractHistory = [
   {
     contractId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1',
     storeId: 'e1b299ad-04c2-4c80-bcc1-8441350e3bc1123',
-    storeName: '한화',
+    storeName: '한우곰탕집',
     storeEmail: 'contact@hanwha.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
@@ -604,7 +604,7 @@ export const contractHistory = [
   {
     contractId: '7ab0512b-065b-4424-9e8a-890e0ced9880',
     storeId: '7ab0512b-065b-4424-9e8a-890e0ced9880123',
-    storeName: '롯데',
+    storeName: '매콤한 닭갈비',
     storeEmail: 'contact@lotte.com',
     storePhone: '000-0000-0000',
     storeAddress: '부산광역시 강서구 신호동',
