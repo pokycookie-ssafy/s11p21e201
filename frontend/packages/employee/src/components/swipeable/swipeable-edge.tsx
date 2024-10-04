@@ -78,10 +78,11 @@ export function SwipeableEdge({
   return (
     <>
       <Box
-        width={1}
-        height={1}
-        bgcolor={`rgba(0, 0, 0, ${MAX_POS / posY - 0.35})`}
+        width="100vw"
+        height="100vh"
         position="fixed"
+        top={0}
+        bgcolor={`rgba(0, 0, 0, ${MAX_POS / posY - 0.35})`}
         sx={{ transition: 'all 0.3s', pointerEvents: isOpen ? 'all' : 'none' }}
         onClick={onClose}
       />
