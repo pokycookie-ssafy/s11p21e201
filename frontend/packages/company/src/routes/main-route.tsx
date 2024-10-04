@@ -30,13 +30,8 @@ const mainRoute: RouteObject[] = [
     element: <SignUpLayout />,
     children: [
       {
-        element: <SignUpLayout />,
-        children: [
-          {
-            path: paths.auth.signUp,
-            element: <SignUpView />,
-          },
-        ],
+        path: paths.auth.signUp,
+        element: <SignUpView />,
       },
     ],
   },
