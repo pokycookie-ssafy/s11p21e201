@@ -15,14 +15,13 @@ public class EmployeePaymentFindResponse {
 	private String name;
 	private UUID departmentId;
 	private String departmentName;
-	private Integer supportAmount;
-	private Integer spentAmount;
+	private Long supportAmount;
+	private Long spentAmount;
 	private LocalDateTime createdAt;
 
 	@Builder
 	public EmployeePaymentFindResponse(UUID id, String name, UUID departmentId, String departmentName,
-		Integer supportAmount,
-		Integer spentAmount, LocalDateTime createdAt) {
+		Long supportAmount, Long spentAmount, LocalDateTime createdAt) {
 		this.id = id;
 		this.name = name;
 		this.departmentId = departmentId;
@@ -32,7 +31,7 @@ public class EmployeePaymentFindResponse {
 		this.createdAt = createdAt;
 	}
 
-	public static EmployeePaymentFindResponse of(Employee employee, Integer spentAmount) {
+	public static EmployeePaymentFindResponse of(Employee employee, Long spentAmount) {
 		return EmployeePaymentFindResponse.builder()
 			.id(employee.getId())
 			.name(employee.getName())

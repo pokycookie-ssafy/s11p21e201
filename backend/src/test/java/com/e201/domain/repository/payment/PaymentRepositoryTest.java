@@ -208,7 +208,7 @@ class PaymentRepositoryTest {
 			.code("직원코드")
 			.password("12341234")
 			.name("직원이름")
-			.supportAmount(100000)
+			.supportAmount(100000L)
 			.build();
 	}
 

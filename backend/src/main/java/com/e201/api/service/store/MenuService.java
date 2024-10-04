@@ -53,12 +53,15 @@ public class MenuService {
 
 	public List<MenuFindResponse> find(RoleType roleType, UUID id) {
 		validationStore(roleType);
-		List<MenuFindResponse> responseList = menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id, "N", "N")
+		return menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id, "N", "N")
 			.stream()
-			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice(),
-				menu.getCategory()))  // Menu -> MenuFindResponse로 변환
-			.toList();  // List<MenuFindResponse>로 수집
-		return responseList;
+			.map(menu -> MenuFindResponse.builder()
+				.id(menu.getId())
+				.name(menu.getName())
+				.price(menu.getPrice())
+				.category(menu.getCategory())
+				.build())
+			.toList();
 	}
 
 	@JtaTransactional

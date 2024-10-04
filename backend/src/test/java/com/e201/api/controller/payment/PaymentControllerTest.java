@@ -50,8 +50,8 @@ class PaymentControllerTest extends AbstractRestDocsTest {
 		LocalDateTime startDate = LocalDateTime.of(2024, 10, 1, 0, 0);
 		LocalDateTime endDate = LocalDateTime.of(2024, 10, 31, 23, 59);
 
-		var response1 = createEmployeeTotalPaymentResponse(departmentId, "직원1 이름", 100000, 56000L);
-		var response2 = createEmployeeTotalPaymentResponse(departmentId, "직원2 이름", 200000, 116000L);
+		var response1 = createEmployeeTotalPaymentResponse(departmentId, "직원1 이름", 100000L, 56000L);
+		var response2 = createEmployeeTotalPaymentResponse(departmentId, "직원2 이름", 200000L, 116000L);
 		var responses = List.of(response1, response2);
 		var responsePage = new PageImpl<>(responses, PageRequest.of(0, 10), 10);
 		String responseJson = objectMapper.writeValueAsString(responsePage);
@@ -98,7 +98,7 @@ class PaymentControllerTest extends AbstractRestDocsTest {
 	}
 
 	private EmployeeTotalPaymentResponse createEmployeeTotalPaymentResponse(UUID departmentId,
-		String employeeName, int supportAmount, long spentAmount) {
+		String employeeName, Long supportAmount, Long spentAmount) {
 		return EmployeeTotalPaymentResponse.builder()
 			.employeeId(UUID.randomUUID())
 			.employeeName(employeeName)
@@ -151,7 +151,7 @@ class PaymentControllerTest extends AbstractRestDocsTest {
 			.code("직원코드")
 			.password("12341234")
 			.name("직원이름")
-			.supportAmount(100000)
+			.supportAmount(100000L)
 			.build();
 	}
 

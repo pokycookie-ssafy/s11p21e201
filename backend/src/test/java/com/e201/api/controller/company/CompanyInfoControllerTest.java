@@ -47,9 +47,9 @@ class CompanyInfoControllerTest extends AbstractRestDocsTest {
 
 	private CompanyInfoCreateRequest createCompanyInfoCreateRequest() {
 		return CompanyInfoCreateRequest.builder()
-			.name("사업장 이름")
+			.businessName("사업장 이름")
 			.phone("사업장 연락처")
-			.businessAddress("사업장 주소")
+			.address("사업장 주소")
 			.businessType("사업 유형")
 			.representativeName("사업자 대표 이름")
 			.registerNumber("사업자 등록증 번호")

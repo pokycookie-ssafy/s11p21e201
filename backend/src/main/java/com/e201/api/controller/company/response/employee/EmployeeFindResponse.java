@@ -16,13 +16,12 @@ public class EmployeeFindResponse {
 	private String employeeName;
 	private UUID departmentId;
 	private String departmentName;
-	private Integer supportAmount;
+	private Long supportAmount;
 	private LocalDateTime createdAt;
 
 	@Builder
 	public EmployeeFindResponse(UUID id, String employeeCode, String employeeName, UUID departmentId,
-		String departmentName,
-		Integer supportAmount, LocalDateTime createdAt) {
+		String departmentName, Long supportAmount, LocalDateTime createdAt) {
 		this.id = id;
 		this.employeeCode = employeeCode;
 		this.employeeName = employeeName;

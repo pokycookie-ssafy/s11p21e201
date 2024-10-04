@@ -59,16 +59,17 @@ public class SalesService {
 			storePaymentCreateRequest.getTotalAmount());
 
 		//sales에 for menuList
-		for(PaymentMenuCreateRequest menuRequest:storePaymentCreateRequest.getMenus()){
+		for (PaymentMenuCreateRequest menuRequest : storePaymentCreateRequest.getMenus()) {
 			Menu menu = menuService.findEntity(menuRequest.getId());
-			createSales(menu, company.getId(),storeId, savedPayment.getId(), storePaymentCreateRequest.getEmployeeId());
-			}
+			createSales(menu, company.getId(), storeId, savedPayment.getId(),
+				storePaymentCreateRequest.getEmployeeId());
+		}
 
 		return savedPayment.getId();
 	}
 
 	@JtaTransactional
-	public void createSales(Menu menu, UUID companyId, UUID storeId, UUID paymentId, UUID employeeId){
+	public void createSales(Menu menu, UUID companyId, UUID storeId, UUID paymentId, UUID employeeId) {
 		Sales saveSales = Sales.builder()
 			.companyId(companyId)
 			.menu(menu)
@@ -79,52 +80,52 @@ public class SalesService {
 		salesRepository.save(saveSales);
 	}
 
-	public Company findCompany(StorePaymentCreateRequest storePaymentCreateRequest){
+	public Company findCompany(StorePaymentCreateRequest storePaymentCreateRequest) {
 		Employee employee = employeeService.findEntity(storePaymentCreateRequest.getEmployeeId());
 		Department department = employee.getDepartment();
 		return department.getCompany();
 	}
 
-
 	public List<FindPaymentsResponse> findStorePayments(UUID storeId, FindPaymentsCondition findPaymentsCondition) {
 		List<Sales> salesList;
 		Map<UUID, FindPaymentsResponse> map = new HashMap<>();
-		if(findPaymentsCondition.getCompanyId()==null){
+		if (findPaymentsCondition.getCompanyId() == null) {
 			//모든 company에 대한 payments들 조회
-			salesList = salesRepository.findByStartDateBetween( storeId,findPaymentsCondition.getStart(),
+			salesList = salesRepository.findByStartDateBetween(storeId, findPaymentsCondition.getStart(),
 				findPaymentsCondition.getEnd());
 
-		}else{
+		} else {
 			//특정 회사에 대한 payments들 조회
-			salesList= salesRepository.findSalesByCompanyIdAndDateRange(storeId,
+			salesList = salesRepository.findSalesByCompanyIdAndDateRange(storeId,
 				findPaymentsCondition.getCompanyId(), findPaymentsCondition.getStart(),
 				findPaymentsCondition.getEnd());
 		}
 		//결과 값 생성
-		for(Sales sales:salesList){
-			if(map.containsKey(sales.getPaymentId())){
+		for (Sales sales : salesList) {
+			if (map.containsKey(sales.getPaymentId())) {
 				FindPaymentMenu menu = createFindPaymentMenu(sales);
 				map.get(sales.getPaymentId()).getMenus().add(menu);
-			}else{
+			} else {
 				Employee emp = employeeService.findEntity(sales.getEmployeeId());
 				Company company = companyService.findEntity(sales.getCompanyId());
 				List<FindPaymentMenu> menus = new ArrayList<>();
 				FindPaymentMenu menu = createFindPaymentMenu(sales);
 				menus.add(menu);
 				FindPaymentsResponse response = createFindPaymentsResponse(sales, menus, emp, company);
-				map.put(sales.getPaymentId(),response);
+				map.put(sales.getPaymentId(), response);
 			}
 		}
 		return new ArrayList<>(map.values());
 	}
 
 	private static FindPaymentMenu createFindPaymentMenu(Sales sales) {
-		return  FindPaymentMenu.builder().name(sales.getMenu().getName())
+		return FindPaymentMenu.builder().name(sales.getMenu().getName())
 			.price(sales.getMenu().getPrice())
 			.build();
 	}
 
-	private static FindPaymentsResponse createFindPaymentsResponse(Sales sales, List<FindPaymentMenu> menus, Employee emp,
+	private static FindPaymentsResponse createFindPaymentsResponse(Sales sales, List<FindPaymentMenu> menus,
+		Employee emp,
 		Company company) {
 		return FindPaymentsResponse.builder()
 			.paymentId(sales.getPaymentId())
