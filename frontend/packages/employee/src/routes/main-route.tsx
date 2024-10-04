@@ -1,7 +1,6 @@
 import type { RouteObject } from 'react-router-dom'
 
 import paths from '@/configs/paths'
-import QrView from '@/pages/qr-view'
 import MainView from '@/pages/main-view'
 import NavLayout from '@/layouts/nav-layout'
 import SignInView from '@/pages/sign-in-view'

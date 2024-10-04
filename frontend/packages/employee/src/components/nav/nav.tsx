@@ -33,7 +33,12 @@ export function Nav() {
   }, [pathname])
 
   return (
-    <Box width={1} zIndex={10} boxShadow="0px -2px 10px 0px rgba(0, 0, 0, 0.1)">
+    <Box
+      width={1}
+      zIndex={10}
+      boxShadow="0px -2px 10px 0px rgba(0, 0, 0, 0.1)"
+      bgcolor="background.default"
+    >
       <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="fullWidth">
         {navs.map((nav, i) => (
           <Tab

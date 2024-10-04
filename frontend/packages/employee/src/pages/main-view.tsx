@@ -1,5 +1,7 @@
-import { SwipableEdge } from '@/components/drawer'
+import QRCode from 'react-qr-code'
+import PaymentQR from '@/sections/qr/payment-qr'
 import { StoresList } from '@/sections/stores-list'
+import { SwipeableEdge } from '@/components/swipeable'
 import { MealUsageBar } from '@/sections/meal-usage-bar'
 
 import { Stack } from '@mui/material'
@@ -24,8 +26,9 @@ export default function MainView() {
     >
       {/* <MealUsageBar /> */}
       {/* <StoresList /> */}
-      {/* <SwipeableEdge /> */}
-      <SwipableEdge />
+      <SwipeableEdge>
+        <PaymentQR />
+      </SwipeableEdge>
     </Stack>
   )
 }
