@@ -12,17 +12,13 @@ import { Box, Stack } from '@mui/material'
 
 import { Typography } from '@e201/ui'
 
-const queryFn = async (): Promise<IDashboardPayment[]> => {
-  const response = await axios.get('/dashboard')
+const queryFn = async () => {
+  const response = await axios.get<IDashboardPayment[]>('/dashboard')
   return response.data
 }
 
 export default function TotalDashboardView() {
-  const {
-    data = [],
-    isLoading,
-    error,
-  } = useQuery<IDashboardPayment[]>({
+  const { data = [] } = useQuery<IDashboardPayment[]>({
     queryKey: ['dashboard'],
     queryFn,
   })
