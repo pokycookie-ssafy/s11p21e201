@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.store.request.FindPaymentsCondition;
 import com.e201.api.controller.store.request.PaymentMenuCreateRequest;
+import com.e201.api.controller.store.request.QRValidationRequest;
 import com.e201.api.controller.store.request.StorePaymentCreateRequest;
 import com.e201.api.controller.store.response.FindPaymentMenu;
 import com.e201.api.controller.store.response.FindPaymentsResponse;
@@ -17,6 +18,7 @@ import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.company.EmployeeService;
 import com.e201.api.service.contract.ContractService;
 import com.e201.api.service.payment.PaymentService;
+import com.e201.api.service.qr.QRService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
@@ -41,6 +43,7 @@ public class SalesService {
 	private final PaymentService paymentService;
 	private final StoreService storeService;
 	private final CompanyService companyService;
+	private final QRService qrService;
 
 	public Sales findEntity(UUID id) {
 		return salesRepository.findById(id).orElseThrow(() -> new RuntimeException("not found exception"));
@@ -48,6 +51,7 @@ public class SalesService {
 
 	@JtaTransactional
 	public UUID createPayment(StorePaymentCreateRequest storePaymentCreateRequest, UUID storeId) {
+		QRValidation(storePaymentCreateRequest.getQrId());
 		//employeeId로 companyId 조회 -> emplyeeId로 department_id 조회, department의 id와 일치하는 department 모두 조회
 		// department에서 companyId 조회
 		Company company = findCompany(storePaymentCreateRequest);
@@ -116,6 +120,10 @@ public class SalesService {
 			}
 		}
 		return new ArrayList<>(map.values());
+	}
+
+	private void QRValidation(String qr){
+		qrService.isExist(new QRValidationRequest(qr));
 	}
 
 	private static FindPaymentMenu createFindPaymentMenu(Sales sales) {

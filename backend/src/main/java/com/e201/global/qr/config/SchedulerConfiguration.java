@@ -2,6 +2,9 @@ package com.e201.global.qr.config;
 
 import static com.e201.api.service.qr.QRService.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,14 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SchedulerConfiguration {
 	private final QRService qrService;
-
+	public static Map<String , LocalDateTime> qrMemory = new HashMap<>();
+	public static final int TIME_DIFF = 90;
 	@Scheduled(fixedDelay = TIME_DIFF * 1000)
-	public void qrExpire(){
-		qrService.expire();
-	}
-
-	@Scheduled(fixedDelay= 1000)
-	public void qrCreate(){
-		qrService.create(RoleType.EMPLOYEE, new QRValidationRequest( UUID.randomUUID().toString()));
-	}
+	public void qrExpire(){ qrService.expire(); }
 }

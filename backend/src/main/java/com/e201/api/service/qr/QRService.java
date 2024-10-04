@@ -1,8 +1,9 @@
 package com.e201.api.service.qr;
 
+import static com.e201.global.qr.config.SchedulerConfiguration.*;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -18,8 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class QRService {
-	public static Map<String , LocalDateTime> qrMemory = new HashMap<>();
-	public static final int TIME_DIFF = 90;
+
 	// qr 생성하는 메소드
 	public void create(RoleType roleType, QRValidationRequest qrValidationRequest) {
 		validationAuth(roleType);
