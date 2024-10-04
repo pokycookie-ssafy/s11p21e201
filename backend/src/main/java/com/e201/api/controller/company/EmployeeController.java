@@ -17,7 +17,9 @@ import com.e201.api.controller.company.request.employee.EmployeeUsageRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
+import com.e201.api.controller.payment.response.PaymentAndMenusFindResponse;
 import com.e201.api.service.company.EmployeeService;
+import com.e201.api.service.payment.PaymentService;
 import com.e201.global.exception.ErrorCode;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -31,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeController {
 
 	private final EmployeeService employeeService;
+	private final PaymentService paymentService;
 
 	@PostMapping("/companies/employees")
 	public ResponseEntity<EmployeeCreateResponse> create(@Auth AuthInfo authInfo,
@@ -42,7 +45,7 @@ public class EmployeeController {
 
 	@GetMapping("/companies/employees")
 	public ResponseEntity<List<EmployeeFindResponse>> findPage(@Auth AuthInfo authInfo) {
-		validateRoletype(authInfo, EMPLOYEE);
+		validateRoletype(authInfo, MANAGER);
 		List<EmployeeFindResponse> response = employeeService.findAll(authInfo);
 		return ResponseEntity.ok(response);
 	}
@@ -51,7 +54,15 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeUsageResponse> findUsage(@Auth AuthInfo authInfo,
 		@ModelAttribute EmployeeUsageRequest request) {
 		validateRoletype(authInfo, EMPLOYEE);
-		EmployeeUsageResponse response = employeeService.findUsage(authInfo, request);
+		EmployeeUsageResponse response = paymentService.findUsage(authInfo, request);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/companies/employees/usages/detail")
+	public ResponseEntity<List<PaymentAndMenusFindResponse>> findUsageDetail(@Auth AuthInfo authInfo,
+		@ModelAttribute EmployeeUsageRequest request) {
+		validateRoletype(authInfo, EMPLOYEE);
+		List<PaymentAndMenusFindResponse> response = paymentService.findUserPaymentDetails(authInfo, request);
 		return ResponseEntity.ok(response);
 	}
 
