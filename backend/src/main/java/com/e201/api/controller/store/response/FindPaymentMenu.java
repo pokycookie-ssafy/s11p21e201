@@ -11,7 +11,7 @@ public class FindPaymentMenu {
 	private int price;
 
 	@Builder
-	private FindPaymentMenu(String name, int price) {
+	public FindPaymentMenu(String name, int price) {
 		this.name=name;
 		this.price=price;
 	}

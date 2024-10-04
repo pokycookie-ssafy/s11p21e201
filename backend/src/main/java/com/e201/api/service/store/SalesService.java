@@ -47,7 +47,7 @@ public class SalesService {
 	}
 
 	@JtaTransactional
-	public void createPayment(StorePaymentCreateRequest storePaymentCreateRequest, UUID storeId) {
+	public UUID createPayment(StorePaymentCreateRequest storePaymentCreateRequest, UUID storeId) {
 		//employeeId로 companyId 조회 -> emplyeeId로 department_id 조회, department의 id와 일치하는 department 모두 조회
 		// department에서 companyId 조회
 		Company company = findCompany(storePaymentCreateRequest);
@@ -63,6 +63,8 @@ public class SalesService {
 			Menu menu = menuService.findEntity(menuRequest.getId());
 			createSales(menu, company.getId(),storeId, savedPayment.getId(), storePaymentCreateRequest.getEmployeeId());
 			}
+
+		return savedPayment.getId();
 	}
 
 	@JtaTransactional
@@ -85,7 +87,7 @@ public class SalesService {
 
 
 	public List<FindPaymentsResponse> findStorePayments(UUID storeId, FindPaymentsCondition findPaymentsCondition) {
-		List<Sales> salesList = new ArrayList<>();
+		List<Sales> salesList;
 		Map<UUID, FindPaymentsResponse> map = new HashMap<>();
 		if(findPaymentsCondition.getCompanyId()==null){
 			//모든 company에 대한 payments들 조회
@@ -117,15 +119,14 @@ public class SalesService {
 	}
 
 	private static FindPaymentMenu createFindPaymentMenu(Sales sales) {
-		FindPaymentMenu menu =  FindPaymentMenu.builder().name(sales.getMenu().getName())
+		return  FindPaymentMenu.builder().name(sales.getMenu().getName())
 			.price(sales.getMenu().getPrice())
 			.build();
-		return menu;
 	}
 
 	private static FindPaymentsResponse createFindPaymentsResponse(Sales sales, List<FindPaymentMenu> menus, Employee emp,
 		Company company) {
-		FindPaymentsResponse response = FindPaymentsResponse.builder()
+		return FindPaymentsResponse.builder()
 			.paymentId(sales.getPaymentId())
 			.employeeId(sales.getEmployeeId())
 			.companyId(sales.getEmployeeId())
@@ -134,6 +135,5 @@ public class SalesService {
 			.employeeCode(emp.getCode())
 			.companyName(company.getCompanyInfo().getName())
 			.build();
-		return response;
 	}
 }
