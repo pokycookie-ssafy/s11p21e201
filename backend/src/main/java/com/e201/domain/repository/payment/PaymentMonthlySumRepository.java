@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.e201.domain.entity.payment.PaymentMonthlySum;
 
-public interface PaymentMonthlySumRepository extends JpaRepository<PaymentMonthlySum, UUID> {
+public interface PaymentMonthlySumRepository
+	extends JpaRepository<PaymentMonthlySum, UUID>, PaymentMonthlySumCustomRepository {
 }
