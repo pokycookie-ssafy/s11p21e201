@@ -9,7 +9,7 @@ const PATH = {
 
 const paths = {
   root: PATH.root,
-  main: `${PATH.management}/member`,
+  main: `${PATH.dashboard}/total`,
 
   // auth
   auth: {

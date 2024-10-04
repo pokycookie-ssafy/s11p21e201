@@ -51,7 +51,7 @@ const appRoute: RouteObject[] = [
     element: <MemberCreateView />,
   },
   {
-    path: paths.dashboard.root,
+    path: paths.dashboard.total,
     element: <DashboardCompanyView />,
   },
 ]
