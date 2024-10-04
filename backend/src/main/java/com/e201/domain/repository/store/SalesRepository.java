@@ -7,10 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import com.e201.api.controller.store.response.FindPaymentsResponse;
-import com.e201.domain.entity.payment.Payment;
 import com.e201.domain.entity.store.Sales;
 
 public interface SalesRepository extends JpaRepository<Sales, UUID> {
@@ -27,5 +24,8 @@ public interface SalesRepository extends JpaRepository<Sales, UUID> {
 		@Param("storeId") UUID storeId,
 		@Param("startDate") LocalDateTime startDate,
 		@Param("endDate") LocalDateTime endDate);
+
+	@Query("select s from Sales s join fetch Menu m on s.menu.id = m.id where s.paymentId = :paymentId")
+	List<Sales> findByPaymentId(UUID paymentId);
 }
 

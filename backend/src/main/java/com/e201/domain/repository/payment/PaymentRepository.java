@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.e201.api.controller.payment.response.PaymentAndMenusFindResponse;
 import com.e201.domain.entity.payment.Payment;
 import com.e201.global.quartz.dto.PaymentDailySumDto;
 
@@ -17,6 +18,12 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, Payment
 	List<PaymentDailySumDto> sumByContractId(LocalDateTime startDate, LocalDateTime endDate);
 
 	@Query("select SUM(p.amount) " +
-		"from Payment p where p.createdAt between :startDate and :endDate group by p.employeeId")
+		"from Payment p where p.employeeId = :employeeId and p.createdAt between :startDate and :endDate group by p.employeeId")
 	Long findUsageByEmployeeId(UUID employeeId, LocalDateTime startDate, LocalDateTime endDate);
+
+	@Query(
+		"select new com.e201.api.controller.payment.response.PaymentAndMenusFindResponse(p.id, p.storeId, p.storeName, p.amount, p.paymentDate)"
+			+ " from Payment p where p.employeeId = :employeeId and p.createdAt between :startDate and :endDate")
+	List<PaymentAndMenusFindResponse> findPaymentAndMenus(UUID employeeId, LocalDateTime startDate,
+		LocalDateTime endDate);
 }
