@@ -87,7 +87,6 @@ public class StoreService {
 		StoreAccount savedStoreAccount = storeAccountRepository.save(storeAccount);
 >>>>>>> 4e5f83f ([#41] fix: StoreService, storeAccountService 순환참조 해결)
 
-		//TODO(KJK) : useremail로 account 생성, 저장
 		return new StoreCreateResponse(savedStore.getId());
 	}
 
