@@ -35,6 +35,9 @@ public class PaymentMonthlySum extends BaseEntity {
 	@Column(name = "unpaid")
 	private Long unpaid;
 
+	@Column(name = "invoice_id")
+	private UUID invoiceId;
+
 	@Builder
 	private PaymentMonthlySum(UUID id, UUID contractId, Long amount, Long paid, Long unpaid) {
 		this.id = id;
@@ -42,5 +45,20 @@ public class PaymentMonthlySum extends BaseEntity {
 		this.amount = amount;
 		this.paid = paid;
 		this.unpaid = unpaid;
+	}
+
+	public void updateInvoiceId(UUID invoiceId) {
+		this.invoiceId = invoiceId;
+	}
+
+	public void settlementUnpaid() {
+		// 미수금 정산 완료
+		this.paid = amount;
+		this.unpaid = 0L;
+	}
+
+	public void settlement(Long settlementAmount) {
+		this.paid = settlementAmount;
+		this.unpaid = this.amount - settlementAmount;
 	}
 }
