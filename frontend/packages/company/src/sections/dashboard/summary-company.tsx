@@ -1,6 +1,7 @@
 import type { IDashboardPayment } from '@/types/dashboard-payment'
 
 import dayjs from 'dayjs'
+import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 
 import { Card, Stack, Typography } from '@mui/material'
@@ -16,6 +17,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
   const [yesterdayChange, setYesterdayChange] = useState(0)
   const [lastMonthChange, setLastMonthChange] = useState(0)
 
+  const { t } = useTranslate('dashboard')
   useEffect(() => {
     const now = dayjs()
     const today = now.format('YYYY-MM-DD')
@@ -82,13 +84,16 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
       >
         <Stack>
           <Typography variant="h6" pb={1}>
-            이번 달 식대 사용 총액
+            {t('this_month_total')}
           </Typography>
-          <Typography variant="h3">{monthTotal.toLocaleString()}원</Typography>
+          <Typography variant="h3">
+            {monthTotal.toLocaleString()}
+            {t('won')}
+          </Typography>
           <Typography variant="body2" color={lastMonthChange >= 0 ? 'green' : 'red'}>
             {lastMonthChange >= 0
-              ? `▲ ${lastMonthChange.toFixed(2)}% 증가`
-              : `▼ ${lastMonthChange.toFixed(2)}% 감소`}
+              ? `▲ ${lastMonthChange.toFixed(2)}% ${t('increase')}`
+              : `▼ ${lastMonthChange.toFixed(2)}% ${t('decrease')}`}
           </Typography>
         </Stack>
       </Card>
@@ -106,13 +111,16 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
       >
         <Stack>
           <Typography variant="h6" pb={1}>
-            오늘 식대 사용 총액
+            {t('today_total')}
           </Typography>
-          <Typography variant="h3">{todayTotal.toLocaleString()}원</Typography>
+          <Typography variant="h3">
+            {todayTotal.toLocaleString()}
+            {t('won')}
+          </Typography>
           <Typography variant="body2" color={yesterdayChange >= 0 ? 'green' : 'red'}>
             {yesterdayChange >= 0
-              ? `▲ ${yesterdayChange.toFixed(2)}% 증가`
-              : `▼ ${yesterdayChange.toFixed(2)}% 감소`}
+              ? `▲ ${yesterdayChange.toFixed(2)}% ${t('increase')}`
+              : `▼ ${yesterdayChange.toFixed(2)}% ${t('decrease')}`}
           </Typography>
         </Stack>
       </Card>
@@ -130,10 +138,12 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
       >
         <Stack>
           <Typography variant="h6" pb={1}>
-            이번 달 평균 결제 금액
+            {t('this_month_average')}
           </Typography>
-          <Typography variant="h3">{averagePerTransaction.toLocaleString()}원</Typography>{' '}
-          {/* 소수점 없는 평균 */}
+          <Typography variant="h3">
+            {averagePerTransaction.toLocaleString()}
+            {t('won')}
+          </Typography>
         </Stack>
       </Card>
     </Stack>

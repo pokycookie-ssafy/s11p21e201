@@ -7,5 +7,11 @@
   "deparment_amount": "부서별 식대 사용 총액",
   "year": "연도",
   "month": "월",
-  "restaurant_amount": "식당별 식대 사용 총액"
+  "restaurant_amount": "식당별 식대 사용 총액",
+  "dashboard": "대시보드",
+  "this_month_total": "이번 달 식대 사용 총액",
+  "increase": "증가",
+  "decrease": "감소",
+  "today_total": "오늘 식대 사용 총액",
+  "this_month_average": "이번 달 평균 결제 금액"
 }

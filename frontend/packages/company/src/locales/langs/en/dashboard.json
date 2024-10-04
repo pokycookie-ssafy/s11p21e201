@@ -7,5 +7,11 @@
   "deparment_amount": "Payment by Department",
   "year": "year",
   "month": "month",
-  "restaurant_amount": "Payment by Restaurant"
+  "restaurant_amount": "Payment by Restaurant",
+  "dashboard": "Dashboard",
+  "this_month_total": "This Month's Total Amount",
+  "increase": "increase",
+  "decrease": "decrease",
+  "today_total": "Today's Total Amount",
+  "this_month_average": "This month's Average Payment Price"
 }

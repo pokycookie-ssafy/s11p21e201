@@ -12,6 +12,7 @@ import {
   Stack,
   Select,
   MenuItem,
+  useTheme,
   InputLabel,
   Typography,
   FormControl,
@@ -28,6 +29,7 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
   const [seriesData, setSeriesData] = useState<number[]>([])
 
   const { t } = useTranslate('dashboard')
+  const theme = useTheme()
 
   useEffect(() => {
     const filteredData = data.filter((payment) => {
@@ -76,6 +78,11 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
         },
+      },
+    },
+    legend: {
+      labels: {
+        colors: theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400], // Set label colors based on theme mode
       },
     },
   }
