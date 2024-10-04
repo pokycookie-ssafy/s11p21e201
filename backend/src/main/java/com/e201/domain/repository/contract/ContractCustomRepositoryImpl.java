@@ -1,11 +1,12 @@
 package com.e201.domain.repository.contract;
 
-import static com.e201.domain.entity.contract.ContractFindStatus.*;
+import static com.e201.domain.entity.company.QCompany.*;
+import static com.e201.domain.entity.company.QDepartment.*;
+import static com.e201.domain.entity.company.QEmployee.*;
 import static com.e201.domain.entity.contract.ContractStatus.*;
 import static com.e201.domain.entity.contract.QContract.*;
+import static com.e201.domain.entity.store.QStore.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,24 +15,20 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.e201.api.controller.contract.request.ContractFindRequest;
 import com.e201.api.controller.contract.response.ContractFindResponse;
+import com.e201.api.controller.contract.response.EmployeeFindStoreResponse;
 import com.e201.domain.entity.company.QCompany;
 import com.e201.domain.entity.contract.Contract;
-import com.e201.domain.entity.contract.ContractFindCond;
-import com.e201.domain.entity.contract.ContractFindStatus;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.contract.QContract;
 import com.e201.domain.entity.store.QStore;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -60,6 +57,36 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	}
 
 	@Override
+	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
+		// find companyId using employee ID;
+		UUID companyId = companyQueryFactory
+			.select(company.id)
+			.from(employee)
+			.join(employee.department, department)
+			.join(department.company, company)
+			.where(employee.id.eq(authInfo.getId()))
+			.fetchOne();
+
+		// find contracts using companyId;
+		List<UUID> stores = companyQueryFactory
+			.select(contract.storeId)
+			.from(contract)
+			.where(contract.companyId.eq(companyId),
+				contract.status.eq(COMPLETE))
+			.fetch();
+
+		// createResponse
+
+		return storeQueryFactory.select(Projections.constructor(EmployeeFindStoreResponse.class,
+				storeInfo.name.as("storeName"),
+				storeInfo.businessAddress.as("storeAddress"),
+				storeInfo.phone.as("storePhone")))
+			.from(store)
+			.where(store.id.in(stores))
+			.fetch();
+	}
+
+	@Override
 	public List<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request) {
 		List<Contract> contracts = findContracts(authInfo, request);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
@@ -68,8 +95,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		return responses;
 	}
 
-	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts, Map<UUID, Map<String, String>> companyMap,
-		Map<UUID, Map<String, String>> storeMap){
+	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts,
+		Map<UUID, Map<String, String>> companyMap,
+		Map<UUID, Map<String, String>> storeMap) {
 		return contracts.stream()
 			.map(contractData -> new ContractFindResponse(
 				String.valueOf(contractData.getId()),
@@ -90,7 +118,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toList());
 	}
 
-	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request){
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
@@ -100,8 +128,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
-	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request){
-		return switch(request.getStatus()){
+	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request) {
+		return switch (request.getStatus()) {
 			case ALL -> null;
 			case IN -> getProgressStatusExpression(authInfo, request);
 			case COMPLETE -> contract.status.eq(ContractStatus.COMPLETE);
@@ -110,15 +138,15 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		};
 	}
 
-	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
+	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
 
-		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY)?
+		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
-		
-		return switch (request.getUserCond()){
+
+		return switch (request.getUserCond()) {
 			case ALL -> senderCondition.or(receiverCondition);
 			case SENDER -> senderCondition;
 			case RECEIVER -> receiverCondition;
@@ -139,7 +167,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.collect(Collectors.toSet());
 
 		QStore store = QStore.store;
-		return storeQueryFactory.select(store.id, store.storeInfo.name, store.email, store.storeInfo.phone, store.storeInfo.businessAddress)
+		return storeQueryFactory.select(store.id, store.storeInfo.name, store.email, store.storeInfo.phone,
+				store.storeInfo.businessAddress)
 			.from(store)
 			.where(store.id.in(storeIds),
 				store.deleteYN.eq("N"))
@@ -165,7 +194,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 		QCompany company = QCompany.company;
 		return companyQueryFactory
-			.select(company.id, company.companyInfo.name, company.email, company.companyInfo.phone, company.companyInfo.businessAddress)
+			.select(company.id, company.companyInfo.name, company.email, company.companyInfo.phone,
+				company.companyInfo.businessAddress)
 			.from(company)
 			.where(company.id.in(companyIds))
 			.fetch()
