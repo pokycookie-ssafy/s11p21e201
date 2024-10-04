@@ -1,11 +1,31 @@
 {
-  "paid_at": "Date",
-  "department_name": "Department",
-  "employee_name": "Employee",
-  "restaurant_name": "Restaurant",
-  "price": "Price",
-  "payment": "Payment",
+  "paid_at": "Payment Date and Time",
+  "department_name": "Department Name",
+  "employee_name": "Employee Name",
+  "store_name": "Restaurant Name",
+  "price": "Payment Amount",
+  "payment": "Ledger Management",
   "department": "Department",
   "restaurant": "Restaurant",
-  "all": "All"
+  "all": "All",
+
+  "breadcrumbs": {
+    "title": "Ledger Management",
+    "management": "Management"
+  },
+  "unit": {
+    "date": "{0} Year {1} Month",
+    "won": "KRW"
+  },
+  "field": {
+    "employee_no": "Employee Number"
+  },
+  "label": {
+    "select_department": "Search by Department Name",
+    "select_store": "Search by Store Name",
+    "selected": "{0} items selected"
+  },
+  "tooltip": {
+    "delete_all": "Delete All"
+  }
 }
