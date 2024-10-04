@@ -43,7 +43,7 @@ public class PaymentService {
 			condition.getEndDate(), pageable);
 	}
 
-	public void save(UUID contractId, UUID employeeId, Store store, Long totalAmount) {
+	public Payment save(UUID contractId, UUID employeeId, Store store, Long totalAmount) {
 		Payment payment = Payment.builder()
 			.contractId(contractId)
 			.employeeId(employeeId)
@@ -53,6 +53,7 @@ public class PaymentService {
 			.paymentDate(LocalDateTime.now())
 			.build();
 		paymentRepository.save(payment);
+		return payment;
 	}
 
 }

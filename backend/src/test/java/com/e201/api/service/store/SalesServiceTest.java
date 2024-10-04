@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e201.api.controller.store.request.SalesCreateRequest;
-import com.e201.api.controller.store.request.StorePaymentCreateRequest;
-import com.e201.api.controller.store.response.SalesCreateResponse;
 import com.e201.api.service.company.CompanyInfoService;
 import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.CompanyInfo;

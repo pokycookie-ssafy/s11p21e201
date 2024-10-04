@@ -71,7 +71,6 @@ public class StoreService {
 		StoreAccount storeAccount = accountCreateRequest.toEntity(store);
 		StoreAccount savedStoreAccount = storeAccountRepository.save(storeAccount);
 
-		//TODO(KJK) : useremail로 account 생성, 저장
 		return new StoreCreateResponse(savedStore.getId());
 	}
 

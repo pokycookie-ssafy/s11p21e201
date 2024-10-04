@@ -10,4 +10,7 @@ import lombok.NoArgsConstructor;
 public class PaymentMenuCreateRequest {
 	private UUID id;
 
+	public PaymentMenuCreateRequest(UUID id) {
+		this.id = id;
+	}
 }

@@ -34,10 +34,24 @@ public class Sales extends BaseEntity {
 	@Column(name = "company_id")
 	private UUID companyId;
 
+	@Column(name = "store_id")
+	private UUID storeId;
+
+	@Column(name= "payment_id" )
+	private UUID paymentId;
+
+	@Column(name="employee_id")
+	private UUID employeeId;
+
 	@Builder
-	public Sales(UUID id, Menu menu , UUID companyId){
+	public Sales(UUID id, Menu menu , UUID companyId,
+		UUID paymentId, UUID employeeId,
+		UUID storeId){
 		this.id = id;
 		this.menu = menu;
 		this.companyId =companyId;
+		this.paymentId= paymentId;
+		this.employeeId =employeeId;
+		this.storeId = storeId;
 	}
 }
