@@ -26,6 +26,10 @@ operation::manager-controller-test/create_company-info_success[snippets="http-re
 
 operation::company-auth-controller-test/manager_auth_success[snippets="http-request,http-response"]
 
+=== 관리자 목록 조회
+
+operation::manager-controller-test/find_managers_success[snippets="http-request,http-response"]
+
 === 직원 계정 생성
 
 operation::employee-controller-test/create_company-info_success[snippets="http-request,http-response"]
@@ -34,10 +38,10 @@ operation::employee-controller-test/create_company-info_success[snippets="http-r
 
 operation::company-auth-controller-test/employee_auth_success[snippets="http-request,http-response"]
 
-=== 관리자 목록 조회
-
-operation::manager-controller-test/find_managers_success[snippets="http-request,http-response"]
-
 === 직원 목록 조회
 
 operation::employee-controller-test/find_employees_success[snippets="http-request,http-response"]
+
+=== 직원 사용량 조회
+
+operation::employee-controller-test/find_usage_success[snippets="http-request,http-response"]
