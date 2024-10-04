@@ -1,14 +1,12 @@
+import { useTranslate } from '@/locales'
 import { keyframes } from '@emotion/react'
 import storebg from '@/assets/img/storebg.jpg'
-// import companybg from '@/assets/img/companybg.jpg'
 import { useRef, useState, useEffect } from 'react'
-// import employeebg from '@/assets/img/employeebg.jpg'
-// import background2 from '@/assets/img/background2.jpg'
 
 import { Box, Stack, Button, Typography } from '@mui/material'
 
 export default function Main2() {
-  // 위에서 아래로 내려오는 애니메이션 정의
+  const { t } = useTranslate('microsite')
   const fadeIn = keyframes`
     from {
       opacity: 0;
@@ -83,7 +81,6 @@ export default function Main2() {
         direction="row"
         sx={{ width: '100%' }}
       >
-        {/* 왼쪽 텍스트 영역 */}
         <Stack
           justifyContent="center"
           alignItems="center"
@@ -96,16 +93,16 @@ export default function Main2() {
           <Stack spacing={3} sx={{ textAlign: 'left' }}>
             <Stack>
               <Typography variant="h3" sx={{ fontFamily: 'suite-variable' }}>
-                기업 제휴 식당 장부 관리 서비스
+                {t('detail1')}
               </Typography>
               <Typography variant="h1" sx={{ fontFamily: 'suite-variable', fontSize: '3.5rem' }}>
-                사내대장부
+                {t('detail2')}
               </Typography>
             </Stack>
             <Stack>
-              <Typography variant="h5">사내대장부는 기업, 식당, 직원 간의</Typography>
-              <Typography variant="h5">식당 제휴 서비스를 디지털화하고</Typography>
-              <Typography variant="h5">장부 관리와 정산 과정을 간소화합니다.</Typography>
+              <Typography variant="h5">{t('detail3')}</Typography>
+              <Typography variant="h5">{t('detail4')}</Typography>
+              <Typography variant="h5">{t('detail5')}</Typography>
             </Stack>
           </Stack>
         </Stack>
@@ -138,11 +135,10 @@ export default function Main2() {
               }}
             >
               <Typography variant="h3" sx={{ fontFamily: 'suite-variable' }}>
-                기업 서비스
+                {t('company_title')}
               </Typography>
               <Typography variant="body1" sx={{ fontFamily: 'suit-variable' }}>
-                식당 제휴 계약 및 관리, 정산 서비스를 제공합니다. 대시보드와 부서별/월별 장부 조회
-                기능을 통해 빠른 정산 업무를 도와드립니다.
+                {t('company_detail')}
               </Typography>
               <Button
                 variant="outlined"
@@ -155,7 +151,7 @@ export default function Main2() {
                   alignSelf: 'center',
                 }}
               >
-                시작하기
+                {t('start')}
               </Button>
             </Stack>
 
@@ -184,11 +180,10 @@ export default function Main2() {
               }}
             >
               <Typography variant="h3" sx={{ fontFamily: 'suite-variable' }}>
-                식당 서비스
+                {t('store_title')}
               </Typography>
               <Typography variant="body1" sx={{ fontFamily: 'suit-variable' }}>
-                QR 결제와 디지털 장부를 통해 실시간 정산 내역을 확인할 수 있습니다. 대시보드를 통해
-                메뉴별 매출, 기간별 매출을 확인할 수 있습니다.
+                {t('store_detail')}
               </Typography>
               <Button
                 variant="outlined"
@@ -201,7 +196,7 @@ export default function Main2() {
                   alignSelf: 'center',
                 }}
               >
-                시작하기
+                {t('start')}
               </Button>
             </Stack>
 
@@ -231,11 +226,10 @@ export default function Main2() {
               }}
             >
               <Typography variant="h3" sx={{ fontFamily: 'suite-variable' }}>
-                직원 서비스
+                {t('employee_title')}
               </Typography>
               <Typography variant="body1" sx={{ fontFamily: 'suit-variable' }}>
-                식사 후 빠르게 장부를 작성할 수 있도록 QR코드 결제 기능을 제공합니다. 실시간으로
-                식대 사용 내역을 확인하고, 제휴 식당 정보도 얻을 수 있습니다.
+                {t('employee_detail')}
               </Typography>
               <Button
                 variant="outlined"
@@ -248,7 +242,7 @@ export default function Main2() {
                   alignSelf: 'center',
                 }}
               >
-                시작하기
+                {t('start')}
               </Button>
             </Stack>
           </Box>
