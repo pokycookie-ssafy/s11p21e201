@@ -1,12 +1,16 @@
 package com.e201.domain.repository.contract;
 
+<<<<<<< HEAD
 import static com.e201.domain.entity.company.QCompany.*;
 import static com.e201.domain.entity.company.QDepartment.*;
 import static com.e201.domain.entity.company.QEmployee.*;
+=======
+>>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 import static com.e201.domain.entity.contract.ContractStatus.*;
 import static com.e201.domain.entity.contract.QContract.*;
 import static com.e201.domain.entity.store.QStore.*;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import java.time.LocalDateTime;
@@ -28,6 +32,8 @@ import java.util.ArrayList;
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
 =======
 >>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+>>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 import java.util.HashMap;
 =======
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
@@ -293,6 +299,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	@Override
 	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
@@ -342,6 +349,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
 >>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
+>>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
@@ -434,8 +444,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
-	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request){
-		return switch(request.getStatus()){
+	private BooleanExpression eqStatus(AuthInfo authInfo, ContractFindRequest request) {
+		return switch (request.getStatus()) {
 			case ALL -> null;
 			case IN -> getProgressStatusExpression(authInfo, request);
 			case COMPLETE -> contract.status.eq(ContractStatus.COMPLETE);
@@ -455,17 +465,22 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		};
 	}
 
+<<<<<<< HEAD
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request){
 >>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 =======
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
 >>>>>>> 8560af0 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
+>>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 
 		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -487,6 +502,10 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 		
 		return switch (request.getUserCond()){
+=======
+
+		return switch (request.getUserCond()) {
+>>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 			case ALL -> senderCondition.or(receiverCondition);
 >>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
 			case SENDER -> senderCondition;
