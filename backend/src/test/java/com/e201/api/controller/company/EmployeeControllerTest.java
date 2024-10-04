@@ -16,10 +16,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
+import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
 import com.e201.api.service.company.EmployeeService;
 import com.e201.global.security.auth.constant.AuthConstant;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -61,9 +64,9 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), MANAGER);
 
 		UUID departmentId = UUID.randomUUID();
-		var response1 = createEmployeeFindResponse("직원 코드1", "직원 이름1", departmentId, 100000);
-		var response2 = createEmployeeFindResponse("직원 코드2", "직원 이름2", departmentId, 100000);
-		var response3 = createEmployeeFindResponse("직원 코드3", "직원 이름3", departmentId, 100000);
+		var response1 = createEmployeeFindResponse("직원 코드1", "직원 이름1", departmentId, 100000L);
+		var response2 = createEmployeeFindResponse("직원 코드2", "직원 이름2", departmentId, 100000L);
+		var response3 = createEmployeeFindResponse("직원 코드3", "직원 이름3", departmentId, 100000L);
 		var response = List.of(response1, response2, response3);
 		String responseJson = objectMapper.writeValueAsString(response);
 
@@ -78,8 +81,32 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 			.andExpect(content().json(responseJson));
 	}
 
+	@DisplayName("해당 기간내 직원의 사용량을 조회한다.")
+	@Test
+	void find_usage_success() throws Exception {
+		// given
+		AuthInfo authInfo = new AuthInfo(UUID.randomUUID(), EMPLOYEE);
+		EmployeeUsageResponse response = EmployeeUsageResponse.builder()
+			.supportAmount(100000L)
+			.usage(78000L)
+			.build();
+		String responseJson = objectMapper.writeValueAsString(response);
+
+		doReturn(response).when(employeeService).findUsage(any(), any());
+
+		// when //then
+		mockMvc.perform(MockMvcRequestBuilders.get("/companies/employees/usages")
+				.contentType(APPLICATION_JSON)
+				.sessionAttr(AuthConstant.AUTH_INFO.name(), authInfo)
+				.param("startDate", LocalDateTime.now().minusMonths(1).toString())
+				.param("endDate", LocalDateTime.now().toString())
+			)
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().json(responseJson));
+	}
+
 	private static EmployeeFindResponse createEmployeeFindResponse(String code, String name, UUID departmentId,
-		int supportAmount) {
+		Long supportAmount) {
 		return EmployeeFindResponse.builder()
 			.id(UUID.randomUUID())
 			.employeeCode(code)
@@ -96,7 +123,7 @@ class EmployeeControllerTest extends AbstractRestDocsTest {
 			.code("직원코드")
 			.password("12341234")
 			.name("직원이름")
-			.supportAmount(100000)
+			.supportAmount(100000L)
 			.build();
 	}
 }
