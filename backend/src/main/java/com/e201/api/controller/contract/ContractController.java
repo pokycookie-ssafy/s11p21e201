@@ -4,8 +4,6 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
@@ -22,7 +19,9 @@ import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractFindResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
+import com.e201.api.controller.contract.response.EmployeeFindStoreResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -44,6 +43,8 @@ import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 =======
@@ -141,13 +142,23 @@ public class ContractController {
 		return ResponseEntity.status(OK).body(response);
 	}
 
+	@GetMapping("/employees/stores")
+	public ResponseEntity<List<EmployeeFindStoreResponse>> findStores(@Auth AuthInfo authInfo) {
+		List<EmployeeFindStoreResponse> response = contractService.findStores(authInfo);
+		return ResponseEntity.status(OK).body(response);
+	}
+
 	@PostMapping("/contracts/respond")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
 =======
+=======
+
+>>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo,
 		@RequestBody ContractRespondCondition request) {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
