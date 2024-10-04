@@ -77,6 +77,12 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
     colors: [theme.palette.primary.light],
     xaxis: {
       categories: departments,
+      labels: {
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
+        },
+      },
     },
     yaxis: {
       labels: {
@@ -85,6 +91,10 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
             return ''
           }
           return `${value.toLocaleString()}`
+        },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
       },
     },

@@ -89,6 +89,10 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
           }
           return dayjs(value).format('YYYY/MM')
         },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
+        },
       },
     },
     yaxis: {
@@ -100,6 +104,10 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
             return ''
           }
           return `${value.toLocaleString()}`
+        },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
       },
     },
