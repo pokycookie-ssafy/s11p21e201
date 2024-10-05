@@ -134,7 +134,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.from(payment)
 			.where(
 				payment.employeeId.in(employeeIds),  // 추출된 employeeId로 payment 조회
-				payment.paymentDate.between(startDate, endDate)
+				payment.paymentDate.goe(startDate),  // >= 조건
+				payment.paymentDate.loe(endDate)
 			)
 			.groupBy(payment.employeeId)
 			.fetch();
