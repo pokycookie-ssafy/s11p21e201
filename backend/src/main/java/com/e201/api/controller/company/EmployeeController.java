@@ -45,7 +45,6 @@ public class EmployeeController {
 
 	@GetMapping("/companies/employees")
 	public ResponseEntity<List<EmployeeFindResponse>> findPage(@Auth AuthInfo authInfo) {
-		validateRoletype(authInfo, MANAGER);
 		List<EmployeeFindResponse> response = employeeService.findAll(authInfo);
 		return ResponseEntity.ok(response);
 	}
