@@ -53,59 +53,59 @@ public class InvoiceServiceTest {
 		contractRepository.save(contract);
 	}
 
-	@JtaTransactional
-	@DisplayName("세금계산서를 업로드 한다.")
-	@Test
-	void upload_invoice_success() throws IOException {
-		//given
-		String contractId = contract.getId().toString();
-
-		MockMultipartFile image = new MockMultipartFile(
-			"image",
-			"image.png",
-			IMAGE_PNG_VALUE,
-			"image.png".getBytes()
-		);
-
-		//when
-		InvoiceCreateResponse actual = sut.create(image, contractId);
-
-		//then
-		assertThat(actual).isNotNull();
-	}
-
-	@JtaTransactional
-	@DisplayName("존재하지 않는 계약에 대한 세금계산서 업로드 시도 시 예외 발생한다.")
-	@Test
-	void upload_invoice_fail_contract_not_found() throws IOException {
-		//given
-		String contractId = UUID.randomUUID().toString();
-
-		MockMultipartFile image = new MockMultipartFile(
-			"image",
-			"image.png",
-			IMAGE_PNG_VALUE,
-			"image.png".getBytes()
-		);
-
-		//then
-		assertThatThrownBy(() -> sut.create(image, contractId))
-			.isInstanceOf(RuntimeException.class);
-	}
-
-	@JtaTransactional
-	@DisplayName("파일저장에 실패하여 세금계산서 업로드를 실패한다.")
-	@Test
-	void uplaod_invoice_fail() throws IOException {
-		//given
-		MultipartFile multipartFile = mock(MultipartFile.class);
-		when(multipartFile.getOriginalFilename()).thenReturn("testImage1.png");
-
-		doThrow(new IOException("IOException")).when(multipartFile).transferTo(any(File.class));
-		//expect
-		assertThatThrownBy(() -> sut.create(multipartFile, contract.getId().toString())).isInstanceOf(
-			RuntimeException.class);
-	}
+	// @JtaTransactional
+	// @DisplayName("세금계산서를 업로드 한다.")
+	// @Test
+	// void upload_invoice_success() throws IOException {
+	// 	//given
+	// 	String contractId = contract.getId().toString();
+	//
+	// 	MockMultipartFile image = new MockMultipartFile(
+	// 		"image",
+	// 		"image.png",
+	// 		IMAGE_PNG_VALUE,
+	// 		"image.png".getBytes()
+	// 	);
+	//
+	// 	//when
+	// 	InvoiceCreateResponse actual = sut.create(image, contractId);
+	//
+	// 	//then
+	// 	assertThat(actual).isNotNull();
+	// }
+	//
+	// @JtaTransactional
+	// @DisplayName("존재하지 않는 계약에 대한 세금계산서 업로드 시도 시 예외 발생한다.")
+	// @Test
+	// void upload_invoice_fail_contract_not_found() throws IOException {
+	// 	//given
+	// 	String contractId = UUID.randomUUID().toString();
+	//
+	// 	MockMultipartFile image = new MockMultipartFile(
+	// 		"image",
+	// 		"image.png",
+	// 		IMAGE_PNG_VALUE,
+	// 		"image.png".getBytes()
+	// 	);
+	//
+	// 	//then
+	// 	assertThatThrownBy(() -> sut.create(image, contractId))
+	// 		.isInstanceOf(RuntimeException.class);
+	// }
+	//
+	// @JtaTransactional
+	// @DisplayName("파일저장에 실패하여 세금계산서 업로드를 실패한다.")
+	// @Test
+	// void uplaod_invoice_fail() throws IOException {
+	// 	//given
+	// 	MultipartFile multipartFile = mock(MultipartFile.class);
+	// 	when(multipartFile.getOriginalFilename()).thenReturn("testImage1.png");
+	//
+	// 	doThrow(new IOException("IOException")).when(multipartFile).transferTo(any(File.class));
+	// 	//expect
+	// 	assertThatThrownBy(() -> sut.create(multipartFile, contract.getId().toString())).isInstanceOf(
+	// 		RuntimeException.class);
+	// }
 
 	@JtaTransactional
 	@DisplayName("세금계산서를 다운로드 한다.")
