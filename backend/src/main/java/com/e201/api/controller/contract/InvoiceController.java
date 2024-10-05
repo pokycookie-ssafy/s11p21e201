@@ -34,6 +34,7 @@ public class InvoiceController {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@PostMapping("/invoice/upload")
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -62,6 +63,12 @@ public class InvoiceController {
 		@PathVariable UUID settlement_id) {
 		InvoiceCreateResponse response = invoiceService.create(uploadFile, settlement_id);
 >>>>>>> 5e705b5 ([#89] feat: invoice 저장 시 settlement_id 수신)
+=======
+	@PostMapping("/settlements/{settlement_id}/invoice")
+	public ResponseEntity<InvoiceCreateResponse> upload(@Auth AuthInfo authInfo, MultipartFile uploadFile,
+		@PathVariable UUID settlement_id) {
+		InvoiceCreateResponse response = invoiceService.create(uploadFile, settlement_id);
+>>>>>>> d6e4d07 ([#89] feat: invoice 저장 시 settlement_id 수신)
 		return ResponseEntity.status(OK).body(response);
 	}
 
