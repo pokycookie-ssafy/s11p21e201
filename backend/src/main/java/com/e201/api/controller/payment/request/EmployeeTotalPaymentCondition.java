@@ -3,6 +3,8 @@ package com.e201.api.controller.payment.request;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +12,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class EmployeeTotalPaymentCondition {
+
 	private UUID departmentId;
+
+	@DateTimeFormat
 	private LocalDateTime startDate;
+
+	@DateTimeFormat
 	private LocalDateTime endDate;
 
 	@Builder
