@@ -95,14 +95,14 @@ public class SalesService {
 	public List<FindPaymentsResponse> findStorePayments(UUID storeId, FindPaymentsCondition findPaymentsCondition) {
 		List<Sales> salesList;
 		Map<UUID, FindPaymentsResponse> map = new HashMap<>();
-		if (findPaymentsCondition.getCompanyId() == null) {
+		if (findPaymentsCondition.getCompany() == null) {
 			//모든 company에 대한 payments들 조회
 			salesList = salesRepository.findByStartDateBetween(storeId, findPaymentsCondition.getStart(),
 				findPaymentsCondition.getEnd());
 		} else {
 			//특정 회사에 대한 payments들 조회
 			salesList = salesRepository.findSalesByCompanyIdAndDateRange(storeId,
-				findPaymentsCondition.getCompanyId(), findPaymentsCondition.getStart(),
+				findPaymentsCondition.getCompany(), findPaymentsCondition.getStart(),
 				findPaymentsCondition.getEnd());
 		}
 		//결과 값 생성
@@ -139,7 +139,7 @@ public class SalesService {
 		return FindPaymentsResponse.builder()
 			.paymentId(sales.getPaymentId())
 			.employeeId(sales.getEmployeeId())
-			.companyId(sales.getEmployeeId())
+			.companyId(sales.getCompanyId())
 			.createdAt(sales.getCreatedAt())
 			.menus(menus)
 			.employeeCode(emp.getCode())
