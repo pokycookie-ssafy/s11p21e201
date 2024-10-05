@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.e201.domain.entity.store.Menu;
 import com.e201.domain.entity.store.Sales;
 
 public interface SalesRepository extends JpaRepository<Sales, UUID> {
