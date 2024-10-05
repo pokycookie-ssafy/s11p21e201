@@ -1,4 +1,5 @@
 import type { IMenu } from '@/types/menu'
+import type { IQrRequest, IQrResponse } from '@/types/qr'
 
 import { toast } from 'sonner'
 import api from '@/configs/api'
@@ -94,10 +95,27 @@ export default function QrPaymentView() {
     setOrder(prev)
   }
 
-  const submitHandler = (qrData: string) => {
-    console.log(qrData)
-    toast.success(t('toast.success'))
-    setOrder(new Map())
+  const submitHandler = async (qrData: string) => {
+    try {
+      let totalAmount = 0
+      const orderMenus: string[] = []
+      order.forEach((value, key) => {
+        totalAmount += value.menu.price * value.count
+        for (let i = 0; i < value.count; i++) {
+          orderMenus.push(key)
+        }
+      })
+
+      const qrRes: IQrResponse = JSON.parse(qrData)
+      const qrReq: IQrRequest = { totalAmount, menus: orderMenus, ...qrRes }
+
+      await axios.post(api.qr.submit, qrReq)
+      toast.success(t('toast.success'))
+      setOrder(new Map())
+    } catch (error) {
+      toast.error(t('toast.error'))
+      console.error(error)
+    }
   }
 
   return (

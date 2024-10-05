@@ -37,6 +37,9 @@ const api = {
     list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,
     invoice: (settlementId: string) => `/settlements/${settlementId}/invoice`,
   },
+  qr: {
+    submit: '/stores/sales',
+  },
   common: {
     ocr: '/ocr/license',
   },

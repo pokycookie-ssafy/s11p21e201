@@ -53,13 +53,13 @@ export default function DepartmentCreateModal({ open, onClose, onSubmit }: IProp
           />
 
           <Stack spacing={2}>
-            <FormInput name="code" control={control} label={t('label.department')} size="small" />
             <FormInput
-              name="name"
+              name="code"
               control={control}
               label={t('label.department_code')}
               size="small"
             />
+            <FormInput name="name" control={control} label={t('label.department')} size="small" />
             <Button size="large" color="secondary" type="submit">
               {t('button.create_department')}
             </Button>
