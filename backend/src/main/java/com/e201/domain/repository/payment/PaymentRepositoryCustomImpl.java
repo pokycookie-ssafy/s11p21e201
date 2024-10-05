@@ -65,7 +65,11 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 		// 직원의 결제 내역 페이지 조회
 		List<Payment> payments = paymentQueryFactory
 			.selectFrom(payment)
-			.where(payment.employeeId.eq(findEmployee.getId()))
+			.where(
+				payment.employeeId.eq(findEmployee.getId()),
+				payment.paymentDate.goe(startDate),  // >= 조건
+				payment.paymentDate.loe(endDate)
+			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
