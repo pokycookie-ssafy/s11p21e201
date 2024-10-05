@@ -1,10 +1,11 @@
-package com.e201.api.service.qr;
+package com.e201.api.controller.qr;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.store.request.QRValidationRequest;
+import com.e201.api.service.qr.QRService;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 
