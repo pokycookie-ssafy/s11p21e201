@@ -18,8 +18,10 @@ import com.e201.api.controller.contract.response.InvoiceDownloadResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 import com.e201.domain.entity.contract.Invoice;
+import com.e201.domain.entity.payment.PaymentMonthlySum;
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
+import com.e201.domain.repository.payment.PaymentMonthlySumRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,23 +31,30 @@ public class InvoiceService {
 
 	private final InvoiceRepository invoiceRepository;
 	private final ContractRepository contractRepository;
+	private final PaymentMonthlySumRepository paymentMonthlySumRepository;
 
 	@Value("${spring.servlet.multipart.location}")
 	private String path;
 
 	@JtaTransactional
-	public InvoiceCreateResponse create(MultipartFile uploadFile, String contractId) {
-		Contract contract = contractRepository.findById(UUID.fromString(contractId))
+	public InvoiceCreateResponse create(MultipartFile uploadFile, UUID settlement_id) {
+		PaymentMonthlySum paymentMonthlySum = paymentMonthlySumRepository.findById(settlement_id)
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
-		String imageUrl = fileUpload(uploadFile, contractId);
+		Contract contract = contractRepository.findById(paymentMonthlySum.getContractId())
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+
+		String imageUrl = fileUpload(uploadFile, contract.getId().toString());
 
 		Invoice invoice = Invoice.builder()
 			.contract(contract)
 			.imageUrl(imageUrl).build();
 
 		invoiceRepository.save(invoice);
-		return new InvoiceCreateResponse(UUID.fromString(contractId));
+
+		paymentMonthlySum.updateInvoiceId(invoice.getId());
+
+		return new InvoiceCreateResponse(contract.getId());
 	}
 
 	public Invoice findEntity(UUID id) {

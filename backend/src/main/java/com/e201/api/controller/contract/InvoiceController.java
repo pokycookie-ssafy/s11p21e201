@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -31,6 +32,7 @@ public class InvoiceController {
 
 	private final InvoiceService invoiceService;
 
+<<<<<<< HEAD
 	@PostMapping("/invoice/upload")
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -47,6 +49,12 @@ public class InvoiceController {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
 		@RequestParam String contractId) {
 		InvoiceCreateResponse response = invoiceService.create(uploadFile, contractId);
+=======
+	@PostMapping("/settlements/{settlement_id}/invoice")
+	public ResponseEntity<InvoiceCreateResponse> upload(@Auth AuthInfo authInfo, MultipartFile uploadFile,
+		@PathVariable UUID settlement_id) {
+		InvoiceCreateResponse response = invoiceService.create(uploadFile, settlement_id);
+>>>>>>> 54a6c96 ([#89] feat: invoice 저장 시 settlement_id 수신)
 		return ResponseEntity.status(OK).body(response);
 	}
 
