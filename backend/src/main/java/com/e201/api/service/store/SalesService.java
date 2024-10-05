@@ -1,5 +1,6 @@
 package com.e201.api.service.store;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +91,7 @@ public class SalesService {
 		return department.getCompany();
 	}
 
+	@JtaTransactional(readOnly = true)
 	public List<FindPaymentsResponse> findStorePayments(UUID storeId, FindPaymentsCondition findPaymentsCondition) {
 		List<Sales> salesList;
 		Map<UUID, FindPaymentsResponse> map = new HashMap<>();
@@ -97,7 +99,6 @@ public class SalesService {
 			//모든 company에 대한 payments들 조회
 			salesList = salesRepository.findByStartDateBetween(storeId, findPaymentsCondition.getStart(),
 				findPaymentsCondition.getEnd());
-
 		} else {
 			//특정 회사에 대한 payments들 조회
 			salesList = salesRepository.findSalesByCompanyIdAndDateRange(storeId,
@@ -107,13 +108,13 @@ public class SalesService {
 		//결과 값 생성
 		for (Sales sales : salesList) {
 			if (map.containsKey(sales.getPaymentId())) {
-				FindPaymentMenu menu = createFindPaymentMenu(sales);
+				FindPaymentMenu menu = createFindPaymentMenu(sales.getMenu());
 				map.get(sales.getPaymentId()).getMenus().add(menu);
 			} else {
 				Employee emp = employeeService.findEntity(sales.getEmployeeId());
 				Company company = companyService.findEntity(sales.getCompanyId());
 				List<FindPaymentMenu> menus = new ArrayList<>();
-				FindPaymentMenu menu = createFindPaymentMenu(sales);
+				FindPaymentMenu menu = createFindPaymentMenu(sales.getMenu());
 				menus.add(menu);
 				FindPaymentsResponse response = createFindPaymentsResponse(sales, menus, emp, company);
 				map.put(sales.getPaymentId(), response);
@@ -126,9 +127,9 @@ public class SalesService {
 		qrService.isExist(new QRValidationRequest(qr));
 	}
 
-	private static FindPaymentMenu createFindPaymentMenu(Sales sales) {
-		return FindPaymentMenu.builder().name(sales.getMenu().getName())
-			.price(sales.getMenu().getPrice())
+	private static FindPaymentMenu createFindPaymentMenu(Menu menu) {
+		return FindPaymentMenu.builder().name(menu.getName())
+			.price(menu.getPrice())
 			.build();
 	}
 
