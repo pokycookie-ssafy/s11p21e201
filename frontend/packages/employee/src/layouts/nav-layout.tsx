@@ -1,6 +1,8 @@
 import { Nav } from '@/components/nav'
 import { Outlet } from 'react-router-dom'
 import { Header } from '@/components/header'
+import PaymentQR from '@/sections/main/payment-qr'
+import { SwipeableEdge } from '@/components/swipeable'
 
 import { Container } from '@mui/material'
 
@@ -16,6 +18,9 @@ export default function NavLayout() {
       >
         <Outlet />
       </Container>
+      <SwipeableEdge>
+        <PaymentQR />
+      </SwipeableEdge>
       <Nav />
     </FullContainer>
   )
