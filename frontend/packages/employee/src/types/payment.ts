@@ -3,4 +3,8 @@ interface IQrPayment {
   qrId: string
 }
 
-export type { IQrPayment }
+interface IQrUuid {
+  validationId: string
+}
+
+export type { IQrUuid, IQrPayment }

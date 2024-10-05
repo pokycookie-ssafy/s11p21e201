@@ -2,25 +2,23 @@ import type { ReactNode, TouchEvent } from 'react'
 
 import { useState, useEffect } from 'react'
 
-import { Box, Stack, CircularProgress } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
 const NAV_HEIGHT = 66
 const SWIPE_HEIGHT = 50
-const DEFAULT_HEIGHT = window.innerWidth + NAV_HEIGHT + SWIPE_HEIGHT
+const MAX_HEIGHT = 300
 
 interface IProps {
-  maxHeight?: number
   children?: ReactNode
   disableKeepMounted?: boolean
 }
 
-export function SwipeableEdge({
-  maxHeight = DEFAULT_HEIGHT,
-  children,
-  disableKeepMounted,
-}: IProps) {
+export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [posY, setPosY] = useState(window.innerHeight - NAV_HEIGHT - SWIPE_HEIGHT)
+  const [maxHeight, setMaxHeight] = useState(
+    Math.min(window.innerWidth, MAX_HEIGHT) + NAV_HEIGHT + SWIPE_HEIGHT
+  )
 
   const MIN_POS = window.innerHeight - NAV_HEIGHT - SWIPE_HEIGHT
   const MAX_POS = window.innerHeight - maxHeight
@@ -58,10 +56,9 @@ export function SwipeableEdge({
   }
 
   const onResize = (e: UIEvent) => {
-    const pos = window.innerHeight + NAV_HEIGHT + SWIPE_HEIGHT / 2
-    setPosY(
-      Math.min(Math.max(pos, window.innerHeight - maxHeight), window.innerHeight - NAV_HEIGHT)
-    )
+    setPosY(window.innerHeight - NAV_HEIGHT - SWIPE_HEIGHT)
+    setMaxHeight(Math.min(window.innerWidth, MAX_HEIGHT) + NAV_HEIGHT + SWIPE_HEIGHT)
+    setIsOpen(false)
   }
 
   const onClose = () => {
@@ -82,7 +79,7 @@ export function SwipeableEdge({
         height="100vh"
         position="fixed"
         top={0}
-        bgcolor={`rgba(0, 0, 0, ${MAX_POS / posY - 0.4})`}
+        bgcolor={`rgba(0, 0, 0, ${MAX_POS / posY - window.innerHeight * 0.0007})`}
         sx={{ transition: 'all 0.3s', pointerEvents: isOpen ? 'all' : 'none' }}
         onClick={onClose}
       />
@@ -93,7 +90,7 @@ export function SwipeableEdge({
           top={posY}
           borderRadius={2}
           bgcolor={isOpen ? `common.white` : `transparent`}
-          sx={{ transition: 'top 0.1s' }}
+          sx={{ transition: 'top 0.1s', borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
         >
           <Stack
             justifyContent="center"
@@ -104,22 +101,9 @@ export function SwipeableEdge({
             <Box width={150} height={6} bgcolor="divider" borderRadius={10} />
           </Stack>
           {disableKeepMounted ? (
-            <Box height={maxHeight}>{children}</Box>
+            <Box height={maxHeight - NAV_HEIGHT - SWIPE_HEIGHT}>{children}</Box>
           ) : (
-            <Box height={maxHeight}>
-              {isOpen ? (
-                children
-              ) : (
-                <Stack
-                  width={1}
-                  sx={{ aspectRatio: 1 }}
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <CircularProgress size={60} />
-                </Stack>
-              )}
-            </Box>
+            <Box height={maxHeight - NAV_HEIGHT - SWIPE_HEIGHT}>{isOpen && children}</Box>
           )}
         </Box>
       </Stack>
