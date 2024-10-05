@@ -33,11 +33,11 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 		// given
 		String contractId = UUID.randomUUID().toString();
 
-		UUID invoiceId = UUID.randomUUID();
+		UUID settlementId = UUID.randomUUID();
 		UUID storeId = UUID.randomUUID();
 		AuthInfo authInfo = new AuthInfo(storeId, RoleType.STORE);
 
-		InvoiceCreateResponse response = new InvoiceCreateResponse(invoiceId);
+		InvoiceCreateResponse response = new InvoiceCreateResponse(settlementId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
 		doReturn(response).when(invoiceService).create(any(), any());
@@ -49,11 +49,10 @@ public class InvoiceControllerTest extends AbstractRestDocsTest {
 			"image.png".getBytes()
 		);
 		// expect
-		mockMvc.perform(multipart("/invoice/upload")
+		mockMvc.perform(multipart("/settlements/{settlement_id}/invoice",settlementId)
 				.file(image)
 				.contentType(MULTIPART_FORM_DATA)
 				.sessionAttr(AUTH_INFO.name(), authInfo)
-				.param("contractId", contractId)
 			).andExpect(status().isOk())
 			.andExpect(content().json(responseJson));
 	}
