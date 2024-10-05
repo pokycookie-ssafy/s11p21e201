@@ -22,12 +22,12 @@ public class FindPaymentsCondition {
 	@NotBlank
 	@DateTimeFormat
 	LocalDateTime end;
-	private UUID companyId= null;
+	private UUID company= null;
 
 	@Builder
-	private FindPaymentsCondition(LocalDateTime startDate, LocalDateTime endDate, UUID companyId) {
+	private FindPaymentsCondition(LocalDateTime startDate, LocalDateTime endDate, UUID company) {
 		this.start = startDate;
 		this.end = endDate;
-		this.companyId = companyId;
+		this.company = company;
 	}
 }
