@@ -9,6 +9,7 @@ import static com.e201.domain.entity.company.QEmployee.*;
 import static com.e201.domain.entity.contract.ContractStatus.*;
 import static com.e201.domain.entity.contract.QContract.*;
 import static com.e201.domain.entity.store.QStore.*;
+import static com.e201.domain.entity.store.QStoreInfo.*;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
