@@ -1,3 +1,5 @@
+import type { IPagination } from '@/types/pagination'
+
 interface IPayment {
   employeeId: string
   employeeCode: string
@@ -6,13 +8,15 @@ interface IPayment {
   departmentName: string
   spentAmount: number
   supportAmount: number
+  createdAt: Date
 }
 
 interface IPaymentDetail {
+  id: string
   storeId: string
   storeName: string
   spentAmount: number
-  createdAt: Date
+  paymentDate: Date
 }
 
 interface IPaymentEmployee {
@@ -21,7 +25,7 @@ interface IPaymentEmployee {
   employeeName: string
   departmentId: string
   departmentName: string
-  payments: IPaymentDetail[]
+  payments: IPagination<IPaymentDetail[]>
 }
 
 export type { IPayment, IPaymentDetail, IPaymentEmployee }

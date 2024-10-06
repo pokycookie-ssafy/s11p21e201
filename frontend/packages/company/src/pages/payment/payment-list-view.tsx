@@ -1,11 +1,13 @@
 import type { ISelectOption } from '@e201/ui'
 import type { GridColDef } from '@mui/x-data-grid'
+import type { IPagination } from '@/types/pagination'
 import type { IPayment, IPaymentDetail, IPaymentEmployee } from '@/types/payment'
 
 import dayjs from 'dayjs'
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
+import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
 import { getMonthRange } from '@/utils/date'
@@ -23,6 +25,8 @@ dayjs.extend(isBetween)
 export default function PaymentListView() {
   const { t } = useTranslate('payment')
 
+  const { user, isCompany } = useAuthStore()
+
   const [selectedDepartment, setSelectedDepartment] = useState<ISelectOption | null>(null)
   const [selectedEmployee, setSelectedEmployee] = useState<ISelectOption | null>(null)
 
@@ -36,61 +40,70 @@ export default function PaymentListView() {
     setMonth(dateMonth)
   }
 
-  const { data: payments, isPending: paymentIsPending } = useQuery({
-    queryKey: [api.payment.listWith(start, end, selectedDepartment?.value)],
+  const { data: departmentPayments, isPending: departmentPaymentIsPending } = useQuery({
+    queryKey: [api.payment.department, start, end, selectedDepartment?.value],
     queryFn: async () => {
-      const response = await axios.get<IPayment[]>(
-        api.payment.listWith(start, end, selectedDepartment?.value)
+      const response = await axios.get<IPagination<IPayment[]>>(
+        api.payment.departmentWith(start, end, selectedDepartment?.value)
       )
       return response.data
     },
+    enabled: selectedEmployee === null,
   })
 
-  const { data: paymentEmployees, isPending: paymentDetailIsPending } = useQuery({
-    queryKey: [api.payment.detailWith(start, end, selectedEmployee?.value)],
+  const { data: employeePayments, isPending: employeePaymentIsPending } = useQuery({
+    queryKey: [api.payment.employee, start, end, selectedEmployee?.value],
     queryFn: async () => {
       const response = await axios.get<IPaymentEmployee>(
-        api.payment.detailWith(start, end, selectedEmployee?.value)
+        api.payment.employeeWith(start, end, selectedEmployee?.value)
       )
       return response.data
     },
+    enabled: selectedEmployee !== null,
   })
 
   const departmentOptions = useMemo<ISelectOption[]>(() => {
-    if (!payments) {
+    if (!isCompany && user && user.departmentId && user.departmentName) {
+      setSelectedDepartment({ label: user.departmentName, value: user.departmentId })
+      return [{ label: user.departmentName, value: user.departmentId }]
+    }
+    if (!departmentPayments) {
       return []
     }
 
     const departmentSet = new Set<string>()
     const departmentList: ISelectOption[] = []
 
-    payments.forEach((e) => {
+    departmentPayments.content.forEach((e) => {
       if (!departmentSet.has(e.departmentId)) {
         departmentList.push({ label: e.departmentName, value: e.departmentId })
       }
       departmentSet.add(e.departmentId)
     })
     return departmentList
-  }, [payments])
+  }, [departmentPayments, isCompany, user])
 
   const employeeOptions = useMemo<ISelectOption[]>(() => {
-    if (!payments) {
+    if (!selectedDepartment) {
+      return []
+    }
+    if (!departmentPayments) {
       return []
     }
 
     const employeeSet = new Set<string>()
     const employeeList: ISelectOption[] = []
 
-    payments.forEach((e) => {
-      if (!employeeSet.has(e.departmentId)) {
-        employeeList.push({ label: e.departmentName, value: e.departmentId })
+    departmentPayments.content.forEach((e) => {
+      if (!employeeSet.has(e.employeeId)) {
+        employeeList.push({ label: e.employeeName, value: e.employeeId })
       }
-      employeeSet.add(e.departmentId)
+      employeeSet.add(e.employeeId)
     })
     return employeeList
-  }, [payments])
+  }, [departmentPayments, selectedDepartment])
 
-  const paymentColumns: GridColDef<IPayment>[] = [
+  const dapartmentPaymentColumns: GridColDef<IPayment>[] = [
     {
       field: 'departmentName',
       headerName: t('field.department_name'),
@@ -127,7 +140,7 @@ export default function PaymentListView() {
     },
   ]
 
-  const paymentDetailColumns: GridColDef<IPaymentDetail>[] = [
+  const employeePaymentColumns: GridColDef<IPaymentDetail>[] = [
     {
       field: 'departmentName',
       headerName: t('field.department_name'),
@@ -141,7 +154,7 @@ export default function PaymentListView() {
       renderCell: () => (
         <Stack height={1} pl={1} justifyContent="center">
           <Typography fontSize={14} fontWeight={500}>
-            {paymentEmployees?.departmentName}
+            {employeePayments?.departmentName}
           </Typography>
         </Stack>
       ),
@@ -150,13 +163,13 @@ export default function PaymentListView() {
       field: 'employeeName',
       headerName: t('field.employee_name'),
       width: 120,
-      valueGetter: () => paymentEmployees?.employeeName,
+      valueGetter: () => employeePayments?.employeeName,
     },
     {
       field: 'employeeCode',
       headerName: t('field.employee_code'),
       width: 150,
-      valueGetter: () => paymentEmployees?.employeeCode,
+      valueGetter: () => employeePayments?.employeeCode,
     },
     {
       field: 'storeName',
@@ -174,7 +187,7 @@ export default function PaymentListView() {
       field: 'createdAt',
       headerName: t('field.payment_date'),
       type: 'dateTime',
-      width: 120,
+      width: 150,
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD HH:mm'),
     },
   ]
@@ -204,6 +217,7 @@ export default function PaymentListView() {
             options={departmentOptions}
             placeholder={t('label.select_department')}
             size="small"
+            disabled={!isCompany}
           />
           <Select
             value={selectedEmployee}
@@ -216,10 +230,10 @@ export default function PaymentListView() {
 
         {selectedEmployee ? (
           <DataGrid
-            columns={paymentDetailColumns}
-            rows={paymentEmployees?.payments ?? []}
+            columns={employeePaymentColumns}
+            rows={employeePayments?.payments.content ?? []}
             hideFooter
-            loading={selectedEmployee ? paymentIsPending : paymentDetailIsPending}
+            loading={selectedEmployee ? departmentPaymentIsPending : employeePaymentIsPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
@@ -228,10 +242,11 @@ export default function PaymentListView() {
           />
         ) : (
           <DataGrid
-            columns={paymentColumns}
-            rows={payments}
+            columns={dapartmentPaymentColumns}
+            rows={departmentPayments?.content ?? []}
+            getRowId={(row) => row.employeeId}
             hideFooter
-            loading={selectedEmployee ? paymentIsPending : paymentDetailIsPending}
+            loading={selectedEmployee ? departmentPaymentIsPending : employeePaymentIsPending}
             slotProps={{
               noRowsOverlay: {},
               noResultsOverlay: {},
