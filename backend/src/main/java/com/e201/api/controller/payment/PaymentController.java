@@ -29,9 +29,7 @@ public class PaymentController {
 	@GetMapping("/payments/companies/employees")
 	public ResponseEntity<Page<EmployeeTotalPaymentResponse>> findEmployeePaymentPage(@Auth AuthInfo authInfo,
 		@ModelAttribute EmployeeTotalPaymentCondition condition, Pageable pageable) {
-		UUID companyId = authInfo.getId();
-		// TODO <jhl221123> 기업 권한 확인
-		Page<EmployeeTotalPaymentResponse> response = paymentService.findEmployeeTotalPayments(companyId, condition,
+		Page<EmployeeTotalPaymentResponse> response = paymentService.findEmployeeTotalPayments(authInfo, condition,
 			pageable);
 		return ResponseEntity.ok(response);
 	}

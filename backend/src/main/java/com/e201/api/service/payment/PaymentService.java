@@ -1,5 +1,7 @@
 package com.e201.api.service.payment;
 
+import static com.e201.global.security.auth.constant.RoleType.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import com.e201.api.controller.payment.response.EmployeePaymentResponse;
 import com.e201.api.controller.payment.response.EmployeeTotalPaymentResponse;
 import com.e201.api.controller.payment.response.PaymentAndMenusFindResponse;
 import com.e201.api.service.company.EmployeeService;
+import com.e201.api.service.company.ManagerService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.payment.Payment;
@@ -41,8 +44,9 @@ public class PaymentService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public Page<EmployeeTotalPaymentResponse> findEmployeeTotalPayments(UUID companyId,
+	public Page<EmployeeTotalPaymentResponse> findEmployeeTotalPayments(AuthInfo authInfo,
 		EmployeeTotalPaymentCondition condition, Pageable pageable) {
+		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
 		return paymentRepository.findEmployeeTotalPayments(companyId, condition.getDepartmentId(),
 			condition.getStartDate(), condition.getEndDate(), pageable);
 	}
