@@ -19,6 +19,7 @@ import com.e201.api.controller.settlement.request.SettlementFindRequest;
 import com.e201.api.controller.settlement.response.SettlementFindResponse;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.payment.PaymentMonthlySum;
+import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -46,9 +47,9 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 	public List<SettlementFindResponse> findSettlement(AuthInfo authInfo, SettlementFindRequest request) {
 		Map<UUID, Map<String, UUID>> contracts = findActiveContracts(authInfo);
 		List<UUID> contractIds = getContractIds(contracts);
-		Map<UUID, String> partnerNameMap = partnerNameMap(authInfo, contractIds, contracts);
+		Map<UUID, String> partnerNameMap = getPartnerNameMap(authInfo, contractIds, contracts);
 		List<PaymentMonthlySum> paymentMonthlySums = findMonthlySums(contractIds, request);
-		List<SettlementFindResponse> responses = createSettlementFindResponse(contracts,
+		List<SettlementFindResponse> responses = createSettlementFindResponse(authInfo, contracts,
 			paymentMonthlySums, partnerNameMap);
 		return responses;
 	}
@@ -63,7 +64,7 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 			.limit(2).fetch();
 	}
 
-	private List<SettlementFindResponse> createSettlementFindResponse(Map<UUID, Map<String, UUID>> contracts,
+	private List<SettlementFindResponse> createSettlementFindResponse(AuthInfo authInfo, Map<UUID, Map<String, UUID>> contracts,
 		List<PaymentMonthlySum> paymentMonthlySums, Map<UUID, String> partnerNameMap) {
 
 		return paymentMonthlySums.stream()
@@ -72,10 +73,15 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 				String taxInvoice = Optional.ofNullable(settlementData.getInvoiceId())
 					.map(UUID::toString).orElse(null);
 
+				String identifier = authInfo.getRoleType()== RoleType.COMPANY? "storeId":"companyId";
+
+				UUID partnerId = contracts.get(settlementData.getContractId()).get(identifier);
+				String partnerName = partnerNameMap.get(contracts.get(settlementData.getContractId()).get(identifier));
+
 				return SettlementFindResponse.builder()
-					.id(settlementData.getId().toString())
-					.companyId(String.valueOf(contracts.get(settlementData.getContractId()).get("companyId")))
-					.companyName(partnerNameMap.get(contracts.get(settlementData.getContractId()).get("companyId")))
+					.id(settlementData.getId())
+					.partnerId(partnerId)
+					.partnerName(partnerName)
 					.settlementDate(settlementData.getCreatedAt())
 					.settledDate(settlementData.getModifiedAt())
 					.settlementAmount(settlementData.getAmount())
@@ -86,11 +92,11 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 			).collect(Collectors.toList());
 	}
 
-	private Map<UUID, String> partnerNameMap(AuthInfo authInfo, List<UUID> contractIds,
+	private Map<UUID, String> getPartnerNameMap(AuthInfo authInfo, List<UUID> contractIds,
 		Map<UUID, Map<String, UUID>> contracts) {
 		return switch (authInfo.getRoleType()) {
-			case COMPANY -> findCompany(contractIds, contracts);
-			case STORE -> findStore(contractIds, contracts);
+			case COMPANY -> findStore(contractIds, contracts);
+			case STORE -> findCompany(contractIds, contracts);
 			default -> throw new IllegalStateException("Unexpected value: " + authInfo.getRoleType());
 		};
 	}

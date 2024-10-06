@@ -1,6 +1,7 @@
 package com.e201.api.controller.settlement.response;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SettlementFindResponse {
-	private String id;
-	private String companyId;
-	private String companyName;
+	private UUID id;
+	private UUID partnerId;
+	private String partnerName;
 	private LocalDateTime settlementDate;
 	private LocalDateTime settledDate;
 	private Long settlementAmount;
@@ -19,11 +20,11 @@ public class SettlementFindResponse {
 	private String taxInvoice;
 
 	@Builder
-	private SettlementFindResponse(String id, String companyId, String companyName, LocalDateTime settlementDate,
+	private SettlementFindResponse(UUID id, UUID partnerId, String partnerName, LocalDateTime settlementDate,
 		LocalDateTime settledDate, Long settlementAmount, Long settledAmount, String taxInvoice) {
 		this.id = id;
-		this.companyId = companyId;
-		this.companyName = companyName;
+		this.partnerId = partnerId;
+		this.partnerName = partnerName;
 		this.settlementDate = settlementDate;
 		this.settledDate = settledDate;
 		this.settlementAmount = settlementAmount;

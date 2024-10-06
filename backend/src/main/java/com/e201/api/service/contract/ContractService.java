@@ -35,9 +35,7 @@ public class ContractService {
 
 	@JtaTransactional
 	public ContractCreateResponse create(AuthInfo authInfo, ContractCreateRequest request) {
-		System.out.println(request.getSenderId());
 		Contract contract = createContractBySenderType(authInfo, request);
-		System.out.println("PASSED");
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 	}
@@ -51,13 +49,11 @@ public class ContractService {
 				storeId = authInfo.getId();
 				companyId = companyService.findCompanyByRegisterNo(request.getReceiverRegisterNumber()).getId();
 				status = ContractStatus.STORE_REQUEST;
-				System.out.println("PASSED @ STORE");
 			}
 			case COMPANY -> {
 				companyId = authInfo.getId();
 				storeId = storeService.findStoreIdByRegisterNo(request.getReceiverRegisterNumber()).getId();
 				status = ContractStatus.COMPANY_REQUEST;
-				System.out.println("PASSED @ COMPANY");
 			}
 			default -> throw new IllegalArgumentException("Unknown sender type: " + authInfo.getRoleType());
 		}
