@@ -1,4 +1,4 @@
-import type { IDashboardPayment } from '@/types/dashboard-payment'
+import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
 
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
@@ -13,13 +13,13 @@ import { Box, Stack } from '@mui/material'
 import { Typography } from '@e201/ui'
 
 const queryFn = async () => {
-  const response = await axios.get<IDashboardPayment[]>('/dashboard')
+  const response = await axios.get<IDashboardPaymentCompany[]>('/dashboard')
   return response.data
 }
 
 export default function DashboardCompanyView() {
   const { t } = useTranslate('dashboard')
-  const { data = [] } = useQuery<IDashboardPayment[]>({
+  const { data = [] } = useQuery<IDashboardPaymentCompany[]>({
     queryKey: ['dashboard'],
     queryFn,
   })

@@ -2,6 +2,8 @@ import type { ContractStatus, ContractUserCondition } from '@/types/contract'
 
 export const BASE_URL = 'https://sanedaejangbu.site/api'
 
+// export const BASE_URL = 'https://sanedaejangbu.site/api'
+
 const api = {
   auth: {
     signUpInfo: '/companies/info',

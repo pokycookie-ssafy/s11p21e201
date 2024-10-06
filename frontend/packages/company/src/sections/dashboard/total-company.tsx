@@ -1,4 +1,4 @@
-import type { IDashboardPayment } from '@/types/dashboard-payment'
+import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
 
 import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
@@ -10,7 +10,7 @@ import { Box, Card, Stack, Select, MenuItem, useTheme, FormControl } from '@mui/
 import { Typography } from '@e201/ui'
 
 interface TotalCompanyProps {
-  data: IDashboardPayment[]
+  data: IDashboardPaymentCompany[]
 }
 
 export default function TotalCompany({ data }: TotalCompanyProps) {
@@ -28,7 +28,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         const monthlyTotals: { [key: string]: number } = {}
 
         data.forEach((payment) => {
-          const month = dayjs(payment.paidAt).format('YYYY-MM')
+          const month = dayjs(payment.createdAt).format('YYYY-MM')
           if (monthlyTotals[month]) {
             monthlyTotals[month] += payment.price
           } else {
@@ -46,7 +46,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         const dailyTotals: { [key: string]: number } = {}
 
         data.forEach((payment) => {
-          const day = dayjs(payment.paidAt).format('YYYY-MM-DD')
+          const day = dayjs(payment.createdAt).format('YYYY-MM-DD')
           if (dailyTotals[day]) {
             dailyTotals[day] += payment.price
           } else {
@@ -119,6 +119,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
       strokeDashArray: 3,
     },
     tooltip: {
+      theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
@@ -140,7 +141,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         backdropFilter: 'blur(10px)',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
       }}
     >
       <Stack p={1}>
