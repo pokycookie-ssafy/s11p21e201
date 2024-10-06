@@ -93,6 +93,10 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
           }
           return dayjs(value).format('YYYY/MM')
         },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
+        },
       },
     },
     yaxis: {
@@ -100,6 +104,10 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
       labels: {
         formatter(value: number) {
           return `${value.toLocaleString()}`
+        },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
       },
     },
@@ -111,6 +119,7 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
       strokeDashArray: 3,
     },
     tooltip: {
+      theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
@@ -132,7 +141,7 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
         backdropFilter: 'blur(10px)',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
       }}
     >
       <Stack p={1}>

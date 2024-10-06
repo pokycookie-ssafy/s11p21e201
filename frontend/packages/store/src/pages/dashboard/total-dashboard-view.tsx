@@ -2,6 +2,7 @@ import type { IDashboardMenu, IDashboardPayment } from '@/types/dashboard'
 
 import React from 'react'
 import axios from '@/configs/axios'
+import { useTranslate } from '@/locales'
 import { useQuery } from '@tanstack/react-query'
 import MenuSales from '@/sections/dashboard/menu'
 import CompanySales from '@/sections/dashboard/company'
@@ -18,6 +19,8 @@ const queryFn = async () => {
 }
 
 export default function TotalDashboardView() {
+  const { t } = useTranslate('dashboard')
+
   const { data = [] } = useQuery<IDashboardPayment[]>({
     queryKey: ['dashboard'],
     queryFn,
@@ -25,7 +28,7 @@ export default function TotalDashboardView() {
   return (
     <Stack spacing={2}>
       <Typography variant="h3" fontWeight={800}>
-        대시보드
+        {t('dashboard')}
       </Typography>
       <RestaurantDashboardSummary data={data} />
       <TotalRestaurant data={data} />

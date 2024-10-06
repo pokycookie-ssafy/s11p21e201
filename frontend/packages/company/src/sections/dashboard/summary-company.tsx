@@ -1,4 +1,4 @@
-import type { IDashboardPayment } from '@/types/dashboard-payment'
+import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
 
 import dayjs from 'dayjs'
 import { useTranslate } from '@/locales'
@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { Card, Stack, Typography } from '@mui/material'
 
 interface DashboardSummaryProps {
-  data: IDashboardPayment[]
+  data: IDashboardPaymentCompany[]
 }
 
 export default function DashboardSummary({ data }: DashboardSummaryProps) {
@@ -26,13 +26,15 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
     const lastMonth = now.subtract(1, 'month').format('YYYY-MM')
 
     // 오늘의 결제 금액
-    const todayData = data.filter((payment) => dayjs(payment.paidAt).format('YYYY-MM-DD') === today)
+    const todayData = data.filter(
+      (payment) => dayjs(payment.createdAt).format('YYYY-MM-DD') === today
+    )
     const todayTotalAmount = todayData.reduce((total, payment) => total + payment.price, 0)
     setTodayTotal(todayTotalAmount)
 
     // 이번 달의 결제 금액
     const monthData = data.filter(
-      (payment) => dayjs(payment.paidAt).format('YYYY-MM') === currentMonth
+      (payment) => dayjs(payment.createdAt).format('YYYY-MM') === currentMonth
     )
     const monthTotalAmount = monthData.reduce((total, payment) => total + payment.price, 0)
     setMonthTotal(monthTotalAmount)
@@ -44,7 +46,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
 
     // 어제의 결제 금액 계산
     const yesterdayData = data.filter(
-      (payment) => dayjs(payment.paidAt).format('YYYY-MM-DD') === yesterday
+      (payment) => dayjs(payment.createdAt).format('YYYY-MM-DD') === yesterday
     )
     const yesterdayTotalAmount = yesterdayData.reduce((total, payment) => total + payment.price, 0)
 
@@ -57,7 +59,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
 
     // 저번 달의 결제 금액 계산
     const lastMonthData = data.filter(
-      (payment) => dayjs(payment.paidAt).format('YYYY-MM') === lastMonth
+      (payment) => dayjs(payment.createdAt).format('YYYY-MM') === lastMonth
     )
     const lastMonthTotalAmount = lastMonthData.reduce((total, payment) => total + payment.price, 0)
 
@@ -77,7 +79,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
           backdropFilter: 'blur(10px)',
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: '16px',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
           height: '130px',
           p: 2,
         }}
@@ -104,7 +106,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
           backdropFilter: 'blur(10px)',
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: '16px',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
           height: '130px',
           p: 2,
         }}
@@ -131,7 +133,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
           backdropFilter: 'blur(10px)',
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
           borderRadius: '16px',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
           height: '130px',
           p: 2,
         }}
