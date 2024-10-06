@@ -1,7 +1,11 @@
+interface IQrRequestMenu {
+  id: string
+}
+
 interface IQrRequest {
   employeeId: string
   qrId: string
-  menus: string[]
+  menus: IQrRequestMenu[]
   totalAmount: number
 }
 
@@ -10,4 +14,4 @@ interface IQrResponse {
   qrId: string
 }
 
-export type { IQrRequest, IQrResponse }
+export type { IQrRequest, IQrResponse, IQrRequestMenu }

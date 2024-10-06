@@ -1,17 +1,8 @@
 import dayjs from 'dayjs'
 
 export function getMonthRange(year: number, month: number) {
-  const start = dayjs()
-    .year(year)
-    .month(month - 1)
-    .startOf('month')
-    .format()
-
-  const end = dayjs()
-    .year(year)
-    .month(month - 1)
-    .endOf('month')
-    .format()
+  const start = dayjs().year(year).month(month).startOf('month').format('YYYY-MM-DDTHH:mm')
+  const end = dayjs().year(year).month(month).endOf('month').format('YYYY-MM-DDTHH:mm')
 
   return { start, end }
 }

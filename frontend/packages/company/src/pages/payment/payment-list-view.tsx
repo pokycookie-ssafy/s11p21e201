@@ -37,20 +37,20 @@ export default function PaymentListView() {
   }
 
   const { data: payments, isPending: paymentIsPending } = useQuery({
-    queryKey: [api.payment.list(start, end, selectedDepartment?.value)],
+    queryKey: [api.payment.listWith(start, end, selectedDepartment?.value)],
     queryFn: async () => {
       const response = await axios.get<IPayment[]>(
-        api.payment.list(start, end, selectedDepartment?.value)
+        api.payment.listWith(start, end, selectedDepartment?.value)
       )
       return response.data
     },
   })
 
   const { data: paymentEmployees, isPending: paymentDetailIsPending } = useQuery({
-    queryKey: [api.payment.detail(start, end, selectedEmployee?.value)],
+    queryKey: [api.payment.detailWith(start, end, selectedEmployee?.value)],
     queryFn: async () => {
       const response = await axios.get<IPaymentEmployee>(
-        api.payment.detail(start, end, selectedEmployee?.value)
+        api.payment.detailWith(start, end, selectedEmployee?.value)
       )
       return response.data
     },
