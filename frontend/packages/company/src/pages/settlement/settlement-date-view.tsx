@@ -1,6 +1,8 @@
 import type { GridColDef } from '@mui/x-data-grid'
+import type { ISettlement } from '@/types/settlement'
 
 import dayjs from 'dayjs'
+import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
@@ -10,6 +12,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useBoolean } from '@/hooks/use-boolean'
 import { useQuery } from '@tanstack/react-query'
+import SettleModal from '@/sections/settlement-management/settle-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -32,21 +35,16 @@ import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
-interface ISettlement {
-  id: string
-  storeId: string
-  storeName: string
-  settlementDate: Date
-  settledDate: Date
-  settlementAmount: number
-  settledAmount: number
-  taxInvoice: boolean
-}
-
-const fetchSettlements = async () => {
-  const settlements = await axios.get('/settlement')
-  return settlements.data
-}
+// interface ISettlement {
+//   id: string
+//   storeId: string
+//   storeName: string
+//   settlementDate: Date
+//   settledDate: Date
+//   settlementAmount: number
+//   settledAmount: number
+//   taxInvoice: boolean
+// }
 
 dayjs.extend(isBetween)
 
@@ -54,6 +52,7 @@ export default function SettlementDateView() {
   const { t } = useTranslate('settlement')
 
   const invoiceDialog = useBoolean()
+  const settleDialog = useBoolean()
 
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
@@ -66,9 +65,14 @@ export default function SettlementDateView() {
     { label: t('unsettled'), value: 'unsettled' },
   ]
 
-  const { data: settlements } = useQuery({
-    queryKey: ['settlements'],
-    queryFn: fetchSettlements,
+  const { start, end } = getMonthRange(year, month - 1)
+
+  const { data: settlements, isPending } = useQuery({
+    queryKey: [api.settlement.list, 'POST', start, end],
+    queryFn: async () => {
+      const response = await axios.get(api.settlement.listWith(start, end))
+      return response.data
+    },
   })
 
   const statusProvider = (row: ISettlement) => {
@@ -86,11 +90,7 @@ export default function SettlementDateView() {
       return []
     }
 
-    const { start, end } = getMonthRange(year, month - 1)
-
     let filtered = [...settlements]
-
-    filtered = filtered.filter((e) => dayjs(e.settlementDate).isBetween(start, end, 'date', '[]'))
     if (tab === 'unsettled') {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     } else if (tab === 'partial') {
@@ -98,9 +98,8 @@ export default function SettlementDateView() {
     } else if (tab === 'settled') {
       filtered = filtered.filter((e) => e.settledAmount >= e.settlementAmount)
     }
-
     return filtered
-  }, [month, settlements, tab, year])
+  }, [settlements, tab])
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)
@@ -164,12 +163,11 @@ export default function SettlementDateView() {
     },
     {
       field: 'taxInvoice',
-      type: 'boolean',
       headerName: t('invoice'),
       width: 90,
       renderCell: (params) => (
-        <Stack justifyContent="center" alignItems="center">
-          {params.row.taxInvoice ? (
+        <Stack height={1} justifyContent="center" alignItems="center">
+          {params.row.taxInvoice !== null ? (
             <Tooltip title={t('tooltip.check_tax')} disableInteractive>
               <IconButton sx={{ color: (theme) => theme.palette.success.main }}>
                 <Iconify icon="solar:check-circle-linear" />
@@ -179,6 +177,32 @@ export default function SettlementDateView() {
             <Tooltip title={t('tooltip.no_tax')} disableInteractive>
               <IconButton sx={{ color: (theme) => theme.palette.error.main }}>
                 <Iconify icon="solar:minus-circle-linear" />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Stack>
+      ),
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: t('field.action'),
+      width: 90,
+      renderCell: (params) => (
+        <Stack height={1} justifyContent="center" alignItems="center">
+          {params.row.settledAmount > 0 ? (
+            <Tooltip title={t('tooltip.settle_done')} disableInteractive>
+              <IconButton sx={{ color: (theme) => theme.palette.success.main }}>
+                <Iconify icon="solar:check-circle-linear" />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title={t('tooltip.settle')} disableInteractive>
+              <IconButton
+                sx={{ color: (theme) => theme.palette.error.main }}
+                onClick={settleDialog.onTrue}
+              >
+                <Iconify icon="mingcute:card-pay-line" />
               </IconButton>
             </Tooltip>
           )}
@@ -224,7 +248,7 @@ export default function SettlementDateView() {
             rows={filteredData}
             getRowId={(row) => row.id}
             hideFooter
-            loading={!settlements.length}
+            loading={isPending}
             sx={{ height: 500 }}
           />
         </Card>
@@ -241,6 +265,8 @@ export default function SettlementDateView() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <SettleModal open={settleDialog.value} onClose={settleDialog.onFalse} />
     </>
   )
 }

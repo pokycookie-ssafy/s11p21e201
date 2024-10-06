@@ -1,6 +1,6 @@
 import type { ISelectOption } from '@e201/ui'
 import type { GridColDef } from '@mui/x-data-grid'
-import type { ISettlementResponse } from '@/types/settlement'
+import type { ISettlement } from '@/types/settlement'
 
 import dayjs from 'dayjs'
 import axios from '@/configs/axios'
@@ -32,19 +32,8 @@ import { Label, Select, Iconify, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
-interface ISettlement {
-  id: string
-  storeId: string
-  storeName: string
-  settlementDate: Date
-  settledDate: Date
-  settlementAmount: number
-  settledAmount: number
-  taxInvoice: boolean
-}
-
 const fetchSettlements = async () => {
-  const settlements = await axios.get<ISettlementResponse[]>('/settlement')
+  const settlements = await axios.get<ISettlement[]>('/settlement')
   return settlements.data
 }
 

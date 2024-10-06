@@ -41,12 +41,13 @@ export default function SettlementDateView() {
 
   const { start, end } = getMonthRange(year, month - 1)
 
-  const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list(start, end))
-    return response.data
-  }
-
-  const { data, isPending } = useQuery({ queryKey: [api.settlement.list], queryFn })
+  const { data: settlements, isPending } = useQuery({
+    queryKey: [api.settlement.list, 'POST', start, end],
+    queryFn: async () => {
+      const response = await axios.get<ISettlementResponse[]>(api.settlement.listWith(start, end))
+      return response.data
+    },
+  })
 
   const statusProvider = (row: ISettlementResponse) => {
     if (row.settledAmount === 0) {
@@ -59,21 +60,11 @@ export default function SettlementDateView() {
   }
 
   const filteredData = useMemo(() => {
-    if (!data) {
+    if (!settlements) {
       return []
     }
 
-    const filterDate = dayjs()
-      .year(year)
-      .month(month - 1)
-    const startDate = filterDate.startOf('month')
-    const endDate = filterDate.endOf('month')
-
-    let filtered = [...data]
-
-    filtered = filtered.filter((e) =>
-      dayjs(e.settlementDate).isBetween(startDate, endDate, 'date', '[]')
-    )
+    let filtered = [...settlements]
     if (tab === 'unsettled') {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     }
@@ -87,7 +78,7 @@ export default function SettlementDateView() {
       filtered = filtered.filter((e) => !e.taxInvoice)
     }
     return filtered
-  }, [data, month, tab, year])
+  }, [settlements, tab])
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)

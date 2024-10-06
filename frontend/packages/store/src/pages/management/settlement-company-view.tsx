@@ -36,11 +36,11 @@ export default function SettlementCompanyView() {
   ]
 
   const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list('', ''))
+    const response = await axios.get<ISettlementResponse[]>(api.settlement.listWith('', ''))
     return response.data
   }
 
-  const { data, isPending } = useQuery({ queryKey: [api.settlement.list], queryFn })
+  const { data, isPending } = useQuery({ queryKey: [api.settlement.listWith], queryFn })
 
   const companies = useMemo(() => {
     if (!data) {

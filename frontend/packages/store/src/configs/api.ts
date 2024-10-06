@@ -35,8 +35,10 @@ const api = {
     terminateWith: (contractId: string) => `/contracts/${contractId}`,
   },
   settlement: {
-    list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,
-    invoice: (settlementId: string) => `/settlements/${settlementId}/invoice`,
+    list: '/settlements',
+    listWith: (start: string, end: string) => `/settlements?startTime=${start}&endTime=${end}`,
+    invoice: '/settlements/{settlementId}/invoice',
+    invoiceWith: (settlementId: string) => `/settlements/${settlementId}/invoice`,
   },
   qr: {
     submit: '/stores/sales',

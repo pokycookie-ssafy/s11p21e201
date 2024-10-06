@@ -184,7 +184,7 @@ export default function PaymentListView() {
       valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
-      field: 'createdAt',
+      field: 'paymentDate',
       headerName: t('field.payment_date'),
       type: 'dateTime',
       width: 150,
