@@ -10,7 +10,7 @@ import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 import duration from 'dayjs/plugin/duration'
 
-import { Stack, CircularProgress } from '@mui/material'
+import { Box, Stack, CircularProgress } from '@mui/material'
 
 import { Typography } from '@e201/ui'
 
@@ -55,18 +55,41 @@ export default function PaymentQR() {
 
   return (
     <Stack width={1} height={1} justifyContent="center" alignItems="center">
-      <Stack alignItems="center" p={0.5} maxWidth={200} position="relative">
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        p={0.5}
+        maxWidth={200}
+        width={1}
+        position="relative"
+      >
         {data ? (
-          <QRCode style={{ width: '100%' }} value={JSON.stringify(data)} />
+          <>
+            <QRCode style={{ width: '100%', zIndex: 1 }} value={JSON.stringify(data)} />
+            <Box
+              bgcolor="common.white"
+              p={1}
+              borderRadius={1}
+              width={1}
+              sx={{ aspectRatio: 1 }}
+              position="absolute"
+            />
+            <Typography
+              variant="subtitle2"
+              fontSize={13}
+              fontWeight={500}
+              position="absolute"
+              top={0}
+            >
+              {t('info')}
+            </Typography>
+            <Typography variant="subtitle2" position="absolute" bottom={0}>
+              {dayjs.duration(time, 'seconds').format('mm:ss')}
+            </Typography>
+          </>
         ) : (
           <CircularProgress />
         )}
-        <Typography variant="subtitle2" fontSize={13} fontWeight={500} position="absolute" top={0}>
-          {t('info')}
-        </Typography>
-        <Typography variant="subtitle2" position="absolute" bottom={0}>
-          {dayjs.duration(time, 'seconds').format('mm:ss')}
-        </Typography>
       </Stack>
     </Stack>
   )

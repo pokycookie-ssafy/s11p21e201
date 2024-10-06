@@ -37,6 +37,7 @@
     "error": "로그인 실패. 다시 시도해 주세요."
   },
   "pw": {
+    "title": "비밀번호 변경",
     "originPw": "기존 비밀번호",
     "newPw": "새 비밀번호",
     "confirmPw": "비밀번호 확인",
@@ -51,5 +52,24 @@
     "title": "장부 페이지",
     "error": "데이터를 불러올 수 없습니다.",
     "no-data": "선택한 기간에 대한 기록이 없습니다."
+  },
+  "validate": {
+    "email": {
+      "required": "이메일을 입력해주세요",
+      "pattern": "올바른 이메일 형식이 아닙니다"
+    },
+    "password": {
+      "required": "비밀번호를 입력해주세요",
+      "minLength": "비밀번호는 8글자 이상으로 입력해주세요"
+    },
+    "password_confirm": {
+      "validate": "비밀번호가 일치하지 않습니다"
+    },
+    "wrong_password": "기존 비밀번호가 일치하지 않습니다"
+  },
+  "language": {
+    "title": "사용 언어 변경",
+    "ko": "한국어",
+    "en": "English"
   }
 }

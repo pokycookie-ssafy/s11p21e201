@@ -89,7 +89,7 @@ export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
           width={1}
           top={posY}
           borderRadius={2}
-          bgcolor={isOpen ? `common.white` : `transparent`}
+          bgcolor={isOpen ? `background.default` : `transparent`}
           sx={{ transition: 'top 0.1s', borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
         >
           <Stack
