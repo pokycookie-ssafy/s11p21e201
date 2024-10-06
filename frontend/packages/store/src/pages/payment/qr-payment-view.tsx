@@ -1,5 +1,5 @@
 import type { IMenu } from '@/types/menu'
-import type { IQrRequest, IQrResponse } from '@/types/qr'
+import type { IQrRequest, IQrResponse, IQrRequestMenu } from '@/types/qr'
 
 import { toast } from 'sonner'
 import api from '@/configs/api'
@@ -98,11 +98,11 @@ export default function QrPaymentView() {
   const submitHandler = async (qrData: string) => {
     try {
       let totalAmount = 0
-      const orderMenus: string[] = []
+      const orderMenus: IQrRequestMenu[] = []
       order.forEach((value, key) => {
         totalAmount += value.menu.price * value.count
         for (let i = 0; i < value.count; i++) {
-          orderMenus.push(key)
+          orderMenus.push({ id: key })
         }
       })
 

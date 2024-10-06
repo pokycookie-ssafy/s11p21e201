@@ -19,8 +19,9 @@ const api = {
     edit: '/stores/menus',
   },
   payment: {
-    list: (start: string, end: string, companyId?: string) =>
-      `/payments/stores?start=${start}&end=${end}&company=${companyId}`,
+    list: '/payments/stores',
+    listWith: (start: string, end: string, companyId?: string) =>
+      `/payments/stores?start=${start}&end=${end}&company=${companyId ?? ''}`,
     create: '/payments/stores',
     delete: (paymentId: string) => `/payments/stores/${paymentId}`,
   },

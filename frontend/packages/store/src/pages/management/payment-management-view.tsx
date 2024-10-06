@@ -1,5 +1,5 @@
 import type { ISelectOption } from '@e201/ui'
-import type { IPaymentGroup, IPaymentResponse } from '@/types/payment'
+import type { IPaymentResponse } from '@/types/payment'
 import type { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
@@ -9,7 +9,6 @@ import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { grouping } from '@/utils/payment'
 import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { DialogDelete } from '@/components/dialog'
@@ -38,12 +37,13 @@ export function PaymentManagementView() {
 
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
 
-  const queryFn = async () => {
-    const response = await axios.get<IPaymentResponse[]>(api.payment.list(start, end))
-    return response.data
-  }
-
-  const { data, isPending, isError } = useQuery({ queryKey: [api.payment], queryFn })
+  const { data, isPending } = useQuery({
+    queryKey: [api.payment.list, 'POST', start, end],
+    queryFn: async () => {
+      const response = await axios.get<IPaymentResponse[]>(api.payment.listWith(start, end))
+      return response.data
+    },
+  })
 
   const companies = useMemo(() => {
     if (!data) {
@@ -60,32 +60,24 @@ export function PaymentManagementView() {
     return companyList
   }, [data])
 
-  const groupedData = useMemo(() => {
+  // const groupedData = useMemo(() => {
+  //   if (!data) {
+  //     return []
+  //   }
+  //   return grouping(data)
+  // }, [data])
+
+  const filteredData = useMemo(() => {
     if (!data) {
       return []
     }
-    return grouping(data)
-  }, [data])
 
-  const filteredData = useMemo(() => {
-    const filterDate = dayjs()
-      .year(year)
-      .month(month - 1)
-    const startDate = filterDate.startOf('month')
-    const endDate = filterDate.endOf('month')
-
-    let filtered = [...groupedData]
-
-    filtered = filtered.filter((group) =>
-      dayjs(group.createdAt).isBetween(startDate, endDate, 'date', '[]')
-    )
-
+    let filtered = [...data]
     if (selectedCompany !== null) {
       filtered = filtered.filter((group) => group.companyId === selectedCompany)
     }
-
     return filtered
-  }, [groupedData, month, year, selectedCompany])
+  }, [data, selectedCompany])
 
   const deleteSubmitHandler = () => {
     toast.success(t('toast.delete'))
@@ -98,7 +90,7 @@ export function PaymentManagementView() {
     setMonth(dateMonth)
   }
 
-  const columns: GridColDef<IPaymentGroup>[] = [
+  const columns: GridColDef<IPaymentResponse>[] = [
     { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
     { field: 'employeeCode', headerName: t('field.employee_code'), width: 100 },
     {
@@ -113,6 +105,7 @@ export function PaymentManagementView() {
       headerName: t('field.total_price'),
       type: 'number',
       width: 100,
+      valueGetter: (_, row) => row.menus.reduce((acc, curr) => acc + curr.price, 0),
       valueFormatter: (value: number) => `${fNumber(value)}${t('unit.won')}`,
     },
     {
@@ -124,10 +117,6 @@ export function PaymentManagementView() {
       valueFormatter: (value: Date) => dayjs(value).format('YYYY-MM-DD HH:mm'),
     },
   ]
-
-  if (isError) {
-    return null
-  }
 
   return (
     <>
@@ -192,6 +181,7 @@ export function PaymentManagementView() {
           <DataGrid
             columns={columns}
             rows={filteredData}
+            getRowId={(row) => row.paymentId}
             rowSelectionModel={selected}
             onRowSelectionModelChange={setSelected}
             checkboxSelection

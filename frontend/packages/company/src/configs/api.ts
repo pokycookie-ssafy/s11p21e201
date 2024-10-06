@@ -27,9 +27,11 @@ const api = {
     deleteWith: (id: string) => `/companies/employees/${id}`,
   },
   payment: {
-    list: (start: string, end: string, departmentId?: string) =>
-      `/payments/companies?start=${start}&end=${end}&department=${departmentId}`,
-    detail: (start: string, end: string, employeeId?: string) =>
+    list: '/payments/companies/employees',
+    listWith: (start: string, end: string, departmentId?: string) =>
+      `/payments/companies/employees?start=${start}&end=${end}&department=${departmentId}`,
+    detail: '/payments/companies/employees',
+    detailWith: (start: string, end: string, employeeId?: string) =>
       `/payments/companies/employees/${employeeId}?start=${start}&end=${end}`,
   },
   contract: {
