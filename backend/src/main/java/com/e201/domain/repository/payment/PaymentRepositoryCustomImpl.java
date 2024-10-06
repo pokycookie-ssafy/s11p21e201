@@ -158,7 +158,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.join(employee.department, department)
 			.where(
 				matchDepartment(departmentId),
-				employee.department.company.id.eq(companyId)
+				matchCompany(companyId)
 			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -167,7 +167,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 
 	private BooleanExpression matchCompany(UUID companyId) {
 		if (companyId != null) {
-			return department.company.id.eq(companyId);
+			return employee.department.company.id.eq(companyId);
 		}
 		return null;
 	}
