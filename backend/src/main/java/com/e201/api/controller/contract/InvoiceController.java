@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -31,18 +32,18 @@ public class InvoiceController {
 
 	private final InvoiceService invoiceService;
 
-	@PostMapping("/invoice/upload")
+	@PostMapping("/settlements/{settlement_id}/invoice")
 	public ResponseEntity<InvoiceCreateResponse> upload(@Auth AuthInfo authInfo, MultipartFile uploadFile,
-		@RequestParam String contractId) {
-		InvoiceCreateResponse response = invoiceService.create(uploadFile, contractId);
+		@PathVariable UUID settlement_id) {
+		InvoiceCreateResponse response = invoiceService.create(uploadFile, settlement_id);
 		return ResponseEntity.status(OK).body(response);
 	}
 
-	@GetMapping("/invoice/download/{invoiceId}")
-	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable String invoiceId) throws
+	@GetMapping("/settlements/{id}/invoice")
+	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable UUID id) throws
 		IOException {
 
-		InvoiceDownloadResponse response = invoiceService.download(invoiceId);
+		InvoiceDownloadResponse response = invoiceService.download(id);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentDisposition(
