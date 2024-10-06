@@ -116,6 +116,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 
 				return EmployeeTotalPaymentResponse.builder()
 					.employeeId(employee.getId())
+					.employeeCode(employee.getCode())
 					.employeeName(employee.getName())
 					.departmentId(employee.getDepartment().getId())
 					.departmentName(employee.getDepartment().getName())
