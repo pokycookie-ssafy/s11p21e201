@@ -62,8 +62,11 @@ public class InvoiceService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
-	public InvoiceDownloadResponse download(String invoiceId) throws IOException {
-		Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceId))
+	public InvoiceDownloadResponse download(UUID settlementId) throws IOException {
+		PaymentMonthlySum settlement = paymentMonthlySumRepository.findById(settlementId)
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+
+		Invoice invoice = invoiceRepository.findById(settlement.getInvoiceId())
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 
 		Path invoiceFile = Paths.get(path + invoice.getImageUrl());
