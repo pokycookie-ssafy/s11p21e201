@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeUsageRequest;
 import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
+import com.e201.api.controller.dashboard.request.DashboardPeriodRequest;
+import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
+import com.e201.api.controller.dashboard.response.DepartmentPaymentSumResponse;
+import com.e201.api.controller.dashboard.response.EmployeePaymentSumResponse;
+import com.e201.api.controller.dashboard.response.StorePaymentSumResponse;
 import com.e201.api.controller.payment.request.EmployeePaymentCondition;
 import com.e201.api.controller.payment.request.EmployeeTotalPaymentCondition;
 import com.e201.api.controller.payment.response.EmployeePaymentResponse;
@@ -36,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 public class PaymentService {
 
 	private final PaymentRepository paymentRepository;
+	private final ManagerService managerService;
 	private final EmployeeService employeeService;
 	private final SalesRepository salesRepository;
 
@@ -94,10 +100,42 @@ public class PaymentService {
 			condition.getEndDate(), pageable);
 	}
 
+	public List<CompanyMonthlyPaymentSumResponse> findAnnualTrendByCompany(AuthInfo authInfo,
+		DashboardPeriodRequest request) {
+		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
+		UUID departmentId = authInfo.getRoleType().equals(MANAGER) ?
+			managerService.findEntity(authInfo.getId()).getDepartment().getId() : null;
+		return paymentRepository.findMonthlySumByCompany(companyId, departmentId, request.getStartDate(),
+			request.getEndDate());
+	}
+
+	public List<DepartmentPaymentSumResponse> findMonthlySumByDepartment(UUID companyId,
+		DashboardPeriodRequest request) {
+		return paymentRepository.findMonthlySumByDepartment(companyId, request.getStartDate(), request.getEndDate());
+	}
+
+	public List<EmployeePaymentSumResponse> findMonthlySumByEmployee(UUID managerId, DashboardPeriodRequest request) {
+		UUID departmentId = managerService.findEntity(managerId).getDepartment().getId();
+		return paymentRepository.findMonthlySumByEmployee(departmentId, request.getStartDate(), request.getEndDate());
+	}
+
+	public List<StorePaymentSumResponse> findMonthlySumByStore(AuthInfo authInfo, DashboardPeriodRequest request) {
+		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
+		UUID departmentId = authInfo.getRoleType().equals(MANAGER) ?
+			managerService.findEntity(authInfo.getId()).getDepartment().getId() : null;
+		return paymentRepository.findMonthlySumByStore(companyId, departmentId, request.getStartDate(),
+			request.getEndDate());
+	}
+
 	public Payment save(UUID contractId, UUID employeeId, Store store, Long totalAmount) {
+		Employee employee = employeeService.findEntity(employeeId);
 		Payment payment = Payment.builder()
 			.contractId(contractId)
+			.companyId(employee.getDepartment().getCompany().getId())
+			.departmentId(employee.getDepartment().getId())
+			.departmentName(employee.getDepartment().getName())
 			.employeeId(employeeId)
+			.employeeName(employee.getName())
 			.storeId(store.getId())
 			.storeName(store.getStoreInfo().getName())
 			.amount(totalAmount)

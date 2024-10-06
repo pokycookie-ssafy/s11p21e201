@@ -1,5 +1,6 @@
 package com.e201.domain.repository.payment;
 
+import static com.e201.domain.entity.company.QCompany.*;
 import static com.e201.domain.entity.company.QDepartment.*;
 import static com.e201.domain.entity.company.QEmployee.*;
 import static com.e201.domain.entity.payment.QPayment.*;
@@ -9,13 +10,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
+import com.e201.api.controller.dashboard.response.StorePaymentSumResponse;
 import com.e201.api.controller.payment.response.EmployeePaymentResponse;
 import com.e201.api.controller.payment.response.EmployeeSpentAmount;
 import com.e201.api.controller.payment.response.EmployeeTotalPaymentResponse;
@@ -29,7 +30,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 
-	private static final Logger log = LoggerFactory.getLogger(PaymentRepositoryCustomImpl.class);
 	private final JPAQueryFactory companyQueryFactory;
 	private final JPAQueryFactory paymentQueryFactory;
 
@@ -65,11 +65,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 		// 직원의 결제 내역 페이지 조회
 		List<Payment> payments = paymentQueryFactory
 			.selectFrom(payment)
-			.where(
-				payment.employeeId.eq(findEmployee.getId()),
-				payment.paymentDate.goe(startDate),  // >= 조건
-				payment.paymentDate.loe(endDate)
-			)
+			.where(payment.employeeId.eq(findEmployee.getId()))
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
@@ -91,6 +87,45 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.departmentName(findEmployee.getDepartment().getName())
 			.payments(paymentPage)
 			.build();
+	}
+
+	@Override
+	public List<CompanyMonthlyPaymentSumResponse> findMonthlySumByCompany(UUID companyId, UUID departmentId,
+		LocalDateTime startDate, LocalDateTime endDate) {
+		return paymentQueryFactory
+			.select(Projections.constructor(CompanyMonthlyPaymentSumResponse.class,
+				payment.paymentDate.year(),
+				payment.paymentDate.month(),
+				payment.amount.sum()
+			))
+			.from(payment)
+			.where(
+				payment.paymentDate.between(startDate, endDate),
+				matchCompany(companyId),
+				matchDepartment(departmentId)
+			)
+			.groupBy(payment.paymentDate.year(), payment.paymentDate.month())
+			.orderBy(payment.paymentDate.year().asc(), payment.paymentDate.month().asc())
+			.fetch();
+	}
+
+	@Override
+	public List<StorePaymentSumResponse> findMonthlySumByStore(UUID companyId, UUID departmentId,
+		LocalDateTime startDate, LocalDateTime endDate) {
+			return paymentQueryFactory
+				.select(Projections.constructor(StorePaymentSumResponse.class,
+					payment.storeId,
+					payment.storeName,
+					payment.amount.sum()
+				))
+				.from(payment)
+				.where(
+					payment.paymentDate.between(startDate, endDate),
+					matchCompany(companyId),
+					matchDepartment(departmentId)
+				)
+				.groupBy(payment.storeId)
+				.fetch();
 	}
 
 	private JPAQuery<Long> createCountQuery(UUID companyId, UUID departmentId) {
