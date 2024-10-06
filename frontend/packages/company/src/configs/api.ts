@@ -44,7 +44,8 @@ const api = {
     terminateWith: (contractId: string) => `/contracts/${contractId}`,
   },
   settlement: {
-    list: (start: string, end: string) => `/settlements?start=${start}&end=${end}`,
+    list: '/settlements',
+    listWith: (start: string, end: string) => `/settlements?startTime=${start}&endTime=${end}`,
   },
   common: {
     ocr: '/ocr/license',

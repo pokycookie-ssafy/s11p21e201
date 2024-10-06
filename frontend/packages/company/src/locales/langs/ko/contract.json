@@ -55,7 +55,7 @@
     "status": "상태",
     "in_progress": "승인중",
     "contract_date": "계약날짜",
-    "settlement_date": "결제날짜",
+    "settlement_date": "정산일",
     "email": "이메일"
   },
   "tooltip": {

@@ -24,7 +24,7 @@ interface IContract {
   storePhone: string
   storeAddress: string
   contractDate: Date
-  settlementDate: number
+  settlementDay: number
   status: ContractResponseStatus
 }
 

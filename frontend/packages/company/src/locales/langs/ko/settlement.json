@@ -23,12 +23,16 @@
   "settlement": "정산",
   "close": "닫기",
   "settlement_amount": "정산예정액",
+
   "field": {
-    "store_name": "식당명"
+    "store_name": "식당명",
+    "action": "정산"
   },
   "tooltip": {
     "check_tax": "조회",
-    "no_tax": "대기중"
+    "no_tax": "대기중",
+    "settle": "정산하기",
+    "settle_done": "정산완료"
   },
   "breadcrumbs": {
     "management": "관리",
@@ -41,5 +45,8 @@
   },
   "label": {
     "store_name": "식당명 검색"
+  },
+  "button": {
+    "settle": "정산하기"
   }
 }

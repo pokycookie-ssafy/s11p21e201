@@ -14,7 +14,7 @@
     "phone": "대표번호",
     "application_date": "신청날짜",
     "contract_date": "계약날짜",
-    "settlement_date": "결제날짜",
+    "settlement_date": "정산일",
     "status": "상태",
     "action": "처리",
     "in_progress": "요청 처리 중",
