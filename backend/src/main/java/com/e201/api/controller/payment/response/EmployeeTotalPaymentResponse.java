@@ -10,6 +10,7 @@ import lombok.Getter;
 public class EmployeeTotalPaymentResponse {
 
 	private UUID employeeId;
+	private String employeeCode;
 	private String employeeName;
 	private UUID departmentId;
 	private String departmentName;
@@ -18,9 +19,10 @@ public class EmployeeTotalPaymentResponse {
 	private LocalDateTime createdAt;
 
 	@Builder
-	private EmployeeTotalPaymentResponse(UUID employeeId, String employeeName, UUID departmentId, String departmentName,
+	private EmployeeTotalPaymentResponse(UUID employeeId, String employeeCode, String employeeName, UUID departmentId, String departmentName,
 		Long supportAmount, Long spentAmount, LocalDateTime createdAt) {
 		this.employeeId = employeeId;
+		this.employeeCode = employeeCode;
 		this.employeeName = employeeName;
 		this.departmentId = departmentId;
 		this.departmentName = departmentName;
