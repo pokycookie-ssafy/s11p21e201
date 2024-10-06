@@ -1,12 +1,12 @@
-import type { IContractResponse } from '@/types/contract'
+// import type { IContractResponse } from '@/types/contract'
 
-type ContractMock =
-  | IContractResponse
-  | {
-      contractDate: string
-    }
+// type ContractMock =
+//   | IContractResponse
+//   | {
+//       contractDate: string
+//     }
 
-export const contractNow: ContractMock[] = [
+export const contractNow = [
   {
     contractId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958',
     companyId: '71ca0179-bf2c-46fa-ab7d-61a7d370a958123',
