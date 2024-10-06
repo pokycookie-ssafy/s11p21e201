@@ -36,7 +36,7 @@ export default function SignInView() {
 
   const submitHandler = async (form: IForm) => {
     try {
-      const { data, status } = await axios.post(api.auth.login, form)
+      const { data, status } = await axios.post(api.login, form)
       if (status === 201) {
         login(data)
         navigate(paths.main)

@@ -4,8 +4,8 @@ import paths from '@/configs/paths'
 import MainView from '@/pages/main-view'
 import NavLayout from '@/layouts/nav-layout'
 import SignInView from '@/pages/sign-in-view'
+import SettingView from '@/pages/setting-view'
 import PaymentsView from '@/pages/payments-view'
-import PwChangeView from '@/pages/pw-change-view'
 import PrivateLayout from '@/layouts/private-layout'
 import OnlyPublicLayout from '@/layouts/only-public-layout'
 
@@ -35,11 +35,7 @@ const mainRoute: RouteObject[] = [
           },
           {
             path: paths.setting,
-            element: <PaymentsView />,
-          },
-          {
-            path: paths.changePw,
-            element: <PwChangeView />,
+            element: <SettingView />,
           },
         ],
       },
