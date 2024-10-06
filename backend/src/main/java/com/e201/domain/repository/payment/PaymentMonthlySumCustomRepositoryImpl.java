@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -64,16 +65,24 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 
 	private List<SettlementFindResponse> createSettlementFindResponse(Map<UUID, Map<String, UUID>> contracts,
 		List<PaymentMonthlySum> paymentMonthlySums, Map<UUID, String> partnerNameMap) {
+
 		return paymentMonthlySums.stream()
-			.map(settlementData -> SettlementFindResponse.builder()
-				.companyId(String.valueOf(contracts.get(settlementData.getContractId()).get("companyId")))
-				.companyName(partnerNameMap.get(contracts.get(settlementData.getContractId()).get("companyId")))
-				.settlementDate(settlementData.getCreatedAt())
-				.settledDate(settlementData.getModifiedAt())
-				.settlementAmount(settlementData.getAmount())
-				.settledAmount(settlementData.getPaid())
-				.taxInvoice(settlementData.getInvoiceId().toString())
-				.build()
+			.map(settlementData -> {
+
+				String taxInvoice = Optional.ofNullable(settlementData.getInvoiceId())
+					.map(UUID::toString).orElse(null);
+
+				return SettlementFindResponse.builder()
+					.id(settlementData.getId().toString())
+					.companyId(String.valueOf(contracts.get(settlementData.getContractId()).get("companyId")))
+					.companyName(partnerNameMap.get(contracts.get(settlementData.getContractId()).get("companyId")))
+					.settlementDate(settlementData.getCreatedAt())
+					.settledDate(settlementData.getModifiedAt())
+					.settlementAmount(settlementData.getAmount())
+					.settledAmount(settlementData.getPaid())
+					.taxInvoice(taxInvoice)
+					.build();
+				}
 			).collect(Collectors.toList());
 	}
 
@@ -100,7 +109,7 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 			.fetch().stream()
 			.collect(Collectors.toMap(
 				tuple -> tuple.get(company.id),
-				tuple -> tuple.get(company.companyInfo.name)
+				tuple -> Optional.ofNullable(tuple.get(company.companyInfo.name)).orElse("")
 			));
 	}
 
@@ -119,7 +128,7 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 			.stream()
 			.collect(Collectors.toMap(
 				tuple -> tuple.get(store.id),
-				tuple -> tuple.get(store.storeInfo.name)
+				tuple -> Optional.ofNullable(tuple.get(store.storeInfo.name)).orElse("")
 			));
 	}
 
