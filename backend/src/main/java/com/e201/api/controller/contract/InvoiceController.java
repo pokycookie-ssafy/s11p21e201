@@ -72,11 +72,11 @@ public class InvoiceController {
 		return ResponseEntity.status(OK).body(response);
 	}
 
-	@GetMapping("/invoice/download/{invoiceId}")
-	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable String invoiceId) throws
+	@GetMapping("/settlements/{id}/invoice")
+	public ResponseEntity<Resource> download(@Auth AuthInfo authInfo, @PathVariable UUID id) throws
 		IOException {
 
-		InvoiceDownloadResponse response = invoiceService.download(invoiceId);
+		InvoiceDownloadResponse response = invoiceService.download(id);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentDisposition(
