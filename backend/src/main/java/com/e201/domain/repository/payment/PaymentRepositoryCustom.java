@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.e201.api.controller.dashboard.response.CompanyDailyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.StorePaymentSumResponse;
 import com.e201.api.controller.payment.response.EmployeePaymentResponse;
@@ -20,6 +21,9 @@ public interface PaymentRepositoryCustom {
 		Pageable pageable);
 
 	List<CompanyMonthlyPaymentSumResponse> findMonthlySumByCompany(UUID companyId, UUID departmentId,
+		LocalDateTime startDate, LocalDateTime endDate);
+
+	List<CompanyDailyPaymentSumResponse> findDailySumByCompany(UUID companyId, UUID departmentId,
 		LocalDateTime startDate, LocalDateTime endDate);
 
 	List<StorePaymentSumResponse> findMonthlySumByStore(UUID companyId, UUID departmentId, LocalDateTime startDate,
