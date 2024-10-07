@@ -46,6 +46,9 @@ const api = {
   settlement: {
     list: '/settlements',
     listWith: (start: string, end: string) => `/settlements?startTime=${start}&endTime=${end}`,
+    settle: '/settlements',
+    invoice: '/settlements/{settlementId}/invoice',
+    invoiceWith: (settlementId: string) => `/settlements/${settlementId}/invoice`,
   },
   common: {
     ocr: '/ocr/license',

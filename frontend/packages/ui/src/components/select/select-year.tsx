@@ -1,7 +1,8 @@
 import type { MouseEvent } from 'react'
+import type { TFunction } from 'i18next'
 
-import { useState } from 'react'
-import { Stack, Button, Popover } from '@mui/material'
+import { useRef, useState } from 'react'
+import { Stack, Button, Popover, IconButton } from '@mui/material'
 
 import { Iconify } from '../iconify'
 import { Typography } from '../typography'
@@ -10,6 +11,7 @@ import { ScrollContainer } from '../scrollbar'
 interface IProps {
   year: number
   onChange?: (year: number) => void
+  t: TFunction<string, undefined>
 }
 
 const NOW = new Date().getFullYear()
@@ -18,15 +20,28 @@ const END = NOW
 
 const years = Array.from({ length: END - START }, (_, i) => END - i)
 
-export function SelectYear({ year, onChange }: IProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+export function SelectYear({ year, onChange, t }: IProps) {
+  const anchorRef = useRef<HTMLDivElement | null>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null)
 
   const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(e.currentTarget)
+    setAnchorEl(anchorRef.current)
   }
 
   const closeHandler = () => {
     setAnchorEl(null)
+  }
+
+  const increase = () => {
+    if (onChange) {
+      onChange(year + 1)
+    }
+  }
+
+  const decrease = () => {
+    if (onChange) {
+      onChange(year - 1)
+    }
   }
 
   const changeHandler = (y: number) => {
@@ -38,32 +53,27 @@ export function SelectYear({ year, onChange }: IProps) {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        onClick={clickHandler}
-        sx={{
-          p: 1,
-          pl: 1.5,
-          width: 100,
-          flexShrink: 0,
-          color: (theme) => theme.palette.text.secondary,
-          borderColor: (theme) => theme.palette.text.disabled,
-        }}
-        color="inherit"
+      <Stack
+        direction="row"
+        alignItems="center"
+        p={0.5}
+        sx={{ border: (theme) => `1px solid ${theme.palette.divider}`, borderRadius: 1 }}
+        ref={anchorRef}
       >
-        <Stack
-          direction="row"
-          width={1}
-          spacing={1}
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Typography variant="subtitle2" color="text.primary">
-            {year}년
+        <IconButton onClick={decrease} sx={{ borderRadius: 1 }}>
+          <Iconify icon="solar:alt-arrow-left-bold" width={15} />
+        </IconButton>
+        <IconButton sx={{ borderRadius: 1, height: 31 }} onClick={clickHandler}>
+          <Typography variant="subtitle2" width={50} textAlign="center" sx={{ cursor: 'pointer' }}>
+            {year}
+            {t('unit.year')}
           </Typography>
-          <Iconify icon="solar:alt-arrow-down-line-duotone" />
-        </Stack>
-      </Button>
+        </IconButton>
+        <IconButton onClick={increase} sx={{ borderRadius: 1 }}>
+          <Iconify icon="solar:alt-arrow-right-bold" width={15} />
+        </IconButton>
+      </Stack>
+
       <Popover
         open={!!anchorEl}
         onClose={closeHandler}
@@ -73,12 +83,13 @@ export function SelectYear({ year, onChange }: IProps) {
           horizontal: 'left',
         }}
       >
-        <ScrollContainer sx={{ width: 100, maxHeight: 200 }}>
+        <ScrollContainer sx={{ width: 137, maxHeight: 200 }}>
           <Stack spacing={0.5} p={0.5}>
             {years.map((y) => (
               <Button key={y} variant="soft" onClick={() => changeHandler(y)}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  {y}년
+                  {y}
+                  {t('unit.year')}
                 </Typography>
               </Button>
             ))}

@@ -22,6 +22,12 @@ export default function TaxInvoiceUploadModal({ open, onClose, onSubmit }: IProp
     setFile(null)
   }
 
+  const submitHandler = () => {
+    if (onSubmit && file) {
+      onSubmit(file)
+    }
+  }
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <Stack p={3}>
@@ -36,7 +42,9 @@ export default function TaxInvoiceUploadModal({ open, onClose, onSubmit }: IProp
         />
         <Stack spacing={1}>
           <Upload placeholder="세금계산서를 업로드해주세요" onChange={fileHandler} />
-          <Button disabled={file === null}>업로드</Button>
+          <Button disabled={file === null} onClick={submitHandler}>
+            업로드
+          </Button>
         </Stack>
       </Stack>
     </Dialog>

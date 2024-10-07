@@ -1,7 +1,7 @@
-import type { ISettlementResponse } from '@/types/settlement'
+import type { ISettlement } from '@/types/settlement'
 
 type SettlementMock =
-  | ISettlementResponse
+  | ISettlement
   | {
       settlementDate: string
       settledDate: string
