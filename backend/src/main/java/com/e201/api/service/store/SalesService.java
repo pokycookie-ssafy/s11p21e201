@@ -90,6 +90,15 @@ public class SalesService {
 		Department department = employee.getDepartment();
 		return department.getCompany();
 	}
+	@JtaTransactional(readOnly = true)
+	public List<FindPaymentsResponse> findAllStorePayments(UUID storeId){
+		List<Sales> salesList;
+		Map<UUID, FindPaymentsResponse> map = new HashMap<>();
+		//모든 company에 대한 payments들 조회
+		salesList = salesRepository.findByStoreId(storeId);
+		createPaymentResult(salesList,map);
+		return new ArrayList<>(map.values());
+	}
 
 	@JtaTransactional(readOnly = true)
 	public List<FindPaymentsResponse> findStorePayments(UUID storeId, FindPaymentsCondition findPaymentsCondition) {
@@ -106,6 +115,11 @@ public class SalesService {
 				findPaymentsCondition.getEnd());
 		}
 		//결과 값 생성
+		createPaymentResult(salesList, map);
+		return new ArrayList<>(map.values());
+	}
+
+	private void createPaymentResult(List<Sales> salesList, Map<UUID, FindPaymentsResponse> map) {
 		for (Sales sales : salesList) {
 			if (map.containsKey(sales.getPaymentId())) {
 				FindPaymentMenu menu = createFindPaymentMenu(sales.getMenu());
@@ -120,7 +134,6 @@ public class SalesService {
 				map.put(sales.getPaymentId(), response);
 			}
 		}
-		return new ArrayList<>(map.values());
 	}
 
 	private void QRValidation(String qr){

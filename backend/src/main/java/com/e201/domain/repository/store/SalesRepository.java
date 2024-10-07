@@ -28,5 +28,8 @@ public interface SalesRepository extends JpaRepository<Sales, UUID> {
 
 	@Query("select s from Sales s join fetch Menu m on s.menu.id = m.id where s.paymentId = :paymentId")
 	List<Sales> findByPaymentId(UUID paymentId);
+
+	@Query("select s from Sales s where s.storeId = :storeId")
+	List<Sales> findByStoreId(UUID storeId);
 }
 
