@@ -2,9 +2,11 @@ package com.e201.api.controller.company;
 
 import static com.e201.global.exception.ErrorCode.*;
 import static com.e201.global.security.auth.constant.AuthConstant.*;
+import static com.e201.global.security.auth.constant.RoleType.*;
 import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +22,10 @@ import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.company.EmployeeService;
 import com.e201.api.service.company.ManagerService;
 import com.e201.global.exception.ErrorCode;
+import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.exception.AuthenticationException;
+import com.e201.global.security.auth.exception.AuthorizationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -92,24 +96,33 @@ public class CompanyAuthController {
 
 	private CompanyAuthResponse checkCompanyAuth(Object session) {
 		CompanyAuthResponse response = null;
-		if(session instanceof AuthInfo) {
-			response = new CompanyAuthResponse(((AuthInfo)session).getId());
+		if(session instanceof AuthInfo authInfo) {
+			validateRoletype(authInfo, COMPANY);
+			response = new CompanyAuthResponse(authInfo.getId());
 		}
 		return response;
 	}
 
 	private ManagerAuthResponse checkManagerAuth(Object session) {
 		ManagerAuthResponse response = null;
-		if(session instanceof AuthInfo) {
+		if(session instanceof AuthInfo authInfo) {
+			validateRoletype(authInfo, MANAGER);
 			response = managerService.findAuth(((AuthInfo)session).getId());
 		}
 		return response;
 	}
 	private EmployeeAuthResponse checkEmployeeAuth(Object session) {
 		EmployeeAuthResponse response = null;
-		if(session instanceof AuthInfo) {
+		if(session instanceof AuthInfo authInfo) {
+			validateRoletype(authInfo, EMPLOYEE);
 			response = employeeService.findAuth(((AuthInfo)session).getId());
 		}
 		return response;
+	}
+
+	private void validateRoletype(AuthInfo authInfo, RoleType roleType) {
+		if (!authInfo.getRoleType().equals(roleType)) {
+			throw new AuthorizationException(ErrorCode.AUTHORIZATION_FAILED, "접근 권한이 없습니다.");
+		}
 	}
 }
