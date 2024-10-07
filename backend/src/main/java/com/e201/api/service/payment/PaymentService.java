@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.e201.api.controller.company.request.employee.EmployeeUsageRequest;
 import com.e201.api.controller.company.response.employee.EmployeeUsageResponse;
 import com.e201.api.controller.dashboard.request.DashboardPeriodRequest;
+import com.e201.api.controller.dashboard.response.CompanyDailyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.DepartmentPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.EmployeePaymentSumResponse;
@@ -100,12 +101,21 @@ public class PaymentService {
 			condition.getEndDate(), pageable);
 	}
 
-	public List<CompanyMonthlyPaymentSumResponse> findAnnualTrendByCompany(AuthInfo authInfo,
+	public List<CompanyMonthlyPaymentSumResponse> findAnnualTrendMonthly(AuthInfo authInfo,
 		DashboardPeriodRequest request) {
 		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
 		UUID departmentId = authInfo.getRoleType().equals(MANAGER) ?
 			managerService.findEntity(authInfo.getId()).getDepartment().getId() : null;
 		return paymentRepository.findMonthlySumByCompany(companyId, departmentId, request.getStartDate(),
+			request.getEndDate());
+	}
+
+	public List<CompanyDailyPaymentSumResponse> findAnnualTrendDaily(AuthInfo authInfo,
+		DashboardPeriodRequest request) {
+		UUID companyId = authInfo.getRoleType().equals(COMPANY) ? authInfo.getId() : null;
+		UUID departmentId = authInfo.getRoleType().equals(MANAGER) ?
+			managerService.findEntity(authInfo.getId()).getDepartment().getId() : null;
+		return paymentRepository.findDailySumByCompany(companyId, departmentId, request.getStartDate(),
 			request.getEndDate());
 	}
 
