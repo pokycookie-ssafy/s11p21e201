@@ -153,7 +153,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 				matchCompanyFromPayment(companyId),
 				matchDepartmentFromPayment(departmentId)
 			)
-			.groupBy(payment.storeId)
+			.groupBy(payment.storeId, payment.storeName)
 			.fetch();
 	}
 
