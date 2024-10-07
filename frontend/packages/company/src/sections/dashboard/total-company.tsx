@@ -1,67 +1,61 @@
-import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
-
+import axios from 'axios'
 import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
-import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 
 import { Box, Card, Stack, Select, MenuItem, useTheme, FormControl } from '@mui/material'
 
 import { Typography } from '@e201/ui'
 
-interface TotalCompanyProps {
-  data: IDashboardPaymentCompany[]
+interface IDashboardPaymentResponse {
+  year: number
+  month: number
+  totalAmount: number
 }
 
-export default function TotalCompany({ data }: TotalCompanyProps) {
+export default function TotalCompany() {
+  const [data, setData] = useState<IDashboardPaymentResponse[]>([])
   const [viewType, setViewType] = useState<'월별' | '일별'>('월별')
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
-  const [xaxisRange, setXaxisRange] = useState<{ min?: number; max?: number }>({})
 
-  const { t } = useTranslate('dashboard')
   const theme = useTheme()
+
+  const endDate = dayjs().subtract(1, 'month').endOf('month').format('YYYY-MM-DDTHH:mm:ss') // 저번달 마지막 날
+  const startDate = dayjs().subtract(7, 'month').startOf('month').format('YYYY-MM-DDTHH:mm:ss') // 저번달로부터 6개월 전 첫날
+
+  // 데이터를 불러오는 useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<IDashboardPaymentResponse[]>(
+          '/companies/dashboards/years/months',
+          {
+            params: {
+              startDate,
+              endDate,
+            },
+          }
+        )
+        setData(response.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [startDate, endDate])
 
   useEffect(() => {
     if (data.length > 0) {
       if (viewType === '월별') {
-        const monthlyTotals: { [key: string]: number } = {}
-
-        data.forEach((payment) => {
-          const month = dayjs(payment.createdAt).format('YYYY-MM')
-          if (monthlyTotals[month]) {
-            monthlyTotals[month] += payment.price
-          } else {
-            monthlyTotals[month] = payment.price
-          }
-        })
-
-        const newCategories = Object.keys(monthlyTotals).sort()
-        const newSeriesData = newCategories.map((month) => monthlyTotals[month])
+        const newCategories = data.map(
+          (item) => `${item.year}-${String(item.month).padStart(2, '0')}`
+        )
+        const newSeriesData = data.map((item) => item.totalAmount)
 
         setCategories(newCategories)
         setSeriesData(newSeriesData)
-        setXaxisRange({})
-      } else {
-        const dailyTotals: { [key: string]: number } = {}
-
-        data.forEach((payment) => {
-          const day = dayjs(payment.createdAt).format('YYYY-MM-DD')
-          if (dailyTotals[day]) {
-            dailyTotals[day] += payment.price
-          } else {
-            dailyTotals[day] = payment.price
-          }
-        })
-
-        const newCategories = Object.keys(dailyTotals).sort()
-        const newSeriesData = newCategories.map((day) => dailyTotals[day])
-
-        setCategories(newCategories)
-        setSeriesData(newSeriesData)
-
-        const last30DaysIndex = newCategories.length > 15 ? newCategories.length - 15 : 0
-        setXaxisRange({ min: last30DaysIndex, max: newCategories.length - 1 })
       }
     }
   }, [data, viewType])
@@ -80,14 +74,9 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     colors: [theme.palette.primary.main],
     xaxis: {
       categories,
-      min: xaxisRange.min,
-      max: xaxisRange.max,
       labels: {
         formatter(value: string) {
-          if (viewType === '일별') {
-            return dayjs(value).format('MM/DD')
-          }
-          return dayjs(value).format('YYYY/MM')
+          return value.replace('-', '/')
         },
         style: {
           colors:
@@ -97,13 +86,9 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     },
     yaxis: {
       min: 0,
-
       labels: {
         formatter(value: number) {
-          if (value === 0) {
-            return ''
-          }
-          return `${value.toLocaleString()}`
+          return value === 0 ? '' : `${value.toLocaleString()}`
         },
         style: {
           colors:
@@ -122,7 +107,7 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}${t('won')}`
+          return `${value.toLocaleString()}원`
         },
       },
     },
@@ -131,36 +116,24 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
   const chartSeries = [
     {
       data: seriesData,
-      name: '',
+      name: 'Total Amount',
     },
   ]
 
   return (
-    <Card
-      sx={{
-        backdropFilter: 'blur(10px)',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: '16px',
-        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
-      }}
-    >
+    <Card>
       <Stack p={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" sx={{ flex: 1, textAlign: 'center' }}>
-            {viewType === '월별' ? t('total_month') : t('total_day')}
-          </Typography>
-          <FormControl variant="outlined" size="small" sx={{ pr: 1 }}>
+          <Typography variant="h6">{viewType === '월별' ? '월별 총액' : '일별 총액'}</Typography>
+          <FormControl variant="outlined" size="small">
             <Select
-              labelId="view-type-select-label"
               value={viewType}
               onChange={(e) => setViewType(e.target.value as '월별' | '일별')}
             >
-              <MenuItem value="월별">{t('monthly')}</MenuItem>
-              <MenuItem value="일별">{t('daily')}</MenuItem>
+              <MenuItem value="월별">월별</MenuItem>
             </Select>
           </FormControl>
         </Box>
-
         <Chart options={chartOptions} series={chartSeries} type="line" height={200} />
       </Stack>
     </Card>

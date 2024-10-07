@@ -30,7 +30,7 @@ export default function DashboardCompanyView() {
         {t('dashboard')}
       </Typography>
       <SummaryCompany data={data} />
-      <TotalCompany data={data} />
+      <TotalCompany />
       <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
         <Box sx={{ flex: 1 }}>
           <DepartmentCompany data={data} />
