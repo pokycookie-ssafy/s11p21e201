@@ -17,11 +17,12 @@ public class SettlementFindResponse {
 	private LocalDateTime settledDate;
 	private Long settlementAmount;
 	private Long settledAmount;
+	private Long receivable;
 	private String taxInvoice;
 
 	@Builder
 	private SettlementFindResponse(UUID id, UUID partnerId, String partnerName, LocalDateTime settlementDate,
-		LocalDateTime settledDate, Long settlementAmount, Long settledAmount, String taxInvoice) {
+		LocalDateTime settledDate, Long settlementAmount, Long settledAmount, Long receivable, String taxInvoice) {
 		this.id = id;
 		this.partnerId = partnerId;
 		this.partnerName = partnerName;
@@ -29,6 +30,7 @@ public class SettlementFindResponse {
 		this.settledDate = settledDate;
 		this.settlementAmount = settlementAmount;
 		this.settledAmount = settledAmount;
+		this.receivable = receivable;
 		this.taxInvoice = taxInvoice;
 	}
 }

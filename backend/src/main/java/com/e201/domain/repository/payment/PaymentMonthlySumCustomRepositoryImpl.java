@@ -90,6 +90,7 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 						.settledDate(settlementData.getModifiedAt())
 						.settlementAmount(settlementData.getAmount())
 						.settledAmount(settlementData.getPaid())
+						.receivable(settlementData.getUnpaid())
 						.taxInvoice(taxInvoice)
 						.build();
 				}
