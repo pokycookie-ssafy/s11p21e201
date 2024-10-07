@@ -1,6 +1,5 @@
 package com.e201.domain.repository.payment;
 
-import static com.e201.domain.entity.company.QCompany.*;
 import static com.e201.domain.entity.company.QDepartment.*;
 import static com.e201.domain.entity.company.QEmployee.*;
 import static com.e201.domain.entity.payment.QPayment.*;
@@ -102,8 +101,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.from(payment)
 			.where(
 				payment.paymentDate.between(startDate, endDate),
-				matchCompany(companyId),
-				matchDepartment(departmentId)
+				matchCompanyFromPayment(companyId),
+				matchDepartmentFromPayment(departmentId)
 			)
 			.groupBy(payment.paymentDate.year(), payment.paymentDate.month())
 			.orderBy(payment.paymentDate.year().asc(), payment.paymentDate.month().asc())
@@ -123,8 +122,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.from(payment)
 			.where(
 				payment.paymentDate.between(startDate, endDate),
-				matchCompany(companyId),
-				matchDepartment(departmentId)
+				matchCompanyFromPayment(companyId),
+				matchDepartmentFromPayment(departmentId)
 			)
 			.groupBy(
 				payment.paymentDate.year(),
@@ -151,8 +150,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.from(payment)
 			.where(
 				payment.paymentDate.between(startDate, endDate),
-				matchCompany(companyId),
-				matchDepartment(departmentId)
+				matchCompanyFromPayment(companyId),
+				matchDepartmentFromPayment(departmentId)
 			)
 			.groupBy(payment.storeId)
 			.fetch();
@@ -164,8 +163,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.from(employee)
 			.join(employee.department, department)
 			.where(
-				matchDepartment(departmentId),
-				matchCompany(companyId)
+				matchCompanyFromEmployee(companyId),
+				matchDepartmentFromEmployee(departmentId)
 			);
 	}
 
@@ -222,24 +221,38 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 			.selectFrom(employee)
 			.join(employee.department, department)
 			.where(
-				matchDepartment(departmentId),
-				matchCompany(companyId)
+				matchCompanyFromEmployee(companyId),
+				matchDepartmentFromEmployee(departmentId)
 			)
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 	}
 
-	private BooleanExpression matchCompany(UUID companyId) {
+	private BooleanExpression matchCompanyFromPayment(UUID companyId) {
 		if (companyId != null) {
-			return employee.department.company.id.eq(companyId);
+			return payment.companyId.eq(companyId);
 		}
 		return null;
 	}
 
-	private BooleanExpression matchDepartment(UUID departmentId) {
+	private BooleanExpression matchDepartmentFromPayment(UUID departmentId) {
 		if (departmentId != null) {
-			return department.id.eq(departmentId);
+			return payment.departmentId.eq(departmentId);
+		}
+		return null;
+	}
+
+	private BooleanExpression matchCompanyFromEmployee(UUID companyId) {
+		if (companyId != null) {
+			return employee.company.id.eq(companyId);
+		}
+		return null;
+	}
+
+	private BooleanExpression matchDepartmentFromEmployee(UUID departmentId) {
+		if (departmentId != null) {
+			return employee.department.id.eq(departmentId);
 		}
 		return null;
 	}

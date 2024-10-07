@@ -28,6 +28,10 @@ public class Employee extends BaseEntity {
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "company_id")
+	private Company company;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_id")
 	private Department department;
 
@@ -44,8 +48,9 @@ public class Employee extends BaseEntity {
 	private Long supportAmount;
 
 	@Builder
-	private Employee(UUID id, Department department, String code, String password, String name, Long supportAmount) {
+	private Employee(UUID id, Company company, Department department, String code, String password, String name, Long supportAmount) {
 		this.id = id;
+		this.company = company;
 		this.department = department;
 		this.code = code;
 		this.password = password;

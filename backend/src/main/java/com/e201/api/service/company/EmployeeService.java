@@ -15,6 +15,7 @@ import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.BaseEntity;
+import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
 import com.e201.domain.entity.company.Manager;
@@ -39,8 +40,9 @@ public class EmployeeService extends BaseEntity {
 	@JtaTransactional
 	public EmployeeCreateResponse create(EmployeeCreateRequest request, UUID managerId) {
 		Manager manager = managerService.findEntity(managerId);
+		Company company = manager.getDepartment().getCompany();
 		Department department = manager.getDepartment();
-		Employee employee = request.toEntity(department);
+		Employee employee = request.toEntity(company, department);
 		encryptPassword(employee);
 		Employee savedEmployee = employeeRepository.save(employee);
 		return new EmployeeCreateResponse(savedEmployee.getId());
