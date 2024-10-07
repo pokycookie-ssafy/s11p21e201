@@ -1,61 +1,61 @@
+import type { NavValue } from '@/configs/nav'
+
 import paths from '@/configs/paths'
+import { navs } from '@/configs/nav'
 import { useTranslate } from '@/locales'
-import { Link, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Tab, Tabs, Stack, Typography } from '@mui/material'
+import { Tab, Box, Tabs, Stack } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
+import { Iconify, Typography } from '@e201/ui'
 
 export function Nav() {
-  const { t } = useTranslate('common')
+  const { t } = useTranslate()
 
-  const location = useLocation()
-  const currentPath = location.pathname
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
 
-  const navLinks = [
-    { label: t('auth.changePw'), icon: 'mdi:password-reset', path: paths.auth.changePw },
-    { label: t('main.title'), icon: 'iconamoon:home', path: paths.root },
-    { label: t('account.title'), icon: 'ant-design:account-book-outlined', path: paths.payments },
-  ]
+  const [tab, setTab] = useState<NavValue>('main')
 
-  const currentTab = navLinks.findIndex((link) => link.path === currentPath)
+  useEffect(() => {
+    if (pathname === paths.main) {
+      setTab('main')
+      return
+    }
+    if (pathname === paths.payments) {
+      setTab('payments')
+      return
+    }
+    if (pathname === paths.setting) {
+      setTab('setting')
+    }
+  }, [pathname])
 
   return (
-    <Stack
-      sx={{
-        flexDirection: 'row',
-        width: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        height: 80,
-        boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.1)',
-        zIndex: 15,
-      }}
+    <Box
+      width={1}
+      zIndex={10}
+      boxShadow="0px -2px 10px 0px rgba(0, 0, 0, 0.1)"
+      bgcolor="background.default"
     >
-      <Tabs
-        value={currentTab}
-        sx={{
-          width: '100%',
-        }}
-      >
-        {navLinks.map((link, index) => (
+      <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="fullWidth">
+        {navs.map((nav, i) => (
           <Tab
-            key={link.path}
-            component={Link}
-            to={link.path}
+            key={i}
+            value={nav.value}
             label={
-              <Stack sx={{ height: 0.6, justifyContent: 'center', alignItems: 'center' }}>
-                <Iconify icon={link.icon} width="48" height="48" />
-                <Typography>{link.label}</Typography>
+              <Stack alignItems="center" spacing={0.5}>
+                <Iconify icon={nav.icon} />
+                <Typography ellipsis variant="caption">
+                  {t(nav.label)}
+                </Typography>
               </Stack>
             }
-            sx={{ flex: 1, minWidth: 0, padding: 0 }}
-            onTouchStart={(e) => {
-              e.currentTarget.click()
-            }}
+            onClick={() => navigate(nav.path)}
           />
         ))}
       </Tabs>
-    </Stack>
+    </Box>
   )
 }

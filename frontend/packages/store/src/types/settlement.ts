@@ -6,7 +6,7 @@ interface ISettlementResponse {
   settledDate: Date
   settlementAmount: number
   settledAmount: number
-  taxInvoice: boolean
+  taxInvoice: string | null
 }
 
 export type { ISettlementResponse }

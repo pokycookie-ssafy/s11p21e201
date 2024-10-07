@@ -15,7 +15,7 @@
   "contract_log": "계약 기록",
   "license_upload": "사업자등록증을 업로드해주세요",
   "need_ocr": "사업자등록증을 선택해주세요",
-  "settlement_date": "매달 {0}일",
+  "settlement_date": "매달 결제일",
   "accept": "수락",
   "in": "진행중",
   "complete": "완료",
@@ -47,15 +47,29 @@
     "canceled": "해지",
     "license_upload": "사업자등록증을 업로드해주세요"
   },
+  "row": {
+    "settlement_date": "매달 {0}일"
+  },
   "field": {
     "action": "처리",
     "status": "상태",
-    "in_progress": "승인중"
+    "in_progress": "승인중",
+    "contract_date": "계약날짜",
+    "settlement_date": "정산일",
+    "email": "이메일"
   },
   "tooltip": {
     "accept": "수락",
     "reject": "거절",
     "accept_all": "일괄 수락",
-    "reject_all": "일괄 거절"
+    "reject_all": "일괄 거절",
+    "contract_cancel": "계약 해지"
+  },
+  "dialog": {
+    "cancel": "계약 해지",
+    "cancel_content": "'{0}' 기업과 계약을 정말로 해지하시겠습니까?"
+  },
+  "toast": {
+    "contract_cancel": "계약이 해지되었습니다"
   }
 }

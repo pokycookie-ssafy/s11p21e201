@@ -7,6 +7,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
+import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
 import { fNumber, useBoolean } from '@e201/utils'
@@ -15,7 +16,7 @@ import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
+import { Label, Iconify, SelectDate, Typography, Breadcrumbs } from '@e201/ui'
 
 dayjs.extend(isBetween)
 
@@ -38,12 +39,15 @@ export default function SettlementDateView() {
     { label: t('tab.upload'), value: 'upload' },
   ]
 
-  const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list)
-    return response.data
-  }
+  const { start, end } = getMonthRange(year, month - 1)
 
-  const { data, isPending } = useQuery({ queryKey: [api.settlement.list], queryFn })
+  const { data: settlements, isPending } = useQuery({
+    queryKey: [api.settlement.list, 'POST', start, end],
+    queryFn: async () => {
+      const response = await axios.get<ISettlementResponse[]>(api.settlement.listWith(start, end))
+      return response.data
+    },
+  })
 
   const statusProvider = (row: ISettlementResponse) => {
     if (row.settledAmount === 0) {
@@ -56,21 +60,11 @@ export default function SettlementDateView() {
   }
 
   const filteredData = useMemo(() => {
-    if (!data) {
+    if (!settlements) {
       return []
     }
 
-    const filterDate = dayjs()
-      .year(year)
-      .month(month - 1)
-    const startDate = filterDate.startOf('month')
-    const endDate = filterDate.endOf('month')
-
-    let filtered = [...data]
-
-    filtered = filtered.filter((e) =>
-      dayjs(e.settlementDate).isBetween(startDate, endDate, 'date', '[]')
-    )
+    let filtered = [...settlements]
     if (tab === 'unsettled') {
       filtered = filtered.filter((e) => e.settledAmount === 0)
     }
@@ -84,7 +78,7 @@ export default function SettlementDateView() {
       filtered = filtered.filter((e) => !e.taxInvoice)
     }
     return filtered
-  }, [data, month, tab, year])
+  }, [settlements, tab])
 
   const dateChangeHandler = (dateYear: number, dateMonth: number) => {
     setYear(dateYear)
@@ -92,7 +86,23 @@ export default function SettlementDateView() {
   }
 
   const columns: GridColDef<ISettlementResponse>[] = [
-    { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
+    {
+      field: 'companyName',
+      flex: 1,
+      minWidth: 100,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('field.company_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.companyName}
+          </Typography>
+        </Stack>
+      ),
+    },
     {
       field: 'settledDate',
       type: 'date',

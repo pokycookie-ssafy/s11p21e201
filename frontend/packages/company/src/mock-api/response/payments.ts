@@ -1,12 +1,12 @@
-import type { IPaymentResponse } from '@/types/payment'
+import type { IPayment } from '@/types/payment'
 
 type MockResponse =
-  | IPaymentResponse
+  | IPayment
   | {
       paidAt: string
     }
 
-export const paymentResponse: MockResponse[] = [
+export const paymentResponse = [
   {
     id: '1',
     employeeId: 'E001',

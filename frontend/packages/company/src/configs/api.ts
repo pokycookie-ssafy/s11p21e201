@@ -1,24 +1,54 @@
-export const BASE_URL = '/api'
+import type { ContractStatus, ContractUserCondition } from '@/types/contract'
+
+export const BASE_URL = 'https://sanedaejangbu.site/api'
 
 const api = {
   auth: {
-    signUp: '/company',
-    login: '/company/auth',
-    logout: '/company/auth',
-    check: '/company/auth/check',
-    unregister: '/company',
+    signUpInfo: '/companies/info',
+    signUp: '/companies',
+    login: '/companies/auth',
+    logout: '/companies/auth',
+    check: '/companies/auth/check',
+    unregister: '/companies',
   },
-  signUp: {
-    bank: '/bank',
+  manager: {
+    list: '/companies/managers',
+    create: '/companies/managers',
+    login: '/companies/managers/auth',
   },
-  common: {
-    ocr: '/licenses/signup',
+  department: {
+    list: '/companies/departments',
+    create: '/companies/departments',
+  },
+  employee: {
+    list: `/companies/employees`,
+    create: `/companies/employees`,
+    delete: `/companies/employees`,
+    deleteWith: (id: string) => `/companies/employees/${id}`,
+  },
+  payment: {
+    department: '/payments/companies/employees',
+    departmentWith: (start: string, end: string, departmentId?: string) =>
+      `/payments/companies/employees?startDate=${start}&endDate=${end}&departmentId=${departmentId ?? ''}`,
+    employee: '/payments/companies/employees',
+    employeeWith: (start: string, end: string, employeeId?: string) =>
+      `/payments/companies/employees/${employeeId}?startDate=${start}&endDate=${end}`,
   },
   contract: {
-    list: '/stores/contracts',
-    received: '/stores/contracts/received',
-    send: '/stores/contracts/send',
-    history: '/stores/contracts/history',
+    list: `/contracts`,
+    listWith: (userCond: ContractUserCondition, status: ContractStatus) =>
+      `/contracts?userCond=${userCond}&status=${status}`,
+    create: `/contracts`,
+    response: `/contracts/respond`,
+    terminate: `/contracts`,
+    terminateWith: (contractId: string) => `/contracts/${contractId}`,
+  },
+  settlement: {
+    list: '/settlements',
+    listWith: (start: string, end: string) => `/settlements?startTime=${start}&endTime=${end}`,
+  },
+  common: {
+    ocr: '/ocr/license',
   },
 }
 

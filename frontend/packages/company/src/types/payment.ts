@@ -1,13 +1,31 @@
-interface IPaymentResponse {
-  id: string
+import type { IPagination } from '@/types/pagination'
+
+interface IPayment {
   employeeId: string
+  employeeCode: string
   employeeName: string
-  price: number
-  paidAt: Date
   departmentId: string
   departmentName: string
-  storeId: string
-  storeName: string
+  spentAmount: number
+  supportAmount: number
+  createdAt: Date
 }
 
-export type { IPaymentResponse }
+interface IPaymentDetail {
+  id: string
+  storeId: string
+  storeName: string
+  spentAmount: number
+  paymentDate: Date
+}
+
+interface IPaymentEmployee {
+  employeeId: string
+  employeeCode: string
+  employeeName: string
+  departmentId: string
+  departmentName: string
+  payments: IPagination<IPaymentDetail[]>
+}
+
+export type { IPayment, IPaymentDetail, IPaymentEmployee }

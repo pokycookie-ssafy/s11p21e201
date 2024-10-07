@@ -1,5 +1,5 @@
 import type { SyntheticEvent } from 'react'
-import type { IContractResponse } from '@/types/contract'
+import type { IContract, IContractRequest } from '@/types/contract'
 import type { GridColDef, GridRowParams, GridRowSelectionModel } from '@mui/x-data-grid'
 
 import dayjs from 'dayjs'
@@ -9,7 +9,7 @@ import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useMemo, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { DataGrid } from '@mui/x-data-grid'
 import {
@@ -31,6 +31,8 @@ type TabType = 'received' | 'send'
 export default function ContractRequestManagementView() {
   const { t } = useTranslate('contract-management')
 
+  const queryClient = useQueryClient()
+
   const [tab, setTab] = useState<TabType>('received')
   const [selected, setSelected] = useState<GridRowSelectionModel>([])
   const [companySearch, setCompanySearch] = useState<string>('')
@@ -40,25 +42,51 @@ export default function ContractRequestManagementView() {
     { label: t('tab.send'), value: 'send' },
   ]
 
-  const receivedQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.received)
-    return response.data
-  }
-
-  const sendQueryFn = async () => {
-    const response = await axios.get<IContractResponse[]>(api.contract.send)
-    return response.data
-  }
-
   const { data: receivedData, isPending: receivedIsPending } = useQuery({
-    queryKey: [api.contract.received],
-    queryFn: receivedQueryFn,
+    queryKey: [api.contract.list, 'received'],
+    queryFn: async () => {
+      const response = await axios.get<IContract[]>(api.contract.listWith('RECEIVER', 'IN'))
+      return response.data
+    },
   })
 
   const { data: sendData, isPending: sendIsPending } = useQuery({
-    queryKey: [api.contract.send],
-    queryFn: sendQueryFn,
+    queryKey: [api.contract.list, 'send'],
+    queryFn: async () => {
+      const response = await axios.get<IContract[]>(api.contract.listWith('SENDER', 'IN'))
+      return response.data
+    },
   })
+
+  const { mutate } = useMutation({
+    mutationKey: [api.contract.response],
+    mutationFn: async (req: IContractRequest) => {
+      const response = await axios.post(api.contract.response, req)
+      return response.data
+    },
+  })
+
+  const approveHandler = (contract: IContract) => {
+    mutate(
+      { contractId: contract.contractId, respondResult: 'APPROVE' },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [api.contract.list] })
+        },
+      }
+    )
+  }
+
+  const rejectHandler = (contract: IContract) => {
+    mutate(
+      { contractId: contract.contractId, respondResult: 'REJECT' },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [api.contract.list] })
+        },
+      }
+    )
+  }
 
   const filteredReceivedData = useMemo(() => {
     if (!receivedData) {
@@ -98,6 +126,7 @@ export default function ContractRequestManagementView() {
     },
     { field: 'companyEmail', headerName: t('field.email'), width: 200 },
     { field: 'companyPhone', headerName: t('field.phone'), width: 150, resizable: false },
+    { field: 'companyAddress', headerName: t('field.address'), width: 300 },
     {
       field: 'settlementDate',
       headerName: t('field.settlement_date'),
@@ -121,12 +150,12 @@ export default function ContractRequestManagementView() {
           resizable: false,
           getActions: (params: GridRowParams) => [
             <Tooltip title={t('tooltip.accept')} arrow disableInteractive>
-              <IconButton color="success">
+              <IconButton color="success" onClick={() => approveHandler(params.row)}>
                 <Iconify icon="iconamoon:check-bold" />
               </IconButton>
             </Tooltip>,
             <Tooltip title={t('tooltip.reject')} arrow disableInteractive>
-              <IconButton color="error">
+              <IconButton color="error" onClick={() => rejectHandler(params.row)}>
                 <Iconify icon="gravity-ui:xmark" />
               </IconButton>
             </Tooltip>,

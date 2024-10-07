@@ -12,7 +12,11 @@
   },
   "management": {
     "title": "관리",
-    "member": "직원 관리",
+    "member": {
+      "title": "직원 관리",
+      "manager": "관리자 관리",
+      "department": "부서 관리"
+    },
     "payment": "장부 관리",
     "contract": {
       "title": "계약 관리",

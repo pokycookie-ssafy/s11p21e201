@@ -15,7 +15,7 @@ import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Tab, Card, Tabs, Stack, Tooltip, IconButton } from '@mui/material'
 
-import { Label, Select, Iconify, Breadcrumbs } from '@e201/ui'
+import { Label, Select, Iconify, Typography, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
@@ -36,11 +36,11 @@ export default function SettlementCompanyView() {
   ]
 
   const queryFn = async () => {
-    const response = await axios.get<ISettlementResponse[]>(api.settlement.list)
+    const response = await axios.get<ISettlementResponse[]>(api.settlement.listWith('', ''))
     return response.data
   }
 
-  const { data, isPending } = useQuery({ queryKey: [api.settlement.list], queryFn })
+  const { data, isPending } = useQuery({ queryKey: [api.settlement.listWith], queryFn })
 
   const companies = useMemo(() => {
     if (!data) {
@@ -93,7 +93,23 @@ export default function SettlementCompanyView() {
   }, [data, selectedCompany, tab])
 
   const columns: GridColDef<ISettlementResponse>[] = [
-    { field: 'companyName', headerName: t('field.company_name'), flex: 1, minWidth: 100 },
+    {
+      field: 'companyName',
+      flex: 1,
+      minWidth: 100,
+      renderHeader: () => (
+        <Typography pl={1} fontSize={14} fontWeight={500}>
+          {t('field.company_name')}
+        </Typography>
+      ),
+      renderCell: (params) => (
+        <Stack height={1} pl={1} justifyContent="center">
+          <Typography fontSize={14} fontWeight={500}>
+            {params.row.companyName}
+          </Typography>
+        </Stack>
+      ),
+    },
     {
       field: 'settledDate',
       type: 'date',

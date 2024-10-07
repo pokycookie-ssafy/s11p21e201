@@ -1,15 +1,26 @@
-interface ISignUpResponse {
-  companyName: string
+interface ISignUpInfoRequest {
+  phone: string
+  businessName: string
   repName: string
   address: string
   registerNumber: string
-  type: string
+  businessType: string
   openDate: string
 }
 
-interface IBankResponse {
-  bankCode: string
-  bankName: string
+interface ISignUpInfoResponse {
+  id: string
 }
 
-export type { IBankResponse, ISignUpResponse }
+interface ISignUpRequest {
+  companyInfoId: string
+  email: string
+  password: string
+}
+
+interface ISignUpResponse {
+  code: string
+  message: string
+}
+
+export type { ISignUpRequest, ISignUpResponse, ISignUpInfoRequest, ISignUpInfoResponse }

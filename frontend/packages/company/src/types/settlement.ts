@@ -1,12 +1,14 @@
-interface ISettlementResponse {
+interface ISettlement {
   id: string
   storeId: string
   storeName: string
+  companyId: string
+  companyName: string
   settlementDate: Date
   settledDate: Date
   settlementAmount: number
   settledAmount: number
-  taxInvoice: boolean
+  taxInvoice: string | null
 }
 
-export type { ISettlementResponse }
+export type { ISettlement }

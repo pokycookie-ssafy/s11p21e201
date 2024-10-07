@@ -1,18 +1,13 @@
+import type { ILicenseOcr } from '@/types/ocr'
+
+import dayjs from 'dayjs'
 import { useTranslate } from '@/locales'
+import { parseDateString } from '@/utils/date'
 
 import { Box, Stack, useTheme, TextField, useMediaQuery, CircularProgress } from '@mui/material'
 
-interface ILicense {
-  companyName: string
-  repName: string
-  address: string
-  registerNumber: string
-  type: string
-  openDate: string
-}
-
 interface IProps {
-  license?: ILicense
+  license?: ILicenseOcr
   isPending?: boolean
 }
 
@@ -38,7 +33,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.company_name')}
-            value={license?.companyName ?? ''}
+            value={license?.businessName ?? ''}
             size="small"
             aria-readonly
             disabled={isPending}
@@ -57,7 +52,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.open_date')}
-            value={license?.openDate ?? ''}
+            value={dayjs(parseDateString(license?.openDate ?? '')).format('YYYY-MM-DD')}
             size="small"
             aria-readonly
             disabled={isPending}
@@ -65,7 +60,7 @@ export default function BusinessLicenseForm({ license, isPending }: IProps) {
           <TextField
             sx={{ width: 1 }}
             label={t('form.type')}
-            value={license?.type ?? ''}
+            value={license?.businessType ?? ''}
             size="small"
             aria-readonly
             disabled={isPending}

@@ -16,7 +16,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-05-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be2',
@@ -26,7 +26,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-06-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be3',
@@ -36,7 +36,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-07-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: false,
+    taxInvoice: null,
   },
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be4',
@@ -46,7 +46,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-08-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be5',
@@ -56,7 +56,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-09-11T13:11:52Z',
     settlementAmount: 10000000,
     settledAmount: 10000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'c5963c26-a037-4484-bb30-3fbf8d72b081',
@@ -66,7 +66,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-05-11T13:11:52Z',
     settlementAmount: 3000000,
     settledAmount: 0,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'c5963c26-a037-4484-bb30-3fbf8d72b082',
@@ -76,7 +76,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-06-11T13:11:52Z',
     settlementAmount: 3000000,
     settledAmount: 1000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'c5963c26-a037-4484-bb30-3fbf8d72b083',
@@ -86,7 +86,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-07-11T13:11:52Z',
     settlementAmount: 3000000,
     settledAmount: 2000000,
-    taxInvoice: true,
+    taxInvoice: null,
   },
   {
     id: 'c5963c26-a037-4484-bb30-3fbf8d72b044',
@@ -96,7 +96,7 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-08-11T13:11:52Z',
     settlementAmount: 3000000,
     settledAmount: 3000000,
-    taxInvoice: false,
+    taxInvoice: null,
   },
   {
     id: 'c5963c26-a037-4484-bb30-3fbf8d72b085',
@@ -106,6 +106,6 @@ export const settlementResponse: SettlementMock[] = [
     settledDate: '2024-09-11T13:11:52Z',
     settlementAmount: 3000000,
     settledAmount: 2000000,
-    taxInvoice: false,
+    taxInvoice: null,
   },
 ]

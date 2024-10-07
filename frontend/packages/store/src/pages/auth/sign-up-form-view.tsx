@@ -1,23 +1,17 @@
-import type { IBankResponse, ISignUpResponse } from '@/types/sign-up'
+import type { ILicenseOcr } from '@/types/ocr'
+import type { ISignUpRequest } from '@/types/sign-up'
 
+import dayjs from 'dayjs'
 import api from '@/configs/api'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import { useMemo, useState } from 'react'
+import { parseDateString } from '@/utils/date'
 import { useQuery } from '@tanstack/react-query'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
-import {
-  Box,
-  Stack,
-  Button,
-  useTheme,
-  MenuItem,
-  Typography,
-  useMediaQuery,
-  CircularProgress,
-} from '@mui/material'
+import { Box, Stack, Button, useTheme, Typography, useMediaQuery } from '@mui/material'
 
 import { Upload, FormInput } from '@e201/ui'
 
@@ -26,13 +20,11 @@ interface IForm {
   password: string
   passwordConfirm: string
   phone: string
-  bank: string
-  account: string
-  companyName: string
+  businessName: string
   repName: string
   address: string
   registerNumber: string
-  type: string
+  businessType: string
   openDate: string
 }
 
@@ -55,20 +47,28 @@ export default function SignUpFormView({ onNext }: IProps) {
       password: '',
       passwordConfirm: '',
       phone: '',
-      bank: '',
-      account: '',
-      companyName: '',
+      businessName: '',
       repName: '',
       address: '',
       registerNumber: '',
-      type: '',
+      businessType: '',
       openDate: '',
     },
   })
   const { control, watch } = formMethod
 
   const queryFn = async () => {
-    const response = await axios.post<ISignUpResponse>(api.common.ocr, {})
+    const formData = new FormData()
+    if (!file) {
+      return undefined
+    }
+    formData.append('image', file)
+
+    const response = await axios.post<ILicenseOcr>(api.common.ocr, formData, {
+      headers: {
+        'Content-Type': 'multipart/formdata',
+      },
+    })
     return response.data
   }
 
@@ -84,22 +84,6 @@ export default function SignUpFormView({ onNext }: IProps) {
     gcTime: Infinity,
   })
 
-  const queryFn2 = async () => {
-    const response = await axios.get<IBankResponse[]>(api.signUp.bank)
-    return response.data
-  }
-
-  const {
-    data: bankData,
-    isPending: bankPending,
-    isError: bankError,
-  } = useQuery({
-    queryKey: [api.signUp.bank],
-    queryFn: queryFn2,
-    staleTime: Infinity,
-    gcTime: Infinity,
-  })
-
   const fileChangeHandler = (files: File[]) => {
     if (files.length === 0) {
       setFile(null)
@@ -108,31 +92,32 @@ export default function SignUpFormView({ onNext }: IProps) {
     setFile(files[0])
   }
 
-  const submitHandler = () => {
-    onNext()
-  }
+  const submitHandler = async (form: IForm) => {
+    if (!licenseData) {
+      return
+    }
 
-  const BankDataOptions = useMemo(() => {
-    if (bankPending) {
-      return (
-        <Stack p={0.5} justifyContent="center" alignItems="center">
-          <CircularProgress size={20} />
-        </Stack>
-      )
+    const body: ISignUpRequest = {
+      email: form.email,
+      password: form.password,
+      passwordConfirm: form.passwordConfirm,
+      phone: form.phone,
+      address: licenseData.address,
+      businessName: licenseData.businessName,
+      businessType: licenseData.businessType,
+      repName: licenseData.repName,
+      registerNumber: licenseData.registerNumber,
+      openDate: dayjs(parseDateString(licenseData.openDate)).format(),
     }
-    if (bankError) {
-      return (
-        <Stack p={0.5} justifyContent="center" alignItems="center">
-          <Typography>{t('error.bank')}</Typography>
-        </Stack>
-      )
+
+    try {
+      const res = await axios.post(api.auth.signUp, body)
+      console.log(res)
+      onNext()
+    } catch (error) {
+      console.error(error)
     }
-    return bankData.map((option, i) => (
-      <MenuItem key={i} value={option.bankCode}>
-        {option.bankName}
-      </MenuItem>
-    ))
-  }, [bankData, bankError, bankPending, t])
+  }
 
   const BusinessLicenseFormRender = useMemo(() => {
     if (!file) {
@@ -196,13 +181,17 @@ export default function SignUpFormView({ onNext }: IProps) {
               control={control}
               rules={{
                 required: t('validate.phone.required'),
+                pattern: {
+                  value: /^(\d{2,3})[-.\s]?(\d{3,4})[-.\s]?(\d{4})$/,
+                  message: t('validate.phone.pattern'),
+                },
               }}
               label={t('form.phone')}
               type="tel"
             />
           </Stack>
 
-          <Stack spacing={2} width={1} sx={{ mb: 2 }}>
+          {/* <Stack spacing={2} width={1} sx={{ mb: 2 }}>
             <Typography variant="subtitle1" sx={{ pl: 1 }}>
               {t('title.account')}
             </Typography>
@@ -210,7 +199,7 @@ export default function SignUpFormView({ onNext }: IProps) {
               {BankDataOptions}
             </FormInput>
             <FormInput name="account" control={control} label={t('form.account')} />
-          </Stack>
+          </Stack> */}
         </Stack>
 
         <Stack spacing={2} width={1} sx={{ mb: 2 }}>

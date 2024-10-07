@@ -1,12 +1,18 @@
-interface IContract {
-  id: string
-  name: string
-  phone: string
-  address: string
-  createdAt: Date
-}
+type ContractUserCondition = 'ALL' | 'SENDER' | 'RECEIVER'
 
-interface IContractResponse {
+type ContractStatus = 'ALL' | 'IN' | 'COMPLETE' | 'CANCEL' | 'REJECT'
+
+type ContractResponseStatus =
+  | 'COMPANY_REQUEST'
+  | 'STORE_REQUEST'
+  | 'COMPANY_REJECT'
+  | 'STORE_REJECT'
+  | 'CANCEL'
+  | 'COMPLETE'
+
+type ContractResponse = 'APPROVE' | 'REJECT'
+
+interface IContract {
   contractId: string
   companyId: string
   companyName: string
@@ -19,10 +25,26 @@ interface IContractResponse {
   storeAddress: string
   contractDate: Date
   settlementDate: number
+  status: ContractResponseStatus
 }
 
-interface IContractHistory extends IContractResponse {
-  status: string
+interface IContractCreateRequest {
+  senderId: string
+  receiverRegisterNumber: string
+  settlementDay: number
 }
 
-export type { IContract, IContractHistory, IContractResponse }
+interface IContractRequest {
+  contractId: string
+  respondResult: ContractResponse
+}
+
+export type {
+  IContract,
+  ContractStatus,
+  IContractRequest,
+  ContractResponse,
+  ContractUserCondition,
+  IContractCreateRequest,
+  ContractResponseStatus,
+}
