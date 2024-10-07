@@ -6,7 +6,9 @@ import Chart from 'react-apexcharts'
 import { useTranslate } from '@/locales'
 import { useQuery } from '@tanstack/react-query'
 
-import { Box, Stack, useTheme, CircularProgress } from '@mui/material'
+import { Box, Card, Stack, useTheme, CircularProgress } from '@mui/material'
+
+import MealChart from './meal-chart'
 
 export default function MealUsage() {
   const { t } = useTranslate()
@@ -22,45 +24,11 @@ export default function MealUsage() {
   })
 
   return data ? (
-    <Chart
-      width="100%"
-      type="radialBar"
-      series={[(data.usage / data.supportAmount) * 100]}
-      options={{
-        fill: {
-          colors: [theme.palette.primary.main],
-        },
-        plotOptions: {
-          radialBar: {
-            hollow: {
-              margin: 15,
-              size: '70%',
-            },
-            track: {
-              background: [theme.palette.background.paper],
-            },
-            dataLabels: {
-              name: {
-                offsetY: -15,
-                show: true,
-                color: theme.palette.text.secondary,
-                fontSize: '13px',
-              },
-              value: {
-                offsetY: 5,
-                color: theme.palette.text.primary,
-                fontSize: '30px',
-                show: true,
-              },
-            },
-          },
-        },
-        stroke: {
-          lineCap: 'round',
-        },
-        labels: [t('usage.title')],
-      }}
-    />
+    <Card sx={{ width: 1, p: 2 }}>
+      <Box width={100}>
+        <MealChart total={data.supportAmount} usage={data.usage} />
+      </Box>
+    </Card>
   ) : (
     <Stack width={1} height={200} justifyContent="center" alignItems="center">
       <CircularProgress />

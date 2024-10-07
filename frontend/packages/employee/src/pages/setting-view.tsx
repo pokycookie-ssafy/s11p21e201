@@ -47,7 +47,7 @@ export default function SettingView() {
               alignItems="center"
             >
               <Typography>{t('dark_mode')}</Typography>
-              <Switch value={mode === 'dark'} onChange={() => toggle()} />
+              <Switch checked={mode === 'dark'} onChange={() => toggle()} />
             </Stack>
           </Box>
 
