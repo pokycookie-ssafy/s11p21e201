@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import com.e201.api.controller.dashboard.response.CompanyDailyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.StorePaymentSumResponse;
 import com.e201.api.controller.payment.response.EmployeePaymentResponse;
@@ -110,22 +111,51 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
 	}
 
 	@Override
+	public List<CompanyDailyPaymentSumResponse> findDailySumByCompany(UUID companyId, UUID departmentId,
+		LocalDateTime startDate, LocalDateTime endDate) {
+		return paymentQueryFactory
+			.select(Projections.constructor(CompanyDailyPaymentSumResponse.class,
+				payment.paymentDate.year(),
+				payment.paymentDate.month(),
+				payment.paymentDate.dayOfMonth(),
+				payment.amount.sum()
+			))
+			.from(payment)
+			.where(
+				payment.paymentDate.between(startDate, endDate),
+				matchCompany(companyId),
+				matchDepartment(departmentId)
+			)
+			.groupBy(
+				payment.paymentDate.year(),
+				payment.paymentDate.month(),
+				payment.paymentDate.dayOfMonth()
+			)
+			.orderBy(
+				payment.paymentDate.year().asc(),
+				payment.paymentDate.month().asc(),
+				payment.paymentDate.dayOfMonth().asc()
+			)
+			.fetch();
+	}
+
+	@Override
 	public List<StorePaymentSumResponse> findMonthlySumByStore(UUID companyId, UUID departmentId,
 		LocalDateTime startDate, LocalDateTime endDate) {
-			return paymentQueryFactory
-				.select(Projections.constructor(StorePaymentSumResponse.class,
-					payment.storeId,
-					payment.storeName,
-					payment.amount.sum()
-				))
-				.from(payment)
-				.where(
-					payment.paymentDate.between(startDate, endDate),
-					matchCompany(companyId),
-					matchDepartment(departmentId)
-				)
-				.groupBy(payment.storeId)
-				.fetch();
+		return paymentQueryFactory
+			.select(Projections.constructor(StorePaymentSumResponse.class,
+				payment.storeId,
+				payment.storeName,
+				payment.amount.sum()
+			))
+			.from(payment)
+			.where(
+				payment.paymentDate.between(startDate, endDate),
+				matchCompany(companyId),
+				matchDepartment(departmentId)
+			)
+			.groupBy(payment.storeId)
+			.fetch();
 	}
 
 	private JPAQuery<Long> createCountQuery(UUID companyId, UUID departmentId) {

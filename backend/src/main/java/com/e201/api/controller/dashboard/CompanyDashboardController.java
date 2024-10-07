@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.dashboard.request.DashboardPeriodRequest;
+import com.e201.api.controller.dashboard.response.CompanyDailyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.CompanyMonthlyPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.DepartmentPaymentSumResponse;
 import com.e201.api.controller.dashboard.response.EmployeePaymentSumResponse;
@@ -30,9 +31,15 @@ public class CompanyDashboardController {
 	private final PaymentService paymentService;
 
 	@GetMapping("/companies/dashboards/years/months")
-	public ResponseEntity<List<CompanyMonthlyPaymentSumResponse>> findAnnualTrend(@Auth AuthInfo authInfo,
+	public ResponseEntity<List<CompanyMonthlyPaymentSumResponse>> findAnnualTrendMonthly(@Auth AuthInfo authInfo,
 		@ModelAttribute DashboardPeriodRequest request) {
-		return ResponseEntity.ok().body(paymentService.findAnnualTrendByCompany(authInfo, request));
+		return ResponseEntity.ok().body(paymentService.findAnnualTrendMonthly(authInfo, request));
+	}
+
+	@GetMapping("/companies/dashboards/years/days")
+	public ResponseEntity<List<CompanyDailyPaymentSumResponse>> findAnnualTrendDaily(@Auth AuthInfo authInfo,
+		@ModelAttribute DashboardPeriodRequest request) {
+		return ResponseEntity.ok().body(paymentService.findAnnualTrendDaily(authInfo, request));
 	}
 
 	@GetMapping("/companies/dashboards/months/departments")
