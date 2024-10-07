@@ -17,9 +17,9 @@ axios.interceptors.response.use(
     if (error.response?.status === 401) {
       window.location.reload()
     }
-    if (error.code === 'ERR_NETWORK') {
-      window.location.reload()
-    }
+    // if (error.code === 'ERR_NETWORK') {
+    //   window.location.reload()
+    // }
     return Promise.reject(error)
   }
 )

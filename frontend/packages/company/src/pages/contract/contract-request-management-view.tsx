@@ -179,7 +179,7 @@ export default function ContractRequestManagementView() {
       <Breadcrumbs
         title={t('breadcrumbs.contract_request')}
         routes={[
-          { title: t('breadcrumbs.management'), path: paths.management.member.root },
+          { title: t('breadcrumbs.management'), path: paths.management.member.list },
           { title: t('breadcrumbs.contract_management'), path: paths.management.contract.now },
           { title: t('breadcrumbs.contract_request') },
         ]}

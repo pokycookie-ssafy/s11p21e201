@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { Box, Stack, Dialog, Button } from '@mui/material'
 
-import { FormInput, Breadcrumbs, SelectCreatable } from '@e201/ui'
+import { Select, FormInput, Breadcrumbs, SelectCreatable } from '@e201/ui'
 
 interface IForm {
   code: string
@@ -82,12 +82,12 @@ export default function ManagerCreateModal({ open, onClose, onSubmit }: IProps) 
           />
 
           <Stack spacing={2}>
-            <SelectCreatable
+            <Select
               label={t('label.department')}
               size="small"
               options={departmentOptions}
               onChange={setDepartment}
-              value={department?.label}
+              value={department}
             />
             <FormInput name="code" control={control} label={t('label.manager_code')} size="small" />
             <FormInput
