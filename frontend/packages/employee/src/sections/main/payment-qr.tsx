@@ -65,7 +65,9 @@ export default function PaymentQR() {
       >
         {data ? (
           <>
-            <QRCode style={{ width: '100%', zIndex: 1 }} value={JSON.stringify(data)} />
+            <Box sx={{ filter: time > 0 ? undefined : 'blur(4px)', zIndex: 1 }}>
+              <QRCode style={{ width: '100%' }} value={JSON.stringify(data)} />
+            </Box>
             <Box
               bgcolor="common.white"
               p={1}
@@ -81,7 +83,7 @@ export default function PaymentQR() {
               position="absolute"
               top={0}
             >
-              {t('info')}
+              {time > 0 ? t('info') : t('expired')}
             </Typography>
             <Typography variant="subtitle2" position="absolute" bottom={0}>
               {dayjs.duration(time, 'seconds').format('mm:ss')}
