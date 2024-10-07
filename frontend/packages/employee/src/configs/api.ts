@@ -10,7 +10,8 @@ const api = {
   // payments: (id: string, start: string, end: string) =>
   //   `/employees/${id}/menus?start=${start}&end=${end}`, // 식사 기록 조회 API
 
-  login: 'companies/employees/auth',
+  login: '/companies/employees/auth',
+  logout: '/stores/auth',
   qr: '/employees/qr',
   usage: '/companies/employees/usages',
   usageWith: (start: string, end: string) =>

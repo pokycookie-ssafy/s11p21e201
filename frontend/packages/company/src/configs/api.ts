@@ -7,8 +7,7 @@ const api = {
     signUpInfo: '/companies/info',
     signUp: '/companies',
     login: '/companies/auth',
-    logout: '/companies/auth',
-    check: '/companies/auth/check',
+    logout: '/stores/auth',
     unregister: '/companies',
   },
   manager: {
