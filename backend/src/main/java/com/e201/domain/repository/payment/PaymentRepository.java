@@ -47,7 +47,7 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, Payment
 		LocalDateTime endDate);
 
 	@Query(
-		"select new com.e201.api.controller.dashboard.response.DepartmentPaymentSumResponse(p.employeeId, p.employeeName, SUM(p.amount))"
+		"select new com.e201.api.controller.dashboard.response.EmployeePaymentSumResponse(p.employeeId, p.employeeName, SUM(p.amount))"
 			+ " from Payment p"
 			+ " where p.departmentId = :departmentId"
 			+ " and p.createdAt between :startDate and :endDate"
