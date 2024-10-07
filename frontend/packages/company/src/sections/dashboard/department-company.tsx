@@ -1,6 +1,5 @@
-import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
-
 import dayjs from 'dayjs'
+import axios from '@/configs/axios'
 import Chart from 'react-apexcharts'
 import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
@@ -8,38 +7,56 @@ import { SelectDate } from '@/components/select/select-date'
 
 import { Box, Card, Stack, useTheme, Typography } from '@mui/material'
 
-interface DepartmentCompanyProps {
-  data: IDashboardPaymentCompany[]
+interface DepartmentData {
+  departmentId: string
+  departmentName: string
+  amount: number
 }
 
-export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
+export default function DepartmentCompany() {
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1)
   const [departments, setDepartments] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   const theme = useTheme()
   const { t } = useTranslate('dashboard')
 
+  const startDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+    .startOf('month')
+    .format('YYYY-MM-DDTHH:mm:ss')
+
+  const endDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+    .endOf('month')
+    .format('YYYY-MM-DDTHH:mm:ss')
+
   useEffect(() => {
-    const filteredData = data.filter((payment) => {
-      const paymentDate = dayjs(payment.createdAt)
-      return paymentDate.year() === selectedYear && paymentDate.month() + 1 === selectedMonth
-    })
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get<DepartmentData[]>(
+          '/companies/dashboards/months/departments',
+          {
+            params: {
+              startDate,
+              endDate,
+            },
+          }
+        )
+        const sortedDepartments = response.data.sort((a, b) => b.amount - a.amount)
 
-    const departmentTotals: { [key: string]: number } = {}
-    filteredData.forEach((payment) => {
-      const { departmentName, price } = payment
-      departmentTotals[departmentName] = (departmentTotals[departmentName] || 0) + price
-    })
+        setDepartments(sortedDepartments.map((item) => item.departmentName))
+        setSeriesData(sortedDepartments.map((item) => item.amount))
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    const sortedDepartments = Object.entries(departmentTotals).sort(
-      ([, totalA], [, totalB]) => totalB - totalA
-    )
-
-    setDepartments(sortedDepartments.map(([name]) => name))
-    setSeriesData(sortedDepartments.map(([, total]) => total))
-  }, [data, selectedYear, selectedMonth])
+    fetchData()
+  }, [selectedYear, selectedMonth])
 
   const handleDateChange = (year: number, month: number) => {
     setSelectedYear(year)
@@ -118,13 +135,28 @@ export default function DepartmentCompany({ data }: DepartmentCompanyProps) {
       <Stack p={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center" pt={1}>
           <Typography variant="h6" align="left" sx={{ flex: 1 }} pl={1}>
-            {t('deparment_amount')}{' '}
+            {t('deparment_amount')}
           </Typography>
 
           <SelectDate year={selectedYear} month={selectedMonth} t={t} onChange={handleDateChange} />
         </Box>
-
-        <Chart options={chartOptions} series={chartSeries} type="bar" height={270} />
+        <Box height={200}>
+          {seriesData.length > 0 ? (
+            <Chart options={chartOptions} series={chartSeries} type="bar" height={230} />
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              No Data
+            </Typography>
+          )}
+        </Box>
       </Stack>
     </Card>
   )

@@ -14,7 +14,7 @@ import { Box, Stack } from '@mui/material'
 import { Typography } from '@e201/ui'
 
 const queryFn = async () => {
-  const response = await axios.get<IDashboardPayment[]>('/dashboard')
+  const response = await axios.get<IDashboardPayment[]>('/stores/dashboard/total')
   return response.data
 }
 

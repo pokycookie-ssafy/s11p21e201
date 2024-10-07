@@ -7,8 +7,6 @@ interface IDashboardPayment {
   paymentId: string
   companyId: string
   companyName: string
-  employeeId: string
-  employeeCode: string
   menus: IDashboardMenu[]
   createdAt: Date
 }
