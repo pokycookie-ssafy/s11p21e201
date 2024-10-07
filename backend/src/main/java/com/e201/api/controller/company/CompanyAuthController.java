@@ -1,9 +1,11 @@
 package com.e201.api.controller.company;
 
+import static com.e201.global.exception.ErrorCode.*;
 import static com.e201.global.security.auth.constant.AuthConstant.*;
 import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +19,9 @@ import com.e201.api.controller.company.response.manager.ManagerAuthResponse;
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.company.EmployeeService;
 import com.e201.api.service.company.ManagerService;
+import com.e201.global.exception.ErrorCode;
 import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.exception.AuthenticationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +58,58 @@ public class CompanyAuthController {
 		httpRequest.getSession().setAttribute(AUTH_INFO.name(), authInfo);
 		EmployeeAuthResponse authResponse = employeeService.findAuth(authInfo.getId());
 		return ResponseEntity.status(CREATED).body(authResponse);
+	}
+
+	@GetMapping("/companies/auth")
+	public ResponseEntity<CompanyAuthResponse> authCompanyCheck(HttpServletRequest httpRequest) {
+		checkSession(httpRequest);
+		Object session = httpRequest.getSession().getAttribute(AUTH_INFO.name());
+		CompanyAuthResponse response = checkCompanyAuth(session);
+		return ResponseEntity.status(OK).body(response);
+	}
+
+	@GetMapping("/companies/managers/auth")
+	public ResponseEntity<ManagerAuthResponse> authManagerCheck(HttpServletRequest httpRequest) {
+		checkSession(httpRequest);
+		Object session = httpRequest.getSession().getAttribute(AUTH_INFO.name());
+		ManagerAuthResponse response = checkManagerAuth(session);
+		return ResponseEntity.status(CREATED).body(response);
+	}
+
+	@GetMapping("/companies/employees/auth")
+	public ResponseEntity<EmployeeAuthResponse> authEmployeeCheck(HttpServletRequest httpRequest) {
+		checkSession(httpRequest);
+		Object session = httpRequest.getSession().getAttribute(AUTH_INFO.name());
+		EmployeeAuthResponse response = checkEmployeeAuth(session);
+		return ResponseEntity.status(CREATED).body(response);
+	}
+
+	private void checkSession(HttpServletRequest httpRequest) {
+		if(httpRequest.getSession().getAttribute(AUTH_INFO.name()) == null) {
+			throw new AuthenticationException(AUTHENTICATION_FAILED, "세션 만료");
+		}
+	}
+
+	private CompanyAuthResponse checkCompanyAuth(Object session) {
+		CompanyAuthResponse response = null;
+		if(session instanceof AuthInfo) {
+			response = new CompanyAuthResponse(((AuthInfo)session).getId());
+		}
+		return response;
+	}
+
+	private ManagerAuthResponse checkManagerAuth(Object session) {
+		ManagerAuthResponse response = null;
+		if(session instanceof AuthInfo) {
+			response = managerService.findAuth(((AuthInfo)session).getId());
+		}
+		return response;
+	}
+	private EmployeeAuthResponse checkEmployeeAuth(Object session) {
+		EmployeeAuthResponse response = null;
+		if(session instanceof AuthInfo) {
+			response = employeeService.findAuth(((AuthInfo)session).getId());
+		}
+		return response;
 	}
 }
