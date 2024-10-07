@@ -1,5 +1,6 @@
 package com.e201.api.controller.company.request.employee;
 
+import com.e201.domain.entity.company.Company;
 import com.e201.domain.entity.company.Department;
 import com.e201.domain.entity.company.Employee;
 
@@ -35,8 +36,9 @@ public class EmployeeCreateRequest {
 		this.supportAmount = supportAmount;
 	}
 
-	public Employee toEntity(Department department) {
+	public Employee toEntity(Company company, Department department) {
 		return Employee.builder()
+			.company(company)
 			.department(department)
 			.code(code)
 			.password(password)
