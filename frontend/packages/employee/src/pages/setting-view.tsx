@@ -1,4 +1,6 @@
+import api from '@/configs/api'
 import paths from '@/configs/paths'
+import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
 import { useNavigate } from 'react-router-dom'
@@ -22,9 +24,14 @@ export default function SettingView() {
   const languageDrawer = useBoolean()
   const changePasswordDrawer = useBoolean()
 
-  const logoutHandler = () => {
-    logout()
-    navigate(paths.signIn)
+  const logoutHandler = async () => {
+    try {
+      await axios.delete(api.logout)
+      logout()
+      navigate(paths.signIn)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
