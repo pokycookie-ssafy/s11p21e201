@@ -25,7 +25,7 @@ export default function Header({ logo }: IProps) {
         backdropFilter: 'blur(4px)',
         width: '100%',
         zIndex: 2,
-        px: 0,
+        px: 1,
         py: 1,
       }}
     >
