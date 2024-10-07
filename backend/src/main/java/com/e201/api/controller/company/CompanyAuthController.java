@@ -73,7 +73,7 @@ public class CompanyAuthController {
 		checkSession(httpRequest);
 		Object session = httpRequest.getSession().getAttribute(AUTH_INFO.name());
 		ManagerAuthResponse response = checkManagerAuth(session);
-		return ResponseEntity.status(CREATED).body(response);
+		return ResponseEntity.status(OK).body(response);
 	}
 
 	@GetMapping("/companies/employees/auth")
@@ -81,7 +81,7 @@ public class CompanyAuthController {
 		checkSession(httpRequest);
 		Object session = httpRequest.getSession().getAttribute(AUTH_INFO.name());
 		EmployeeAuthResponse response = checkEmployeeAuth(session);
-		return ResponseEntity.status(CREATED).body(response);
+		return ResponseEntity.status(OK).body(response);
 	}
 
 	private void checkSession(HttpServletRequest httpRequest) {
