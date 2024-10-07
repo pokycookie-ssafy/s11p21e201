@@ -1,76 +1,122 @@
-import type { IDashboardPaymentCompany } from '@/types/dashboard-payment-company'
-
 import dayjs from 'dayjs'
+import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 
 import { Card, Stack, Typography } from '@mui/material'
 
-interface DashboardSummaryProps {
-  data: IDashboardPaymentCompany[]
+interface IDashboardPaymentResponse {
+  year: number
+  month: number
+  totalAmount: number
 }
 
-export default function DashboardSummary({ data }: DashboardSummaryProps) {
+interface IDashboardPaymentDailyResponse {
+  year: number
+  month: number
+  day: number
+  totalAmount: number
+}
+
+export default function DashboardSummary() {
   const [todayTotal, setTodayTotal] = useState(0)
   const [monthTotal, setMonthTotal] = useState(0)
-  const [averagePerTransaction, setAveragePerTransaction] = useState(0)
   const [yesterdayChange, setYesterdayChange] = useState(0)
   const [lastMonthChange, setLastMonthChange] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   const { t } = useTranslate('dashboard')
   useEffect(() => {
-    const now = dayjs()
-    const today = now.format('YYYY-MM-DD')
-    const yesterday = now.subtract(1, 'day').format('YYYY-MM-DD')
-    const currentMonth = now.format('YYYY-MM')
-    const lastMonth = now.subtract(1, 'month').format('YYYY-MM')
+    const fetchData = async () => {
+      const now = dayjs()
+      const today = now.format('YYYY-MM-DD')
+      const yesterday = now.subtract(1, 'day').format('YYYY-MM-DD')
+      const startOfCurrentMonth = now.startOf('month').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfCurrentMonth = now.endOf('month').format('YYYY-MM-DDTHH:mm:ss')
+      const startOfLastMonth = now
+        .subtract(1, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DDTHH:mm:ss')
+      const endOfLastMonth = now.subtract(1, 'month').endOf('month').format('YYYY-MM-DDTHH:mm:ss')
 
-    // 오늘의 결제 금액
-    const todayData = data.filter(
-      (payment) => dayjs(payment.createdAt).format('YYYY-MM-DD') === today
-    )
-    const todayTotalAmount = todayData.reduce((total, payment) => total + payment.price, 0)
-    setTodayTotal(todayTotalAmount)
+      // 오늘과 어제 데이터
+      const startOfToday = dayjs(today).startOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfToday = dayjs(today).endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const startOfYesterday = dayjs(yesterday).startOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfYesterday = dayjs(yesterday).endOf('day').format('YYYY-MM-DDTHH:mm:ss')
 
-    // 이번 달의 결제 금액
-    const monthData = data.filter(
-      (payment) => dayjs(payment.createdAt).format('YYYY-MM') === currentMonth
-    )
-    const monthTotalAmount = monthData.reduce((total, payment) => total + payment.price, 0)
-    setMonthTotal(monthTotalAmount)
+      try {
+        // 이번 달 총액과 저번 달 총액 가져오기
+        const monthResponse = await axios.get<IDashboardPaymentResponse[]>(
+          '/companies/dashboards/years/months',
+          {
+            params: {
+              startDate: startOfLastMonth,
+              endDate: endOfCurrentMonth,
+            },
+          }
+        )
 
-    // 이번 달 평균 결제 금액 (총 결제 금액 / 결제 횟수)
-    const transactionCount = monthData.length
-    const average = transactionCount > 0 ? Math.round(monthTotalAmount / transactionCount) : 0
-    setAveragePerTransaction(average)
+        // 이번 달 총액
+        const currentMonthData = monthResponse.data.find(
+          (item) => item.year === now.year() && item.month === now.month() + 1
+        )
+        const currentMonthTotal = currentMonthData ? currentMonthData.totalAmount : 0
+        setMonthTotal(currentMonthTotal)
 
-    // 어제의 결제 금액 계산
-    const yesterdayData = data.filter(
-      (payment) => dayjs(payment.createdAt).format('YYYY-MM-DD') === yesterday
-    )
-    const yesterdayTotalAmount = yesterdayData.reduce((total, payment) => total + payment.price, 0)
+        // 저번 달 총액
+        const lastMonthData = monthResponse.data.find(
+          (item) =>
+            item.year === now.subtract(1, 'month').year() &&
+            item.month === now.subtract(1, 'month').month() + 1
+        )
+        const lastMonthTotal = lastMonthData ? lastMonthData.totalAmount : 0
 
-    // 어제와 오늘의 변화율 계산
-    const yesterdayPercentageChange =
-      yesterdayTotalAmount > 0
-        ? ((todayTotalAmount - yesterdayTotalAmount) / yesterdayTotalAmount) * 100
-        : 0
-    setYesterdayChange(yesterdayPercentageChange)
+        // 저번 달과 이번 달의 변화율 계산
+        const lastMonthPercentageChange =
+          lastMonthTotal > 0 ? ((currentMonthTotal - lastMonthTotal) / lastMonthTotal) * 100 : 0
+        setLastMonthChange(lastMonthPercentageChange)
 
-    // 저번 달의 결제 금액 계산
-    const lastMonthData = data.filter(
-      (payment) => dayjs(payment.createdAt).format('YYYY-MM') === lastMonth
-    )
-    const lastMonthTotalAmount = lastMonthData.reduce((total, payment) => total + payment.price, 0)
+        // 오늘과 어제 총액 가져오기
+        const dayResponse = await axios.get<IDashboardPaymentDailyResponse[]>(
+          '/companies/dashboards/years/days',
+          {
+            params: {
+              startDate: startOfYesterday,
+              endDate: endOfToday,
+            },
+          }
+        )
 
-    // 저번 달과 이번 달의 변화율 계산
-    const lastMonthPercentageChange =
-      lastMonthTotalAmount > 0
-        ? ((monthTotalAmount - lastMonthTotalAmount) / lastMonthTotalAmount) * 100
-        : 0
-    setLastMonthChange(lastMonthPercentageChange)
-  }, [data])
+        // 오늘 총액
+        const todayData = dayResponse.data.find(
+          (item) => dayjs(`${item.year}-${item.month}-${item.day}`).format('YYYY-MM-DD') === today
+        )
+        const todayTotalAmount = todayData ? todayData.totalAmount : 0
+        setTodayTotal(todayTotalAmount)
 
+        // 어제 총액
+        const yesterdayData = dayResponse.data.find(
+          (item) =>
+            dayjs(`${item.year}-${item.month}-${item.day}`).format('YYYY-MM-DD') === yesterday
+        )
+        const yesterdayTotalAmount = yesterdayData ? yesterdayData.totalAmount : 0
+
+        // 어제와 오늘의 변화율 계산
+        const yesterdayPercentageChange =
+          yesterdayTotalAmount > 0
+            ? ((todayTotalAmount - yesterdayTotalAmount) / yesterdayTotalAmount) * 100
+            : 0
+        setYesterdayChange(yesterdayPercentageChange)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
   return (
     <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
       <Card
@@ -138,7 +184,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
           p: 2,
         }}
       >
-        <Stack>
+        {/* <Stack>
           <Typography variant="h6" pb={1}>
             {t('this_month_average')}
           </Typography>
@@ -146,7 +192,7 @@ export default function DashboardSummary({ data }: DashboardSummaryProps) {
             {averagePerTransaction.toLocaleString()}
             {t('won')}
           </Typography>
-        </Stack>
+        </Stack> */}
       </Card>
     </Stack>
   )
