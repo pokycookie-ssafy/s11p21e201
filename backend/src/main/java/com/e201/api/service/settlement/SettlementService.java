@@ -49,12 +49,14 @@ public class SettlementService {
 	public SettlementResponse settlement(AuthInfo authInfo, SettlementRequest request) {
 		// 정산 update 로직 실행.
 		List<PaymentMonthlySum> monthlySum = paymentMonthlySumRepository.findPaymentMonthlySumForSettlement(
-			request.getContractId());
+			request.getSettlementId());
+
+		System.out.println(monthlySum.size());
+
 		Long amount = request.getAmount();
 		PaymentMonthlySum currentMonth = monthlySum.getFirst();
 
 		if (monthlySum.size() < 2) {
-
 			currentMonth.settlement(request.getAmount());
 		} else {
 			PaymentMonthlySum previousMonth = monthlySum.getLast();
@@ -69,7 +71,7 @@ public class SettlementService {
 		}
 
 		// 송금
-		Contract contract = contractRepository.findById(request.getContractId()).get();
+		Contract contract = contractRepository.findById(currentMonth.getContractId()).get();
 		StoreAccount store = storeAccountRepository.findStoreAccountByStoreId(contract.getStoreId()).get();
 		CompanyAccount company = companyAccountRepository.findCompanyAccountByCompanyId(contract.getCompanyId()).get();
 

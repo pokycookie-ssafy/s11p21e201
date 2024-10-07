@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SettlementRequest {
-	private UUID contractId;
+	private UUID settlementId;
 	private Long amount;
 
 	@Builder
-	private SettlementRequest(UUID contractId, Long amount) {
-		this.contractId = contractId;
+	private SettlementRequest(UUID settlementId, Long amount) {
+		this.settlementId = settlementId;
 		this.amount = amount;
 	}
 }

@@ -11,5 +11,5 @@ import com.e201.global.security.auth.dto.AuthInfo;
 public interface PaymentMonthlySumCustomRepository {
 	List<SettlementFindResponse> findSettlement(AuthInfo authInfo, SettlementFindRequest request);
 
-	List<PaymentMonthlySum> findPaymentMonthlySumForSettlement(UUID contractId);
+	List<PaymentMonthlySum> findPaymentMonthlySumForSettlement(UUID settlementId);
 }

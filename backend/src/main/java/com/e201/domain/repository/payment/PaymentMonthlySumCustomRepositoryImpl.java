@@ -55,7 +55,10 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 	}
 
 	@Override
-	public List<PaymentMonthlySum> findPaymentMonthlySumForSettlement(UUID contractId) {
+	public List<PaymentMonthlySum> findPaymentMonthlySumForSettlement(UUID settlementId) {
+		UUID contractId = paymentJpaQueryFactory.selectFrom(paymentMonthlySum)
+			.where(paymentMonthlySum.id.eq(settlementId))
+			.fetch().getFirst().getContractId();
 
 		return paymentJpaQueryFactory
 			.selectFrom(paymentMonthlySum)
@@ -64,30 +67,31 @@ public class PaymentMonthlySumCustomRepositoryImpl implements PaymentMonthlySumC
 			.limit(2).fetch();
 	}
 
-	private List<SettlementFindResponse> createSettlementFindResponse(AuthInfo authInfo, Map<UUID, Map<String, UUID>> contracts,
+	private List<SettlementFindResponse> createSettlementFindResponse(AuthInfo authInfo,
+		Map<UUID, Map<String, UUID>> contracts,
 		List<PaymentMonthlySum> paymentMonthlySums, Map<UUID, String> partnerNameMap) {
 
 		return paymentMonthlySums.stream()
 			.map(settlementData -> {
 
-				String taxInvoice = Optional.ofNullable(settlementData.getInvoiceId())
-					.map(UUID::toString).orElse(null);
+					String taxInvoice = Optional.ofNullable(settlementData.getInvoiceId())
+						.map(UUID::toString).orElse(null);
 
-				String identifier = authInfo.getRoleType()== RoleType.COMPANY? "storeId":"companyId";
+					String identifier = authInfo.getRoleType() == RoleType.COMPANY ? "storeId" : "companyId";
 
-				UUID partnerId = contracts.get(settlementData.getContractId()).get(identifier);
-				String partnerName = partnerNameMap.get(contracts.get(settlementData.getContractId()).get(identifier));
+					UUID partnerId = contracts.get(settlementData.getContractId()).get(identifier);
+					String partnerName = partnerNameMap.get(contracts.get(settlementData.getContractId()).get(identifier));
 
-				return SettlementFindResponse.builder()
-					.id(settlementData.getId())
-					.partnerId(partnerId)
-					.partnerName(partnerName)
-					.settlementDate(settlementData.getCreatedAt())
-					.settledDate(settlementData.getModifiedAt())
-					.settlementAmount(settlementData.getAmount())
-					.settledAmount(settlementData.getPaid())
-					.taxInvoice(taxInvoice)
-					.build();
+					return SettlementFindResponse.builder()
+						.id(settlementData.getId())
+						.partnerId(partnerId)
+						.partnerName(partnerName)
+						.settlementDate(settlementData.getCreatedAt())
+						.settledDate(settlementData.getModifiedAt())
+						.settlementAmount(settlementData.getAmount())
+						.settledAmount(settlementData.getPaid())
+						.taxInvoice(taxInvoice)
+						.build();
 				}
 			).collect(Collectors.toList());
 	}

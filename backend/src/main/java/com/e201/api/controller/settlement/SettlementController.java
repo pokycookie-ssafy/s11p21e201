@@ -36,7 +36,7 @@ public class SettlementController {
 		return ResponseEntity.status(OK).body(response);
 	}
 
-	@PostMapping("/companies/payments")
+	@PostMapping("/settlements")
 	public ResponseEntity<SettlementResponse> settlement(@Auth AuthInfo authInfo,
 		@RequestBody SettlementRequest request) {
 
