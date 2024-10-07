@@ -43,4 +43,11 @@ public class SalesController {
 		List<FindPaymentsResponse> paymentsResponse = salesService.findStorePayments(storeId, findPaymentsCondition);
 		return ResponseEntity.ok().body(paymentsResponse);
 	}
+
+	@GetMapping("/stores/dashboard/total")
+	public ResponseEntity<List<FindPaymentsResponse>> findAllStorePayments(@Auth AuthInfo authInfo){
+		UUID storeId = authInfo.getId();
+		List<FindPaymentsResponse> paymentsResponses = salesService.findAllStorePayments(storeId);
+		return ResponseEntity.ok().body(paymentsResponses);
+	}
 }
