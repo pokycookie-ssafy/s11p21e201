@@ -18,7 +18,11 @@
     "error": "에러: ",
     "no-store": "이용가능한 식당이 없습니다.",
     "no-address": "주소 미등록 식당입니다.",
-    "no-phone": "전화번호 미등록 식당입니다."
+    "no-phone": "전화번호 미등록 식당입니다.",
+    "button": {
+      "payments": "장부 확인",
+      "qr": "QR 결제"
+    }
   },
   "current": {
     "title": "{{month}}월 식대 사용 현황",
@@ -74,5 +78,11 @@
   },
   "usage": {
     "title": "식비 사용 현황"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "swipeable": {
+    "info": "위로 올려 QR 결제하기"
   }
 }

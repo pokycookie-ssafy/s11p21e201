@@ -15,7 +15,7 @@ export default function MealChart({ total, usage }: IProps) {
 
   return (
     <Chart
-      width="100%"
+      width={150}
       type="radialBar"
       series={[(usage / total) * 100]}
       options={{
@@ -30,7 +30,7 @@ export default function MealChart({ total, usage }: IProps) {
         plotOptions: {
           radialBar: {
             hollow: {
-              size: '40%',
+              size: '30%',
             },
             track: {
               background: [theme.palette.background.paper],
@@ -60,7 +60,7 @@ export default function MealChart({ total, usage }: IProps) {
           },
         },
         stroke: {
-          lineCap: 'round',
+          lineCap: 'butt',
         },
         // labels: [t('usage.title')],
       }}
