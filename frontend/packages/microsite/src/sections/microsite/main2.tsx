@@ -3,10 +3,17 @@ import { keyframes } from '@emotion/react'
 import storebg from '@/assets/img/storebg.jpg'
 import { useRef, useState, useEffect } from 'react'
 
-import { Box, Stack, Button, Typography } from '@mui/material'
+import { Box, Stack, Button, useTheme, Typography } from '@mui/material'
 
-export default function Main2() {
+import { Iconify } from '@e201/ui'
+
+interface Main2Props {
+  scrollToNextSection: () => void // 추가: 프롭스 타입 정의
+}
+
+export default function Main2({ scrollToNextSection }: Main2Props) {
   const { t } = useTranslate('microsite')
+  const theme = useTheme()
   const fadeIn = keyframes`
     from {
       opacity: 0;
@@ -16,10 +23,10 @@ export default function Main2() {
       opacity: 1;
       transform: translateY(0);
     }
-  `
+`
 
   const [isVisible, setIsVisible] = useState(false)
-  const targetRef = useRef(null)
+  const targetRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const targetNode = targetRef.current
@@ -126,7 +133,8 @@ export default function Main2() {
                 transition: 'background-color 0.3s, transform 0.3s',
                 animation: isVisible ? `${fadeIn} 1s ease-out forwards` : 'none',
                 '&:hover': {
-                  backgroundColor: 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : 'white',
                   transform: 'scale(1.05)',
                 },
                 '&:hover .MuiButton-root': {
@@ -141,7 +149,7 @@ export default function Main2() {
                 {t('company_detail')}
               </Typography>
               <Button
-                variant="outlined"
+                variant={theme.palette.mode === 'dark' ? 'contained' : 'outlined'}
                 size="small"
                 component="a"
                 href="https://company.sanedaejangbu.site/"
@@ -171,7 +179,8 @@ export default function Main2() {
                 transition: 'background-color 0.3s, transform 0.3s',
                 animation: isVisible ? `${fadeIn} 1.25s ease-out forwards` : 'none',
                 '&:hover': {
-                  backgroundColor: 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : 'white',
                   transform: 'scale(1.05)',
                   '&:hover .MuiButton-root': {
                     opacity: 1,
@@ -186,7 +195,7 @@ export default function Main2() {
                 {t('store_detail')}
               </Typography>
               <Button
-                variant="outlined"
+                variant={theme.palette.mode === 'dark' ? 'contained' : 'outlined'}
                 size="small"
                 component="a"
                 href="https://store.sanedaejangbu.site/"
@@ -217,7 +226,8 @@ export default function Main2() {
                 animation: isVisible ? `${fadeIn} 1.5s ease-out forwards` : 'none',
 
                 '&:hover': {
-                  backgroundColor: 'white',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : 'white',
                   transform: 'scale(1.05)',
                   '&:hover .MuiButton-root': {
                     opacity: 1,
@@ -232,7 +242,7 @@ export default function Main2() {
                 {t('employee_detail')}
               </Typography>
               <Button
-                variant="outlined"
+                variant={theme.palette.mode === 'dark' ? 'contained' : 'outlined'}
                 size="small"
                 component="a"
                 href="https://employee.sanedaejangbu.site/"
@@ -247,6 +257,17 @@ export default function Main2() {
             </Stack>
           </Box>
         </Stack>
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '5%',
+            cursor: 'pointer',
+            zIndex: 10,
+          }}
+          onClick={scrollToNextSection}
+        >
+          <Iconify icon="mdi:chevron-down" width={40} height={40} />
+        </Box>
       </Stack>
     </Box>
   )
