@@ -1,8 +1,12 @@
 import type { ReactNode, TouchEvent } from 'react'
 
+import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
+import { useSwipeStore } from '@/stores/use-swipe-store'
 
 import { Box, Stack } from '@mui/material'
+
+import { Typography } from '@e201/ui'
 
 const NAV_HEIGHT = 66
 const SWIPE_HEIGHT = 50
@@ -14,6 +18,10 @@ interface IProps {
 }
 
 export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
+  const { t } = useTranslate()
+
+  const { isOpen: storeOpen, close, open } = useSwipeStore()
+
   const [isOpen, setIsOpen] = useState(false)
   const [posY, setPosY] = useState(window.innerHeight - NAV_HEIGHT - SWIPE_HEIGHT)
   const [maxHeight, setMaxHeight] = useState(
@@ -47,9 +55,11 @@ export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
     if (pos > window.innerHeight - (maxHeight + NAV_HEIGHT) / 2) {
       setPosY(MIN_POS)
       setIsOpen(false)
+      close()
     } else {
       setPosY(MAX_POS)
       setIsOpen(true)
+      open()
     }
     document.removeEventListener('touchmove', onTouchMove)
     document.removeEventListener('touchend', onTouchEnd)
@@ -64,7 +74,15 @@ export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
   const onClose = () => {
     setPosY(MIN_POS)
     setIsOpen(false)
+    close()
   }
+
+  useEffect(() => {
+    if (storeOpen) {
+      setPosY(MAX_POS)
+      setIsOpen(true)
+    }
+  }, [MAX_POS, storeOpen])
 
   useEffect(() => {
     window.addEventListener('resize', onResize)
@@ -90,15 +108,19 @@ export function SwipeableEdge({ children, disableKeepMounted }: IProps) {
           top={posY}
           borderRadius={2}
           bgcolor={isOpen ? `background.default` : `transparent`}
-          sx={{ transition: 'top 0.1s', borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
+          sx={{ transition: 'top 0.3s', borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
         >
           <Stack
             justifyContent="center"
             alignItems="center"
             height={SWIPE_HEIGHT}
             onTouchStart={onTouchStart}
+            spacing={1}
           >
             <Box width={150} height={6} bgcolor="divider" borderRadius={10} />
+            <Typography variant="caption" color="text.secondary" sx={{ opacity: isOpen ? 0 : 1 }}>
+              {t('swipeable.info')}
+            </Typography>
           </Stack>
           {disableKeepMounted ? (
             <Box height={maxHeight - NAV_HEIGHT - SWIPE_HEIGHT}>{children}</Box>
