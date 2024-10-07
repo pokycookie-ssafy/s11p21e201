@@ -42,7 +42,7 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, Payment
 			+ " from Payment p"
 			+ " where p.companyId = :companyId"
 			+ " and p.createdAt between :startDate and :endDate"
-			+ " group by p.departmentId")
+			+ " group by p.departmentId, p.departmentName")
 	List<DepartmentPaymentSumResponse> findMonthlySumByDepartment(UUID companyId, LocalDateTime startDate,
 		LocalDateTime endDate);
 
@@ -51,7 +51,7 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, Payment
 			+ " from Payment p"
 			+ " where p.departmentId = :departmentId"
 			+ " and p.createdAt between :startDate and :endDate"
-			+ " group by p.employeeId")
+			+ " group by p.employeeId, p.employeeName")
 	List<EmployeePaymentSumResponse> findMonthlySumByEmployee(UUID departmentId, LocalDateTime startDate,
 		LocalDateTime endDate);
 }
