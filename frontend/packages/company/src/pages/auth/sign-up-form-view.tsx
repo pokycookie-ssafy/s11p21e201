@@ -204,6 +204,10 @@ export default function SignUpFormView({ onNext }: IProps) {
               control={control}
               rules={{
                 required: t('validate.phone.required'),
+                pattern: {
+                  value: /^(\d{2,3})[-.\s]?(\d{3,4})[-.\s]?(\d{4})$/,
+                  message: t('validate.phone.pattern'),
+                },
               }}
               label={t('form.phone')}
               type="tel"
