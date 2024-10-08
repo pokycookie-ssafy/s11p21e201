@@ -13,13 +13,11 @@ import {
   Typography,
 } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
-
 import ServiceDialog from '../layout/dialog/service_dialog'
 import PrivacyDialog from '../layout/dialog/privacy_dialog'
 
 interface Main7Props {
-  scrollToNextSection: () => void // 추가: 프롭스 타입 정의
+  scrollToNextSection: () => void
 }
 
 export default function Main7({ scrollToNextSection }: Main7Props) {
@@ -35,18 +33,6 @@ export default function Main7({ scrollToNextSection }: Main7Props) {
   }
 `
 
-  // 애니메이션 정의
-  const fadeInUp = keyframes`
-    from {
-      opacity: 0;
-      transform: translateY(50px); 
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  `
-
   const [serviceOpen, setServiceOpen] = useState(false)
   const [privacyOpen, setPrivacyOpen] = useState(false)
 
@@ -59,7 +45,6 @@ export default function Main7({ scrollToNextSection }: Main7Props) {
   const [isVisible, setIsVisible] = useState(false)
   const targetRef = useRef<HTMLDivElement | null>(null)
 
-  // Intersection Observer 적용
   useEffect(() => {
     const targetNode = targetRef.current
     const observer = new IntersectionObserver(
@@ -124,10 +109,10 @@ export default function Main7({ scrollToNextSection }: Main7Props) {
         }}
       >
         <Typography variant="h1" sx={{ fontFamily: 'suit-variable', fontSize: '4rem' }}>
-          사내대장부와 함께,
+          {t('final.title')}
         </Typography>
         <Typography variant="h2" sx={{ fontWeight: '600' }}>
-          새로운 일상을 시작해 보세요
+          {t('final.subtitle')}
         </Typography>
       </Stack>
       <Box
@@ -158,7 +143,7 @@ export default function Main7({ scrollToNextSection }: Main7Props) {
                 onClick={handleServiceOpen}
                 sx={{ cursor: 'pointer' }}
               >
-                이용약관
+                {t('final.term')}
               </Link>
               <Link
                 color="inherit"
@@ -166,7 +151,7 @@ export default function Main7({ scrollToNextSection }: Main7Props) {
                 onClick={handlePrivacyOpen}
                 sx={{ cursor: 'pointer' }}
               >
-                개인정보처리방침
+                {t('final.privacy')}
               </Link>
             </Stack>
           </Stack>

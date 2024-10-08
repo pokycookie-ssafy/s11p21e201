@@ -1,20 +1,19 @@
+import type { BadgePropsVariantOverrides } from '@mui/material'
+
 import { useTranslate } from '@/locales'
 import qrpay from '@/assets/img/qrpay_mockup.png'
 import { useRef, useState, useEffect } from 'react'
 
 import { Box, Stack, useTheme, keyframes, Typography } from '@mui/material'
 
-import { Iconify } from '@e201/ui'
-
 interface Main5Props {
-  scrollToNextSection: () => void // 추가: 프롭스 타입 정의
+  scrollToNextSection: () => BadgePropsVariantOverrides
 }
 
 export default function Main5({ scrollToNextSection }: Main5Props) {
   const { t } = useTranslate('microsite')
   const theme = useTheme()
 
-  // 애니메이션 정의
   const fadeInUp = keyframes`
     from {
       opacity: 0;
@@ -29,7 +28,6 @@ export default function Main5({ scrollToNextSection }: Main5Props) {
   const [isVisible, setIsVisible] = useState(false)
   const targetRef = useRef<HTMLDivElement | null>(null)
 
-  // Intersection Observer 적용
   useEffect(() => {
     const targetNode = targetRef.current
     const observer = new IntersectionObserver(
@@ -58,51 +56,57 @@ export default function Main5({ scrollToNextSection }: Main5Props) {
   return (
     <Stack
       ref={targetRef}
+      direction="row"
       sx={{
         width: '100vw',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background:
+          theme.palette.mode === 'dark'
+            ? `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[800]})`
+            : `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[300]})`,
         minHeight: '100vh',
+        animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
       }}
     >
       <Stack
-        direction="row"
         sx={{
-          width: '100vw',
+          width: '50%',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 4,
-          background: `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[300]})`,
-          minHeight: '100vh',
+          paddingTop: '15vh',
+          paddingLeft: '5vw',
         }}
       >
         <Box
           component="img"
           src={qrpay}
           sx={{
-            width: '50vw',
+            width: '20vw',
             height: 'auto',
-            maxHeight: '50vh',
             objectFit: 'contain',
-            animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
           }}
         />
-        <Stack
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            width: '50%',
-            padding: 2,
-            animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
-          }}
-        >
-          <Stack pl={10} spacing={3}>
-            <Stack>
-              <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
-                결제
-              </Typography>
-              <Typography variant="h1">복잡한 수기 장부 대신</Typography>
-              <Typography variant="h1">간편한 QR 결제</Typography>
-            </Stack>
-            <Typography variant="h3">QR 결제를 한다면? 아주 좋을 듯합니다.</Typography>
+      </Stack>
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          width: '50%',
+          paddingTop: '10vh',
+        }}
+      >
+        <Stack spacing={3}>
+          <Stack>
+            <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
+              {t('payment.title')}
+            </Typography>
+            <Typography variant="h1">{t('payment.subtitle1')}</Typography>
+            <Typography variant="h1">{t('payment.subtitle2')}</Typography>
+          </Stack>
+          <Stack>
+            <Typography variant="h3">{t('payment.description1')}</Typography>
+            <Typography variant="h3">{t('payment.description2')}</Typography>
           </Stack>
         </Stack>
       </Stack>
