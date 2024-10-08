@@ -1,13 +1,13 @@
 import type { ISettlement } from '@/types/settlement'
 
-type SettlementMock =
-  | ISettlement
-  | {
-      settlementDate: string
-      settledDate: string
-    }
+// type SettlementMock =
+//   | ISettlement
+//   | {
+//       settlementDate: string
+//       settledDate: string
+//     }
 
-export const settlementResponse: SettlementMock[] = [
+export const settlementResponse = [
   {
     id: 'fee98146-21e1-4285-91a3-7cab8de66be1',
     companyId: '0738bfd0-2b9c-4a51-a2c2-23e6b9a4427b',
