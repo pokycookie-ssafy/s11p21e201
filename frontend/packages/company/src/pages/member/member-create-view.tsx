@@ -197,10 +197,10 @@ export default function MemberCreateView() {
         <Breadcrumbs
           title={t('breadcrumbs.create_member')}
           routes={[
-            { title: t('breadcrumbs.management'), path: paths.management.member.root },
+            { title: t('breadcrumbs.management'), path: paths.management.member.list },
             {
               title: t('breadcrumbs.member_management'),
-              path: paths.management.member.root,
+              path: paths.management.member.list,
             },
             { title: t('breadcrumbs.create_member') },
           ]}

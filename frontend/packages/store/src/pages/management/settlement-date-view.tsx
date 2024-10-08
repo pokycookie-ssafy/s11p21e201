@@ -1,15 +1,16 @@
 import type { GridColDef } from '@mui/x-data-grid'
-import type { ISettlementResponse } from '@/types/settlement'
+import type { ISettlement } from '@/types/settlement'
 
 import dayjs from 'dayjs'
+import { toast } from 'sonner'
 import api from '@/configs/api'
 import paths from '@/configs/paths'
 import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
-import { useMemo, useState } from 'react'
 import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { useQuery } from '@tanstack/react-query'
+import { useRef, useMemo, useState } from 'react'
 import { fNumber, useBoolean } from '@e201/utils'
 import TaxInvoiceUploadModal from '@/sections/settlement-management/tax-invoice-upload-modal'
 
@@ -31,6 +32,8 @@ export default function SettlementDateView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [tab, setTab] = useState<StatusType | null>(null)
 
+  const settlementIdForInvoice = useRef('')
+
   const TABS = [
     { label: t('tab.all'), value: null },
     { label: t('tab.settled'), value: 'settled' },
@@ -41,15 +44,19 @@ export default function SettlementDateView() {
 
   const { start, end } = getMonthRange(year, month - 1)
 
-  const { data: settlements, isPending } = useQuery({
+  const {
+    data: settlements,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: [api.settlement.list, 'POST', start, end],
     queryFn: async () => {
-      const response = await axios.get<ISettlementResponse[]>(api.settlement.listWith(start, end))
+      const response = await axios.get<ISettlement[]>(api.settlement.listWith(start, end))
       return response.data
     },
   })
 
-  const statusProvider = (row: ISettlementResponse) => {
+  const statusProvider = (row: ISettlement) => {
     if (row.settledAmount === 0) {
       return <Label status="error">{t('label.unsettled')}</Label>
     }
@@ -85,7 +92,34 @@ export default function SettlementDateView() {
     setMonth(dateMonth)
   }
 
-  const columns: GridColDef<ISettlementResponse>[] = [
+  const invoiceModalHandler = (settlementId: string) => {
+    settlementIdForInvoice.current = settlementId
+    invoiceModal.onTrue()
+  }
+
+  const taxInvoiceSubmit = async (file: File) => {
+    try {
+      const formData = new FormData()
+      if (!file) {
+        return undefined
+      }
+      formData.append('uploadFile', file)
+
+      axios.post(api.settlement.invoiceWith(settlementIdForInvoice.current), formData, {
+        headers: {
+          'Content-Type': 'multipart/formdata',
+        },
+      })
+      refetch()
+      invoiceModal.onFalse()
+    } catch (error) {
+      toast.error(t(''))
+      console.log(error)
+    }
+    return undefined
+  }
+
+  const columns: GridColDef<ISettlement>[] = [
     {
       field: 'companyName',
       flex: 1,
@@ -97,8 +131,8 @@ export default function SettlementDateView() {
       ),
       renderCell: (params) => (
         <Stack height={1} pl={1} justifyContent="center">
-          <Typography fontSize={14} fontWeight={500}>
-            {params.row.companyName}
+          <Typography fontSize={14} fontWeight={400}>
+            {params.row.partnerName}
           </Typography>
         </Stack>
       ),
@@ -129,12 +163,11 @@ export default function SettlementDateView() {
     },
 
     {
-      field: 'outstandingAmount',
+      field: 'receivable',
       type: 'number',
       headerName: t('field.outstanding_amount'),
       width: 120,
       resizable: false,
-      valueGetter: (_, row) => row.settlementAmount - row.settledAmount,
       valueFormatter: (value: number) => `${fNumber(value)} ${t('unit.won')}`,
     },
     {
@@ -175,7 +208,7 @@ export default function SettlementDateView() {
             <Tooltip title={t('tooltip.upload')} disableInteractive>
               <IconButton
                 sx={{ color: (theme) => theme.palette.error.main }}
-                onClick={invoiceModal.onTrue}
+                onClick={() => invoiceModalHandler(params.row.id)}
               >
                 <Iconify icon="solar:upload-square-linear" />
               </IconButton>
@@ -234,7 +267,11 @@ export default function SettlementDateView() {
           />
         </Card>
       </Box>
-      <TaxInvoiceUploadModal open={invoiceModal.value} onClose={invoiceModal.onFalse} />
+      <TaxInvoiceUploadModal
+        open={invoiceModal.value}
+        onClose={invoiceModal.onFalse}
+        onSubmit={taxInvoiceSubmit}
+      />
     </>
   )
 }

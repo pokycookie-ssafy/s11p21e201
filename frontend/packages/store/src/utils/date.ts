@@ -7,6 +7,13 @@ export function getMonthRange(year: number, month: number) {
   return { start, end }
 }
 
+export function getYearRange(year: number) {
+  const start = dayjs().year(year).startOf('year').format('YYYY-MM-DDTHH:mm:ss')
+  const end = dayjs().year(year).endOf('year').format('YYYY-MM-DDTHH:mm:ss')
+
+  return { start, end }
+}
+
 export function parseDateString(dateString: string): Date | null {
   const numbers = dateString.match(/\d+/g)
   if (!numbers || numbers.length < 3) {

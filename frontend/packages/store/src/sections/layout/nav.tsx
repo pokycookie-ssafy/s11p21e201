@@ -3,7 +3,9 @@ import type { Theme, SxProps } from '@mui/material'
 
 import nav from '@/configs/nav'
 import { useMemo } from 'react'
+import api from '@/configs/api'
 import paths from '@/configs/paths'
+import axios from '@/configs/axios'
 import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
@@ -38,9 +40,14 @@ export default function Nav({ drawer }: IProps) {
   const { breakpoints } = useTheme()
   const invisible = useMediaQuery(breakpoints.down('md')) && !drawer
 
-  const logoutHandler = () => {
-    logout()
-    navigate(paths.auth.signIn)
+  const logoutHandler = async () => {
+    try {
+      await axios.delete(api.auth.logout)
+      logout()
+      navigate(paths.auth.signIn)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

@@ -69,7 +69,7 @@ export default function DepartmentManagementView() {
         <Breadcrumbs
           title={t('breadcrumbs.department_management')}
           routes={[
-            { title: t('breadcrumbs.management'), path: paths.management.member.root },
+            { title: t('breadcrumbs.management'), path: paths.management.member.list },
             { title: t('breadcrumbs.member_management'), path: paths.management.member.list },
             { title: t('breadcrumbs.department_management') },
           ]}

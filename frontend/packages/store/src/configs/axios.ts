@@ -3,6 +3,8 @@ import type { AxiosError } from 'axios'
 import _axios from 'axios'
 import { BASE_URL } from '@/configs/api'
 
+import paths from './paths'
+
 const axios = _axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -16,14 +18,12 @@ const axios = _axios.create({
 axios.interceptors.response.use(
   (res) => res,
   (error: AxiosError) => {
-    console.log('AXIOS ERROR')
-    console.log(error)
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && window.location.pathname !== paths.auth.signIn) {
       window.location.reload()
     }
-    if (error.code === 'ERR_NETWORK') {
-      window.location.reload()
-    }
+    // if (error.code === 'ERR_NETWORK') {
+    //   window.location.reload()
+    // }
     return Promise.reject(error)
   }
 )

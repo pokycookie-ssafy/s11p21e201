@@ -6,12 +6,12 @@ import api from '@/configs/api'
 import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { useTranslate } from '@/locales'
-import { useMemo, useState } from 'react'
 import { getMonthRange } from '@/utils/date'
 import isBetween from 'dayjs/plugin/isBetween'
 import { fNumber } from '@/utils/number-format'
 import { useBoolean } from '@/hooks/use-boolean'
 import { useQuery } from '@tanstack/react-query'
+import { useRef, useMemo, useState } from 'react'
 import SettleModal from '@/sections/settlement-management/settle-modal'
 
 import { DataGrid } from '@mui/x-data-grid'
@@ -35,17 +35,6 @@ import { Label, Iconify, SelectDate, Breadcrumbs } from '@e201/ui'
 
 type StatusType = 'settled' | 'partial' | 'unsettled' | 'upload'
 
-// interface ISettlement {
-//   id: string
-//   storeId: string
-//   storeName: string
-//   settlementDate: Date
-//   settledDate: Date
-//   settlementAmount: number
-//   settledAmount: number
-//   taxInvoice: boolean
-// }
-
 dayjs.extend(isBetween)
 
 export default function SettlementDateView() {
@@ -58,6 +47,8 @@ export default function SettlementDateView() {
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [tab, setTab] = useState<StatusType | null>(null)
 
+  const settlementId = useRef<string>('')
+
   const TABS = [
     { label: t('all'), value: null },
     { label: t('settled'), value: 'settled' },
@@ -67,10 +58,14 @@ export default function SettlementDateView() {
 
   const { start, end } = getMonthRange(year, month - 1)
 
-  const { data: settlements, isPending } = useQuery({
+  const {
+    data: settlements,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: [api.settlement.list, 'POST', start, end],
     queryFn: async () => {
-      const response = await axios.get(api.settlement.listWith(start, end))
+      const response = await axios.get<ISettlement[]>(api.settlement.listWith(start, end))
       return response.data
     },
   })
@@ -106,6 +101,31 @@ export default function SettlementDateView() {
     setMonth(dateMonth)
   }
 
+  const settleHandler = (id: string) => {
+    settlementId.current = id
+    settleDialog.onTrue()
+  }
+
+  const invoiceShowHandler = async (id: string) => {
+    try {
+      const response = await axios.get(api.settlement.invoiceWith(id), {
+        responseType: 'blob',
+      })
+      const imageURL = URL.createObjectURL(new Blob([response.data]))
+
+      const link = document.createElement('a')
+      link.href = imageURL
+      link.setAttribute('download', 'image.png')
+      document.body.appendChild(link)
+
+      link.click()
+      link.remove()
+      URL.revokeObjectURL(imageURL)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const columns: GridColDef<ISettlement>[] = [
     {
       field: 'storeName',
@@ -120,7 +140,7 @@ export default function SettlementDateView() {
       renderCell: (params) => (
         <Stack height={1} pl={1} justifyContent="center">
           <Typography fontSize={14} fontWeight={500}>
-            {params.row.storeName}
+            {params.row.partnerName}
           </Typography>
         </Stack>
       ),
@@ -142,13 +162,19 @@ export default function SettlementDateView() {
       field: 'settledAmount',
       headerName: t('settled_amount'),
       width: 130,
-      valueFormatter: (params) => `${fNumber(params)} 원`,
+      valueFormatter: (params) => `${fNumber(params)} ${t('unit.won')}`,
+    },
+    {
+      field: 'receivable',
+      headerName: t('field.outstanding_amount'),
+      width: 130,
+      valueFormatter: (params) => `${fNumber(params)} ${t('unit.won')}`,
     },
     {
       field: 'settlementAmount',
       headerName: t('settlement_amount'),
       width: 130,
-      valueFormatter: (params) => `${fNumber(params)} 원`,
+      valueFormatter: (params) => `${fNumber(params)} ${t('unit.won')}`,
     },
     {
       field: 'status',
@@ -169,7 +195,10 @@ export default function SettlementDateView() {
         <Stack height={1} justifyContent="center" alignItems="center">
           {params.row.taxInvoice !== null ? (
             <Tooltip title={t('tooltip.check_tax')} disableInteractive>
-              <IconButton sx={{ color: (theme) => theme.palette.success.main }}>
+              <IconButton
+                sx={{ color: (theme) => theme.palette.success.main }}
+                onClick={() => invoiceShowHandler(params.row.id)}
+              >
                 <Iconify icon="solar:check-circle-linear" />
               </IconButton>
             </Tooltip>
@@ -200,7 +229,7 @@ export default function SettlementDateView() {
             <Tooltip title={t('tooltip.settle')} disableInteractive>
               <IconButton
                 sx={{ color: (theme) => theme.palette.error.main }}
-                onClick={settleDialog.onTrue}
+                onClick={() => settleHandler(params.row.id)}
               >
                 <Iconify icon="mingcute:card-pay-line" />
               </IconButton>
@@ -217,8 +246,8 @@ export default function SettlementDateView() {
         <Breadcrumbs
           title={t('breadcrumbs.management_date')}
           routes={[
-            { title: t('breadcrumbs.management'), path: paths.management.settlement.root },
-            { title: t('breadcrumbs.management_payment'), path: paths.management.settlement.root },
+            { title: t('breadcrumbs.management'), path: paths.management.settlement.date },
+            { title: t('breadcrumbs.management_payment'), path: paths.management.settlement.date },
             { title: t('breadcrumbs.management_date') },
           ]}
         />
@@ -266,7 +295,12 @@ export default function SettlementDateView() {
         </DialogActions>
       </Dialog>
 
-      <SettleModal open={settleDialog.value} onClose={settleDialog.onFalse} />
+      <SettleModal
+        open={settleDialog.value}
+        onClose={settleDialog.onFalse}
+        settlementId={settlementId.current}
+        refetch={refetch}
+      />
     </>
   )
 }

@@ -11,9 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
-import { Box, Button, TextField } from '@mui/material'
+import { Stack, Button, TextField } from '@mui/material'
 
-import { Upload, Container, Breadcrumbs } from '@e201/ui'
+import { Upload, Iconify, Container, Typography, Breadcrumbs } from '@e201/ui'
 
 export default function ContractNewManagementView() {
   const { t } = useTranslate('contract-management')
@@ -50,6 +50,7 @@ export default function ContractNewManagementView() {
     enabled: !!file,
     staleTime: Infinity,
     gcTime: Infinity,
+    retry: 1,
   })
 
   const fileChangeHandler = (files: File[]) => {
@@ -82,10 +83,28 @@ export default function ContractNewManagementView() {
       return null
     }
     if (isError) {
-      return <Box>Error</Box>
+      return (
+        <Stack
+          width={1}
+          height={200}
+          justifyContent="center"
+          alignItems="center"
+          borderRadius={1}
+          spacing={1}
+          sx={{
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            color: (theme) => theme.palette.text.secondary,
+          }}
+        >
+          <Iconify icon="fluent:document-error-24-filled" width={40} />
+          <Typography fontSize={14} fontWeight={400}>
+            {t('error.ocr')}
+          </Typography>
+        </Stack>
+      )
     }
     return <BusinessLicenseForm isPending={isPending} license={licenseData} />
-  }, [isError, licenseData, file, isPending])
+  }, [isError, licenseData, file, isPending, t])
 
   return (
     <Container maxWidth="sm" sx={{ p: 0 }}>

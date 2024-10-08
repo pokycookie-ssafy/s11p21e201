@@ -26,10 +26,11 @@
 
   "field": {
     "store_name": "식당명",
-    "action": "정산"
+    "action": "정산",
+    "outstanding_amount": "미납 금액"
   },
   "tooltip": {
-    "check_tax": "조회",
+    "check_tax": "다운로드",
     "no_tax": "대기중",
     "settle": "정산하기",
     "settle_done": "정산완료"
@@ -41,12 +42,17 @@
     "management_store": "식당별 관리"
   },
   "unit": {
-    "date": "{0}년 {1}월"
+    "date": "{0}년 {1}월",
+    "won": "원",
+    "year": "년"
   },
   "label": {
     "store_name": "식당명 검색"
   },
   "button": {
     "settle": "정산하기"
+  },
+  "toast": {
+    "settle_error": "정산에 실패했습니다"
   }
 }

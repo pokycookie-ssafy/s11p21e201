@@ -1,40 +1,74 @@
-import Chart from 'react-apexcharts'
+import type { IUsage } from '@/types/usage'
 
-export default function MealUsage() {
-  return (
-    <Chart
-      width="100%"
-      type="radialBar"
-      series={[67]}
-      options={{
-        plotOptions: {
-          radialBar: {
-            hollow: {
-              margin: 15,
-              size: '70%',
-            },
+import api from '@/configs/api'
+import axios from '@/configs/axios'
+import paths from '@/configs/paths'
+import { fNumber } from '@e201/utils'
+import { useTranslate } from '@/locales'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
-            dataLabels: {
-              name: {
-                offsetY: -15,
-                show: true,
-                color: '#888',
-                fontSize: '13px',
-              },
-              value: {
-                offsetY: 5,
-                color: '#111',
-                fontSize: '30px',
-                show: true,
-              },
-            },
-          },
-        },
-        stroke: {
-          lineCap: 'round',
-        },
-        labels: ['Progress'],
-      }}
-    />
+import { Box, Card, Stack, Button, Divider, CircularProgress } from '@mui/material'
+
+import { Typography } from '@e201/ui'
+
+import MealChart from './meal-chart'
+
+interface IProps {
+  onQr?: () => void
+}
+
+export default function MealUsage({ onQr }: IProps) {
+  const { t } = useTranslate()
+
+  const navigate = useNavigate()
+
+  const { data } = useQuery({
+    queryKey: [api.usage],
+    queryFn: async () => {
+      const response = await axios.get<IUsage>(api.usage)
+      return response.data
+    },
+  })
+
+  return data ? (
+    <Card sx={{ width: 1, p: 2 }}>
+      <Typography variant="subtitle2" align="left" mb={2}>
+        {t('usage.title')}
+      </Typography>
+
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Box>
+          <MealChart total={data.supportAmount} usage={data.usage} />
+        </Box>
+
+        <Stack width={1} spacing={0.5}>
+          <Typography
+            fontSize={22}
+            fontWeight={800}
+            color="primary.main"
+          >{`${fNumber(data.usage ?? 0)} ${t('unit.won')}`}</Typography>
+          <Typography
+            variant="subtitle2"
+            color="text.secondary"
+          >{`${fNumber(data.supportAmount)} ${t('unit.won')}`}</Typography>
+        </Stack>
+      </Stack>
+
+      <Divider sx={{ mb: 1 }} />
+
+      <Stack direction="row" spacing={1}>
+        <Button fullWidth variant="outlined" onClick={onQr}>
+          {t('main.button.qr')}
+        </Button>
+        <Button fullWidth variant="outlined" onClick={() => navigate(paths.payments)}>
+          {t('main.button.payments')}
+        </Button>
+      </Stack>
+    </Card>
+  ) : (
+    <Stack width={1} height={200} justifyContent="center" alignItems="center">
+      <CircularProgress />
+    </Stack>
   )
 }

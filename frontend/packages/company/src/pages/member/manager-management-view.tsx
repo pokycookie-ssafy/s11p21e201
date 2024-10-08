@@ -79,7 +79,7 @@ export default function ManagerManagementView() {
         <Breadcrumbs
           title={t('breadcrumbs.manager_management')}
           routes={[
-            { title: t('breadcrumbs.management'), path: paths.management.member.root },
+            { title: t('breadcrumbs.management'), path: paths.management.member.list },
             { title: t('breadcrumbs.member_management'), path: paths.management.member.list },
             { title: t('breadcrumbs.manager_management') },
           ]}
