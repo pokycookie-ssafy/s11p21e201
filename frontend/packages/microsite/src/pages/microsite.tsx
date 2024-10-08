@@ -4,56 +4,90 @@ import Main1 from '@/sections/microsite/main1'
 import Main2 from '@/sections/microsite/main2'
 import Main3 from '@/sections/microsite/main3'
 import Main4 from '@/sections/microsite/main4'
+import Main5 from '@/sections/microsite/main5'
+import Main6 from '@/sections/microsite/main6'
+import Main7 from '@/sections/microsite/main7'
 
 import { Box } from '@mui/material'
 
 export default function Microsite() {
+  const totalSections = 7
+
+  // 각 섹션에 대한 ref를 개별적으로 선언합니다.
   const main1Ref = useRef<HTMLDivElement | null>(null)
   const main2Ref = useRef<HTMLDivElement | null>(null)
   const main3Ref = useRef<HTMLDivElement | null>(null)
   const main4Ref = useRef<HTMLDivElement | null>(null)
+  const main5Ref = useRef<HTMLDivElement | null>(null)
+  const main6Ref = useRef<HTMLDivElement | null>(null)
+  const main7Ref = useRef<HTMLDivElement | null>(null)
+
+  // refs를 배열로 관리합니다.
+  const sectionRefs = [main1Ref, main2Ref, main3Ref, main4Ref, main5Ref, main6Ref, main7Ref]
 
   const [currentSection, setCurrentSection] = useState(1)
+  const [scrollDeltaY, setScrollDeltaY] = useState(0)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    if (e.deltaY > 0) {
-      // 스크롤을 아래로 내릴 때
-      if (currentSection === 1 && main2Ref.current) {
-        main2Ref.current.scrollIntoView({ behavior: 'smooth' })
-        setCurrentSection(2)
-      } else if (currentSection === 2 && main3Ref.current) {
-        main3Ref.current.scrollIntoView({ behavior: 'smooth' })
-        setCurrentSection(3)
-      } else if (currentSection === 3 && main4Ref.current) {
-        main4Ref.current.scrollIntoView({ behavior: 'smooth' })
-        setCurrentSection(4)
-      } else if (e.deltaY < 0) {
-        // 스크롤을 위로 올릴 때
-        if (currentSection === 2 && main1Ref.current) {
-          main1Ref.current.scrollIntoView({ behavior: 'smooth' })
-          setCurrentSection(1)
-        } else if (currentSection === 3 && main2Ref.current) {
-          main2Ref.current.scrollIntoView({ behavior: 'smooth' })
-          setCurrentSection(2)
-        } else if (currentSection === 4 && main3Ref.current) {
-          main3Ref.current.scrollIntoView({ behavior: 'smooth' })
-          setCurrentSection(3)
+    if (isScrolling) return
+
+    e.preventDefault()
+
+    setScrollDeltaY((prevDeltaY) => {
+      const newDeltaY = prevDeltaY + e.deltaY
+      const threshold = 100
+
+      if (newDeltaY > threshold && currentSection < totalSections) {
+        const nextSection = currentSection + 1
+        const nextSectionRef = sectionRefs[nextSection - 1]
+        if (nextSectionRef.current) {
+          setIsScrolling(true)
+          nextSectionRef.current.scrollIntoView({ behavior: 'smooth' })
+          setTimeout(() => {
+            setCurrentSection(nextSection)
+            setIsScrolling(false)
+          }, 500)
         }
+        return 0
+      }
+      if (newDeltaY < -threshold && currentSection > 1) {
+        const prevSection = currentSection - 1
+        const prevSectionRef = sectionRefs[prevSection - 1]
+        if (prevSectionRef.current) {
+          setIsScrolling(true)
+          prevSectionRef.current.scrollIntoView({ behavior: 'smooth' })
+          setTimeout(() => {
+            setCurrentSection(prevSection)
+            setIsScrolling(false)
+          }, 500)
+        }
+        return 0
+      }
+      return newDeltaY
+    })
+  }
+
+  const handleScrollToNextSection = () => {
+    if (currentSection < totalSections) {
+      const nextSection = currentSection + 1
+      const nextSectionRef = sectionRefs[nextSection - 1]
+      if (nextSectionRef.current) {
+        nextSectionRef.current.scrollIntoView({ behavior: 'smooth' })
+        setCurrentSection(nextSection)
       }
     }
   }
-  const handleScrollToNextSection = () => {
-    if (currentSection === 1 && main2Ref.current) {
-      main2Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(2)
-    } else if (currentSection === 2 && main3Ref.current) {
-      main3Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(3)
-    } else if (currentSection === 3 && main4Ref.current) {
-      main4Ref.current.scrollIntoView({ behavior: 'smooth' })
-      setCurrentSection(4)
-    }
-  }
+
+  const sectionComponents = [
+    <Main1 key={1} scrollToNextSection={handleScrollToNextSection} />,
+    <Main2 key={2} scrollToNextSection={handleScrollToNextSection} />,
+    <Main3 key={3} scrollToNextSection={handleScrollToNextSection} />,
+    <Main4 key={4} scrollToNextSection={handleScrollToNextSection} />,
+    <Main5 key={5} scrollToNextSection={handleScrollToNextSection} />,
+    <Main6 key={6} scrollToNextSection={handleScrollToNextSection} />,
+    <Main7 key={7} scrollToNextSection={handleScrollToNextSection} />,
+  ]
 
   return (
     <Box
@@ -65,45 +99,19 @@ export default function Microsite() {
       onWheel={handleWheel}
     >
       <Header />
-      <Box
-        ref={main1Ref}
-        sx={{
-          height: '100vh',
-          scrollSnapAlign: 'start',
-        }}
-      >
-        <Main1 scrollToNextSection={handleScrollToNextSection} />
-      </Box>
-      <Box
-        ref={main2Ref}
-        sx={{
-          height: '100vh',
-          scrollSnapAlign: 'start',
-          overflowY: 'hidden',
-        }}
-      >
-        <Main2 scrollToNextSection={handleScrollToNextSection} />
-      </Box>
-      <Box
-        ref={main3Ref}
-        sx={{
-          height: '100vh',
-          scrollSnapAlign: 'start',
-          overflowY: 'hidden',
-        }}
-      >
-        <Main3 scrollToNextSection={handleScrollToNextSection} />
-      </Box>
-      <Box
-        ref={main4Ref}
-        sx={{
-          height: '100vh',
-          scrollSnapAlign: 'start',
-          overflowY: 'hidden',
-        }}
-      >
-        <Main4 scrollToNextSection={handleScrollToNextSection} />
-      </Box>
+      {sectionComponents.map((Component, index) => (
+        <Box
+          key={index}
+          ref={sectionRefs[index]}
+          sx={{
+            height: '100vh',
+            scrollSnapAlign: 'start',
+            overflowY: 'hidden',
+          }}
+        >
+          {Component}
+        </Box>
+      ))}
     </Box>
   )
 }

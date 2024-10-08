@@ -153,6 +153,7 @@ export default function Main2({ scrollToNextSection }: Main2Props) {
                 size="small"
                 component="a"
                 href="https://company.sanedaejangbu.site/"
+                target="_blank"
                 sx={{
                   opacity: 0,
                   transition: 'opacity 0.3s',
@@ -199,6 +200,7 @@ export default function Main2({ scrollToNextSection }: Main2Props) {
                 size="small"
                 component="a"
                 href="https://store.sanedaejangbu.site/"
+                target="_blank"
                 sx={{
                   opacity: 0,
                   transition: 'opacity 0.3s',
@@ -246,6 +248,7 @@ export default function Main2({ scrollToNextSection }: Main2Props) {
                 size="small"
                 component="a"
                 href="https://employee.sanedaejangbu.site/"
+                target="_blank"
                 sx={{
                   opacity: 0,
                   transition: 'opacity 0.3s',

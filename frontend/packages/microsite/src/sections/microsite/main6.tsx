@@ -1,14 +1,14 @@
 import { useTranslate } from '@/locales'
 import { useRef, useState, useEffect } from 'react'
-import dashboard from '@/assets/img/dashboard_mockup.png'
+import payment from '@/assets/img/payment_mockup.png'
 
 import { Box, Stack, useTheme, keyframes, Typography } from '@mui/material'
 
-interface Main3Props {
+interface Main6Props {
   scrollToNextSection: () => void // 추가: 프롭스 타입 정의
 }
 
-export default function Main3({ scrollToNextSection }: Main3Props) {
+export default function Main6({ scrollToNextSection }: Main6Props) {
   const { t } = useTranslate('microsite')
   const theme = useTheme()
 
@@ -22,14 +22,12 @@ export default function Main3({ scrollToNextSection }: Main3Props) {
       opacity: 1;
       transform: translateY(0);
     }
-
-    
   `
 
-  const fadeInLeft = keyframes`
+  const fadeInRight = keyframes`
   from {
     opacity: 0;
-    transform: translateX(-50px);
+    transform: translateX(50px);
   }
   to {
     opacity: 1;
@@ -85,38 +83,37 @@ export default function Main3({ scrollToNextSection }: Main3Props) {
           minHeight: '100vh',
         }}
       >
-        <Box
-          component="img"
-          src={dashboard}
-          sx={{
-            width: '40vw',
-            height: 'auto',
-            maxHeight: '50vh',
-            objectFit: 'contain',
-            animation: isVisible ? `${fadeInLeft} 1s ease-out forwards` : 'none',
-          }}
-        />
-
         <Stack
           sx={{
             justifyContent: 'center',
             alignItems: 'flex-start',
             width: '50%',
             padding: 2,
-            // animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
+            // animation: isVisible ? `${fadeInRight} 1s ease-out forwards` : 'none',
           }}
         >
-          <Stack pl={10} spacing={3}>
+          <Stack spacing={2} pl={20}>
             <Stack>
               <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
-                대시보드
+                장부 관리
               </Typography>
-              <Typography variant="h1">식대 관리는,</Typography>
-              <Typography variant="h1">보기 좋게 한 눈에</Typography>
+              <Typography variant="h1">장부 관리 하자</Typography>
+              <Typography variant="h1">재미있게</Typography>
             </Stack>
-            <Typography variant="h3">얼마를 썼고 얼마를 받았고, 계산할 필요 없슴다</Typography>
+            <Typography variant="h3">즐거운 장부 관리 이제 해 보아요~!</Typography>
           </Stack>
         </Stack>
+        <Box
+          component="img"
+          src={payment}
+          sx={{
+            width: '40vw',
+            height: 'auto',
+            maxHeight: '50vh',
+            objectFit: 'contain',
+            animation: isVisible ? `${fadeInRight} 1s ease-out forwards` : 'none',
+          }}
+        />
       </Stack>
     </Stack>
   )

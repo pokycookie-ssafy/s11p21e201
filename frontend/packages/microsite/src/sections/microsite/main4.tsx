@@ -1,7 +1,6 @@
 import { useTranslate } from '@/locales'
-import pay1 from '@/assets/img/pay_mu1.png'
-import pay2 from '@/assets/img/pay_mu2.png'
 import { useRef, useState, useEffect } from 'react'
+import contract from '@/assets/img/contract_mockup.png'
 
 import { Box, Stack, useTheme, keyframes, Typography } from '@mui/material'
 
@@ -24,6 +23,17 @@ export default function Main4({ scrollToNextSection }: Main4Props) {
       transform: translateY(0);
     }
   `
+
+  const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`
 
   const [isVisible, setIsVisible] = useState(false)
   const targetRef = useRef<HTMLDivElement | null>(null)
@@ -73,38 +83,37 @@ export default function Main4({ scrollToNextSection }: Main4Props) {
           minHeight: '100vh',
         }}
       >
-        <Box
-          component="img"
-          src={pay1}
-          sx={{
-            width: '40vw',
-            height: 'auto',
-            maxHeight: '50vh',
-            objectFit: 'contain',
-            animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
-          }}
-        />
-
         <Stack
           sx={{
             justifyContent: 'center',
             alignItems: 'flex-start',
             width: '50%',
             padding: 2,
-            animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
+            // animation: isVisible ? `${fadeInRight} 1s ease-out forwards` : 'none',
           }}
         >
-          <Stack pl={10} spacing={3}>
+          <Stack spacing={2} pl={20}>
             <Stack>
               <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
-                결제
+                계약
               </Typography>
-              <Typography variant="h1">복잡한 수기 장부 대신</Typography>
-              <Typography variant="h1">간편한 QR 결제</Typography>
+              <Typography variant="h1">두꺼운 장부 없이</Typography>
+              <Typography variant="h1">계약 관리</Typography>
             </Stack>
-            <Typography variant="h3">QR 결제를 한다면? 아주 좋을 듯합니다.</Typography>
+            <Typography variant="h3">계약의 디지털화 이제 이루어 보십쇼</Typography>
           </Stack>
         </Stack>
+        <Box
+          component="img"
+          src={contract}
+          sx={{
+            width: '40vw',
+            height: 'auto',
+            maxHeight: '50vh',
+            objectFit: 'contain',
+            animation: isVisible ? `${fadeInRight} 1s ease-out forwards` : 'none',
+          }}
+        />
       </Stack>
     </Stack>
   )
