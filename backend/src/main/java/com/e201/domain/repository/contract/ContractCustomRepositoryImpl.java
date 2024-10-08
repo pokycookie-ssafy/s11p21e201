@@ -69,7 +69,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetchOne();
 
 		// find contracts using companyId;
-		List<UUID> stores = companyQueryFactory
+		List<UUID> stores = contractQueryFactory
 			.select(contract.storeId)
 			.from(contract)
 			.where(contract.companyId.eq(companyId),
@@ -77,7 +77,6 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 
 		// createResponse
-
 		return storeQueryFactory.select(Projections.constructor(EmployeeFindStoreResponse.class,
 				storeInfo.name.as("storeName"),
 				storeInfo.businessAddress.as("storeAddress"),
