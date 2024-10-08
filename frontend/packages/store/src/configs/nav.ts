@@ -106,21 +106,21 @@ const nav: INav[] = [
       },
     ],
   },
-  {
-    title: 'setting.title',
-    group: [
-      {
-        title: 'setting.account',
-        path: paths.setting.account,
-        icon: 'majesticons:user-box-line',
-      },
-      {
-        title: 'setting.app',
-        path: paths.setting.app,
-        icon: 'solar:settings-linear',
-      },
-    ],
-  },
+  // {
+  //   title: 'setting.title',
+  //   group: [
+  //     {
+  //       title: 'setting.account',
+  //       path: paths.setting.account,
+  //       icon: 'majesticons:user-box-line',
+  //     },
+  //     {
+  //       title: 'setting.app',
+  //       path: paths.setting.app,
+  //       icon: 'solar:settings-linear',
+  //     },
+  //   ],
+  // },
 ]
 
 export default nav

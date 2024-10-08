@@ -19,6 +19,8 @@ const api = {
   payments: '/companies/employees/usages/detail',
   paymentWith: (start: string, end: string) =>
     `/companies/employees/usages/detail?startDate=${start}&endDate=${end}`,
+  stores: '/employees/stores',
+  changePassword: '/companies/employees/password',
 }
 
 export default api

@@ -26,7 +26,7 @@ export default function MainLayout() {
         login(response.data)
       }
     } catch (error) {
-      console.log(error)
+      // console.log(error)
     }
   }
 

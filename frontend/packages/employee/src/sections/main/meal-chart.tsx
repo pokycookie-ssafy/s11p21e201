@@ -1,5 +1,4 @@
 import Chart from 'react-apexcharts'
-import { useTranslate } from '@/locales'
 
 import { useTheme } from '@mui/material'
 
@@ -9,8 +8,6 @@ interface IProps {
 }
 
 export default function MealChart({ total, usage }: IProps) {
-  const { t } = useTranslate()
-
   const theme = useTheme()
 
   return (
@@ -19,11 +16,6 @@ export default function MealChart({ total, usage }: IProps) {
       type="radialBar"
       series={[(usage / total) * 100]}
       options={{
-        chart: {
-          sparkline: {
-            enabled: true,
-          },
-        },
         fill: {
           colors: [theme.palette.primary.main],
         },
@@ -40,29 +32,17 @@ export default function MealChart({ total, usage }: IProps) {
                 show: false,
               },
               value: {
-                show: false,
+                offsetY: 4,
+                color: theme.palette.text.primary,
+                fontSize: '12px',
+                show: true,
               },
             },
-            // dataLabels: {
-            //   name: {
-            //     offsetY: -15,
-            //     show: true,
-            //     color: theme.palette.text.secondary,
-            //     fontSize: '13px',
-            //   },
-            //   value: {
-            //     offsetY: 5,
-            //     color: theme.palette.text.primary,
-            //     fontSize: '30px',
-            //     show: true,
-            //   },
-            // },
           },
         },
         stroke: {
-          lineCap: 'butt',
+          lineCap: 'round',
         },
-        // labels: [t('usage.title')],
       }}
     />
   )

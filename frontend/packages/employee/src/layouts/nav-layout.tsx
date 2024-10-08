@@ -10,12 +10,9 @@ import { FullContainer } from '@e201/ui'
 
 export default function NavLayout() {
   return (
-    <FullContainer sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <FullContainer sx={{ display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <Container
-        maxWidth="xs"
-        sx={{ textAlign: 'center', flex: 1, flexGrow: 1, overflowY: 'auto' }}
-      >
+      <Container maxWidth="xs" sx={{ overflowY: 'auto', flex: 1, flexShrink: 0 }}>
         <Outlet />
       </Container>
       <SwipeableEdge>
