@@ -11,9 +11,9 @@ import { parseDateString } from '@/utils/date'
 import { useQuery } from '@tanstack/react-query'
 import BusinessLicenseForm from '@/sections/sign-up/business-license-form'
 
-import { Box, Stack, Button, useTheme, Typography, useMediaQuery } from '@mui/material'
+import { Stack, Button, useTheme, Typography, useMediaQuery } from '@mui/material'
 
-import { Upload, FormInput } from '@e201/ui'
+import { Upload, Iconify, FormInput } from '@e201/ui'
 
 interface IForm {
   email: string
@@ -82,6 +82,7 @@ export default function SignUpFormView({ onNext }: IProps) {
     enabled: !!file,
     staleTime: Infinity,
     gcTime: Infinity,
+    retry: 1,
   })
 
   const fileChangeHandler = (files: File[]) => {
@@ -128,10 +129,28 @@ export default function SignUpFormView({ onNext }: IProps) {
       return null
     }
     if (isError) {
-      return <Box>Error</Box>
+      return (
+        <Stack
+          width={1}
+          height={200}
+          justifyContent="center"
+          alignItems="center"
+          borderRadius={1}
+          spacing={1}
+          sx={{
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+            color: (theme) => theme.palette.text.secondary,
+          }}
+        >
+          <Iconify icon="fluent:document-error-24-filled" width={40} />
+          <Typography fontSize={14} fontWeight={400}>
+            {t('error.ocr')}
+          </Typography>
+        </Stack>
+      )
     }
     return <BusinessLicenseForm isPending={isPending} license={licenseData} />
-  }, [isError, licenseData, file, isPending])
+  }, [isError, licenseData, file, isPending, t])
 
   return (
     <form onSubmit={formMethod.handleSubmit(submitHandler)} noValidate>
