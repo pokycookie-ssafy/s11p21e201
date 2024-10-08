@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
+import com.e201.api.controller.company.request.employee.EmployeePasswordRequest;
 import com.e201.api.controller.company.request.employee.EmployeeUsageRequest;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
@@ -38,7 +40,7 @@ public class EmployeeController {
 	@PostMapping("/companies/employees")
 	public ResponseEntity<EmployeeCreateResponse> create(@Auth AuthInfo authInfo,
 		@RequestBody EmployeeCreateRequest request) {
-		validateRoletype(authInfo, MANAGER);
+		validateRoleType(authInfo, MANAGER);
 		EmployeeCreateResponse response = employeeService.create(request, authInfo.getId());
 		return ResponseEntity.status(CREATED).body(response);
 	}
@@ -52,7 +54,7 @@ public class EmployeeController {
 	@GetMapping("/companies/employees/usages")
 	public ResponseEntity<EmployeeUsageResponse> findUsage(@Auth AuthInfo authInfo,
 		@ModelAttribute EmployeeUsageRequest request) {
-		validateRoletype(authInfo, EMPLOYEE);
+		validateRoleType(authInfo, EMPLOYEE);
 		EmployeeUsageResponse response = paymentService.findUsage(authInfo, request);
 		return ResponseEntity.ok(response);
 	}
@@ -60,12 +62,19 @@ public class EmployeeController {
 	@GetMapping("/companies/employees/usages/detail")
 	public ResponseEntity<List<PaymentAndMenusFindResponse>> findUsageDetail(@Auth AuthInfo authInfo,
 		@ModelAttribute EmployeeUsageRequest request) {
-		validateRoletype(authInfo, EMPLOYEE);
+		validateRoleType(authInfo, EMPLOYEE);
 		List<PaymentAndMenusFindResponse> response = paymentService.findUserPaymentDetails(authInfo, request);
 		return ResponseEntity.ok(response);
 	}
 
-	private void validateRoletype(AuthInfo authInfo, RoleType roleType) {
+	@PutMapping("/companies/employees/password")
+	public ResponseEntity<Void> changePassword(@Auth AuthInfo authInfo, @RequestBody EmployeePasswordRequest request) {
+		validateRoleType(authInfo, EMPLOYEE);
+		employeeService.changePassword(authInfo.getId(), request);
+		return ResponseEntity.status(OK).build();
+	}
+
+	private void validateRoleType(AuthInfo authInfo, RoleType roleType) {
 		if (!authInfo.getRoleType().equals(roleType)) {
 			throw new AuthorizationException(ErrorCode.AUTHORIZATION_FAILED, "접근 권한이 없습니다.");
 		}

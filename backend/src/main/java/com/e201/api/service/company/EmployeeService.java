@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.e201.api.controller.company.request.employee.EmployeeAuthRequest;
 import com.e201.api.controller.company.request.employee.EmployeeCreateRequest;
+import com.e201.api.controller.company.request.employee.EmployeePasswordRequest;
 import com.e201.api.controller.company.response.employee.EmployeeAuthResponse;
 import com.e201.api.controller.company.response.employee.EmployeeCreateResponse;
 import com.e201.api.controller.company.response.employee.EmployeeFindResponse;
@@ -51,8 +52,15 @@ public class EmployeeService extends BaseEntity {
 	public AuthInfo checkPassword(EmployeeAuthRequest request) {
 		Employee employee = employeeRepository.findByCode(request.getCode())
 			.orElseThrow(() -> new EntityNotFoundException(NOT_FOUND, EMPLOYEE.name()));
-		validatePassword(request, employee);
+		validatePassword(request.getPassword(), employee);
 		return new AuthInfo(employee.getId(), EMPLOYEE);
+	}
+
+	@JtaTransactional
+	public void changePassword(UUID employeeId, EmployeePasswordRequest request) {
+		Employee employee = findEntity(employeeId);
+		validatePassword(request.getBeforePassword(), employee);
+		employee.changePassword(request.getAfterPassword());
 	}
 
 	public Employee findEntity(UUID id) {
@@ -93,8 +101,8 @@ public class EmployeeService extends BaseEntity {
 		employee.changePassword(encryptedPassword);
 	}
 
-	private void validatePassword(EmployeeAuthRequest request, Employee employee) {
-		if (!oneWayCipherService.match(request.getPassword(), employee.getPassword())) {
+	private void validatePassword(String requestedPassword, Employee employee) {
+		if (!oneWayCipherService.match(requestedPassword, employee.getPassword())) {
 			throw new PasswordIncorrectException(AUTHENTICATION_FAILED, EMPLOYEE.name());
 		}
 	}
