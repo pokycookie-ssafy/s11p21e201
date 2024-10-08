@@ -29,17 +29,17 @@ export default function Header({ logo }: IProps) {
         py: 1,
       }}
     >
-      <Link to="/" sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box
-          component="img"
-          alt="logo"
-          src={tossLogo}
-          sx={{
-            width: 120,
-            objectFit: 'cover',
-          }}
-        />
-      </Link>
+      <Box
+        component="img"
+        alt="logo"
+        src={tossLogo}
+        sx={{
+          width: 120,
+          objectFit: 'cover',
+          alignItems: 'center',
+          display: 'flex',
+        }}
+      />
 
       <Stack direction="row" justifyContent="flex-end">
         <ModeButton />

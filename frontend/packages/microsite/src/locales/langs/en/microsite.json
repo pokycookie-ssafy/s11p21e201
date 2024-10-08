@@ -1,0 +1,53 @@
+{
+  "title1": "Trust and Convenience",
+  "title2": "For your Business",
+  "subtitle1": "We support all processes",
+  "subtitle2": "from payments to settlement and contract management",
+  "start": "Start",
+  "detail1": "Ledger Management Service",
+  "detail2": "Sanedaejangbu",
+  "detail3": "We digitalize partnership services",
+  "detail4": "between companies, restaurants and employees,",
+  "detail5": "and simplify the settlement process.",
+  "company_title": "Corporate Services",
+  "company_detail": "We provide restaurant partnership management and settlement. The dashboard and digital ledger assist with quick settlements.",
+  "store_title": "Restaurant Services",
+  "store_detail": "QR payments and digital ledgers offer real-time settlement details. The dashboard displays sales across different periods.",
+  "employee_title": "Employee Services",
+  "employee_detail": "QR code payment help you quickly write ledgers. You can view meal expense usage and information on partnered restaurants.",
+  "close": "close",
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle1": "Payment Management,",
+    "subtitle2": "Completed At a Glance",
+    "description1": "We simplify complex ledger data",
+    "description2": "with an easy-to-use dashboard"
+  },
+  "contract": {
+    "title": "Contract",
+    "subtitle1": "Fast and Trustworthy",
+    "subtitle2": "Digital Contract Management",
+    "description1": "Experience enhanced efficiency and trust",
+    "description2": "through the digitalized contract process"
+  },
+  "payment": {
+    "title": "Payment",
+    "subtitle1": "Simple QR Payments,",
+    "subtitle2": "No More Complications",
+    "description1": "Complete your payment",
+    "description2": "quickly and easily in just one second"
+  },
+  "ledger": {
+    "title": "Ledger",
+    "subtitle1": "Stay organized,",
+    "subtitle2": "Manage Your Ledger Effortlessly",
+    "description1": "Automatically record all transaction details,",
+    "description2": "and access them accurately anytime"
+  },
+  "final": {
+    "title": "Experience the convenience",
+    "subtitle": "with our Service",
+    "term": "Terms of Service",
+    "privacy": "Privacy Policy"
+  }
+}

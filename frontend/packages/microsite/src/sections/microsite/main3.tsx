@@ -12,7 +12,6 @@ export default function Main3({ scrollToNextSection }: Main3Props) {
   const { t } = useTranslate('microsite')
   const theme = useTheme()
 
-  // 애니메이션 정의
   const fadeInUp = keyframes`
     from {
       opacity: 0;
@@ -22,20 +21,7 @@ export default function Main3({ scrollToNextSection }: Main3Props) {
       opacity: 1;
       transform: translateY(0);
     }
-
-    
   `
-
-  const fadeInLeft = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`
 
   const [isVisible, setIsVisible] = useState(false)
   const targetRef = useRef<HTMLDivElement | null>(null)
@@ -80,41 +66,48 @@ export default function Main3({ scrollToNextSection }: Main3Props) {
           width: '100vw',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 4,
-          background: `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[300]})`,
+          paddingTop: '10vh',
+          background:
+            theme.palette.mode === 'dark'
+              ? `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[800]})`
+              : `linear-gradient(to bottom, ${theme.palette.background.paper}, ${theme.palette.grey[300]})`,
           minHeight: '100vh',
+          animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
         }}
       >
-        <Box
-          component="img"
-          src={dashboard}
-          sx={{
-            width: '40vw',
-            height: 'auto',
-            maxHeight: '50vh',
-            objectFit: 'contain',
-            animation: isVisible ? `${fadeInLeft} 1s ease-out forwards` : 'none',
-          }}
-        />
+        <Stack sx={{ width: '50%', justifyContent: 'center', alignItems: 'center' }}>
+          <Box
+            component="img"
+            src={dashboard}
+            sx={{
+              width: '35vw',
+              height: 'auto',
+              maxHeight: '50vh',
+              objectFit: 'contain',
+            }}
+          />
+        </Stack>
 
         <Stack
           sx={{
+            width: '50%',
             justifyContent: 'center',
             alignItems: 'flex-start',
-            width: '50%',
-            padding: 2,
-            // animation: isVisible ? `${fadeInUp} 1s ease-out forwards` : 'none',
+            paddingLeft: '5vw',
           }}
         >
-          <Stack pl={10} spacing={3}>
+          <Stack spacing={3}>
             <Stack>
               <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
-                대시보드
+                {t('dashboard.title')}
               </Typography>
-              <Typography variant="h1">식대 관리는,</Typography>
-              <Typography variant="h1">보기 좋게 한 눈에</Typography>
+              <Typography variant="h1">{t('dashboard.subtitle1')}</Typography>
+              <Typography variant="h1">{t('dashboard.subtitle2')}</Typography>
             </Stack>
-            <Typography variant="h3">얼마를 썼고 얼마를 받았고, 계산할 필요 없슴다</Typography>
+            <Stack>
+              <Typography variant="h3">{t('dashboard.description1')}</Typography>
+              <Typography variant="h3">{t('dashboard.description2')}</Typography>
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
