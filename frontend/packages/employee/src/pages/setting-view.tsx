@@ -115,7 +115,7 @@ export default function SettingView() {
         }}
         disableSwipeToOpen
       >
-        <ChangePassword open={changePasswordDrawer.value} />
+        <ChangePassword open={changePasswordDrawer.value} onClose={changePasswordDrawer.onFalse} />
       </SwipeableDrawer>
     </>
   )

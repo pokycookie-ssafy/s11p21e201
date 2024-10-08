@@ -1,4 +1,9 @@
+import type { IPasswordChangeRequest } from '@/types/password'
+
+import { toast } from 'sonner'
+import api from '@/configs/api'
 import { useEffect } from 'react'
+import axios from '@/configs/axios'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@e201/utils'
 import { useForm } from 'react-hook-form'
@@ -15,9 +20,10 @@ interface IForm {
 
 interface IProps {
   open: boolean
+  onClose: () => void
 }
 
-export default function ChangePassword({ open }: IProps) {
+export default function ChangePassword({ open, onClose }: IProps) {
   const { t } = useTranslate()
 
   const mobileFocus = useBoolean()
@@ -32,32 +38,19 @@ export default function ChangePassword({ open }: IProps) {
   })
   const { control, watch } = formMethod
 
-  // handleSubmit 함수
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault()
-
-  //   // 비밀번호 변경 mutation 실행
-  //   mutation.mutate(
-  //     {
-  //       id, // 변경하려는 사용자의 ID (필요 시 form에서 가져옴)
-  //       originPassword: form.originPassword, // 기존 비밀번호
-  //       newPassword: form.newPassword, // 새 비밀번호
-  //       confirmPassword: form.confirmPassword, // 새 비밀번호 확인
-  //     },
-  //     {
-  //       onSuccess: (data) => {
-  //         // 비밀번호 변경 성공 시 루트 페이지로 이동
-  //         navigate(paths.root)
-  //       },
-  //       onError: () => {
-  //         // 비밀번호 변경 실패 시 에러 메시지 표시
-  //         setError('비밀번호 변경 실패. 다시 시도해 주세요.')
-  //       },
-  //     }
-  //   )
-  // }
-
-  const submitHandler = async (form: IForm) => {}
+  const submitHandler = async (form: IForm) => {
+    try {
+      const req: IPasswordChangeRequest = {
+        beforePassword: form.currPassword,
+        afterPassword: form.password,
+      }
+      await axios.put(api.changePassword, req)
+      toast.success(t('toast.password_changed'))
+      onClose()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     if (open) {

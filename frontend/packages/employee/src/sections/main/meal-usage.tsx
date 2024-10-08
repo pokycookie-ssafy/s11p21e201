@@ -42,7 +42,7 @@ export default function MealUsage({ onQr }: IProps) {
           <MealChart total={data.supportAmount} usage={data.usage} />
         </Box>
 
-        <Stack width={1} spacing={1}>
+        <Stack width={1} spacing={0.5}>
           <Typography
             fontSize={22}
             fontWeight={800}
