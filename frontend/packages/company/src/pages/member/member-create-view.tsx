@@ -149,7 +149,7 @@ export default function MemberCreateView() {
         <MemberCreateField
           value={params.row.code}
           onChange={(value) => editRowCode(params.row.id, value)}
-          placeholder={t('label.enter_employee_name')}
+          placeholder={t('label.enter_employee_no')}
         />
       ),
     },
@@ -161,7 +161,7 @@ export default function MemberCreateView() {
         <MemberCreateField
           value={params.row.name}
           onChange={(value) => editRowName(params.row.id, value)}
-          placeholder={t('label.enter_employee_no')}
+          placeholder={t('label.enter_employee_name')}
         />
       ),
     },
