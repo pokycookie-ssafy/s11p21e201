@@ -1,5 +1,3 @@
-import type { BadgePropsVariantOverrides } from '@mui/material'
-
 import { useTranslate } from '@/locales'
 import qrpay from '@/assets/img/qrpay_mockup.png'
 import { useRef, useState, useEffect } from 'react'
@@ -7,7 +5,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Box, Stack, useTheme, keyframes, Typography } from '@mui/material'
 
 interface Main5Props {
-  scrollToNextSection: () => BadgePropsVariantOverrides
+  scrollToNextSection: () => void
 }
 
 export default function Main5({ scrollToNextSection }: Main5Props) {

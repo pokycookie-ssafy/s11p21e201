@@ -13,7 +13,6 @@ import { Box } from '@mui/material'
 export default function Microsite() {
   const totalSections = 7
 
-  // 각 섹션에 대한 ref를 개별적으로 선언합니다.
   const main1Ref = useRef<HTMLDivElement | null>(null)
   const main2Ref = useRef<HTMLDivElement | null>(null)
   const main3Ref = useRef<HTMLDivElement | null>(null)
