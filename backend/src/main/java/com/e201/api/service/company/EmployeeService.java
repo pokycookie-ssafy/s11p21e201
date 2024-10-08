@@ -60,7 +60,8 @@ public class EmployeeService extends BaseEntity {
 	public void changePassword(UUID employeeId, EmployeePasswordRequest request) {
 		Employee employee = findEntity(employeeId);
 		validatePassword(request.getBeforePassword(), employee);
-		employee.changePassword(request.getAfterPassword());
+		String encryptedPassword = oneWayCipherService.encrypt(request.getAfterPassword());
+		employee.changePassword(encryptedPassword);
 	}
 
 	public Employee findEntity(UUID id) {
