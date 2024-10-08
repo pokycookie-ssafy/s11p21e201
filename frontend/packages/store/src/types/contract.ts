@@ -31,7 +31,7 @@ interface IContract {
 interface IContractCreateRequest {
   senderId: string
   receiverRegisterNumber: string
-  settlementDate: number
+  settlementDay: number
 }
 
 interface IContractRequest {
