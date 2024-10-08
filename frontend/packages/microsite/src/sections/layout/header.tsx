@@ -1,7 +1,8 @@
 import tossLogo from '@/assets/img/toss-logo.jpg'
+import whiteLogo from '@/assets/img/logo-white.png'
 import { ModeButton, LocaleButton } from '@/components/setting-button'
 
-import { Box, alpha, Stack } from '@mui/material'
+import { Box, alpha, Stack, useTheme } from '@mui/material'
 
 import { Link } from '@e201/ui'
 
@@ -10,6 +11,8 @@ interface IProps {
 }
 
 export default function Header({ logo }: IProps) {
+  const { palette } = useTheme()
+
   // const { breakpoints } = useTheme()
   // const visible = useMediaQuery(breakpoints.down('md'))
 
@@ -29,17 +32,17 @@ export default function Header({ logo }: IProps) {
         py: 1,
       }}
     >
-      <Box
-        component="img"
-        alt="logo"
-        src={tossLogo}
-        sx={{
-          width: 120,
-          objectFit: 'cover',
-          alignItems: 'center',
-          display: 'flex',
-        }}
-      />
+      <Link to="/" sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          component="img"
+          alt="logo"
+          src={palette.mode === 'light' ? tossLogo : whiteLogo}
+          sx={{
+            width: 120,
+            objectFit: 'cover',
+          }}
+        />
+      </Link>
 
       <Stack direction="row" justifyContent="flex-end">
         <ModeButton />

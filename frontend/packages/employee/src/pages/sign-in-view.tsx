@@ -8,8 +8,9 @@ import { useTranslate } from '@/locales'
 import { useForm } from 'react-hook-form'
 import logo from '@/assets/img/toss-logo.jpg'
 import { useNavigate } from 'react-router-dom'
+import whiteLogo from '@/assets/img/logo-white.png'
 
-import { Stack, Button, Container, CardMedia } from '@mui/material'
+import { Stack, Button, useTheme, Container, CardMedia } from '@mui/material'
 
 import { FormInput, FullContainer } from '@e201/ui'
 
@@ -22,6 +23,8 @@ export default function SignInView() {
   const { t } = useTranslate('sign-in')
 
   const { login, isLogin } = useAuthStore()
+
+  const { palette } = useTheme()
 
   const navigate = useNavigate()
 
@@ -57,7 +60,12 @@ export default function SignInView() {
     <FullContainer sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <Container maxWidth="xs">
         <Stack alignItems="center" mb={3}>
-          <CardMedia component="img" image={logo} alt="logo" sx={{ width: '0.5' }} />
+          <CardMedia
+            component="img"
+            image={palette.mode === 'light' ? logo : whiteLogo}
+            alt="logo"
+            sx={{ width: '0.5' }}
+          />
         </Stack>
 
         <form onSubmit={formMethod.handleSubmit(submitHandler)} noValidate>
