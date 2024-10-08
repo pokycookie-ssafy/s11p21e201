@@ -59,7 +59,21 @@ export default function ContractHistoryManagementView() {
 
     let filtered = [...data]
     if (tab !== null) {
-      filtered = filtered.filter((e) => e.status === tab)
+      filtered = filtered.filter((contract) => {
+        if (contract.status === 'COMPANY_REQUEST' || contract.status === 'STORE_REQUEST') {
+          return tab === 'IN'
+        }
+        if (contract.status === 'CANCEL') {
+          return tab === 'CANCEL'
+        }
+        if (contract.status === 'COMPLETE') {
+          return tab === 'COMPLETE'
+        }
+        if (contract.status === 'COMPANY_REJECT' || contract.status === 'STORE_REJECT') {
+          return tab === 'REJECT'
+        }
+        return true
+      })
     }
     if (companySearch.trim() !== '') {
       filtered = filtered.filter((contract) => contract.companyName.includes(companySearch.trim()))
