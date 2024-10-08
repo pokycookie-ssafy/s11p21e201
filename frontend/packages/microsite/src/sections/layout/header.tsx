@@ -25,21 +25,21 @@ export default function Header({ logo }: IProps) {
         backdropFilter: 'blur(4px)',
         width: '100%',
         zIndex: 2,
-        px: 0,
+        px: 1,
         py: 1,
       }}
     >
-      <Link to="/" sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box
-          component="img"
-          alt="logo"
-          src={tossLogo}
-          sx={{
-            width: 120,
-            objectFit: 'cover',
-          }}
-        />
-      </Link>
+      <Box
+        component="img"
+        alt="logo"
+        src={tossLogo}
+        sx={{
+          width: 120,
+          objectFit: 'cover',
+          alignItems: 'center',
+          display: 'flex',
+        }}
+      />
 
       <Stack direction="row" justifyContent="flex-end">
         <ModeButton />

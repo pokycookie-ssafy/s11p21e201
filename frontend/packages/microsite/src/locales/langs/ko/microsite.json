@@ -14,5 +14,40 @@
   "store_title": "식당 서비스",
   "store_detail": "QR 결제와 디지털 장부를 통해 실시간 정산 내역을 확인할 수 있습니다. 대시보드를 통해 메뉴별 매출, 기간별 매출을 확인할 수 있습니다.",
   "employee_title": "직원 서비스",
-  "employee_detail": "식사 후 빠르게 장부를 작성할 수 있도록 QR코드 결제 기능을 제공합니다. 실시간으로 식대 사용 내역을 확인하고, 제휴 식당 정보도 얻을 수 있습니다."
+  "employee_detail": "식사 후 빠르게 장부를 작성할 수 있도록 QR코드 결제 기능을 제공합니다. 실시간으로 식대 사용 내역을 확인하고, 제휴 식당 정보도 얻을 수 있습니다.",
+  "close": "닫기",
+  "dashboard": {
+    "title": "대시보드",
+    "subtitle1": "식대 관리,",
+    "subtitle2": "한눈에 보기 쉽게",
+    "description1": "복잡한 장부 데이터를",
+    "description2": "대시보드로 간편하게 정리해 드려요"
+  },
+  "contract": {
+    "title": "계약",
+    "subtitle1": "빠르고 믿음직한",
+    "subtitle2": "디지털 계약 관리",
+    "description1": "계약 과정의 디지털화로",
+    "description2": "높아진 효율성과 신뢰를 경험해보세요"
+  },
+  "payment": {
+    "title": "결제",
+    "subtitle1": "복잡한 수기 장부 대신,",
+    "subtitle2": "간편한 QR 결제",
+    "description1": "번거로운 절차 없이, 한 번의 스캔으로",
+    "description2": "쉽고 빠르게 결제를 완료하세요"
+  },
+  "ledger": {
+    "title": "장부",
+    "subtitle1": "헷갈릴 일 없이,",
+    "subtitle2": "확실한 장부 관리",
+    "description1": "모든 거래 내역을 자동으로 기록하고,",
+    "description2": "언제 어디서나 정확하게 확인하세요"
+  },
+  "final": {
+    "title": "사내대장부와 함께,",
+    "subtitle": "새로운 일상을 시작해 보세요",
+    "term": "이용약관",
+    "privacy": "개인정보처리방침"
+  }
 }
