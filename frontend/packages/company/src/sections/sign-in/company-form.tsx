@@ -23,8 +23,8 @@ export default function CompanyForm() {
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',
     defaultValues: {
-      email: 'company1@ssafy.com',
-      password: '12345678',
+      email: '',
+      password: '',
     },
   })
   const { control: companyControl } = formMethod
