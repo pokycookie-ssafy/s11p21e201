@@ -23,8 +23,8 @@ export default function ManagerForm() {
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',
     defaultValues: {
-      code: 'E201',
-      password: '12345678',
+      code: '',
+      password: '',
     },
   })
   const { control: companyControl } = formMethod
