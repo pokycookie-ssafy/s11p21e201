@@ -68,7 +68,6 @@ export default function Main4({ scrollToNextSection }: Main4Props) {
       }}
     >
       <Stack
-        spacing={2}
         sx={{
           justifyContent: 'center',
           alignItems: 'flex-start',
@@ -77,21 +76,21 @@ export default function Main4({ scrollToNextSection }: Main4Props) {
           paddingTop: '10vh',
         }}
       >
-        <Stack>
-          <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
-            {t('contract.title')}
-          </Typography>
-          <Typography variant="h1">{t('contract.subtitle1')}</Typography>
-          <Typography variant="h1">{t('contract.subtitle2')}</Typography>
-        </Stack>
-        <Stack>
-          <Typography variant="h3">{t('contract.description1')}</Typography>
-          <Typography variant="h3">{t('contract.description2')}</Typography>
+        <Stack spacing={2}>
+          <Stack>
+            <Typography variant="h3" sx={{ color: theme.palette.primary.light }}>
+              {t('contract.title')}
+            </Typography>
+            <Typography variant="h1">{t('contract.subtitle1')}</Typography>
+            <Typography variant="h1">{t('contract.subtitle2')}</Typography>
+          </Stack>
+          <Stack>
+            <Typography variant="h3">{t('contract.description1')}</Typography>
+            <Typography variant="h3">{t('contract.description2')}</Typography>
+          </Stack>
         </Stack>
       </Stack>
-      <Stack
-        sx={{ width: '50%', justifyContent: 'center', alignItems: 'center', paddingTop: '15vh' }}
-      >
+      <Stack sx={{ width: '50%', paddingTop: '15vh' }}>
         <Box
           component="img"
           src={contract}

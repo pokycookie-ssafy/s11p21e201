@@ -10,8 +10,33 @@
   "restaurant_amount": "Payment by Restaurant",
   "dashboard": "Dashboard",
   "this_month_total": "This Month's Total Amount",
-  "increase": "increase",
+  "last_month_increase": "▲ Up {{change}}% from last month",
+  "last_month_decrease": "▼ Down {{change}}% from last month",
+  "yesterday_increase": "▲ Up {{change}}% from yesterday",
+  "yesterday_decrease": "▼ Down {{change}}% from yesterday",
   "decrease": "decrease",
   "today_total": "Today's Total Amount",
-  "this_month_average": "This month's Average Payment Price"
+  "this_month_average": "This month's Average Payment Price",
+  "no_data": "No data available",
+  "this_month_payment": "Expected settlement for this month",
+  "employee_amount": "Payment by Employee",
+  "name": "Name",
+  "total_amount": "Total Amount",
+  "unit": {
+    "date": "{{month}} {{year}}",
+    "months": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  }
 }

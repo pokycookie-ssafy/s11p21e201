@@ -1,62 +1,60 @@
-import type { SelectChangeEvent } from '@mui/material/Select'
-import type { IDashboardPayment } from '@/types/dashboard-payment'
-
 import dayjs from 'dayjs'
+import axios from '@/configs/axios'
 import Chart from 'react-apexcharts'
 import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
+import { SelectDate } from '@/components/select/select-date'
 
-import {
-  Box,
-  Card,
-  Stack,
-  Select,
-  MenuItem,
-  useTheme,
-  InputLabel,
-  Typography,
-  FormControl,
-} from '@mui/material'
+import { Box, Card, Stack, useTheme, Typography } from '@mui/material'
 
-interface RestaurantCompanyProps {
-  data: IDashboardPayment[]
+interface StoreData {
+  storeId: string
+  storeName: string
+  amount: number
 }
 
-export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
+export default function RestaurantCompany() {
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
   const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1)
   const [restaurants, setRestaurants] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   const { t } = useTranslate('dashboard')
   const theme = useTheme()
 
   useEffect(() => {
-    const filteredData = data.filter((payment) => {
-      const paymentDate = dayjs(payment.paidAt)
-      return paymentDate.year() === selectedYear && paymentDate.month() + 1 === selectedMonth
-    })
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get<StoreData[]>('/companies/dashboards/months/stores', {
+          params: {
+            startDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+              .startOf('month')
+              .format('YYYY-MM-DDTHH:mm:ss'),
+            endDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+              .endOf('month')
+              .format('YYYY-MM-DDTHH:mm:ss'),
+          },
+        })
 
-    const restaurantTotals: { [key: string]: number } = {}
-    filteredData.forEach((payment) => {
-      const { restaurantName, price } = payment
-      restaurantTotals[restaurantName] = (restaurantTotals[restaurantName] || 0) + price
-    })
+        const sortedRestaurants = response.data.sort((a, b) => b.amount - a.amount)
 
-    const sortedRestaurants = Object.entries(restaurantTotals).sort(
-      ([, totalA], [, totalB]) => totalB - totalA
-    )
+        setRestaurants(sortedRestaurants.map((item) => item.storeName))
+        setSeriesData(sortedRestaurants.map((item) => item.amount))
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    setRestaurants(sortedRestaurants.map(([name]) => name))
-    setSeriesData(sortedRestaurants.map(([, total]) => total))
-  }, [data, selectedYear, selectedMonth])
+    fetchData()
+  }, [selectedYear, selectedMonth])
 
-  const handleYearChange = (e: SelectChangeEvent<number>) => {
-    setSelectedYear(Number(e.target.value))
-  }
-
-  const handleMonthChange = (e: SelectChangeEvent<number>) => {
-    setSelectedMonth(Number(e.target.value))
+  const handleDateChange = (year: number, month: number) => {
+    setSelectedYear(year)
+    setSelectedMonth(month)
   }
 
   const chartOptions: ApexCharts.ApexOptions = {
@@ -74,6 +72,7 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
       enabled: false,
     },
     tooltip: {
+      theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
@@ -82,7 +81,7 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
     },
     legend: {
       labels: {
-        colors: theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400], // Set label colors based on theme mode
+        colors: theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
       },
     },
   }
@@ -93,7 +92,7 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
         backdropFilter: 'blur(10px)',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
         height: '300px',
       }}
     >
@@ -102,43 +101,18 @@ export default function RestaurantCompany({ data }: RestaurantCompanyProps) {
           <Typography variant="h6" align="left" sx={{ flex: 1 }} pl={1}>
             {t('restaurant_amount')}
           </Typography>
-
-          <Box display="flex" justifyContent="flex-end" gap={1}>
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="year-select-label">{t('year')}</InputLabel>
-              <Select
-                labelId="year-select-label"
-                value={selectedYear}
-                onChange={handleYearChange}
-                label={t('year')}
-              >
-                {[2022, 2023, 2024].map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="month-select-label">{t('month')}</InputLabel>
-              <Select
-                labelId="month-select-label"
-                value={selectedMonth}
-                onChange={handleMonthChange}
-                label={t('month')}
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                  <MenuItem key={month} value={month}>
-                    {month}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+          <SelectDate year={selectedYear} month={selectedMonth} t={t} onChange={handleDateChange} />
         </Box>
-
-        <Chart options={chartOptions} series={seriesData} type="pie" height={230} />
+        {seriesData.length > 0 ? (
+          <Chart options={chartOptions} series={seriesData} type="pie" height={230} />
+        ) : (
+          <Typography
+            variant="h6"
+            sx={{ textAlign: 'center', pt: 10, color: theme.palette.grey[500] }}
+          >
+            {t('no_data')}
+          </Typography>
+        )}
       </Stack>
     </Card>
   )

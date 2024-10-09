@@ -1,0 +1,36 @@
+{
+  "dashboard": "Dashboard",
+  "won": "KRW",
+  "monthly": "Monthly",
+  "daily": "Daily",
+  "total_day": "Total Sales by Day",
+  "total_month": "Total Sales by Month",
+  "year": "year",
+  "month": "month",
+  "company_sales": "Total Sales by Company",
+  "total_sales": "Total",
+  "menu_sales": "Total Sales by Menu",
+  "this_month_total": "Total Sales of this Month",
+  "this_day_total": "Total Sales of Today",
+  "this_month_average": "Average Payment Amount of this Month",
+  "increase": "increase",
+  "decrease": "decrease",
+  "no_data": "No data available",
+  "unit": {
+    "date": "{{month}} {{year}}",
+    "months": {
+      "1": "Jan",
+      "2": "Feb",
+      "3": "Mar",
+      "4": "Apr",
+      "5": "May",
+      "6": "Jun",
+      "7": "Jul",
+      "8": "Aug",
+      "9": "Sep",
+      "10": "Oct",
+      "11": "Nov",
+      "12": "Dec"
+    }
+  }
+}

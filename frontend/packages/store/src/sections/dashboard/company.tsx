@@ -1,22 +1,12 @@
-import type { SelectChangeEvent } from '@mui/material/Select'
 import type { IDashboardMenu, IDashboardPayment } from '@/types/dashboard'
 
 import dayjs from 'dayjs'
 import Chart from 'react-apexcharts'
 import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
+import { SelectDate } from '@/components/select/select-date'
 
-import {
-  Box,
-  Card,
-  Stack,
-  Select,
-  MenuItem,
-  useTheme,
-  InputLabel,
-  Typography,
-  FormControl,
-} from '@mui/material'
+import { Box, Card, Stack, useTheme, Typography } from '@mui/material'
 
 interface CompanySalesProps {
   data: IDashboardPayment[]
@@ -53,12 +43,9 @@ export default function CompanySales({ data }: CompanySalesProps) {
     setSeriesData(sortedCompanies.map(([, total]) => total))
   }, [data, selectedYear, selectedMonth])
 
-  const handleYearChange = (e: SelectChangeEvent<number>) => {
-    setSelectedYear(Number(e.target.value))
-  }
-
-  const handleMonthChange = (e: SelectChangeEvent<number>) => {
-    setSelectedMonth(Number(e.target.value))
+  const handleDateChange = (year: number, month: number) => {
+    setSelectedYear(year)
+    setSelectedMonth(month)
   }
 
   const chartOptions: ApexCharts.ApexOptions = {
@@ -77,12 +64,22 @@ export default function CompanySales({ data }: CompanySalesProps) {
     },
     colors: [theme.palette.primary.light],
     xaxis: {
-      categories: companies, // 기업 이름을 카테고리로 사용
+      categories: companies,
+      labels: {
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
+        },
+      },
     },
     yaxis: {
       labels: {
         formatter(value: number) {
           return `${value.toLocaleString()}`
+        },
+        style: {
+          colors:
+            theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
       },
     },
@@ -90,6 +87,7 @@ export default function CompanySales({ data }: CompanySalesProps) {
       strokeDashArray: 3,
     },
     tooltip: {
+      theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
@@ -111,7 +109,7 @@ export default function CompanySales({ data }: CompanySalesProps) {
         backdropFilter: 'blur(10px)',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
         height: '300px',
       }}
     >
@@ -121,42 +119,27 @@ export default function CompanySales({ data }: CompanySalesProps) {
             {t('company_sales')}
           </Typography>
 
-          <Box display="flex" justifyContent="flex-end" gap={1}>
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="year-select-label">{t('year')}</InputLabel>
-              <Select
-                labelId="year-select-label"
-                value={selectedYear}
-                onChange={handleYearChange}
-                label={t('year')}
-              >
-                {[2022, 2023, 2024].map((year) => (
-                  <MenuItem key={year} value={year}>
-                    {year}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl variant="outlined" size="small">
-              <InputLabel id="month-select-label">{t('month')}</InputLabel>
-              <Select
-                labelId="month-select-label"
-                value={selectedMonth}
-                onChange={handleMonthChange}
-                label={t('month')}
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
-                  <MenuItem key={month} value={month}>
-                    {month}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+          <SelectDate year={selectedYear} month={selectedMonth} t={t} onChange={handleDateChange} />
         </Box>
 
-        <Chart options={chartOptions} series={chartSeries} type="bar" height={230} />
+        <Box height={200}>
+          {seriesData.length > 0 ? (
+            <Chart options={chartOptions} series={chartSeries} type="bar" height={230} />
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                color: theme.palette.grey[500],
+              }}
+            >
+              {t('no_data')}
+            </Typography>
+          )}
+        </Box>
       </Stack>
     </Card>
   )

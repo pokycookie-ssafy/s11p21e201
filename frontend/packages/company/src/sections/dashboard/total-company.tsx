@@ -1,70 +1,124 @@
-import type { IDashboardPayment } from '@/types/dashboard-payment'
-
 import dayjs from 'dayjs'
+import axios from '@/configs/axios'
 import Chart from 'react-apexcharts'
 import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
+import { SelectDate } from '@/components/select/select-date'
 
 import { Box, Card, Stack, Select, MenuItem, useTheme, FormControl } from '@mui/material'
 
 import { Typography } from '@e201/ui'
 
-interface TotalCompanyProps {
-  data: IDashboardPayment[]
+interface IDashboardPaymentResponse {
+  year: number
+  month: number
+  totalAmount: number
 }
 
-export default function TotalCompany({ data }: TotalCompanyProps) {
-  const [viewType, setViewType] = useState<'월별' | '일별'>('월별')
+interface IDashboardPaymentDailyResponse {
+  year: number
+  month: number
+  day: number
+  totalAmount: number
+}
+
+export default function TotalCompany() {
+  const { t } = useTranslate('dashboard')
+  const [data, setData] = useState<IDashboardPaymentResponse[]>([])
+  const [dailyData, setDailyData] = useState<IDashboardPaymentDailyResponse[]>([])
+  const [viewType, setViewType] = useState<'month' | 'day'>('month')
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
-  const [xaxisRange, setXaxisRange] = useState<{ min?: number; max?: number }>({})
+  const [loading, setLoading] = useState<boolean>(true)
+  const [selectedYear, setSelectedYear] = useState<number>(dayjs().year())
+  const [selectedMonth, setSelectedMonth] = useState<number>(dayjs().month() + 1)
 
-  const { t } = useTranslate('dashboard')
   const theme = useTheme()
 
+  const endDate = dayjs().format('YYYY-MM-DDTHH:mm:ss')
+  const startDate = dayjs().subtract(6, 'month').startOf('month').format('YYYY-MM-DDTHH:mm:ss')
+
   useEffect(() => {
-    if (data.length > 0) {
-      if (viewType === '월별') {
-        const monthlyTotals: { [key: string]: number } = {}
-
-        data.forEach((payment) => {
-          const month = dayjs(payment.paidAt).format('YYYY-MM')
-          if (monthlyTotals[month]) {
-            monthlyTotals[month] += payment.price
-          } else {
-            monthlyTotals[month] = payment.price
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get<IDashboardPaymentResponse[]>(
+          '/companies/dashboards/years/months',
+          {
+            params: {
+              startDate,
+              endDate,
+            },
           }
-        })
-
-        const newCategories = Object.keys(monthlyTotals).sort()
-        const newSeriesData = newCategories.map((month) => monthlyTotals[month])
-
-        setCategories(newCategories)
-        setSeriesData(newSeriesData)
-        setXaxisRange({})
-      } else {
-        const dailyTotals: { [key: string]: number } = {}
-
-        data.forEach((payment) => {
-          const day = dayjs(payment.paidAt).format('YYYY-MM-DD')
-          if (dailyTotals[day]) {
-            dailyTotals[day] += payment.price
-          } else {
-            dailyTotals[day] = payment.price
-          }
-        })
-
-        const newCategories = Object.keys(dailyTotals).sort()
-        const newSeriesData = newCategories.map((day) => dailyTotals[day])
-
-        setCategories(newCategories)
-        setSeriesData(newSeriesData)
-
-        const last30DaysIndex = newCategories.length > 15 ? newCategories.length - 15 : 0
-        setXaxisRange({ min: last30DaysIndex, max: newCategories.length - 1 })
+        )
+        setData(response.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
       }
     }
-  }, [data, viewType])
+
+    if (viewType === 'month') {
+      fetchData()
+    }
+  }, [startDate, endDate, viewType])
+
+  useEffect(() => {
+    const fetchDailyData = async () => {
+      setLoading(true)
+      const dailyStartDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+        .startOf('month')
+        .format('YYYY-MM-DDTHH:mm:ss')
+      const dailyEndDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+        .endOf('month')
+        .format('YYYY-MM-DDTHH:mm:ss')
+
+      try {
+        const response = await axios.get<IDashboardPaymentDailyResponse[]>(
+          '/companies/dashboards/years/days',
+          {
+            params: {
+              startDate: dailyStartDate,
+              endDate: dailyEndDate,
+            },
+          }
+        )
+        setDailyData(response.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (viewType === 'day') {
+      fetchDailyData()
+    }
+  }, [selectedYear, selectedMonth, viewType])
+
+  useEffect(() => {
+    if (viewType === 'month') {
+      const newCategories = data.map(
+        (item) => `${item.year}-${String(item.month).padStart(2, '0')}`
+      )
+      const newSeriesData = data.map((item) => item.totalAmount)
+
+      setCategories(newCategories)
+      setSeriesData(newSeriesData)
+    }
+
+    if (viewType === 'day') {
+      const newCategories = dailyData.map(
+        (item) =>
+          `${item.year}-${String(item.month).padStart(2, '0')}-${String(item.day).padStart(2, '0')}`
+      )
+      const newSeriesData = dailyData.map((item) => item.totalAmount)
+
+      setCategories(newCategories)
+      setSeriesData(newSeriesData)
+    }
+  }, [data, dailyData, viewType])
 
   const chartOptions: ApexCharts.ApexOptions = {
     chart: {
@@ -80,14 +134,9 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     colors: [theme.palette.primary.main],
     xaxis: {
       categories,
-      min: xaxisRange.min,
-      max: xaxisRange.max,
       labels: {
         formatter(value: string) {
-          if (viewType === '일별') {
-            return dayjs(value).format('MM/DD')
-          }
-          return dayjs(value).format('YYYY/MM')
+          return dayjs(value).format(viewType === 'month' ? 'YYYY/MM' : 'YYYY/MM/DD')
         },
         style: {
           colors:
@@ -97,13 +146,9 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
     },
     yaxis: {
       min: 0,
-
       labels: {
         formatter(value: number) {
-          if (value === 0) {
-            return ''
-          }
-          return `${value.toLocaleString()}`
+          return value === 0 ? '' : `${value.toLocaleString()}`
         },
         style: {
           colors:
@@ -119,9 +164,10 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
       strokeDashArray: 3,
     },
     tooltip: {
+      theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}${t('won')}`
+          return `${value.toLocaleString()}${'won'}`
         },
       },
     },
@@ -130,9 +176,14 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
   const chartSeries = [
     {
       data: seriesData,
-      name: '',
+      name: 'Total Amount',
     },
   ]
+
+  const handleDateChange = (year: number, month: number) => {
+    setSelectedYear(year)
+    setSelectedMonth(month)
+  }
 
   return (
     <Card
@@ -140,27 +191,60 @@ export default function TotalCompany({ data }: TotalCompanyProps) {
         backdropFilter: 'blur(10px)',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)',
+        height: '280px',
       }}
     >
-      <Stack p={1}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" sx={{ flex: 1, textAlign: 'center' }}>
-            {viewType === '월별' ? t('total_month') : t('total_day')}
+      <Stack p={1} sx={{ position: 'relative' }} spacing={1}>
+        <Box display="flex" alignItems="center" sx={{ position: 'relative' }}>
+          {viewType === 'day' && (
+            <Box sx={{ position: 'absolute', left: 2, top: 2 }}>
+              <SelectDate
+                year={selectedYear}
+                month={selectedMonth}
+                t={t}
+                onChange={handleDateChange}
+              />
+            </Box>
+          )}
+
+          <Typography variant="h6" sx={{ margin: '0 auto', textAlign: 'center', pt: 1 }}>
+            {viewType === 'month' ? t('total_month') : t('total_day')}
           </Typography>
-          <FormControl variant="outlined" size="small" sx={{ pr: 1 }}>
+
+          <FormControl
+            variant="outlined"
+            size="small"
+            sx={{ position: 'absolute', right: 2, minWidth: 120, top: 2 }}
+          >
             <Select
-              labelId="view-type-select-label"
               value={viewType}
-              onChange={(e) => setViewType(e.target.value as '월별' | '일별')}
+              onChange={(e) => setViewType(e.target.value as 'month' | 'day')}
             >
-              <MenuItem value="월별">{t('monthly')}</MenuItem>
-              <MenuItem value="일별">{t('daily')}</MenuItem>
+              <MenuItem value="month">{t('monthly')}</MenuItem>
+              <MenuItem value="day">{t('daily')}</MenuItem>
             </Select>
           </FormControl>
         </Box>
 
-        <Chart options={chartOptions} series={chartSeries} type="line" height={200} />
+        <Box height={150}>
+          {seriesData.length > 0 ? (
+            <Chart options={chartOptions} series={chartSeries} type="line" height={200} />
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                color: theme.palette.grey[500],
+              }}
+            >
+              {t('no_data')}
+            </Typography>
+          )}
+        </Box>
       </Stack>
     </Card>
   )
