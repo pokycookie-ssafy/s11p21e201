@@ -212,6 +212,39 @@ export default function MemberCreateView() {
         />
 
         <Card>
+          <Stack
+            spacing={1}
+            p={1}
+            sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+          >
+            <Button
+              onClick={addRow}
+              fullWidth
+              sx={{
+                height: 40,
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[200]
+                    : theme.palette.grey[700],
+                color: (theme) =>
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[600]
+                    : theme.palette.grey[400],
+                ':hover': {
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'light'
+                      ? theme.palette.grey[300]
+                      : theme.palette.grey[600],
+                },
+              }}
+            >
+              <Stack direction="row" alignItems="center">
+                <Iconify icon="ic:round-plus" width={17} />
+                <Typography variant="subtitle2">{t('button.add_member')}</Typography>
+              </Stack>
+            </Button>
+          </Stack>
+
           <Collapse in={selected.length > 0}>
             <Stack
               width={1}
@@ -258,36 +291,10 @@ export default function MemberCreateView() {
             sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
           >
             <ExcelUpload placeholder={t('label.upload_excel')} onChange={multipleUploadHandler} />
-
-            <Button
-              onClick={addRow}
-              fullWidth
-              sx={{
-                height: 40,
-                bgcolor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[200]
-                    : theme.palette.grey[700],
-                color: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[600]
-                    : theme.palette.grey[400],
-                ':hover': {
-                  bgcolor: (theme) =>
-                    theme.palette.mode === 'light'
-                      ? theme.palette.grey[300]
-                      : theme.palette.grey[600],
-                },
-              }}
-            >
-              <Stack direction="row" alignItems="center">
-                <Iconify icon="ic:round-plus" width={17} />
-                <Typography variant="subtitle2">{t('button.add_member')}</Typography>
-              </Stack>
-            </Button>
           </Stack>
         </Card>
       </Container>
+
       <DialogDelete
         open={deleteAllConfirm.value}
         onClose={deleteAllConfirm.onFalse}
