@@ -47,6 +47,8 @@ export default function Nav({ drawer }: IProps) {
       logout()
       navigate(paths.auth.signIn)
     } catch (error) {
+      logout()
+      navigate(paths.auth.signIn)
       console.log(error)
     }
   }

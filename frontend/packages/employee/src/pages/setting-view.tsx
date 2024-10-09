@@ -30,6 +30,8 @@ export default function SettingView() {
       logout()
       navigate(paths.signIn)
     } catch (error) {
+      logout()
+      navigate(paths.signIn)
       console.log(error)
     }
   }
