@@ -21,95 +21,103 @@ interface IDashboardPaymentDailyResponse {
 export default function DashboardSummary() {
   const [todayTotal, setTodayTotal] = useState(0)
   const [monthTotal, setMonthTotal] = useState(0)
+  const [lastMonthTotal, setLastMonthTotal] = useState(0)
+
   const [yesterdayChange, setYesterdayChange] = useState(0)
   const [lastMonthChange, setLastMonthChange] = useState(0)
   const [loading, setLoading] = useState(true)
 
   const { t } = useTranslate('dashboard')
+
   useEffect(() => {
     const fetchData = async () => {
       const now = dayjs()
-      const today = now.format('YYYY-MM-DD')
-      const yesterday = now.subtract(1, 'day').format('YYYY-MM-DD')
+
       const startOfCurrentMonth = now.startOf('month').format('YYYY-MM-DDTHH:mm:ss')
-      const endOfCurrentMonth = now.endOf('month').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfToday = now.format('YYYY-MM-DDTHH:mm:ss')
+
       const startOfLastMonth = now
         .subtract(1, 'month')
         .startOf('month')
         .format('YYYY-MM-DDTHH:mm:ss')
-      const endOfLastMonth = now.subtract(1, 'month').endOf('month').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfSameDayLastMonth = now
+        .subtract(1, 'month')
+        .date(now.date())
+        .endOf('day')
+        .format('YYYY-MM-DDTHH:mm:ss')
 
-      // 오늘과 어제 데이터
-      const startOfToday = dayjs(today).startOf('day').format('YYYY-MM-DDTHH:mm:ss')
-      const endOfToday = dayjs(today).endOf('day').format('YYYY-MM-DDTHH:mm:ss')
-      const startOfYesterday = dayjs(yesterday).startOf('day').format('YYYY-MM-DDTHH:mm:ss')
-      const endOfYesterday = dayjs(yesterday).endOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const startOfToday = now.startOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const nowFormatted = now.format('YYYY-MM-DDTHH:mm:ss')
+
+      const startOfYesterday = now.subtract(1, 'day').startOf('day').format('YYYY-MM-DDTHH:mm:ss')
+      const endOfYesterday = now
+        .subtract(1, 'day')
+        .set('hour', now.hour())
+        .set('minute', now.minute())
+        .set('second', now.second())
+        .format('YYYY-MM-DDTHH:mm:ss')
 
       try {
-        // 이번 달 총액과 저번 달 총액 가져오기
-        const monthResponse = await axios.get<IDashboardPaymentResponse[]>(
+        const currentMonthResponse = await axios.get<IDashboardPaymentResponse[]>(
           '/companies/dashboards/years/months',
           {
             params: {
-              startDate: startOfLastMonth,
-              endDate: endOfCurrentMonth,
-            },
-          }
-        )
-
-        // 이번 달 총액
-        const currentMonthData = monthResponse.data.find(
-          (item) => item.year === now.year() && item.month === now.month() + 1
-        )
-        const currentMonthTotal = currentMonthData ? currentMonthData.totalAmount : 0
-        setMonthTotal(currentMonthTotal)
-
-        // 저번 달 총액
-        const lastMonthData = monthResponse.data.find(
-          (item) =>
-            item.year === now.subtract(1, 'month').year() &&
-            item.month === now.subtract(1, 'month').month() + 1
-        )
-        const lastMonthTotal = lastMonthData ? lastMonthData.totalAmount : 0
-
-        // 저번 달과 이번 달의 변화율 계산
-        const lastMonthPercentageChange =
-          lastMonthTotal > 0 ? ((currentMonthTotal - lastMonthTotal) / lastMonthTotal) * 100 : 0
-        setLastMonthChange(lastMonthPercentageChange)
-
-        // 오늘과 어제 총액 가져오기
-        const dayResponse = await axios.get<IDashboardPaymentDailyResponse[]>(
-          '/companies/dashboards/years/days',
-          {
-            params: {
-              startDate: startOfYesterday,
+              startDate: startOfCurrentMonth,
               endDate: endOfToday,
             },
           }
         )
+        const currentMonthTotal = currentMonthResponse.data[0]?.totalAmount || 0
+        setMonthTotal(currentMonthTotal)
 
-        // 오늘 총액
-        const todayData = dayResponse.data.find(
-          (item) => dayjs(`${item.year}-${item.month}-${item.day}`).format('YYYY-MM-DD') === today
+        const lastMonthResponse = await axios.get<IDashboardPaymentResponse[]>(
+          '/companies/dashboards/years/months',
+          {
+            params: {
+              startDate: startOfLastMonth,
+              endDate: endOfSameDayLastMonth,
+            },
+          }
         )
-        const todayTotalAmount = todayData ? todayData.totalAmount : 0
+        const lastMonthTotalAmount = lastMonthResponse.data[0]?.totalAmount || 0
+        setLastMonthTotal(lastMonthTotalAmount)
+
+        const lastMonthPercentageChange =
+          lastMonthTotalAmount > 0
+            ? ((currentMonthTotal - lastMonthTotalAmount) / lastMonthTotalAmount) * 100
+            : 0
+        setLastMonthChange(lastMonthPercentageChange)
+
+        const todayResponse = await axios.get<IDashboardPaymentDailyResponse[]>(
+          '/companies/dashboards/years/days',
+          {
+            params: {
+              startDate: startOfToday,
+              endDate: nowFormatted,
+            },
+          }
+        )
+        const todayTotalAmount = todayResponse.data[0]?.totalAmount || 0
         setTodayTotal(todayTotalAmount)
 
-        // 어제 총액
-        const yesterdayData = dayResponse.data.find(
-          (item) =>
-            dayjs(`${item.year}-${item.month}-${item.day}`).format('YYYY-MM-DD') === yesterday
+        const yesterdayResponse = await axios.get<IDashboardPaymentDailyResponse[]>(
+          '/companies/dashboards/years/days',
+          {
+            params: {
+              startDate: startOfYesterday,
+              endDate: endOfYesterday,
+            },
+          }
         )
-        const yesterdayTotalAmount = yesterdayData ? yesterdayData.totalAmount : 0
+        const yesterdayTotalAmount = yesterdayResponse.data[0]?.totalAmount || 0
 
-        // 어제와 오늘의 변화율 계산
         const yesterdayPercentageChange =
           yesterdayTotalAmount > 0
             ? ((todayTotalAmount - yesterdayTotalAmount) / yesterdayTotalAmount) * 100
             : 0
         setYesterdayChange(yesterdayPercentageChange)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
@@ -117,6 +125,7 @@ export default function DashboardSummary() {
 
     fetchData()
   }, [])
+
   return (
     <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
       <Card
@@ -140,8 +149,8 @@ export default function DashboardSummary() {
           </Typography>
           <Typography variant="body2" color={lastMonthChange >= 0 ? 'green' : 'red'}>
             {lastMonthChange >= 0
-              ? `▲ ${lastMonthChange.toFixed(2)}% ${t('increase')}`
-              : `▼ ${lastMonthChange.toFixed(2)}% ${t('decrease')}`}
+              ? `${t('last_month_increase', { change: lastMonthChange.toFixed(2) })}`
+              : `${t('last_month_decrease', { change: lastMonthChange.toFixed(2) })}`}
           </Typography>
         </Stack>
       </Card>
@@ -167,8 +176,8 @@ export default function DashboardSummary() {
           </Typography>
           <Typography variant="body2" color={yesterdayChange >= 0 ? 'green' : 'red'}>
             {yesterdayChange >= 0
-              ? `▲ ${yesterdayChange.toFixed(2)}% ${t('increase')}`
-              : `▼ ${yesterdayChange.toFixed(2)}% ${t('decrease')}`}
+              ? `${t('yesterday_increase', { change: yesterdayChange.toFixed(2) })}`
+              : `${t('yesterday_decrease', { change: yesterdayChange.toFixed(2) })}`}
           </Typography>
         </Stack>
       </Card>
@@ -184,15 +193,15 @@ export default function DashboardSummary() {
           p: 2,
         }}
       >
-        {/* <Stack>
+        <Stack>
           <Typography variant="h6" pb={1}>
-            {t('this_month_average')}
+            {t('this_month_payment')}{' '}
           </Typography>
           <Typography variant="h3">
-            {averagePerTransaction.toLocaleString()}
+            {lastMonthTotal.toLocaleString()}
             {t('won')}
           </Typography>
-        </Stack> */}
+        </Stack>
       </Card>
     </Stack>
   )

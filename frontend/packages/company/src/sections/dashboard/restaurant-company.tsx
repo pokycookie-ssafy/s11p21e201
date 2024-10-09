@@ -23,23 +23,18 @@ export default function RestaurantCompany() {
   const { t } = useTranslate('dashboard')
   const theme = useTheme()
 
-  const startDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
-    .startOf('month')
-    .format('YYYY-MM-DDTHH:mm:ss')
-
-  const endDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
-    .endOf('month')
-    .format('YYYY-MM-DDTHH:mm:ss')
-
-  // 데이터를 불러오는 useEffect (API 호출)
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
         const response = await axios.get<StoreData[]>('/companies/dashboards/months/stores', {
           params: {
-            startDate,
-            endDate,
+            startDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+              .startOf('month')
+              .format('YYYY-MM-DDTHH:mm:ss'),
+            endDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+              .endOf('month')
+              .format('YYYY-MM-DDTHH:mm:ss'),
           },
         })
 
@@ -48,7 +43,7 @@ export default function RestaurantCompany() {
         setRestaurants(sortedRestaurants.map((item) => item.storeName))
         setSeriesData(sortedRestaurants.map((item) => item.amount))
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
@@ -86,7 +81,7 @@ export default function RestaurantCompany() {
     },
     legend: {
       labels: {
-        colors: theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400], // Set label colors based on theme mode
+        colors: theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
       },
     },
   }
@@ -111,8 +106,11 @@ export default function RestaurantCompany() {
         {seriesData.length > 0 ? (
           <Chart options={chartOptions} series={seriesData} type="pie" height={230} />
         ) : (
-          <Typography variant="h6" sx={{ textAlign: 'center', pt: 10 }}>
-            No Data
+          <Typography
+            variant="h6"
+            sx={{ textAlign: 'center', pt: 10, color: theme.palette.grey[500] }}
+          >
+            {t('no_data')}
           </Typography>
         )}
       </Stack>

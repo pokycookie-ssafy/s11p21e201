@@ -1,13 +1,13 @@
 import dayjs from 'dayjs'
 import axios from '@/configs/axios'
 import Chart from 'react-apexcharts'
+import { useTranslate } from '@/locales'
 import { useState, useEffect } from 'react'
 import { SelectDate } from '@/components/select/select-date'
 
 import { Box, Card, Stack, Select, MenuItem, useTheme, FormControl } from '@mui/material'
 
-import { Typography } from '@e201/ui' // 날짜 선택 컴포넌트 import
-import { useTranslate } from '@/locales'
+import { Typography } from '@e201/ui'
 
 interface IDashboardPaymentResponse {
   year: number
@@ -26,7 +26,7 @@ export default function TotalCompany() {
   const { t } = useTranslate('dashboard')
   const [data, setData] = useState<IDashboardPaymentResponse[]>([])
   const [dailyData, setDailyData] = useState<IDashboardPaymentDailyResponse[]>([])
-  const [viewType, setViewType] = useState<'월별' | '일별'>('월별')
+  const [viewType, setViewType] = useState<'month' | 'day'>('month')
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -36,9 +36,8 @@ export default function TotalCompany() {
   const theme = useTheme()
 
   const endDate = dayjs().format('YYYY-MM-DDTHH:mm:ss')
-  const startDate = dayjs().startOf('month').format('YYYY-MM-DDTHH:mm:ss')
+  const startDate = dayjs().subtract(6, 'month').startOf('month').format('YYYY-MM-DDTHH:mm:ss')
 
-  // 데이터를 불러오는 useEffect (월별 데이터)
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -54,18 +53,17 @@ export default function TotalCompany() {
         )
         setData(response.data)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
     }
 
-    if (viewType === '월별') {
+    if (viewType === 'month') {
       fetchData()
     }
   }, [startDate, endDate, viewType])
 
-  // 데이터를 불러오는 useEffect (일별 데이터)
   useEffect(() => {
     const fetchDailyData = async () => {
       setLoading(true)
@@ -88,19 +86,19 @@ export default function TotalCompany() {
         )
         setDailyData(response.data)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
     }
 
-    if (viewType === '일별') {
+    if (viewType === 'day') {
       fetchDailyData()
     }
   }, [selectedYear, selectedMonth, viewType])
 
   useEffect(() => {
-    if (viewType === '월별') {
+    if (viewType === 'month') {
       const newCategories = data.map(
         (item) => `${item.year}-${String(item.month).padStart(2, '0')}`
       )
@@ -110,7 +108,7 @@ export default function TotalCompany() {
       setSeriesData(newSeriesData)
     }
 
-    if (viewType === '일별') {
+    if (viewType === 'day') {
       const newCategories = dailyData.map(
         (item) =>
           `${item.year}-${String(item.month).padStart(2, '0')}-${String(item.day).padStart(2, '0')}`
@@ -138,7 +136,7 @@ export default function TotalCompany() {
       categories,
       labels: {
         formatter(value: string) {
-          return dayjs(value).format(viewType === '월별' ? 'YYYY/MM' : 'YYYY/MM/DD')
+          return dayjs(value).format(viewType === 'month' ? 'YYYY/MM' : 'YYYY/MM/DD')
         },
         style: {
           colors:
@@ -169,7 +167,7 @@ export default function TotalCompany() {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}원`
+          return `${value.toLocaleString()}${'won'}`
         },
       },
     },
@@ -199,8 +197,7 @@ export default function TotalCompany() {
     >
       <Stack p={1} sx={{ position: 'relative' }} spacing={1}>
         <Box display="flex" alignItems="center" sx={{ position: 'relative' }}>
-          {/* 좌측에 SelectDate 고정 (일별/월별 상관없이 항상 표시) */}
-          {viewType === '일별' && (
+          {viewType === 'day' && (
             <Box sx={{ position: 'absolute', left: 2, top: 2 }}>
               <SelectDate
                 year={selectedYear}
@@ -211,12 +208,10 @@ export default function TotalCompany() {
             </Box>
           )}
 
-          {/* 중앙에 Typography 고정 */}
           <Typography variant="h6" sx={{ margin: '0 auto', textAlign: 'center', pt: 1 }}>
-            {viewType === '월별' ? '월별 총액' : '일별 총액'}
+            {viewType === 'month' ? t('total_month') : t('total_day')}
           </Typography>
 
-          {/* 우측에 월별/일별 선택 박스 고정 */}
           <FormControl
             variant="outlined"
             size="small"
@@ -224,10 +219,10 @@ export default function TotalCompany() {
           >
             <Select
               value={viewType}
-              onChange={(e) => setViewType(e.target.value as '월별' | '일별')}
+              onChange={(e) => setViewType(e.target.value as 'month' | 'day')}
             >
-              <MenuItem value="월별">월별</MenuItem>
-              <MenuItem value="일별">일별</MenuItem>
+              <MenuItem value="month">{t('monthly')}</MenuItem>
+              <MenuItem value="day">{t('daily')}</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -243,9 +238,10 @@ export default function TotalCompany() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100%',
+                color: theme.palette.grey[500],
               }}
             >
-              No Data
+              {t('no_data')}
             </Typography>
           )}
         </Box>
