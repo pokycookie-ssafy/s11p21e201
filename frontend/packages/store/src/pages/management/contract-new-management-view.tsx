@@ -69,7 +69,7 @@ export default function ContractNewManagementView() {
       const req: IContractCreateRequest = {
         senderId: user.id,
         receiverRegisterNumber: licenseData.registerNumber,
-        settlementDate: Number.parseInt(settlementDate),
+        settlementDay: Number.parseInt(settlementDate),
       }
       await axios.post(api.contract.create, req)
       navigate(paths.management.contract.now)

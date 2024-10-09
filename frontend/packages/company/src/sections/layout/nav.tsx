@@ -10,6 +10,7 @@ import { useAuthStore } from '@/stores'
 import { useTranslate } from '@/locales'
 import { useBoolean } from '@/hooks/use-boolean'
 import tossLogo from '@/assets/img/toss-logo.jpg'
+import whiteLogo from '@/assets/img/logo-white.png'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import {
@@ -43,6 +44,8 @@ export default function Nav({ drawer }: IProps) {
       logout()
       navigate(paths.auth.signIn)
     } catch (error) {
+      logout()
+      navigate(paths.auth.signIn)
       console.log(error)
     }
   }
@@ -106,6 +109,8 @@ export default function Nav({ drawer }: IProps) {
 }
 
 function NavLogo() {
+  const { palette } = useTheme()
+
   return (
     <Stack
       height={76}
@@ -123,7 +128,7 @@ function NavLogo() {
         <Box
           component="img"
           alt="logo"
-          src={tossLogo}
+          src={palette.mode === 'light' ? tossLogo : whiteLogo}
           sx={{
             height: 70,
             objectFit: 'cover',

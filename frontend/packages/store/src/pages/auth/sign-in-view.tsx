@@ -27,8 +27,8 @@ export default function SignInView() {
   const formMethod = useForm<IForm>({
     mode: 'onSubmit',
     defaultValues: {
-      email: 'store1@ssafy.com',
-      password: '12345678',
+      email: '',
+      password: '',
     },
   })
   const { control } = formMethod

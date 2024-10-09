@@ -1,6 +1,7 @@
 import paths from '@/configs/paths'
 import { useBoolean } from '@/hooks/use-boolean'
 import tossLogo from '@/assets/img/toss-logo.jpg'
+import whiteLogo from '@/assets/img/logo-white.png'
 import { ModeButton, LocaleButton } from '@/components/setting-button'
 
 import {
@@ -22,7 +23,7 @@ interface IProps {
 }
 
 export default function Header({ logo }: IProps) {
-  const { breakpoints } = useTheme()
+  const { breakpoints, palette } = useTheme()
   const visible = useMediaQuery(breakpoints.down('md'))
 
   const drawer = useBoolean()
@@ -49,7 +50,7 @@ export default function Header({ logo }: IProps) {
           <Box
             component="img"
             alt="logo"
-            src={tossLogo}
+            src={palette.mode === 'light' ? tossLogo : whiteLogo}
             sx={{
               width: 120,
               objectFit: 'cover',
