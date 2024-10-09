@@ -23,14 +23,6 @@ export default function DepartmentCompany() {
   const theme = useTheme()
   const { t } = useTranslate('dashboard')
 
-  const startDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
-    .startOf('month')
-    .format('YYYY-MM-DDTHH:mm:ss')
-
-  const endDate = dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
-    .endOf('month')
-    .format('YYYY-MM-DDTHH:mm:ss')
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -39,8 +31,12 @@ export default function DepartmentCompany() {
           '/companies/dashboards/months/departments',
           {
             params: {
-              startDate,
-              endDate,
+              startDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+                .startOf('month')
+                .format('YYYY-MM-DDTHH:mm:ss'),
+              endDate: dayjs(`${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`)
+                .endOf('month')
+                .format('YYYY-MM-DDTHH:mm:ss'),
             },
           }
         )
@@ -49,7 +45,7 @@ export default function DepartmentCompany() {
         setDepartments(sortedDepartments.map((item) => item.departmentName))
         setSeriesData(sortedDepartments.map((item) => item.amount))
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
@@ -151,9 +147,10 @@ export default function DepartmentCompany() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100%',
+                color: theme.palette.grey[500],
               }}
             >
-              No Data
+              {t('no_data')}
             </Typography>
           )}
         </Box>
