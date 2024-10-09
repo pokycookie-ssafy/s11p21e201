@@ -15,6 +15,7 @@
   "this_month_average": "Average Payment Amount of this Month",
   "increase": "increase",
   "decrease": "decrease",
+  "no_data": "No data available",
   "unit": {
     "date": "{{month}} {{year}}",
     "months": {

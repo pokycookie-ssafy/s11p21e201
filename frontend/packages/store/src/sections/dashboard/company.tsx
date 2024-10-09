@@ -122,7 +122,24 @@ export default function CompanySales({ data }: CompanySalesProps) {
           <SelectDate year={selectedYear} month={selectedMonth} t={t} onChange={handleDateChange} />
         </Box>
 
-        <Chart options={chartOptions} series={chartSeries} type="bar" height={230} />
+        <Box height={200}>
+          {seriesData.length > 0 ? (
+            <Chart options={chartOptions} series={chartSeries} type="bar" height={230} />
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                color: theme.palette.grey[500],
+              }}
+            >
+              {t('no_data')}
+            </Typography>
+          )}
+        </Box>
       </Stack>
     </Card>
   )

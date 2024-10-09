@@ -4,22 +4,21 @@ import api from '@/configs/api'
 import { Response, createServer } from 'miragejs'
 import { bankResponse } from '@/mock-api/response/bank'
 import { licenseResponse } from '@/mock-api/response/license'
-import {
-  contractNow,
-  contractHistory,
-  contractRequestSend,
-  contractRequestReceived,
-} from '@/mock-api/response/contract'
+import {} from // contractNow,
+// contractHistory,
+// contractRequestSend,
+// contractRequestReceived,
+'@/mock-api/response/contract'
 
-import { storesResponse } from './response/stores'
-import { managerResponse } from './response/managers'
-import { paymentResponse } from './response/payments'
-import { employeeResponse } from './response/employees'
-import { contractsResponse } from './response/contracts'
-import { dashboardResponse } from './response/dashboard'
-import { settlementResponse } from './response/settlements'
-import { contractStoreResponse } from './response/contract-stores'
-import { contractHistoryResponse } from './response/contracts-history'
+// import { storesResponse } from './response/stores'
+// import { managerResponse } from './response/managers'
+// import { paymentResponse } from './response/payments'
+// import { employeeResponse } from './response/employees'
+// import { contractsResponse } from './response/contracts'
+// import { dashboardResponse } from './response/dashboard'
+// import { settlementResponse } from './response/settlements'
+// import { contractStoreResponse } from './response/contract-stores'
+// import { contractHistoryResponse } from './response/contracts-history'
 
 export default function initServer() {
   createServer({
