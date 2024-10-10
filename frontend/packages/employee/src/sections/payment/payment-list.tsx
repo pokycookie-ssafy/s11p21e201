@@ -22,7 +22,7 @@ export default function PaymentList({ payment }: IProps) {
       <Button variant="soft" onClick={drawer.onTrue} sx={{ p: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" width={1}>
           <Stack alignContent="flex-start" textAlign="left" spacing={0.5}>
-            <Typography fontSize={17} fontWeight={500}>
+            <Typography fontSize={15} fontWeight={500}>
               {payment.storeName}
             </Typography>
             <Typography variant="caption" textAlign="left" color="text.secondary">
@@ -30,7 +30,7 @@ export default function PaymentList({ payment }: IProps) {
             </Typography>
           </Stack>
 
-          <Typography color="primary.main" fontSize={18} fontWeight={500}>
+          <Typography color="primary.main" fontSize={14} fontWeight={500}>
             -{fNumber(payment.amount)}
             {t('unit.won')}
           </Typography>
@@ -50,16 +50,11 @@ export default function PaymentList({ payment }: IProps) {
         <Box p={2}>
           <Stack spacing={0.5}>
             <Typography variant="subtitle1">{payment.storeName}</Typography>
-            <Typography fontSize={28} fontWeight={800} color="primary.main">
+            <Typography fontSize={24} fontWeight={800} color="primary.main">
               {fNumber(payment.amount)}
               {t('unit.won')}
             </Typography>
-            <Typography
-              variant="subtitle2"
-              fontWeight={500}
-              textAlign="left"
-              color="text.secondary"
-            >
+            <Typography variant="caption" fontWeight={500} textAlign="left" color="text.secondary">
               {dayjs(payment.paymentDate).format('YYYY.MM.DD HH:mm')}
             </Typography>
           </Stack>
@@ -70,12 +65,10 @@ export default function PaymentList({ payment }: IProps) {
             {payment.menus.map((menu, i) => (
               <Stack key={i} width={1} direction="row" justifyContent="space-between">
                 <Stack>
-                  <Typography variant="subtitle1" fontSize={18}>
-                    {menu.name}
-                  </Typography>
+                  <Typography variant="subtitle1">{menu.name}</Typography>
                   <Typography variant="caption">{menu.category}</Typography>
                 </Stack>
-                <Typography variant="subtitle1" fontSize={18} color="primary.main">
+                <Typography variant="subtitle1" color="primary.main">
                   {fNumber(menu.price)}
                   {t('unit.won')}
                 </Typography>

@@ -5,6 +5,7 @@ import axios from '@/configs/axios'
 import paths from '@/configs/paths'
 import { fNumber } from '@e201/utils'
 import { useTranslate } from '@/locales'
+import { getMonthRange } from '@/utils/date'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 
@@ -23,10 +24,13 @@ export default function MealUsage({ onQr }: IProps) {
 
   const navigate = useNavigate()
 
+  const now = new Date()
+  const { start, end } = getMonthRange(now.getFullYear(), now.getMonth())
+
   const { data } = useQuery({
-    queryKey: [api.usage],
+    queryKey: [api.usage, start, end],
     queryFn: async () => {
-      const response = await axios.get<IUsage>(api.usage)
+      const response = await axios.get<IUsage>(api.usageWith(start, end))
       return response.data
     },
   })
