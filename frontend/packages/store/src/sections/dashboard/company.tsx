@@ -14,7 +14,7 @@ interface CompanySalesProps {
 
 export default function CompanySales({ data }: CompanySalesProps) {
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1)
+  const [selectedMonth, setSelectedMonth] = useState<number>(4)
   const [companies, setCompanies] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
 

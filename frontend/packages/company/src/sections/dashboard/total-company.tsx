@@ -26,7 +26,7 @@ export default function TotalCompany() {
   const { t } = useTranslate('dashboard')
   const [data, setData] = useState<IDashboardPaymentResponse[]>([])
   const [dailyData, setDailyData] = useState<IDashboardPaymentDailyResponse[]>([])
-  const [viewType, setViewType] = useState<'month' | 'day'>('month')
+  const [viewType, setViewType] = useState<'month' | 'day'>('day')
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
   const [loading, setLoading] = useState<boolean>(true)

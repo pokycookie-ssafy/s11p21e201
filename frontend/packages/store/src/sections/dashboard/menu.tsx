@@ -14,7 +14,7 @@ interface MenuSalesProps {
 
 export default function MenuSales({ data }: MenuSalesProps) {
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
-  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1)
+  const [selectedMonth, setSelectedMonth] = useState<number>(4)
   const [menus, setMenus] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
 
