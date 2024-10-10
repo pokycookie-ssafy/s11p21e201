@@ -6,6 +6,7 @@ export function Toaster() {
   return (
     <StyledToaster
       closeButton
+      position="bottom-left"
       visibleToasts={3}
       duration={1500}
       toastOptions={{
