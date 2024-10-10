@@ -1,4 +1,13 @@
 {
+  "nav":{
+    "main": "Main",
+    "setting": "Setting",
+    "payments": "Payments"
+  },
+  "header": {
+    "user": "{0}!,",
+    "greeting": " Enjoy your delicious meal today as well! :)"
+  },
   "main": {
     "title": "Employee Main Page",
     "qr-title": "Generate QR Code",
@@ -8,7 +17,12 @@
     "error": "Error: ",
     "no-store": "No stores available",
     "no-address": "This is a restaurant with an unregistered address.",
-    "no-phone": "This is a restaurant with an unregistered phone number."
+    "no-phone": "This is a restaurant with an unregistered phone number.",
+    "button":{
+      "payments": "Check Payments",
+      "qr": "QR Payment"
+    },
+    "store_list": "Partner Restaurant List"
   },
   "current": {
     "title": "Meal Allowance Status for {{month}}/{{year}}",
@@ -24,9 +38,10 @@
     "employeeCode": "Employee Code",
     "password": "Password",
     "remember": "Remember me",
-    "error": "Try Again."
+    "error": "Login Failed, Try Again."
   },
   "pw": {
+    "title": "Change Password",
     "originPw": "Origin Password",
     "newPw": "New Password",
     "confirmPw": "Password Confirm",
@@ -41,5 +56,36 @@
     "title": "Account-book Page",
     "error": "Data could not be loaded.",
     "no-data": "There are no records for the selected period."
+  },
+  "validate": {
+    "email": {
+      "required": "Please enter your email",
+      "pattern": "Invalid email format"
+    },
+    "password": {
+      "required": "Please enter your password",
+      "minLength": "Password must be at least 8 characters"
+    },
+    "password_confirm": {
+      "validate": "Passwords do not match"
+    },
+    "wrong_password" : "Wrong Password. check Password"
+  },
+  "language": {
+    "title": "change Language",
+    "ko": "한국어",
+    "en": "English"
+  },
+  "usage": {
+    "title": "Usage of Meal Price"
+  },
+  "unit": {
+    "won": "KRW"
+  },
+  "swipeable": {
+    "info": "Pull up to QR Payment"
+  },
+  "toast": {
+    "password_changed": "Password has been Changed!"
   }
 }
