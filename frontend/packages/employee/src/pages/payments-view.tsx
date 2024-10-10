@@ -11,7 +11,7 @@ import PaymentList from '@/sections/payment/payment-list'
 
 import { Box, Stack, Divider, CircularProgress } from '@mui/material'
 
-import { SelectDate } from '@e201/ui'
+import { Iconify, SelectDate, Typography } from '@e201/ui'
 
 export default function PaymentsView() {
   const { t } = useTranslate('payment')
@@ -39,16 +39,28 @@ export default function PaymentsView() {
   const listRender = useMemo(() => {
     if (isPending) {
       return (
-        <Box>
+        <Stack justifyContent="center" alignItems="center" width={1} height={200}>
           <CircularProgress />
-        </Box>
+        </Stack>
       )
     }
-    if (!payments) {
-      return <Box>no rows</Box>
+    if (!payments || payments.length === 0) {
+      return (
+        <Stack
+          justifyContent="center"
+          alignItems="center"
+          width={1}
+          height={200}
+          color="text.secondary"
+          spacing={2}
+        >
+          <Iconify icon="fa-regular:sad-tear" width={40} />
+          <Typography variant="subtitle2">{t('info.no_rows')}</Typography>
+        </Stack>
+      )
     }
     return payments.map((payment) => <PaymentList key={payment.id} payment={payment} />)
-  }, [isPending, payments])
+  }, [isPending, payments, t])
 
   return (
     <Box px={1} py={2}>
