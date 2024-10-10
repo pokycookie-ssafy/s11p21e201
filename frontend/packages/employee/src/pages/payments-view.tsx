@@ -21,12 +21,12 @@ export default function PaymentsView() {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
 
-  const { start, end } = getMonthRange(selectedYear, selectedMonth)
+  const { start, end } = getMonthRange(selectedYear, selectedMonth - 1)
 
   const { data: payments, isPending } = useQuery({
     queryKey: [api.payments, user?.employeeId, start, end],
     queryFn: async () => {
-      const response = await axios.get<IPayment[]>(api.payments)
+      const response = await axios.get<IPayment[]>(api.paymentWith(start, end))
       return response.data
     },
   })
