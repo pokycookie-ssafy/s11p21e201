@@ -10,10 +10,12 @@
   "breadcrumbs": {
     "management": "Management",
     "menu_management": "Menu Management",
-    "create_menu": "Add Menu"
+    "create_menu": "Add Menu",
+    "edit_menu": "Edit Menu"
   },
   "button": {
-    "create_menu": "Add Menu"
+    "create_menu": "Add Menu",
+    "edit_menu": "Edit Menu"
   },
   "label": {
     "all": "All",
@@ -34,6 +36,8 @@
     "delete_all_content": "Are you sure you want to delete all {0} menus?"
   },
   "toast": {
-    "delete": "The menu has been deleted"
+    "create": "The menu has been created",
+    "delete": "The menu has been deleted",
+    "edit": "The menu has been updated"
   }
 }

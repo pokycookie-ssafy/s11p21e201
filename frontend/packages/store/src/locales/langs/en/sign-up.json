@@ -45,10 +45,12 @@
       "validate": "Invalid Password"
     },
     "phone": {
-      "required": "Please enter your phone number"
+      "required": "Please enter your phone number",
+      "pattern": "Please use the format 000-0000-0000"
     }
   },
   "error": {
-    "bank": "Unable to load bank information"
+    "bank": "Unable to load bank information",
+    "ocr": "Can't read business license"
   }
 }
