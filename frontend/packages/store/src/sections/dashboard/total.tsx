@@ -15,11 +15,11 @@ interface TotalCompanyProps {
 }
 
 export default function TotalRestaurant({ data }: TotalCompanyProps) {
-  const [viewType, setViewType] = useState<'month' | 'day'>('month')
+  const [viewType, setViewType] = useState<'month' | 'day'>('day')
   const [categories, setCategories] = useState<string[]>([])
   const [seriesData, setSeriesData] = useState<number[]>([])
   const [selectedYear, setSelectedYear] = useState<number>(dayjs().year())
-  const [selectedMonth, setSelectedMonth] = useState<number>(dayjs().month() + 1)
+  const [selectedMonth, setSelectedMonth] = useState<number>(4)
 
   const { t } = useTranslate('dashboard')
   const theme = useTheme()

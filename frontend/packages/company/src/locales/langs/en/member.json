@@ -70,7 +70,7 @@
     "department": "Department Name",
     "department_code": "Department Code",
     "manager_code": "Manager Code",
-    "manager_password": "Manager Password",
+    "manager_password": "Manager Password"
   },
   "tooltip": {
     "delete_all": "Delete All",
