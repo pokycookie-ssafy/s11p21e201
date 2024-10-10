@@ -136,7 +136,10 @@ export default function TotalCompany() {
       categories,
       labels: {
         formatter(value: string) {
-          return dayjs(value).format(viewType === 'month' ? 'YYYY/MM' : 'YYYY/MM/DD')
+          if (viewType === 'day') {
+            return dayjs(value).format('D')
+          }
+          return dayjs(value).format('YYYY/MM')
         },
         style: {
           colors:
@@ -165,9 +168,12 @@ export default function TotalCompany() {
     },
     tooltip: {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
+      x: {
+        show: false,
+      },
       y: {
         formatter(value: number) {
-          return `${value.toLocaleString()}${'won'}`
+          return `${value.toLocaleString()}${t('won')}`
         },
       },
     },
@@ -176,7 +182,7 @@ export default function TotalCompany() {
   const chartSeries = [
     {
       data: seriesData,
-      name: 'Total Amount',
+      name: '',
     },
   ]
 

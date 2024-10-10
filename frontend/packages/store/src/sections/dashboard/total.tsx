@@ -88,9 +88,10 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
     xaxis: {
       categories,
       labels: {
+        // show: false,
         formatter(value: string) {
           if (viewType === 'day') {
-            return dayjs(value).format('MM/DD')
+            return dayjs(value).format('D')
           }
           return dayjs(value).format('YYYY/MM')
         },
@@ -99,6 +100,12 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
             theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
       },
+      // axisBorder: {
+      //   show: false,
+      // },
+      // axisTicks: {
+      //   show: false,
+      // },
     },
     yaxis: {
       min: 0,
@@ -121,6 +128,9 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
     },
     tooltip: {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
+      x: {
+        show: false,
+      },
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
@@ -182,7 +192,7 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
           </FormControl>
         </Box>
 
-        <Box height={150}>
+        <Stack height={150}>
           {seriesData.length > 0 ? (
             <Chart options={chartOptions} series={chartSeries} type="line" height={200} />
           ) : (
@@ -199,7 +209,7 @@ export default function TotalRestaurant({ data }: TotalCompanyProps) {
               {t('no_data')}
             </Typography>
           )}
-        </Box>
+        </Stack>
       </Stack>
     </Card>
   )
