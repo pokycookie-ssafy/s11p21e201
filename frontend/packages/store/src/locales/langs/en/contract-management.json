@@ -17,7 +17,8 @@
     "settlement_date": "Payment Date",
     "status": "Status",
     "action": "Action",
-    "in_progress": "Processing Request"
+    "in_progress": "Processing Request",
+    "address": "Address"
   },
   "row": {
     "settlement_date": "Every {0}th of each month"
@@ -38,7 +39,8 @@
     "accept": "Accept",
     "reject": "Reject",
     "accept_all": "Accept All",
-    "reject_all": "Reject All"
+    "reject_all": "Reject All",
+    "contract_cancel": "Contract Terminated"
   },
   "label": {
     "company_search": "Search by Company Name",
@@ -48,5 +50,15 @@
     "canceled": "Terminated",
     "license_upload": "Please upload the business license",
     "selected": "{0} items selected"
+  },
+  "dialog": {
+    "cancel": "Contract Terminated",
+    "cancel_content": "Are you sure to terminated the contract with '{0}'"
+  },
+  "toast": {
+    "contract_canel": "Contract terminated"
+  },
+  "error": {
+    "ocr": "Error to read business license"
   }
 }
