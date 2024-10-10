@@ -14,7 +14,7 @@ export default function MealChart({ total, usage }: IProps) {
     <Chart
       width={150}
       type="radialBar"
-      series={[(usage / total) * 100]}
+      series={[Math.round((usage / total) * 100)]}
       options={{
         fill: {
           colors: [theme.palette.primary.main],

@@ -21,30 +21,30 @@ const nav: INav[] = [
         path: paths.dashboard.total,
         icon: 'teenyicons:donut-chart-solid',
       },
-      {
-        title: 'dashboard.sales.title',
-        path: paths.dashboard.sales.root,
-        icon: 'grommet-icons:line-chart',
-        group: [
-          {
-            title: 'dashboard.sales.menu',
-            path: paths.dashboard.sales.menu,
-          },
-          {
-            title: 'dashboard.sales.company',
-            path: paths.dashboard.sales.company,
-          },
-          {
-            title: 'dashboard.sales.date',
-            path: paths.dashboard.sales.time,
-          },
-        ],
-      },
-      {
-        title: 'dashboard.settlement',
-        path: paths.dashboard.settlement,
-        icon: 'ph:invoice-duotone',
-      },
+      // {
+      //   title: 'dashboard.sales.title',
+      //   path: paths.dashboard.sales.root,
+      //   icon: 'grommet-icons:line-chart',
+      //   group: [
+      //     {
+      //       title: 'dashboard.sales.menu',
+      //       path: paths.dashboard.sales.menu,
+      //     },
+      //     {
+      //       title: 'dashboard.sales.company',
+      //       path: paths.dashboard.sales.company,
+      //     },
+      //     {
+      //       title: 'dashboard.sales.date',
+      //       path: paths.dashboard.sales.time,
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: 'dashboard.settlement',
+      //   path: paths.dashboard.settlement,
+      //   icon: 'ph:invoice-duotone',
+      // },
     ],
   },
   {
