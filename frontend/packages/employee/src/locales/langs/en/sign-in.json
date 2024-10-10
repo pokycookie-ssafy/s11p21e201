@@ -1,0 +1,19 @@
+{
+  "field": {
+    "code": "Employee Code",
+    "password": "Password"
+  },
+  "button": {
+    "login": "Login"
+  },
+  "validate": {
+    "code": {
+      "required": "Please input employee code"
+    },
+    "password": {
+      "required": "Please enter your password",
+      "minLength": "Password must be at least 8 characters"
+    },
+    "login": "Wrong Employee Code or Password"
+  }
+}
