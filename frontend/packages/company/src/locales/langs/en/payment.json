@@ -1,14 +1,5 @@
 {
-  "paid_at": "Payment Date and Time",
-  "department_name": "Department Name",
-  "employee_name": "Employee Name",
-  "store_name": "Restaurant Name",
-  "price": "Payment Amount",
-  "payment": "Ledger Management",
-  "department": "Department",
-  "restaurant": "Restaurant",
   "all": "All",
-
   "breadcrumbs": {
     "title": "Ledger Management",
     "management": "Management"
@@ -18,7 +9,14 @@
     "won": "KRW"
   },
   "field": {
-    "employee_no": "Employee Number"
+    "department_name": "Department Name",
+    "employee_name": "Employee Name",
+    "employee_code": "Employee Number",
+    "spent_amount": "Used Amount",
+    "support_amount": "Allocated Amount",
+    "payment_amount": "Payment Amount",
+    "payment_date": "Payment Date and Time",
+    "store_name": "Restaurant Name",
   },
   "label": {
     "select_department": "Search by Department Name",

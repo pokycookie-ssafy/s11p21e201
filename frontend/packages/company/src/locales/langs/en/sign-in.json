@@ -2,7 +2,8 @@
   "title": "Login",
   "label": {
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "code": "Manager Code"
   },
   "button": {
     "forgot_account": "Find Email/Password",
@@ -18,6 +19,13 @@
       "required": "Please enter your password",
       "minLength": "Password must be at least 8 characters"
     },
+    "code": {
+      "required": "Please enter Manager Code"
+    },
     "login": "Incorrect email or password"
+  },
+  "tab": {
+    "company": "Company Login",
+    "manager": "Manager Login"
   }
 }

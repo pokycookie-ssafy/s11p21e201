@@ -23,7 +23,6 @@
   "settlement": "정산",
   "close": "닫기",
   "settlement_amount": "정산예정액",
-
   "field": {
     "store_name": "식당명",
     "action": "정산",

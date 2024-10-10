@@ -12,7 +12,11 @@
   },
   "management": {
     "title": "Management",
-    "member": "Member Account",
+    "member": {
+      "title": "Employee Management",
+      "manager": "Manger Management",
+      "department": "Department Management"
+    },
     "payment": "Payment",
     "contract": {
       "title": "Contract",
