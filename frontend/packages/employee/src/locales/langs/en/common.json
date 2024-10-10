@@ -1,5 +1,5 @@
 {
-  "nav":{
+  "nav": {
     "main": "Main",
     "setting": "Setting",
     "payments": "Payments"
@@ -18,7 +18,7 @@
     "no-store": "No stores available",
     "no-address": "This is a restaurant with an unregistered address.",
     "no-phone": "This is a restaurant with an unregistered phone number.",
-    "button":{
+    "button": {
       "payments": "Check Payments",
       "qr": "QR Payment"
     },
@@ -69,10 +69,10 @@
     "password_confirm": {
       "validate": "Passwords do not match"
     },
-    "wrong_password" : "Wrong Password. check Password"
+    "wrong_password": "Wrong Password. check Password"
   },
   "language": {
-    "title": "change Language",
+    "title": "Change Language",
     "ko": "한국어",
     "en": "English"
   },

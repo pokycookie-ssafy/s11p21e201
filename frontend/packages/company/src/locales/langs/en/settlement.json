@@ -41,7 +41,7 @@
     "management_store": "Management by Restaurant"
   },
   "unit": {
-    "date": "{0} Year {1} Month",
+    "date": "{0}.{1}",
     "won": "KRW",
     "year": "year"
   },
