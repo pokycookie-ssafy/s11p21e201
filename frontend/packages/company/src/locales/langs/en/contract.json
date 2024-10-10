@@ -47,15 +47,32 @@
     "canceled": "Terminated",
     "license_upload": "Please upload the business license"
   },
+  "row":{
+    "settlement_date": "Every {0}th of the month"
+  },
   "field": {
     "action": "Action",
     "status": "Status",
-    "in_progress": "Awaiting Approval"
+    "in_progress": "Awaiting Approval",
+    "contract_date": "Contract Date",
+    "settlement_date": "Settlement Date",
+    "email": "Email"
   },
   "tooltip": {
     "accept": "Accept",
     "reject": "Reject",
     "accept_all": "Accept All",
-    "reject_all": "Reject All"
+    "reject_all": "Reject All",
+    "contract_cancel": "Contract Terminated"
+  },
+  "dialog": {
+    "cancel": "Contract Terminate",
+    "cancel_content": "Are you sure you want to terminate the contract with '{0}'"
+  },
+  "toast": {
+    "contract_cancel": "Contract has been terminated"
+  },
+  "error": {
+    "ocr": "Can't read business license"
   }
 }

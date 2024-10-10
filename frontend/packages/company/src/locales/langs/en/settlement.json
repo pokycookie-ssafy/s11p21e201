@@ -24,11 +24,15 @@
   "close": "Close",
   "settlement_amount": "Expected Settlement Amount",
   "field": {
-    "store_name": "Restaurant Name"
+    "store_name": "Restaurant Name",
+    "action": "Settlement",
+    "outstanding_amount": "Outstanding Amount"
   },
   "tooltip": {
     "check_tax": "Check",
-    "no_tax": "Pending"
+    "no_tax": "Pending",
+    "settle": "Settle",
+    "settle_done": "Settlement Completed"
   },
   "breadcrumbs": {
     "management": "Management",
@@ -37,9 +41,17 @@
     "management_store": "Management by Restaurant"
   },
   "unit": {
-    "date": "{0} Year {1} Month"
+    "date": "{0} Year {1} Month",
+    "won": "KRW",
+    "year": "year"
   },
   "label": {
     "store_name": "Search by Restaurant Name"
+  },
+  "button": {
+    "settle": "Settle"
+  },
+  "toast": {
+    "settle_error": "Settlement Failed"
   }
 }

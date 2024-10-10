@@ -49,6 +49,7 @@
     }
   },
   "error": {
-    "bank": "Unable to retrieve bank information"
+    "bank": "Unable to retrieve bank information",
+    "ocr": "Can't read Business License"
   }
 }
