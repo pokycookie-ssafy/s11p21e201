@@ -66,10 +66,14 @@ export default function CompanySales({ data }: CompanySalesProps) {
     xaxis: {
       categories: companies,
       labels: {
+        formatter(value: string) {
+          return value.length > 4 ? `${value.substring(0, 3)}...` : value
+        },
         style: {
           colors:
             theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
         },
+        rotate: 0,
       },
     },
     yaxis: {
@@ -88,6 +92,11 @@ export default function CompanySales({ data }: CompanySalesProps) {
     },
     tooltip: {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
+      x: {
+        formatter(val: number, opts) {
+          return companies[opts.dataPointIndex]
+        },
+      },
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`

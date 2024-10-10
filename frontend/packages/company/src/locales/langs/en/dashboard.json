@@ -14,7 +14,6 @@
   "last_month_decrease": "▼ Down {{change}}% from last month",
   "yesterday_increase": "▲ Up {{change}}% from yesterday",
   "yesterday_decrease": "▼ Down {{change}}% from yesterday",
-  "decrease": "decrease",
   "today_total": "Today's Total Amount",
   "this_month_average": "This month's Average Payment Price",
   "no_data": "No data available",

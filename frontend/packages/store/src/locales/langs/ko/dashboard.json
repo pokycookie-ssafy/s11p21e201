@@ -14,7 +14,7 @@
   "this_day_total": "오늘 매출 총액",
   "this_month_average": "이번 달 평균 결제 금액",
   "increase": "증가",
-  "decreasge": "감소",
+  "decrease": "감소",
   "no_data": "해당 기간의 데이터가 없습니다",
   "unit": {
     "date": "{{year}}년 {{month}}월",

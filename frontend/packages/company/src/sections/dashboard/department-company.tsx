@@ -78,6 +78,9 @@ export default function DepartmentCompany() {
     xaxis: {
       categories: departments,
       labels: {
+        formatter(value: string) {
+          return value.length > 4 ? `${value.substring(0, 3)}...` : value
+        },
         style: {
           colors:
             theme.palette.mode === 'light' ? theme.palette.grey[800] : theme.palette.grey[400],
@@ -103,6 +106,11 @@ export default function DepartmentCompany() {
     },
     tooltip: {
       theme: theme.palette.mode === 'light' ? 'light' : 'dark',
+      x: {
+        formatter(val: number, opts) {
+          return departments[opts.dataPointIndex]
+        },
+      },
       y: {
         formatter(value: number) {
           return `${value.toLocaleString()}${t('won')}`
