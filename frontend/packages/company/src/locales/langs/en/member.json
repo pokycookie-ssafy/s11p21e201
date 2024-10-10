@@ -31,10 +31,16 @@
     "title": "Employee Management",
     "management": "Management",
     "member_management": "Employee Management",
-    "create_member": "Create Employee Account"
+    "manager_management": "Manager Management",
+    "department_management": "Department Management",
+    "create_member": "Create Employee Account",
+    "create_manager": "Create Manager Account",
+    "create_department": "Create Department"
   },
   "button": {
     "create_member": "Create Employee Account",
+    "create_manager": "Create Manager Account",
+    "create_department": "Create Department",
     "delete": "Delete",
     "cancel": "Cancel",
     "add_member": "Add Employee",
@@ -42,8 +48,12 @@
   },
   "field": {
     "department": "Department Name",
+    "department_code": "Department Code",
     "employee_name": "Employee Name",
-    "employee_number": "Employee Number"
+    "employee_number": "Employee Number",
+    "manager_code": "Manager Code",
+    "created_at": "Account Creation Date",
+    "support_amount": "Allocated Amount"
   },
   "unit": {
     "won": "KRW"
@@ -55,7 +65,12 @@
     "all": "All",
     "enter_employee_no": "Please enter the Employee Number",
     "enter_employee_name": "Please enter the Employee Name",
-    "upload_excel": "Please upload the employee Excel file"
+    "upload_excel": "Please upload the employee Excel file",
+    "enter_support_amount": "Please enter the allocated amount.",
+    "department": "Department Name",
+    "department_code": "Department Code",
+    "manager_code": "Manager Code",
+    "manager_password": "Manager Password",
   },
   "tooltip": {
     "delete_all": "Delete All",
