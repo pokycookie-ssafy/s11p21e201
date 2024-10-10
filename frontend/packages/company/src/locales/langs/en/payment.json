@@ -16,7 +16,7 @@
     "support_amount": "Allocated Amount",
     "payment_amount": "Payment Amount",
     "payment_date": "Payment Date and Time",
-    "store_name": "Restaurant Name",
+    "store_name": "Restaurant Name"
   },
   "label": {
     "select_department": "Search by Department Name",
