@@ -20,7 +20,7 @@ export default function RestaurantDashboardSummary({ data }: DashboardSummaryPro
   const { t } = useTranslate('dashboard')
 
   useEffect(() => {
-    const now = dayjs()
+    const now = dayjs().subtract(6, 'month')
     const today = now.format('YYYY-MM-DD')
     const yesterday = now.subtract(1, 'day').format('YYYY-MM-DD')
     const currentMonth = now.format('YYYY-MM')
