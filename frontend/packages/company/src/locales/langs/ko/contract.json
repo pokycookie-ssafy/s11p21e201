@@ -1,0 +1,78 @@
+{
+  "restaurant_name": "식당명",
+  "phone_number": "대표번호",
+  "address": "주소",
+  "contract_date": "계약날짜",
+  "contract_management": "계약 관리",
+  "add_contract": "계약 추가",
+  "request_date": "신청 날짜",
+  "action": "처리",
+  "request_contract": "계약 요청",
+  "management": "관리",
+  "accept_all": "일괄 수락",
+  "reject_all": "일괄 거절",
+  "selected": "개 선택",
+  "contract_log": "계약 기록",
+  "license_upload": "사업자등록증을 업로드해주세요",
+  "need_ocr": "사업자등록증을 선택해주세요",
+  "settlement_date": "매달 결제일",
+  "accept": "수락",
+  "in": "진행중",
+  "complete": "완료",
+  "reject": "거절",
+  "canceled": "취소 및 만료",
+  "all": "전체",
+  "date": "날짜",
+  "status": "상태",
+  "breadcrumbs": {
+    "management": "관리",
+    "contract_management": "계약 관리",
+    "contract_request": "계약 요청"
+  },
+  "tab": {
+    "all": "전체",
+    "in_progress": "승인중",
+    "complete": "완료",
+    "reject": "거절",
+    "canceled": "해지",
+    "received": "받은 요청",
+    "send": "보낸 요청"
+  },
+  "label": {
+    "selected": "{0}개 선택됨",
+    "store_search": "식당명 검색",
+    "in_progress": "승인중",
+    "complete": "완료",
+    "reject": "거절",
+    "canceled": "해지",
+    "license_upload": "사업자등록증을 업로드해주세요"
+  },
+  "row": {
+    "settlement_date": "매달 {0}일"
+  },
+  "field": {
+    "action": "처리",
+    "status": "상태",
+    "in_progress": "승인중",
+    "contract_date": "계약날짜",
+    "settlement_date": "정산일",
+    "email": "이메일"
+  },
+  "tooltip": {
+    "accept": "수락",
+    "reject": "거절",
+    "accept_all": "일괄 수락",
+    "reject_all": "일괄 거절",
+    "contract_cancel": "계약 해지"
+  },
+  "dialog": {
+    "cancel": "계약 해지",
+    "cancel_content": "'{0}' 기업과 계약을 정말로 해지하시겠습니까?"
+  },
+  "toast": {
+    "contract_cancel": "계약이 해지되었습니다"
+  },
+  "error": {
+    "ocr": "사업자등록증을 확인할 수 없습니다"
+  }
+}

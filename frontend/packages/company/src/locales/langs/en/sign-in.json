@@ -1,0 +1,31 @@
+{
+  "title": "Login",
+  "label": {
+    "email": "Email",
+    "password": "Password",
+    "code": "Manager Code"
+  },
+  "button": {
+    "forgot_account": "Find Email/Password",
+    "sign_in": "Sign-In",
+    "sign_up": "Sign-Up"
+  },
+  "validate": {
+    "email": {
+      "required": "Please enter your email",
+      "pattern": "Invalid email format"
+    },
+    "password": {
+      "required": "Please enter your password",
+      "minLength": "Password must be at least 8 characters"
+    },
+    "code": {
+      "required": "Please enter Manager Code"
+    },
+    "login": "Incorrect email or password"
+  },
+  "tab": {
+    "company": "Company Login",
+    "manager": "Manager Login"
+  }
+}

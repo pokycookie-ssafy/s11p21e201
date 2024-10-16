@@ -1,0 +1,16 @@
+{
+  "toast": {
+    "success": "결제가 완료되었습니다",
+    "error": "결제 오류가 발생했습니다"
+  },
+  "label": {
+    "all": "전체"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "button": {
+    "payment": "원 결제",
+    "select_menu": "메뉴를 선택해주세요"
+  }
+}

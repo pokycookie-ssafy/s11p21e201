@@ -1,0 +1,29 @@
+{
+  "all": "All",
+  "breadcrumbs": {
+    "title": "Ledger Management",
+    "management": "Management"
+  },
+  "unit": {
+    "date": "{0} Year {1} Month",
+    "won": "KRW"
+  },
+  "field": {
+    "department_name": "Department Name",
+    "employee_name": "Employee Name",
+    "employee_code": "Employee Number",
+    "spent_amount": "Used Amount",
+    "support_amount": "Allocated Amount",
+    "payment_amount": "Payment Amount",
+    "payment_date": "Payment Date and Time",
+    "store_name": "Restaurant Name"
+  },
+  "label": {
+    "select_department": "Search by Department Name",
+    "select_store": "Search by Store Name",
+    "selected": "{0} items selected"
+  },
+  "tooltip": {
+    "delete_all": "Delete All"
+  }
+}

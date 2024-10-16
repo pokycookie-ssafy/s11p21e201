@@ -1,0 +1,56 @@
+{
+  "steps": {
+    "term": "Terms",
+    "form": "Membership Information",
+    "complete": "Completed"
+  },
+  "term": {
+    "service": "Terms of Service",
+    "personal": "Privacy Policy"
+  },
+  "form": {
+    "email": "Email",
+    "password": "Password",
+    "password_confirm": "Confirm Password",
+    "phone": "Phone",
+    "bank": "Bank",
+    "account": "Account Number",
+    "upload": "Please upload your business registration certificate",
+    "company_name": "Name of Company",
+    "register_number": "Business Registration Number",
+    "company_address": "Location of Business",
+    "rep_name": "Name of Representative",
+    "open_date": "Date of Establishment",
+    "type": "Type of Business"
+  },
+  "button": {
+    "next": "Next",
+    "agree": "Agree"
+  },
+  "title": {
+    "user": "User Information",
+    "account": "Account Information",
+    "business": "Business Registration Information"
+  },
+  "validate": {
+    "email": {
+      "required": "Please enter your email",
+      "pattern": "Invalid email format"
+    },
+    "password": {
+      "required": "Please enter your password",
+      "minLength": "Password must be at least 8 characters"
+    },
+    "password_confirm": {
+      "validate": "Invalid Password"
+    },
+    "phone": {
+      "required": "Please enter your phone number",
+      "pattern": "Please use the format 000-0000-0000"
+    }
+  },
+  "error": {
+    "bank": "Unable to load bank information",
+    "ocr": "Can't read business license"
+  }
+}

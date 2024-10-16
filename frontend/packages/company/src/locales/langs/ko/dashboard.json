@@ -1,0 +1,41 @@
+{
+  "total_month": "월별 총 결제액",
+  "total_day": "일별 총 결제액",
+  "monthly": "월별",
+  "daily": "일별",
+  "won": "원",
+  "deparment_amount": "부서별 식대 사용 총액",
+  "year": "연도",
+  "month": "월",
+  "restaurant_amount": "식당별 식대 사용 총액",
+  "dashboard": "대시보드",
+  "this_month_total": "이번달 식대 사용 총액",
+  "last_month_increase": "▲ 저번달 동일 대비 {{change}}% 증가",
+  "last_month_decrease": "▼ 저번달 동일 대비 {{change}}% 감소",
+  "yesterday_increase": "▲ 어제 동시간 대비 {{change}}% 증가",
+  "yesterday_decrease": "▼ 어제 동시간 대비 {{change}}% 감소",
+  "today_total": "오늘 식대 사용 총액",
+  "this_month_average": "이번 달 평균 결제 금액",
+  "no_data": "해당 기간의 데이터가 없습니다",
+  "this_month_payment": "이번달 정산 예정액",
+  "employee_amount": "직원별 식대 사용 현황",
+  "name": "이름",
+  "total_amount": "사용 총액",
+  "unit": {
+    "date": "{{year}}년 {{month}}월",
+    "months": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+      "11": "11",
+      "12": "12"
+    }
+  }
+}

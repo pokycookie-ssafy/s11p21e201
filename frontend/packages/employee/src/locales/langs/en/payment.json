@@ -1,0 +1,9 @@
+{
+  "unit": {
+    "won": "KRW",
+    "date": "{0}.{1}"
+  },
+  "info": {
+    "no_rows": "There is no payment records."
+  }
+}

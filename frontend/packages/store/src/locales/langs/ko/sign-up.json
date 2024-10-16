@@ -1,0 +1,56 @@
+{
+  "steps": {
+    "term": "약관동의",
+    "form": "회원정보입력",
+    "complete": "가입완료"
+  },
+  "term": {
+    "service": "서비스 이용약관",
+    "personal": "개인정보 수집 및 이용 동의"
+  },
+  "form": {
+    "email": "이메일",
+    "password": "비밀번호",
+    "password_confirm": "비밀번호 확인",
+    "phone": "전화번호",
+    "bank": "은행",
+    "account": "계좌번호",
+    "upload": "사업자등록증을 업로드해주세요.",
+    "company_name": "상호명",
+    "register_number": "사업자 등록번호",
+    "company_address": "사업장 소재지",
+    "rep_name": "대표자",
+    "open_date": "개업연월일",
+    "type": "업종"
+  },
+  "button": {
+    "next": "다음",
+    "agree": "동의합니다"
+  },
+  "title": {
+    "user": "회원정보",
+    "account": "계좌정보",
+    "business": "사업자등록정보"
+  },
+  "validate": {
+    "email": {
+      "required": "이메일을 입력해주세요",
+      "pattern": "올바른 이메일 형식이 아닙니다"
+    },
+    "password": {
+      "required": "비밀번호를 입력해주세요",
+      "minLength": "비밀번호는 8글자 이상으로 입력해주세요"
+    },
+    "password_confirm": {
+      "validate": "비밀번호가 일치하지 않습니다"
+    },
+    "phone": {
+      "required": "전화번호를 입력해주세요",
+      "pattern": "000-0000-0000 형식을 사용해주세요"
+    }
+  },
+  "error": {
+    "bank": "은행 정보를 가져올 수 없습니다",
+    "ocr": "사업자등록증을 확인할 수 없습니다"
+  }
+}

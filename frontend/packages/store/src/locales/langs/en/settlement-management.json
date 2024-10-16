@@ -1,0 +1,40 @@
+{
+  "tab": {
+    "all": "All",
+    "settled": "Settlement Complete",
+    "partial": "Partial Settlement",
+    "unsettled": "Unsettled",
+    "upload": "Tax-Invoice"
+  },
+  "label": {
+    "settled": "Settlement Complete",
+    "partial": "Partial Settlement Completed",
+    "unsettled": "Unsettled",
+    "company_name": "Search by Company Name"
+  },
+  "field": {
+    "company_name": "Company Name",
+    "settled_date": "Settlement Date",
+    "settlement_date": "Planned Settlement Date",
+    "settled_amount": "Settled Amount",
+    "settlement_amount": "Expected Settlement Amount",
+    "outstanding_amount": "Unpaid Amount",
+    "status": "Status",
+    "tax_invoice": "Tax-Invoice"
+  },
+  "tooltip": {
+    "upload_done": "Upload Complete",
+    "upload": "Upload"
+  },
+  "breadcrumbs": {
+    "management": "Management",
+    "settlement_management": "Settlement Management",
+    "company_management": "Management by Company",
+    "date_management": "Management by Date"
+  },
+  "unit": {
+    "won": "KRW",
+    "date": "{0}.{1}",
+    "year": "Year"
+  }
+}

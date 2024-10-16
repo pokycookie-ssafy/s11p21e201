@@ -1,0 +1,78 @@
+{
+  "restaurant_name": "Restaurant Name",
+  "phone_number": "Phone",
+  "address": "Address",
+  "contract_date": "Contract Date",
+  "contract_management": "Current Contract",
+  "add_contract": "Add Contract",
+  "request_date": "Request Date",
+  "action": "Action",
+  "request_contract": "Contract Request",
+  "management": "Management",
+  "accept_all": "Accept All",
+  "reject_all": "Reject All",
+  "selected": " selected",
+  "contract_log": "Contract Log",
+  "license_upload": "Please upload your business registration certificate",
+  "need_ocr": "Please select your business registration certificate",
+  "settlement_date": "Every {0}th of the month",
+  "accept": "Accept",
+  "in": "In Progress",
+  "complete": "Complete",
+  "reject": "Reject",
+  "canceled": "Canceled",
+  "all": "All",
+  "date": "Date",
+  "status": "Status",
+  "breadcrumbs": {
+    "management": "Management",
+    "contract_management": "Contract Management",
+    "contract_request": "Contract Request"
+  },
+  "tab": {
+    "all": "All",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Rejected",
+    "canceled": "Terminated",
+    "received": "Received Requests",
+    "send": "Sent Requests"
+  },
+  "label": {
+    "selected": "{0} items selected",
+    "store_search": "Search Restaurant by Name",
+    "in_progress": "Awaiting Approval",
+    "complete": "Complete",
+    "reject": "Rejected",
+    "canceled": "Terminated",
+    "license_upload": "Please upload the business license"
+  },
+  "row":{
+    "settlement_date": "Every {0}th of the month"
+  },
+  "field": {
+    "action": "Action",
+    "status": "Status",
+    "in_progress": "Awaiting Approval",
+    "contract_date": "Contract Date",
+    "settlement_date": "Settlement Date",
+    "email": "Email"
+  },
+  "tooltip": {
+    "accept": "Accept",
+    "reject": "Reject",
+    "accept_all": "Accept All",
+    "reject_all": "Reject All",
+    "contract_cancel": "Contract Terminated"
+  },
+  "dialog": {
+    "cancel": "Contract Terminate",
+    "cancel_content": "Are you sure you want to terminate the contract with '{0}'"
+  },
+  "toast": {
+    "contract_cancel": "Contract has been terminated"
+  },
+  "error": {
+    "ocr": "Can't read business license"
+  }
+}

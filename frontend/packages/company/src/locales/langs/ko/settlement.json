@@ -1,0 +1,57 @@
+{
+  "total_amount_due": "지불해야 할 총 금액",
+  "overdue_amount": "미수금",
+  "current_amount_due": "기한 내 청구액",
+  "won": "원",
+  "settled_date": "정산일",
+  "settle": "정산하기",
+  "view_invoice": "세금계산서 조회",
+  "transaction_details": "상세 내역",
+  "download": "다운로드",
+  "recipient_account": "수취인 계좌번호",
+  "my_account": "내 계좌번호",
+  "all": "전체",
+  "settled": "정산 완료",
+  "partial": "부분 정산",
+  "unsettled": "미정산",
+  "upload": "세금계산서",
+  "settled_amount": "정산액",
+  "settlement_date": "정산 예정일",
+  "status": "상태",
+  "invoice": "세금계산서",
+  "view": "조회하기",
+  "settlement": "정산",
+  "close": "닫기",
+  "settlement_amount": "정산예정액",
+  "field": {
+    "store_name": "식당명",
+    "action": "정산",
+    "outstanding_amount": "미납 금액"
+  },
+  "tooltip": {
+    "check_tax": "다운로드",
+    "no_tax": "대기중",
+    "settle": "정산하기",
+    "settle_done": "정산완료"
+  },
+  "breadcrumbs": {
+    "management": "관리",
+    "management_payment": "정산 관리",
+    "management_date": "날짜별 관리",
+    "management_store": "식당별 관리"
+  },
+  "unit": {
+    "date": "{0}년 {1}월",
+    "won": "원",
+    "year": "년"
+  },
+  "label": {
+    "store_name": "식당명 검색"
+  },
+  "button": {
+    "settle": "정산하기"
+  },
+  "toast": {
+    "settle_error": "정산에 실패했습니다"
+  }
+}

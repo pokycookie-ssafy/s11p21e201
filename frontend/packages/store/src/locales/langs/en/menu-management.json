@@ -1,0 +1,43 @@
+{
+  "field": {
+    "name": "Name",
+    "category": "Category",
+    "price": "Price"
+  },
+  "unit": {
+    "won": "KRW"
+  },
+  "breadcrumbs": {
+    "management": "Management",
+    "menu_management": "Menu Management",
+    "create_menu": "Add Menu",
+    "edit_menu": "Edit Menu"
+  },
+  "button": {
+    "create_menu": "Add Menu",
+    "edit_menu": "Edit Menu"
+  },
+  "label": {
+    "all": "All",
+    "search": "Search by Menu Name",
+    "menu_name": "Menu Name",
+    "category": "Category",
+    "price": "Price",
+    "selected": "{0} items selected"
+  },
+  "tooltip": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "delete_all": "Delete All"
+  },
+  "dialog": {
+    "delete_all": "Delete All",
+    "delete_content": "Are you sure you want to delete the '{0}' menu?",
+    "delete_all_content": "Are you sure you want to delete all {0} menus?"
+  },
+  "toast": {
+    "create": "The menu has been created",
+    "delete": "The menu has been deleted",
+    "edit": "The menu has been updated"
+  }
+}

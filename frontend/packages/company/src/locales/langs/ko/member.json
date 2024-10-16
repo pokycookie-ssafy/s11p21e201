@@ -1,0 +1,87 @@
+{
+  "employee_management": "직원 계정 관리",
+  "create_employee": "직원 계정 추가",
+  "manager_management": "매니저(부서) 관리",
+  "create_manager": "매니저 계정 추가",
+  "employee_informantion": "직원 정보",
+  "manager_information": "매니저 계정 정보",
+  "employee_name": "직원명",
+  "department_name": "부서명",
+  "meal_allowance_amount": "식대 사용량",
+  "delete_account": "계정 삭제하기",
+  "create": "생성하기",
+  "employee_number": "사번",
+  "department_number": "부서코드",
+  "approve": "승인하기",
+  "spent_amount": "사용 금액",
+  "allotted_amount": "할당 금액",
+  "account_created_date": "계정 생성일",
+  "edit_info": "수정",
+  "delete": "삭제",
+  "accept_all": "일괄 수락",
+  "reject_all": "일괄 거절",
+  "sequence_number": "연번",
+  "add": "추가하기",
+  "upload_excel": "엑셀 파일 업로드",
+  "create_account": "계정 생성",
+  "selected": "개 선택 중",
+  "save": "저장",
+
+  "breadcrumbs": {
+    "title": "직원 관리",
+    "management": "관리",
+    "member_management": "직원 관리",
+    "manager_management": "관리자 관리",
+    "department_management": "부서 관리",
+    "create_member": "직원 계정 생성",
+    "create_manager": "관리자 계정 생성",
+    "create_department": "부서 생성"
+  },
+  "button": {
+    "create_member": "직원 계정 생성",
+    "create_manager": "관리자 계정 생성",
+    "create_department": "부서 생성",
+    "delete": "삭제",
+    "cancel": "취소",
+    "add_member": "직원 추가",
+    "create": "생성하기"
+  },
+  "field": {
+    "department": "부서명",
+    "department_code": "부서코드",
+    "employee_name": "직원명",
+    "employee_number": "사번",
+    "manager_code": "관리자 코드",
+    "created_at": "계정 생성일",
+    "support_amount": "할당 금액"
+  },
+  "unit": {
+    "won": "원"
+  },
+  "label": {
+    "name_search": "직원명 검색",
+    "department_name": "부서명 검색",
+    "selected": "{0}개 선택됨",
+    "all": "전체",
+    "enter_employee_no": "사번을 작성해주세요",
+    "enter_employee_name": "직원명을 작성해주세요",
+    "upload_excel": "직원 엑셀 파일을 업로드해주세요",
+    "enter_support_amount": "할당 금액을 입력해주세요",
+    "department": "부서명",
+    "department_code": "부서코드",
+    "manager_code": "관리자 코드",
+    "manager_password": "관리자 비밀번호"
+  },
+  "tooltip": {
+    "delete_all": "일괄 삭제",
+    "delete": "삭제"
+  },
+  "dialog": {
+    "delete_all": "삭제",
+    "delete_all_content": "{0}명의 직원을 정말 삭제하시겠습니까?",
+    "delete_content": "'{0}({1})' 직원을 정말 삭제하시겠습니까?"
+  },
+  "toast": {
+    "delete": "삭제되었습니다"
+  }
+}

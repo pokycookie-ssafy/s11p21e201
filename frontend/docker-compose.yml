@@ -1,0 +1,36 @@
+services:
+  fe_microsite:
+    container_name: fe_microsite
+    image: snb_fe_microsite:0.1
+    build:
+      context: ./packages/microsite
+    ports:
+      - 3000:80
+  fe_company:
+    container_name: fe_company
+    image: snb_fe_company:0.1
+    build:
+      context: ./packages/company
+    ports:
+      - 3001:80
+  fe_store:
+    container_name: fe_store
+    image: snb_fe_store:0.1
+    build:
+      context: ./packages/store
+    ports:
+      - 3002:80
+  fe_employee:
+    container_name: fe_employee
+    image: snb_fe_employee:0.1
+    build:
+      context: ./packages/employee
+    ports:
+      - 3003:80
+  fe_admin:
+    container_name: fe_admin
+    image: snb_fe_admin:0.1
+    build:
+      context: ./packages/admin
+    ports:
+      - 3004:80

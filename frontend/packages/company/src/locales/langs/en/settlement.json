@@ -1,0 +1,57 @@
+{
+  "total_amount_due": "Total Bill Amount",
+  "overdue_amount": "Overdue Amount",
+  "current_amount_due": "Current Amount Due",
+  "won": "KRW",
+  "settled_date": "Settlement Date",
+  "settle": "Settle Up",
+  "view_invoice": "View Tax-Invoice",
+  "transaction_details": "Transaction Details",
+  "download": "Download",
+  "recipient_account": "Recipient Account Number",
+  "my_account": "My Account Number",
+  "all": "All",
+  "settled": "Settlement Complete",
+  "partial": "Partial Settlement Completed",
+  "unsettled": "Unsettled",
+  "upload": "Tax-Invoice",
+  "settled_amount": "Settled Amount",
+  "settlement_date": "Planned Settlement Date",
+  "status": "Status",
+  "invoice": "Tax-Invoice",
+  "view": "View",
+  "settlement": "Settlement",
+  "close": "Close",
+  "settlement_amount": "Expected Settlement Amount",
+  "field": {
+    "store_name": "Restaurant Name",
+    "action": "Settlement",
+    "outstanding_amount": "Outstanding Amount"
+  },
+  "tooltip": {
+    "check_tax": "Check",
+    "no_tax": "Pending",
+    "settle": "Settle",
+    "settle_done": "Settlement Completed"
+  },
+  "breadcrumbs": {
+    "management": "Management",
+    "management_payment": "Settlement Management",
+    "management_date": "Management by Date",
+    "management_store": "Management by Restaurant"
+  },
+  "unit": {
+    "date": "{0}.{1}",
+    "won": "KRW",
+    "year": "year"
+  },
+  "label": {
+    "store_name": "Search by Restaurant Name"
+  },
+  "button": {
+    "settle": "Settle"
+  },
+  "toast": {
+    "settle_error": "Settlement Failed"
+  }
+}

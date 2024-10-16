@@ -1,0 +1,15 @@
+{
+  "toast": {
+    "success": "Payment completed successfully"
+  },
+  "label": {
+    "all": "All"
+  },
+  "unit": {
+    "won": "KRW"
+  },
+  "button": {
+    "payment": "KRW Pay",
+    "select_menu": "Please select a menu"
+  }
+}
