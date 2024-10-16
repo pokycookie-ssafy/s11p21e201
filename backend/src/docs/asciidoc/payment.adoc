@@ -1,0 +1,9 @@
+== 장부 API
+
+=== 여러 직원의 지불 금액 합계 조회
+
+operation::payment-controller-test/find_employee_payment[snippets="http-request,http-response"]
+
+=== 한 직원의 지불 금액 이력 조회
+
+operation::payment-controller-test/find_employee_payment_detail[snippets="http-request,http-response"]

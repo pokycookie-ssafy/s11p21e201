@@ -1,0 +1,79 @@
+### 기업 정보 생성
+POST localhost:8080/companies/info
+Content-Type: application/json
+
+{
+  "registerNumber": "111",
+  "name": "name",
+  "representativeName": "repname",
+  "phone": "010-1234-1234",
+  "businessType": "cook",
+  "businessAddress": "address"
+}
+
+### 기업 계정 생성
+POST localhost:8080/companies
+Content-Type: application/json
+
+{
+  "companyInfoId": "1c374dbd-9ee3-4c9e-a4b7-b04df2f22f7d",
+  "email": "company_sc@test.com",
+  "password": "12341234"
+}
+
+### 기업 로그인
+POST localhost:8080/companies/auth
+Content-Type: application/json
+
+{
+  "email": "company_sc@test.com",
+  "password": "12341234"
+}
+
+### 부서 생성
+POST localhost:8080/companies/departments
+Content-Type: application/json
+
+{
+  "code": "A123",
+  "name": "개발"
+}
+
+### 관리자 계정 생성
+POST localhost:8080/companies/managers
+Content-Type: application/json
+
+{
+  "departmentId": "6d3a6f27-20dc-4a4a-99f7-a37b19e21b14",
+  "code": "manager_sc",
+  "password": "12341234"
+}
+
+### 관리자 로그인
+POST localhost:8080/companies/managers/auth
+Content-Type: application/json
+
+{
+  "code": "manager_sc",
+  "password": "12341234"
+}
+
+### 직원 계정 생성
+POST localhost:8080/companies/employees
+Content-Type: application/json
+
+{
+  "code": "employee_sc2",
+  "password": "12341234",
+  "name": "스케줄링테스트"
+}
+
+### 직원 로그인
+POST localhost:8080/companies/employees/auth
+Content-Type: application/json
+
+{
+  "code": "employee_sc2",
+  "password": "12341234"
+}
+

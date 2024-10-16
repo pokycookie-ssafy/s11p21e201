@@ -1,0 +1,3 @@
+
+
+GET localhost:8080/payments/companies/employees?startDate=2024-10-04T00:00:00&endDate=2024-10-04T23:23:59&departmentId=
