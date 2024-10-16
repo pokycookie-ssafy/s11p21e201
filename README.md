@@ -68,7 +68,7 @@
 ## 1-4. 개발 일정
 
 [Gantt 차트](https://docs.google.com/spreadsheets/d/1BhlEvRPiiJJ7jkJCSPwxe9j7EQzL6mKscQ7ktS3pI1o/edit?usp=sharing)
-![간트 차트](./images/gantt_chart.png)
+![간트 차트](./exec/images/gantt_chart.png)
 
 
 # 2. UCC & 시연
@@ -79,10 +79,10 @@
 ## 3.1. 서비스 아키텍처
 
 ### 시스템 아키텍쳐
-![시스템 아키텍처](./images/시스템아키텍쳐.png)
+![시스템 아키텍처](./exec/images/시스템아키텍쳐.png)
 
 ### 시스템 아키텍쳐(배포관련)
-![시스템 아키텍처(배포관련)](./images/시스템아키텍쳐_배포.png)
+![시스템 아키텍처(배포관련)](./exec/images/시스템아키텍쳐_배포.png)
 
 ## 3.2. Frontend
 
