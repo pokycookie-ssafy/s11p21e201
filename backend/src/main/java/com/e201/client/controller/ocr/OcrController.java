@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:backend/src/main/java/com/e201/client/controller/OcrController.java
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -39,6 +40,10 @@ import com.e201.client.service.ocr.OcrService;
 import com.e201.client.controller.ocr.response.LicenseCreateResponse;
 import com.e201.client.service.ocr.OcrService;
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+import com.e201.client.controller.ocr.response.LicenseCreateResponse;
+import com.e201.client.service.ocr.OcrService;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,16 +58,20 @@ public class OcrController {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	@PostMapping("/ocr/license")
 	public ResponseEntity<LicenseCreateResponse> ocrCallApi(MultipartFile image) {
 		LicenseCreateResponse response = ocrService.ocrCallApi(image);
 		return ResponseEntity.status(OK).body(response);
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -96,4 +105,6 @@ public class OcrController {
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 }

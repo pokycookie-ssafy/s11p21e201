@@ -8,8 +8,11 @@ import lombok.Getter;
 public class ContractFindResponse {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private String contractId;
 	private String comapnyId;
 	private String companyName;
@@ -22,6 +25,9 @@ public class ContractFindResponse {
 	private String storePhone;
 	private String storeAddress;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private LocalDateTime contractDate;
 	private int settlementDate;
 	private String status;
@@ -44,6 +50,7 @@ public class ContractFindResponse {
 		this.contractDate = contractDate;
 		this.settlementDate = settlementDate;
 		this.status = status;
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
@@ -78,5 +85,7 @@ public class ContractFindResponse {
 =======
 		this.status = status;
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 }

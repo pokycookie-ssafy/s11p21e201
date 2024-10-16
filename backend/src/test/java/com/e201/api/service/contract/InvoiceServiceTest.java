@@ -24,6 +24,7 @@ import com.e201.api.controller.contract.response.InvoiceDownloadResponse;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 import com.e201.domain.entity.contract.Invoice;
 <<<<<<< HEAD
@@ -54,6 +55,10 @@ import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.contract.ContractStatus;
 import com.e201.domain.entity.contract.Invoice;
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+import com.e201.domain.entity.contract.ContractStatus;
+import com.e201.domain.entity.contract.Invoice;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.domain.repository.contract.InvoiceRepository;
 
@@ -81,6 +86,7 @@ public class InvoiceServiceTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 =======
 		contract = createContract(companyId, storeId, Status.COMPANY_WAITING, 10);
@@ -91,6 +97,9 @@ public class InvoiceServiceTest {
 =======
 		contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		contract = createContract(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		contractRepository.save(contract);
 	}
 
@@ -254,6 +263,7 @@ public class InvoiceServiceTest {
 	void find_invoice_entity_fail() {
 		// expected
 <<<<<<< HEAD
+<<<<<<< HEAD
 		assertThatThrownBy(() -> sut.findDomain(UUID.randomUUID())).isExactlyInstanceOf(RuntimeException.class);
 	}
 
@@ -292,6 +302,12 @@ public class InvoiceServiceTest {
 =======
 	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+		assertThatThrownBy(() -> sut.findEntity(UUID.randomUUID())).isInstanceOf(RuntimeException.class);
+	}
+
+	private Contract createContract(UUID companyId, UUID storeId, ContractStatus contractStatus, int settlementDay) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return Contract.builder()
 			.companyId(companyId)
 			.storeId(storeId)

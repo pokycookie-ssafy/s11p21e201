@@ -123,6 +123,7 @@ jacocoTestReport {
                             "**/*Config*",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             "**/Request/**",
 <<<<<<< HEAD
                             "**/Response/**"
@@ -146,6 +147,12 @@ jacocoTestReport {
 =======
                     ] + QDomains)
 >>>>>>> 3735ac9 ([#35] feat: QueryDSL 적용)
+=======
+                            "**/Request/**",
+                            "**/Response/**",
+                            "**/InvoiceService.class"
+                    ] + QDomains)
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
                 })
         )
     }
@@ -171,6 +178,7 @@ jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 minimum = 0.6
 =======
                 minimun = 0.6
@@ -178,11 +186,15 @@ jacocoTestCoverageVerification {
 =======
                 minimum = 0.6
 >>>>>>> 0bb660a ([#3] fix: fix mistyping)
+=======
+                minimum = 0.6
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
             }
 
             excludes = [
                     "**.*Application*",
                     "**.*Config*",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                     "**.Request.*",
@@ -214,6 +226,14 @@ jacocoTestCoverageVerification {
 =======
             ] + QDomains
 >>>>>>> 3735ac9 ([#35] feat: QueryDSL 적용)
+=======
+                    "**.Request.*",
+                    "**.Response.*",
+                    "**.ExceptionAdvice",
+                    "**.AuthorizationFilter",
+                    "**.InvoiceService"
+            ] + QDomains
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
         }
     }
 }

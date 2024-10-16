@@ -146,8 +146,11 @@ class MenuServiceTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1237fe7 ([#31] test: 식당 메뉴 리스트 조회 기능 테스트)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	@DisplayName("한 식당의 여러 메뉴를 조회한다.")
 	@Test
 	void findAll_menu_entity_success() {
@@ -181,6 +184,7 @@ class MenuServiceTest {
 	}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1047472 ([#31] test: 메뉴 단건 조회 기능 테스트)
 =======
@@ -188,6 +192,9 @@ class MenuServiceTest {
 =======
 
 >>>>>>> 9b4834a ([#70] chore: 필드명 변경)
+=======
+
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private MenuCreateRequest createMenuRequest(UUID id) {
 		return MenuCreateRequest.builder()
 			.price(10000)

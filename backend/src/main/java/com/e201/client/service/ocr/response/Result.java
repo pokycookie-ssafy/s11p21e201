@@ -8,10 +8,13 @@ import java.util.List;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -57,6 +61,8 @@ import lombok.NoArgsConstructor;
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 public class Result {
 	private List<CommonResponse> repName; // 대표자명
 	private List<CommonResponse> companyName;// 상호명
@@ -66,6 +72,7 @@ public class Result {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private List<CommonResponse> corpName; // 법인(기업)명
 	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
 =======
@@ -84,6 +91,10 @@ public class Result {
 	private List<CommonResponse> corpName; // 법인(기업)명
 	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+	private List<CommonResponse> corpName; // 법인(기업)명
+	private List<CommonResponse> corpRegisterNum; // 법인 사업자등록번호
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private List<CommonResponse> openDate;// 개업연원일
 	private List<CommonResponse> bisType;// 업종
 	private List<CommonResponse> bisItem;// 종목
@@ -93,6 +104,7 @@ public class Result {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private List<CommonResponse> taxType; // 법입 or 개인사업자
 =======
 >>>>>>> accb0ed ([#25] feat: 사업자 등록증 API 연동)
@@ -107,4 +119,7 @@ public class Result {
 =======
 	private List<CommonResponse> taxType; // 법입 or 개인사업자
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+	private List<CommonResponse> taxType; // 법입 or 개인사업자
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 }

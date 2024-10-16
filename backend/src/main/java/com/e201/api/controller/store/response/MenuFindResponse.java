@@ -22,6 +22,7 @@ public class MenuFindResponse {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public MenuFindResponse(final UUID id, final String menuName, final int price) {
 =======
 	private MenuFindResponse(final UUID id, final String menuName, final int price) {
@@ -38,6 +39,9 @@ public class MenuFindResponse {
 =======
 	private MenuFindResponse(UUID id, String name, int price, String category) {
 >>>>>>> 565d080 ([#84] feat: 직원 이용 내역 상세 조회 기능 추가)
+=======
+	private MenuFindResponse(UUID id, String name, int price, String category) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		this.id = id;
 		this.name = name;
 		this.price = price;

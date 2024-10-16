@@ -73,10 +73,14 @@ public class AuthenticationFilter implements Filter {
 		boolean isEmployeeCreatePath = matchURIAndMethod(request, method, creationPath.getEmployeePath());
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		boolean isStoreCreatePath = matchURIAndMethod(request, method, creationPath.getStorePath());
 		boolean isLicenseCreatePath = matchURIAndMethod(request, method, creationPath.getLicensePath());
 		boolean isFinCreatePath = matchURIAndMethod(request, method, creationPath.getFinPath());
 		return isCompanyInfoCreatePath || isCompanyCreatePath || isManagerCreatePath || isEmployeeCreatePath
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -100,6 +104,9 @@ public class AuthenticationFilter implements Filter {
 =======
 			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+			|| isStoreCreatePath || isLicenseCreatePath || isFinCreatePath;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	private boolean matchURIAndMethod(HttpServletRequest request, HttpMethod httpMethod, String pattern) {

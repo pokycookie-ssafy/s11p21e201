@@ -18,14 +18,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
 import com.e201.api.controller.contract.response.ContractRespondResponse;
 import com.e201.api.service.contract.ContractService;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import com.e201.domain.entity.contract.Contract;
@@ -88,6 +92,10 @@ import com.e201.domain.entity.contract.ContractRespondType;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
 import com.e201.global.security.auth.dto.AuthInfo;
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+import com.e201.domain.entity.contract.ContractRespondType;
+import com.e201.global.security.auth.dto.AuthInfo;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import com.e201.restdocs.AbstractRestDocsTest;
 
 @WebMvcTest(ContractController.class)
@@ -102,6 +110,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void create_contract_success() throws Exception {
 =======
 	void create_contract_success() throws Exception{
@@ -115,6 +124,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 	void create_contract_success() throws Exception {
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+	void create_contract_success() throws Exception {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		//given
 		String companyId = UUID.randomUUID().toString();
 		String storeId = UUID.randomUUID().toString();
@@ -123,6 +135,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 =======
 		ContractCreateRequest request = createContractCreateRequest(companyId,storeId);
@@ -137,6 +150,10 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 
 		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
 >>>>>>> b4d6ecc ([#17] feat: auth 인증 관련 내용 controller에 적용)
+=======
+
+		ContractCreateRequest request = createContractCreateRequest(companyId, storeId);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		AuthInfo authInfo = new AuthInfo(UUID.fromString(companyId), COMPANY);
@@ -144,6 +161,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		ContractCreateResponse response = new ContractCreateResponse(contractId);
 		String responseJson = objectMapper.writeValueAsString(response);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -168,6 +186,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		doReturn(response).when(contractService).create(any(), any(ContractCreateRequest.class));
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		doReturn(response).when(contractService).create(any(), any(ContractCreateRequest.class));
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 		//expect
 		mockMvc.perform(post("/contracts")
@@ -186,6 +207,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractCreateRequest createContractCreateRequest(String companyId, String storeId) {
 =======
 =======
@@ -194,6 +216,8 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 >>>>>>> d8b5f3f ([#17] test: Contract Controller 테스트 추가)
 =======
 >>>>>>> d2025ea ([#17] test: Contract Controller 테스트 추가)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	@DisplayName("계약 요청을 수락한다.")
 	@Test
 	void respond_contract_success() throws Exception {
@@ -201,6 +225,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		UUID companyId = UUID.randomUUID();
 		String contractId = UUID.randomUUID().toString();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -223,11 +248,17 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
+
+		ContractRespondCondition request = createContractRespondCondition(contractId, ContractRespondType.APPROVE);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		String requestJson = objectMapper.writeValueAsString(request);
 
 		ContractRespondResponse response = new ContractRespondResponse(UUID.fromString(contractId));
 		String responseJson = objectMapper.writeValueAsString(response);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -241,6 +272,9 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 =======
 		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+		doReturn(response).when(contractService).respond(any(), any(ContractRespondCondition.class));
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		//expect
 		mockMvc.perform(post("/contracts/respond")
 				.contentType(APPLICATION_JSON)
@@ -260,6 +294,7 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 		AuthInfo authInfo = new AuthInfo(companyId, COMPANY);
 
 		//expect
+<<<<<<< HEAD
 <<<<<<< HEAD
 		mockMvc.perform(delete("/contracts/"+contractId))
 <<<<<<< HEAD
@@ -296,12 +331,22 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 	private ContractRespondCondition createContractRespondCondition(String contractId,
 		ContractRespondType respondResult) {
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+		mockMvc.perform(delete("/contracts/" + contractId)
+				.sessionAttr(AUTH_INFO.name(), authInfo))
+			.andExpect(status().isNoContent());
+	}
+
+	private ContractRespondCondition createContractRespondCondition(String contractId,
+		ContractRespondType respondResult) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return ContractRespondCondition.builder()
 			.contractId(contractId)
 			.respondResult(respondResult)
 			.build();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -341,13 +386,19 @@ public class ContractControllerTest extends AbstractRestDocsTest {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 =======
 =======
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private ContractCreateRequest createContractCreateRequest(String senderId, String receiverRegisterNumber) {
 		return ContractCreateRequest.builder()
 			.senderId(senderId)
 			.receiverRegisterNumber(receiverRegisterNumber)
+<<<<<<< HEAD
 >>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
 			.settlementDay(10)
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+			.settlementDay(10)
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			.build();
 	}
 }

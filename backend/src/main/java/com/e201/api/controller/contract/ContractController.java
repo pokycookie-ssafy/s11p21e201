@@ -28,6 +28,7 @@ import com.e201.api.service.contract.ContractService;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import com.e201.domain.entity.contract.ContractFindCond;
 import com.e201.domain.entity.contract.ContractFindStatus;
@@ -58,6 +59,10 @@ import com.e201.global.security.auth.resolver.Auth;
 import com.e201.global.security.auth.dto.AuthInfo;
 import com.e201.global.security.auth.resolver.Auth;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+import com.e201.global.security.auth.dto.AuthInfo;
+import com.e201.global.security.auth.resolver.Auth;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,6 +73,7 @@ public class ContractController {
 	private final ContractService contractService;
 
 	@PostMapping("/contracts")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -97,10 +103,16 @@ public class ContractController {
 =======
 		ContractCreateResponse response = contractService.create(authInfo, request);
 >>>>>>> e31cce2 ([#25] refactor: OCR관련 로직 변경에 따른 코드 수정)
+=======
+	public ResponseEntity<ContractCreateResponse> create(@Auth AuthInfo authInfo,
+		@RequestBody ContractCreateRequest request) {
+		ContractCreateResponse response = contractService.create(authInfo, request);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return ResponseEntity.status(CREATED).body(response);
 	}
 
 	@GetMapping("/contracts")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -141,6 +153,11 @@ public class ContractController {
 		@ModelAttribute ContractFindRequest request) {
 		List<ContractFindResponse> response = contractService.find(authInfo, request);
 >>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
+=======
+	public ResponseEntity<List<ContractFindResponse>> findContracts(@Auth AuthInfo authInfo,
+		@ModelAttribute ContractFindRequest request) {
+		List<ContractFindResponse> response = contractService.find(authInfo, request);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 		return ResponseEntity.status(OK).body(response);
 	}
@@ -152,6 +169,7 @@ public class ContractController {
 	}
 
 	@PostMapping("/contracts/respond")
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -184,10 +202,17 @@ public class ContractController {
 	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo, @RequestBody ContractRespondCondition request) {
 		ContractRespondResponse response = contractService.respond(authInfo.getRoleType(), request);
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+
+	public ResponseEntity<ContractRespondResponse> respond(@Auth AuthInfo authInfo,
+		@RequestBody ContractRespondCondition request) {
+		ContractRespondResponse response = contractService.respond(authInfo.getRoleType(), request);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return ResponseEntity.status(OK).body(response);
 	}
 
 	@DeleteMapping("/contracts/{contractId}")
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public ResponseEntity<Object> delete(@PathVariable String contractId) {
 <<<<<<< HEAD
@@ -231,5 +256,10 @@ public class ContractController {
 		contractService.delete(contractId);
 		return ResponseEntity.status(NO_CONTENT).build();
 >>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
+=======
+	public ResponseEntity<Object> delete(@Auth AuthInfo authInfo, @PathVariable String contractId) {
+		contractService.delete(contractId);
+		return ResponseEntity.status(NO_CONTENT).build();
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 }

@@ -1,6 +1,7 @@
 package com.e201.api.service.store;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.List;
 =======
 import static com.e201.global.exception.ErrorCode.*;
@@ -10,6 +11,10 @@ import java.util.Optional;
 >>>>>>> ad44aae ([#31] feat: 식당 메뉴 리스트 조회 기능 구현)
 import java.util.UUID;
 import java.util.stream.Collectors;
+=======
+import java.util.List;
+import java.util.UUID;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 import org.springframework.stereotype.Service;
 
@@ -47,10 +52,14 @@ public class MenuService {
 	public Menu findEntity(UUID id) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id,"N","N")
 =======
 		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id, "N", "N")
 >>>>>>> 9b4834a ([#70] chore: 필드명 변경)
+=======
+		return menuRepository.findByIdAndModifiedYNAndDeleteYN(id, "N", "N")
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
@@ -68,6 +77,7 @@ public class MenuService {
 		validationStore(roleType);
 		return menuRepository.findByStoreIdAndModifiedYNAndDeleteYN(id, "N", "N")
 			.stream()
+<<<<<<< HEAD
 <<<<<<< HEAD
 			.map(menu -> new MenuFindResponse(menu.getId(), menu.getName(), menu.getPrice(),
 				menu.getCategory()))  // Menu -> MenuFindResponse로 변환
@@ -97,6 +107,8 @@ public class MenuService {
 			.toList();  // List<MenuFindResponse>로 수집
 		return responseList;
 =======
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			.map(menu -> MenuFindResponse.builder()
 				.id(menu.getId())
 				.name(menu.getName())
@@ -104,12 +116,16 @@ public class MenuService {
 				.category(menu.getCategory())
 				.build())
 			.toList();
+<<<<<<< HEAD
 >>>>>>> 565d080 ([#84] feat: 직원 이용 내역 상세 조회 기능 추가)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	@JtaTransactional
 	public MenuUpdateResponse modify(RoleType roleType, UUID menuId, MenuUpdateRequest menuUpdateRequest) {
 		validationStore(roleType);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		Menu originMenu = findEntity(menuId);
@@ -120,6 +136,9 @@ public class MenuService {
 =======
 		Menu originMenu = findEntity(menuId);
 >>>>>>> 3f09ffd ([#31] fix: 직접 repository 부르는 행위를 service 메소드를 부르도록 변경)
+=======
+		Menu originMenu = findEntity(menuId);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		originMenu.softUpdate();
 		//새롭게 menu 추가하기 
 		Menu menu = createModifiedStoreEntity(menuUpdateRequest, originMenu);

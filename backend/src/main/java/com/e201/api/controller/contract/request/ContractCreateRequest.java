@@ -6,6 +6,7 @@ import com.e201.domain.entity.contract.Contract;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.domain.entity.contract.ContractStatus;
 =======
 import com.e201.domain.entity.contract.Status;
@@ -16,6 +17,9 @@ import com.e201.domain.entity.contract.Status;
 =======
 import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+import com.e201.domain.entity.contract.ContractStatus;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -33,6 +37,7 @@ public class ContractCreateRequest {
 
 	@NotBlank
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private String storeId;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -47,6 +52,12 @@ public class ContractCreateRequest {
 	@NotBlank
 	private int settlementDay;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+	private String receiverRegisterNumber;
+
+	@NotBlank
+	private int settlementDay;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 	@Builder
 	private ContractCreateRequest(String senderId, String receiverRegisterNumber, int settlementDay) {
@@ -57,6 +68,7 @@ public class ContractCreateRequest {
 
 	public Contract toEntity(UUID companyId, UUID storeId, ContractStatus status) {
 		return Contract.builder()
+<<<<<<< HEAD
 <<<<<<< HEAD
 			.companyId(UUID.fromString(companyId))
 			.storeId(UUID.fromString(storeId))
@@ -97,6 +109,11 @@ public class ContractCreateRequest {
 >>>>>>> 2190cdc ([#63] fix: contract 생성/조회 시 UUID 수신 불가)
 			.settlementDay(settlementDay)
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+			.companyId(companyId)
+			.storeId(storeId)
+			.settlementDay(settlementDay)
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			.status(status)
 			.build();
 	}

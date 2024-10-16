@@ -2,11 +2,14 @@ package com.e201.api.service.contract;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.util.ArrayList;
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
 import com.e201.domain.annotation.JtaTransactional;
 import com.e201.domain.entity.contract.Contract;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -58,6 +62,10 @@ import com.e201.domain.entity.contract.Status;
 import com.e201.domain.entity.contract.ContractResponse;
 import com.e201.domain.entity.contract.ContractStatus;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+import com.e201.domain.entity.contract.ContractRespondType;
+import com.e201.domain.entity.contract.ContractStatus;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import com.e201.domain.repository.contract.ContractRepository;
 import com.e201.global.security.auth.constant.RoleType;
 import com.e201.global.security.auth.dto.AuthInfo;
@@ -74,6 +82,7 @@ public class ContractService {
 	private final StoreService storeService;
 
 	@JtaTransactional
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -145,6 +154,12 @@ public class ContractService {
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractCreateResponse(savedContract.getId());
 >>>>>>> b32c375 ([#17] refactor: ContractController 예외처리 수정)
+=======
+	public ContractCreateResponse create(AuthInfo authInfo, ContractCreateRequest request) {
+		Contract contract = createContractBySenderType(authInfo, request);
+		Contract savedContract = contractRepository.save(contract);
+		return new ContractCreateResponse(savedContract.getId());
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	private Contract createContractBySenderType(AuthInfo authInfo, ContractCreateRequest request) {
@@ -173,6 +188,7 @@ public class ContractService {
 			.orElseThrow(() -> new RuntimeException("not found exception"));
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public UUID findContractId(UUID companyId, UUID storeId) {
 <<<<<<< HEAD
@@ -230,6 +246,15 @@ public class ContractService {
 
 	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
 		List<EmployeeFindStoreResponse> response = contractRepository.findStores(authInfo);
+=======
+	public Contract findContractWithCompanyIdAndStoreId(UUID companyId, UUID storeId) {
+		Contract contract = contractRepository.findContractWithCompanyIdAndStoreId(storeId, companyId).getFirst();
+		return contract;
+	}
+
+	public List<ContractFindResponse> find(AuthInfo authInfo, ContractFindRequest request) {
+		List<ContractFindResponse> response = contractRepository.findMyContracts(authInfo, request);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return response;
 	}
 
@@ -254,6 +279,7 @@ public class ContractService {
 			case REJECT -> contract.getStatus() == ContractStatus.COMPANY_REQUEST ? ContractStatus.STORE_REJECT :
 				ContractStatus.COMPANY_REJECT;
 		};
+<<<<<<< HEAD
 =======
 =======
 		Contract savedContract = contractRepository.save(contract);
@@ -334,5 +360,15 @@ public class ContractService {
 =======
 		contract.softDelete();
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+	}
+
+	@JtaTransactional
+	public void delete(String contractId) {
+		Contract contract = contractRepository.findByIdAndDeleteYN(UUID.fromString(contractId), "N")
+			.orElseThrow(() -> new RuntimeException("not found exception"));
+
+		contract.softDelete();
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 }

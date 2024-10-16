@@ -8,10 +8,13 @@ import java.util.List;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -57,6 +61,8 @@ import lombok.NoArgsConstructor;
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 public class ApiResponse {
 	private String version;
 	private String requestId;

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
 <<<<<<< HEAD:backend/src/main/java/com/e201/client/service/OcrService.java
@@ -49,15 +50,20 @@ import com.e201.client.service.ocr.response.Result;
 =======
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import com.e201.api.service.company.CompanyService;
 import com.e201.api.service.store.StoreService;
 import com.e201.client.controller.ocr.response.LicenseCreateResponse;
 import com.e201.client.service.ocr.response.ApiResponse;
 import com.e201.client.service.ocr.response.Result;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -76,12 +82,15 @@ public class OcrService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 21808c9 ([#25] feat: OCR 관련 로직 보완)
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private final CompanyService companyService;
 	private final StoreService storeService;
 
@@ -91,6 +100,7 @@ public class OcrService {
 	@Value("${e201.ocr.key}")
 	private String apiKey;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -154,6 +164,9 @@ public class OcrService {
 =======
 	public LicenseCreateResponse ocrCallApi(MultipartFile file) {
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+	public LicenseCreateResponse ocrCallApi(MultipartFile file) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		String requestBody = createRequestBody(file);
 
 		ApiResponse responseBody = restClient.post()
@@ -171,10 +184,13 @@ public class OcrService {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		String inferResult = responseBody.getImages().getFirst().getInferResult();
 		if (!inferResult.equals("SUCCESS"))
 			throw new RuntimeException("OCR FAIL");
@@ -200,6 +216,7 @@ public class OcrService {
 		}
 
 		String repName = bizLicense.getRepName().getFirst().getText();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -257,11 +274,14 @@ public class OcrService {
 >>>>>>> dc09338 ([#41] feat: 싸피 금융망 API 연동완료)
 =======
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		String openDate = bizLicense.getOpenDate().getFirst().getText();
 		String businessType = bizLicense.getBisType().getFirst().getText();
 		String address = bizLicense.getBisAddress().getFirst().getText();
 		String registerNumber= bizLicense.getRegisterNumber().getFirst().getText();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -297,6 +317,9 @@ public class OcrService {
 =======
 		return new LicenseCreateResponse(repName, businessName, registerNumber, address, openDate, businessType);
 >>>>>>> f370cc1 ([#41] feat: 싸피 금융망 API 연동완료)
+=======
+		return new LicenseCreateResponse(repName, businessName, registerNumber, address, openDate, businessType);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	private String createRequestBody(MultipartFile file) {

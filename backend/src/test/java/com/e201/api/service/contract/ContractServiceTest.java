@@ -3,6 +3,7 @@ package com.e201.api.service.contract;
 import org.springframework.boot.test.context.SpringBootTest;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.e201.api.controller.contract.request.ContractCreateRequest;
 import com.e201.api.controller.contract.request.ContractRespondCondition;
 import com.e201.api.controller.contract.response.ContractCreateResponse;
@@ -623,6 +624,8 @@ public class ContractServiceTest {
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
 	}
 =======
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 @SpringBootTest
 public class ContractServiceTest {
 
@@ -874,5 +877,8 @@ public class ContractServiceTest {
 	// 		.extracting("companyId", "storeId", "status", "settlementDay")
 	// 		.containsExactly(companyId, storeId, ContractStatus.STORE_REQUEST, 10);
 	// }
+<<<<<<< HEAD
 >>>>>>> 49e217d ([#59] fix: testcode error 수정)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 }

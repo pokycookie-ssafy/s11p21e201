@@ -115,8 +115,11 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1237fe7 ([#31] test: 식당 메뉴 리스트 조회 기능 테스트)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	@DisplayName("한 식당의 메뉴 리스트를 조회한다.")
 	@Test
 	void findAll_menu_success() throws Exception {
@@ -147,10 +150,13 @@ public class MenuControllerTest extends AbstractRestDocsTest {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1047472 ([#31] test: 메뉴 단건 조회 기능 테스트)
 =======
 >>>>>>> 1237fe7 ([#31] test: 식당 메뉴 리스트 조회 기능 테스트)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	private MenuFindResponse createMenuResponse(UUID menuId) {
 		return MenuFindResponse.builder()
 			.id(menuId)

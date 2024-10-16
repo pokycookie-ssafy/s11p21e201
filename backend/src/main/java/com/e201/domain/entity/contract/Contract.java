@@ -37,6 +37,7 @@ public class Contract extends BaseEntity {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private ContractStatus status;
 =======
 	private Status status;
@@ -47,11 +48,15 @@ public class Contract extends BaseEntity {
 =======
 	private ContractStatus status;
 >>>>>>> 81f23e0 ([#17] feat: soft Delete 관련 BaseEntity Method 추가)
+=======
+	private ContractStatus status;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 	@Column(name = "settlement_day")
 	private int settlementDay;
 
 	@Builder
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -69,10 +74,14 @@ public class Contract extends BaseEntity {
 =======
 	private Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDay) {
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+	private Contract(UUID id, UUID companyId, UUID storeId, ContractStatus status, int settlementDay) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		this.id = id;
 		this.companyId = companyId;
 		this.storeId = storeId;
 		this.status = status;
+<<<<<<< HEAD
 <<<<<<< HEAD
 		this.settlementDate = settlementDate;
 <<<<<<< HEAD
@@ -89,6 +98,9 @@ public class Contract extends BaseEntity {
 =======
 		this.settlementDay = settlementDay;
 >>>>>>> 32ca6e1 ([#17] refactor: 변수명, 함수 순서 일부 수정, Entity 삭제 메소드 명 변경)
+=======
+		this.settlementDay = settlementDay;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	public void update(ContractStatus contractStatus) {

@@ -1,16 +1,23 @@
 package com.e201.domain.repository.contract;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import static com.e201.domain.entity.company.QCompany.*;
 import static com.e201.domain.entity.company.QDepartment.*;
 import static com.e201.domain.entity.company.QEmployee.*;
 =======
 >>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
+=======
+import static com.e201.domain.entity.company.QCompany.*;
+import static com.e201.domain.entity.company.QDepartment.*;
+import static com.e201.domain.entity.company.QEmployee.*;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import static com.e201.domain.entity.contract.ContractStatus.*;
 import static com.e201.domain.entity.contract.QContract.*;
 import static com.e201.domain.entity.store.QStore.*;
 import static com.e201.domain.entity.store.QStoreInfo.*;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -41,6 +48,9 @@ import java.util.HashMap;
 =======
 import java.util.HashMap;
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+import java.util.HashMap;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,6 +76,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 @Repository
 public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
@@ -80,6 +91,10 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository{
 @Repository
 public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+@Repository
+public class ContractCustomRepositoryImpl implements ContractCustomRepository {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 
 	private final JPAQueryFactory contractQueryFactory;
 	private final JPAQueryFactory companyQueryFactory;
@@ -94,6 +109,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	}
 
 	@Override
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -118,6 +134,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
 >>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
+=======
+	public List<Contract> findContractWithCompanyIdAndStoreId(UUID storeId, UUID companyId) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		QContract contract = QContract.contract;
 		return contractQueryFactory.selectFrom(contract)
 			.where(contract.storeId.eq(storeId),
@@ -126,6 +145,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -172,6 +192,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.fetch();
 	}
 
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	@Override
 	public List<EmployeeFindStoreResponse> findStores(AuthInfo authInfo) {
 		// find companyId using employee ID;
@@ -206,6 +228,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 		List<Contract> contracts = findContracts(authInfo, request);
 		Map<UUID, Map<String, String>> companyMap = getCompanyMap(contracts);
 		Map<UUID, Map<String, String>> storeMap = getStoreMap(contracts);
+<<<<<<< HEAD
 =======
 	@Override
 	public Page<ContractFindResponse> findMyContracts(AuthInfo authInfo, ContractFindRequest request,
@@ -246,6 +269,10 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 		return responses;
 >>>>>>> 14fa6f8 ([#78] refactor: 계약 조회 기능 수정)
+=======
+		List<ContractFindResponse> responses = createContractFindResponse(contracts, companyMap, storeMap);
+		return responses;
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 	}
 
 	private List<ContractFindResponse> createContractFindResponse(List<Contract> contracts,
@@ -255,8 +282,11 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 			.map(contractData -> new ContractFindResponse(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 				String.valueOf(contractData.getId()),
 				String.valueOf(contractData.getCompanyId()),
 				companyMap.get(contractData.getCompanyId()).get("companyName"),
@@ -268,6 +298,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				storeMap.get(contractData.getStoreId()).get("storeEmail"),
 				storeMap.get(contractData.getStoreId()).get("storePhone"),
 				storeMap.get(contractData.getStoreId()).get("storeAddress"),
+<<<<<<< HEAD
 <<<<<<< HEAD
 				contractData.getCreatedAt(),
 				contractData.getSettlementDay(),
@@ -286,10 +317,16 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				contractData.getSettlementDay(),
 				String.valueOf(contractData.getStatus())
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+				contractData.getCreatedAt(),
+				contractData.getSettlementDay(),
+				String.valueOf(contractData.getStatus())
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			))
 			.collect(Collectors.toList());
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -386,6 +423,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
 >>>>>>> 96dbfb8 ([#85] feat: employee가 계약된 가게를 조회한다.)
+=======
+	private List<Contract> findContracts(AuthInfo authInfo, ContractFindRequest request) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		return contractQueryFactory
 			.selectFrom(contract)
 			.where(
@@ -407,6 +447,7 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> e104de7 ([#60] refactor: Contract 조회 로직 수정)
 		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY)?
@@ -475,11 +516,14 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	private BooleanExpression getProgressStatusExpression(AuthInfo authInfo, ContractFindRequest request) {
 >>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		BooleanExpression senderCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(COMPANY_REQUEST) : contract.status.eq(STORE_REQUEST);
 
 		BooleanExpression receiverCondition = (authInfo.getRoleType() == RoleType.COMPANY) ?
 			contract.status.eq(STORE_REQUEST) : contract.status.eq(COMPANY_REQUEST);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -508,11 +552,17 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 >>>>>>> 445ee96 ([#75] 정산 조회 및 정산 기능 구현)
 			case ALL -> senderCondition.or(receiverCondition);
 >>>>>>> dbe64c6 ([#60] refactor: Contract 조회 로직 수정)
+=======
+
+		return switch (request.getUserCond()) {
+			case ALL -> senderCondition.or(receiverCondition);
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			case SENDER -> senderCondition;
 			case RECEIVER -> receiverCondition;
 		};
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	private BooleanExpression eqId(AuthInfo authInfo) {
@@ -525,12 +575,17 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 	private BooleanExpression eqId(AuthInfo authInfo) {
 		return switch (authInfo.getRoleType()) {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+	private BooleanExpression eqId(AuthInfo authInfo) {
+		return switch (authInfo.getRoleType()) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			case STORE -> contract.storeId.eq(authInfo.getId());
 			case COMPANY -> contract.companyId.eq(authInfo.getId());
 			default -> throw new IllegalStateException("Unexpected value: " + authInfo.getRoleType());
 		};
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	private Map<UUID, Map<String, String>> getStoreMap(List<Contract> contracts) {
@@ -540,6 +595,9 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 =======
 	private Map<UUID, Map<String, String>> getStoreMap(List<Contract> contracts) {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+	private Map<UUID, Map<String, String>> getStoreMap(List<Contract> contracts) {
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		Set<UUID> storeIds = contracts.stream()
 			.map(Contract::getStoreId)
 			.collect(Collectors.toSet());
@@ -556,8 +614,11 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				tuple -> tuple.get(store.id),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 				tuple -> {
 					Map<String, String> storeInfo = new HashMap<>();
 					storeInfo.put("storeName", tuple.get(store.storeInfo.name));
@@ -567,10 +628,14 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 					return storeInfo;
 				}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			));
 	}
 
 	private Map<UUID, Map<String, String>> getCompanyMap(List<Contract> contracts) {
+<<<<<<< HEAD
 =======
 				tuple -> tuple.get(store.storeInfo.name)
 			));
@@ -584,6 +649,8 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 
 	private Map<UUID, Map<String, String>> getCompanyMap(List<Contract> contracts) {
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 		Set<UUID> companyIds = contracts.stream()
 			.map(Contract::getCompanyId)
 			.collect(Collectors.toSet());
@@ -600,8 +667,11 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 				tuple -> tuple.get(company.id),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 				tuple -> {
 					Map<String, String> companyInfo = new HashMap<>();
 					companyInfo.put("companyName", tuple.get(company.companyInfo.name));
@@ -611,11 +681,14 @@ public class ContractCustomRepositoryImpl implements ContractCustomRepository {
 					return companyInfo;
 				}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 				tuple -> tuple.get(company.companyInfo.name)
 >>>>>>> 31cf432 ([#40] feat: Contract 조회 기능 구현)
 =======
 >>>>>>> 54ad0bd ([#40] feat: 계약 조회 기능 구현)
+=======
+>>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
 			));
 	}
 }
