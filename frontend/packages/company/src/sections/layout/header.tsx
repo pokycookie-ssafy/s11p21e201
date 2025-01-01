@@ -1,5 +1,5 @@
 import paths from '@/configs/paths'
-import { useBoolean } from '@/hooks/use-boolean'
+import { useBoolean } from '@e201/utils'
 import tossLogo from '@/assets/img/toss-logo.jpg'
 import whiteLogo from '@/assets/img/logo-white.png'
 import { ModeButton, LocaleButton } from '@/components/setting-button'

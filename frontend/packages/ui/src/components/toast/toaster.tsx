@@ -1,12 +1,11 @@
 import { classes } from './classes'
+import { Iconify } from '../iconify'
 import { StyledToaster } from './styled'
-import { Iconify } from '../iconify/iconify'
 
 export function Toaster() {
   return (
     <StyledToaster
       closeButton
-      position="bottom-left"
       visibleToasts={3}
       duration={1500}
       toastOptions={{
