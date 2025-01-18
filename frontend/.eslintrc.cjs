@@ -22,23 +22,14 @@ module.exports = {
     radix: 'off',
     'no-alert': 'warn',
     'no-console': 'off',
-<<<<<<< HEAD
-<<<<<<< HEAD:frontend/.eslintrc.cjs
     'no-bitwise': 'off',
-=======
     'no-continue': 'off',
->>>>>>> 859fe5b ([#54] feat: 직원 계정 생성):frontend/packages/company/.eslintrc.cjs
-=======
->>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
     'no-plusplus': 'off',
     'no-unused-vars': 'off',
     'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
-<<<<<<< HEAD
     'no-restricted-syntax': 'off',
-=======
->>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
     'no-restricted-exports': 'off',
     'no-promise-executor-return': 'off',
     'import/prefer-default-export': 'off',
@@ -92,15 +83,9 @@ module.exports = {
         type: 'line-length',
         'newlines-between': 'always',
         groups: [
-<<<<<<< HEAD
           'custom-components',
           'custom-themes',
           'custom-configs',
-          'style',
-          'type',
-          ['builtin', 'external'],
-          'internal',
-=======
           'style',
           'type',
           ['builtin', 'external'],
@@ -114,7 +99,6 @@ module.exports = {
           'custom-layouts',
           'custom-auth',
           'custom-types',
->>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
           ['parent', 'sibling', 'index'],
           ['parent-type', 'sibling-type', 'index-type'],
           'object',
@@ -122,11 +106,6 @@ module.exports = {
         ],
         'custom-groups': {
           value: {
-<<<<<<< HEAD
-            ['custom-components']: '**/src/components/**',
-            ['custom-themes']: '**/src/themes/**',
-            ['custom-configs']: '**/src/configs/**',
-=======
             ['custom-mui']: '@mui/**',
             ['custom-auth']: '**/src/auth/**',
             ['custom-hooks']: '**/src/hooks/**',
@@ -136,7 +115,8 @@ module.exports = {
             ['custom-pages']: '**/src/pages/**',
             ['custom-layouts']: '**/src/layouts/**',
             ['custom-components']: '**/src/components/**',
->>>>>>> 0de46e05944cf4306bb967ec34570e374df4dd85
+            ['custom-themes']: '**/src/themes/**',
+            ['custom-configs']: '**/src/configs/**',
           },
         },
         'internal-pattern': ['**/src/**'],
